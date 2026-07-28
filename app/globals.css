@@ -135,7 +135,8 @@ p { color: var(--muted); font-size: 1.02rem; }
 .logo-section { padding: 42px 0 0; }
 .logo-section > p { text-align: center; text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; font-weight: 800; }
 .logo-strip { display: flex; align-items: center; gap: 10px; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent); }
-.client-logo { flex: 0 0 auto; min-width: 132px; height: 65px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 14px; background: white; font-weight: 850; font-size: .82rem; color: #5d575e; filter: grayscale(1); }
+.client-logo { flex: 0 0 auto; min-width: 0; height: 42px; display: grid; place-items: center; padding: 0; border: 0; background: transparent; overflow: visible; box-shadow: none; }
+.client-logo-image { width: auto; height: 100%; max-width: 132px; object-fit: contain; opacity: .88; filter: grayscale(.15) contrast(1.05); }
 
 /* Product mockups */
 .app-mockup { background: white; border: 1px solid var(--line); border-radius: 26px; padding: 10px; box-shadow: var(--shadow); }
@@ -399,12 +400,13 @@ p { color: var(--muted); font-size: 1.02rem; }
 .hero-window-tag strong { font-size: .82rem; margin-top: 4px; }
 
 .logo-section { margin: 0; padding: 28px 0 42px; border: 0; }
-.logo-section > p { margin-bottom: 16px; text-align: center; font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 800; }
-.logo-marquee { overflow: hidden; mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent); }
-.logo-track { width: max-content; display: flex; align-items: center; gap: 14px; animation: logo-scroll-right 28s linear infinite; }
+.logo-section > p { margin-bottom: 18px; text-align: center; font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 800; }
+.logo-marquee { overflow: hidden; padding: 10px 0; mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent); }
+.logo-track { width: max-content; display: flex; align-items: center; gap: 16px; animation: logo-scroll-left 32s linear infinite; }
 .logo-marquee:hover .logo-track { animation-play-state: paused; }
-.client-logo { min-width: 138px; height: 55px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 13px; background: white; font-size: .82rem; font-weight: 850; color: #6b656c; }
-@keyframes logo-scroll-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.client-logo { min-width: 172px; height: 72px; display: flex; align-items: center; justify-content: center; padding: 14px 20px; border: 1px solid rgba(34, 29, 35, 0.08); border-radius: 18px; background: rgba(255, 255, 255, 0.92); box-shadow: 0 12px 28px rgba(34, 29, 35, 0.06); backdrop-filter: blur(8px); }
+.client-logo-image { width: auto; height: 100%; max-width: 136px; object-fit: contain; opacity: 1; filter: none; }
+@keyframes logo-scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 .training-proof-section { background: #fffdf6; padding-top: 86px; }
 .section-intro { max-width: 830px; margin-bottom: 38px; }
@@ -418,7 +420,9 @@ p { color: var(--muted); font-size: 1.02rem; }
 .metric-cards > div:nth-child(3) strong { color: var(--red); }
 .metric-cards > div:nth-child(4) strong { color: var(--orange); }
 .metric-cards span { margin-top: 9px; color: var(--muted); font-size: .8rem; }
-.session-photo-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.session-photo-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+.session-photo { position: relative; margin: 0; width: 100%; aspect-ratio: 461 / 297; border-radius: 20px; border: 1px solid var(--line); overflow: hidden; background: #e8e2de; }
+.session-photo-image { object-fit: cover; object-position: center; }
 .session-photo-row .photo-placeholder { min-height: 225px; }
 
 .product-section { background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }

@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { AnimatedStat } from '@/components/AnimatedStat';
 import { ButtonLink } from '@/components/ButtonLink';
 import { ContactForm } from '@/components/ContactForm';
 import { Icon } from '@/components/Icon';
 import { LogoStrip } from '@/components/LogoStrip';
-import { PhotoPlaceholder } from '@/components/PhotoPlaceholder';
+import { SessionPhotoRow } from '@/components/SessionPhotoRow';
 import { TestimonialGrid } from '@/components/TestimonialGrid';
 import { YouTubeGrid } from '@/components/YouTubeGrid';
 import { WorkflowVideoGrid } from '@/components/WorkflowVideoGrid';
@@ -33,8 +34,38 @@ export const metadata: Metadata = {
   }
 };
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nudgeable.ai';
+
+const servicesStructuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      name: 'AI Practice Lab',
+      url: 'https://work.nudgeable.app/',
+      description: 'Free AI for Work workflows and current content, with enterprise customization and reporting.',
+      provider: { '@id': `${siteUrl}/#organization` }
+    },
+    {
+      '@type': 'Service',
+      name: 'AI Coach',
+      url: `${siteUrl}/ai-role-play`,
+      description: 'Voice-based practice for sales and leadership conversations with objective, conversation-linked feedback.',
+      provider: { '@id': `${siteUrl}/#organization` }
+    },
+    {
+      '@type': 'Service',
+      name: 'Actions Engine',
+      url: `${siteUrl}/nudgeengine`,
+      description: 'Personalized actions, workplace nudges and application data after classroom training.',
+      provider: { '@id': `${siteUrl}/#organization` }
+    }
+  ]
+};
+
 export default function Home() {
   return <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesStructuredData) }} />
     <section className="home-hero home-hero-new">
       <div className="container home-hero-grid home-hero-grid-new">
         <div className="home-hero-copy">
@@ -67,17 +98,12 @@ export default function Home() {
           <p>Employees practise on realistic tasks from their functions. The program can cover prompting, writing, research, presentations, data analysis, images, automation, AI agents and responsible use.</p>
         </div>
         <div className="metric-cards">
-          <div><strong>40+</strong><span>Corporate cohorts</span></div>
-          <div><strong>2,500+</strong><span>Professionals trained</span></div>
-          <div><strong>100+</strong><span>Workflows in the Lab</span></div>
-          <div><strong>18</strong><span>Work categories covered</span></div>
+          <div><AnimatedStat value={40} suffix="+"/><span>Corporate cohorts</span></div>
+          <div><AnimatedStat value={2500} suffix="+"/><span>Professionals trained</span></div>
+          <div><AnimatedStat value={100} suffix="+"/><span>Workflows in the Lab</span></div>
+          <div><AnimatedStat value={18}/><span>Work categories covered</span></div>
         </div>
-        <div className="session-photo-row">
-          <PhotoPlaceholder label="Session photo 01"/>
-          <PhotoPlaceholder label="Session photo 02"/>
-          <PhotoPlaceholder label="Session photo 03"/>
-          <PhotoPlaceholder label="Session photo 04"/>
-        </div>
+        <SessionPhotoRow/>
       </div>
     </section>
 
