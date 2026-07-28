@@ -1,26 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { fallbackVideos } from './data';
 import { Icon } from './Icon';
 import { VideoCarouselNext, VideoCarouselPrev } from './VideoCarouselNav';
 import { formatVideoDate, isLiveYouTubeId, type YouTubeVideo as Video } from './youtubeVideos';
 
 type Playing = { video: Video; portrait?: boolean };
-
-const filters = ['All', 'Claude', 'Copilot', 'Gemini', 'ChatGPT', 'AI Agents', 'Data', 'Presentations', 'Research', 'Automation'];
-
-const topicColors: Record<string, string> = {
-  Claude: '#7c3aed',
-  Copilot: '#0ea5e9',
-  Gemini: '#2563eb',
-  ChatGPT: '#10b981',
-  'AI Agents': '#f59e0b',
-  Data: '#2563eb',
-  Presentations: '#7c3aed',
-  Research: '#7c3aed',
-  Automation: '#10b981'
-};
 
 function cleanTitle(title: string) {
   return title
@@ -46,48 +32,6 @@ function shortDescription(value?: string) {
   return `${sentence.slice(0, 117).trim()}…`;
 }
 
-function detectTool(text: string) {
-  if (text.includes('claude')) return 'Claude';
-  if (text.includes('copilot')) return 'Copilot';
-  if (text.includes('gemini')) return 'Gemini';
-  if (text.includes('chatgpt') || text.includes('chat gpt')) return 'ChatGPT';
-  if (text.includes('agent')) return 'AI Agents';
-  return '';
-}
-
-function detectTopic(text: string) {
-  if (text.includes('presentation') || text.includes('slide') || text.includes('ppt') || text.includes('deck')) return 'Presentations';
-  if (text.includes('research')) return 'Research';
-  if (text.includes('automat') || text.includes('email') || text.includes('inbox')) return 'Automation';
-  if (text.includes('data') || text.includes('excel') || text.includes('chart') || text.includes('sales export')) return 'Data';
-  if (text.includes('no code') || text.includes('internal tool')) return 'No code';
-  return 'AI for Work';
-}
-
-function classify(video: Video) {
-  const title = video.title.toLowerCase();
-  const body = `${video.description || ''} ${video.category || ''}`.toLowerCase();
-  const tool = detectTool(title) || detectTool(body);
-  const topic = detectTopic(`${title} ${body}`);
-  if (tool && topic && topic !== 'AI for Work') return `${tool} · ${topic}`;
-  if (tool) return tool;
-  if (video.category.includes('·')) return video.category;
-  return topic;
-}
-
-function categoryTone(label: string) {
-  const key = Object.keys(topicColors).find(name => label.includes(name));
-  return key ? topicColors[key] : '#7c3aed';
-}
-
-function matches(video: Video, activeFilter: string, search: string) {
-  const label = classify(video);
-  const text = `${video.title} ${video.description || ''} ${video.category || ''} ${label}`.toLowerCase();
-  const filterMatch = activeFilter === 'All' || text.includes(activeFilter.toLowerCase()) || label.includes(activeFilter);
-  const searchMatch = !search || text.includes(search.toLowerCase());
-  return filterMatch && searchMatch;
-}
-
 function youtubeThumbnail(video: Video) {
   if (video.thumbnail) return video.thumbnail;
   if (video.id && !video.id.startsWith('video-') && !video.id.startsWith('workflow-')) {
@@ -101,8 +45,7 @@ function normalizeVideos(videos: Video[]) {
     ...video,
     title: cleanTitle(video.title),
     description: shortDescription(video.description),
-    thumbnail: youtubeThumbnail(video),
-    category: classify(video)
+    thumbnail: youtubeThumbnail(video)
   }));
 }
 
@@ -135,8 +78,6 @@ async function loadPlaylist(type: 'shorts' | 'workflows', signal: AbortSignal) {
 export function InsightsVideoLibrary() {
   const [shorts, setShorts] = useState<Video[]>(fallbackVideos);
   const [workflows, setWorkflows] = useState<Video[]>([]);
-  const [activeFilter, setActiveFilter] = useState('All');
-  const [search, setSearch] = useState('');
   const [playing, setPlaying] = useState<Playing | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const shortsTrackRef = useRef<HTMLDivElement>(null);
@@ -168,10 +109,8 @@ export function InsightsVideoLibrary() {
     };
   }, [playing]);
 
-  const filteredShorts = useMemo(() => shorts.filter(video => matches(video, activeFilter, search)), [shorts, activeFilter, search]);
-  const filteredWorkflows = useMemo(() => workflows.filter(video => matches(video, activeFilter, search)), [workflows, activeFilter, search]);
-  const featuredShort = filteredShorts[0] || shorts[0];
-  const featuredWorkflow = filteredWorkflows[0] || workflows[0];
+  const featuredShort = shorts[0];
+  const featuredWorkflow = workflows[0];
 
   function openVideo(video: Video, portrait?: boolean) {
     setPlaying({ video, portrait: Boolean(portrait) });
@@ -201,7 +140,6 @@ export function InsightsVideoLibrary() {
             <small>FEATURED SHORT</small>
             <VideoThumbnail video={featuredShort} portrait featured onPlay={openVideo} />
             <h2>{featuredShort.title}</h2>
-            <span>{classify(featuredShort)}</span>
           </article>}
           {featuredWorkflow && <article className="insights-feature-card workflow-feature">
             <small>FEATURED WORKFLOW</small>
@@ -215,27 +153,20 @@ export function InsightsVideoLibrary() {
 
     <section className="insights-library-section" aria-label="AI video library">
       <div className="container">
-        <div className="insights-filter-shell">
-          <div className="insights-filters" aria-label="Filter videos by topic">
-            {filters.map(filter => <button type="button" key={filter} aria-pressed={activeFilter === filter} className={activeFilter === filter ? 'active' : ''} onClick={() => setActiveFilter(filter)}>{filter}</button>)}
-          </div>
-          <label className="insights-search"><span aria-hidden="true">⌕</span><span className="sr-only">Search videos and workflows</span><input type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search videos and workflows..." /></label>
-        </div>
-
         <div id="shorts" className="insights-section-head">
           <div><h2>Latest AI Shorts</h2><p>Quick insights, updates and practical experiments in under three minutes.</p></div>
         </div>
         <div className="video-carousel-shell shorts-carousel">
           <VideoCarouselPrev onClick={() => scrollTrack(shortsTrackRef, -1)} label="Previous short videos" />
           <div className="insights-shorts-grid" ref={shortsTrackRef}>
-            {filteredShorts.map(video => <article className="insights-video-card" key={video.id}>
+            {shorts.map(video => <article className="insights-video-card" key={video.id}>
               <VideoThumbnail video={video} portrait onPlay={openVideo} />
-              <div className="insights-card-copy"><h3>{video.title}</h3><span className="insights-category"><i style={{ background: categoryTone(classify(video)) }} aria-hidden="true" /><span>{classify(video)}</span></span></div>
+              <div className="insights-card-copy"><h3>{video.title}</h3></div>
             </article>)}
           </div>
           <VideoCarouselNext onClick={() => scrollTrack(shortsTrackRef, 1)} label="Next short videos" />
         </div>
-        {!filteredShorts.length && <p className="insights-empty">No Shorts match this filter.</p>}
+        {!shorts.length && <p className="insights-empty">No Shorts available yet.</p>}
 
         <div id="workflows" className="insights-section-head workflow-heading">
           <div className="insights-section-title">
@@ -249,7 +180,7 @@ export function InsightsVideoLibrary() {
         <div className="video-carousel-shell workflow-carousel">
           <VideoCarouselPrev onClick={() => scrollTrack(workflowsTrackRef, -1)} label="Previous workflows" />
           <div className="insights-workflow-grid" ref={workflowsTrackRef}>
-            {filteredWorkflows.map(video => <article className="insights-video-card insights-workflow-card" key={video.id}>
+            {workflows.map(video => <article className="insights-video-card insights-workflow-card" key={video.id}>
                 <VideoThumbnail video={video} onPlay={openVideo} />
                 <div className="insights-card-copy">
                   <h3>{video.title}</h3>
@@ -264,7 +195,7 @@ export function InsightsVideoLibrary() {
           </div>
           <VideoCarouselNext onClick={() => scrollTrack(workflowsTrackRef, 1)} label="Next workflows" />
         </div>
-        {!filteredWorkflows.length && <p className="insights-empty">No workflow explainers match this filter.</p>}
+        {!workflows.length && <p className="insights-empty">No workflow explainers available yet.</p>}
       </div>
     </section>
 

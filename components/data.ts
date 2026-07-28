@@ -24,7 +24,9 @@ export type SessionPhoto = {
 
 export const sessionPhotos: SessionPhoto[] = [
   { alt: 'AI training session for fashion ecommerce teams', src: '/sessions/fashion-ecommerce.png' },
+  { alt: 'AI training session for HR teams', src: '/sessions/hr-team.png' },
   { alt: 'AI training session for finance teams', src: '/sessions/finance-team.png' },
+  { alt: 'AI training session for manufacturing teams', src: '/sessions/manufacturing-team.png' },
   { alt: 'AI training session for senior leadership', src: '/sessions/senior-leadership.png' },
   { alt: 'AI training session for customer experience teams', src: '/sessions/customer-experience.png' }
 ];

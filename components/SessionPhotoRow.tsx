@@ -2,15 +2,19 @@ import Image from 'next/image';
 import { sessionPhotos } from './data';
 
 export function SessionPhotoRow() {
-  return <div className="session-photo-row">
-    {sessionPhotos.map((photo) => <figure className="session-photo" key={photo.src}>
-      <Image
-        src={photo.src}
-        alt={photo.alt}
-        fill
-        sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 25vw"
-        className="session-photo-image"
-      />
-    </figure>)}
+  const photos = [...sessionPhotos, ...sessionPhotos];
+
+  return <div className="session-photo-marquee" aria-label="GenAI masterclass session photos">
+    <div className="session-photo-track">
+      {photos.map((photo, index) => <figure className="session-photo" key={`${photo.src}-${index}`} aria-hidden={index >= sessionPhotos.length || undefined}>
+        <Image
+          src={photo.src}
+          alt={index >= sessionPhotos.length ? '' : photo.alt}
+          fill
+          sizes="(max-width: 640px) 78vw, (max-width: 960px) 42vw, 280px"
+          className="session-photo-image"
+        />
+      </figure>)}
+    </div>
   </div>;
 }
