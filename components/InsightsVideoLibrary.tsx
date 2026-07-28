@@ -4,27 +4,9 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { fallbackVideos } from './data';
 import { Icon } from './Icon';
 import { VideoCarouselNext, VideoCarouselPrev } from './VideoCarouselNav';
-
-type Video = {
-  id: string;
-  title: string;
-  category: string;
-  duration?: string;
-  thumbnail?: string;
-  url?: string;
-  description?: string;
-  publishedAt?: string;
-};
+import { formatVideoDate, isLiveYouTubeId, type YouTubeVideo as Video } from './youtubeVideos';
 
 type Playing = { video: Video; portrait?: boolean };
-
-const fallbackWorkflows: Video[] = [
-  { id: 'workflow-1', title: 'Build a Slide Deck From a Document, Start to Finish', category: 'Claude · Presentations', duration: '9:16', thumbnail: '/insights/workflow-1.png', description: 'Turn a long document into a complete, structured presentation.' },
-  { id: 'workflow-2', title: 'Set Up an Agent That Clears Your Inbox Every Morning', category: 'ChatGPT · Automation', duration: '7:24', thumbnail: '/insights/workflow-2.png', description: 'Automate inbox triage, summaries and follow-ups.' },
-  { id: 'workflow-3', title: 'Turn a Messy Sales Export Into a Chart in Five Minutes', category: 'Gemini · Data', duration: '8:42', thumbnail: '/insights/workflow-3.png', description: 'Clean data, build charts and identify useful patterns quickly.' },
-  { id: 'workflow-4', title: 'Deep Research for Market Insights', category: 'Claude · Research', duration: '10:31', thumbnail: '/insights/workflow-4.png', description: 'Run focused research and turn sources into a structured report.' },
-  { id: 'workflow-5', title: 'Build a Simple Internal Tool With AI', category: 'AI Agents · No code', duration: '12:08', thumbnail: '/insights/workflow-5.png', description: 'Create a useful internal tool without writing production code.' }
-];
 
 const filters = ['All', 'Claude', 'Copilot', 'Gemini', 'ChatGPT', 'AI Agents', 'Data', 'Presentations', 'Research', 'Automation'];
 
@@ -125,7 +107,7 @@ function normalizeVideos(videos: Video[]) {
 }
 
 function isPlayable(video: Video) {
-  return Boolean(video.id && !video.id.startsWith('video-') && !video.id.startsWith('workflow-'));
+  return isLiveYouTubeId(video.id);
 }
 
 function VideoThumbnail({ video, portrait, featured, onPlay }: { video: Video; portrait?: boolean; featured?: boolean; onPlay: (video: Video, portrait?: boolean) => void }) {
@@ -152,7 +134,7 @@ async function loadPlaylist(type: 'shorts' | 'workflows', signal: AbortSignal) {
 
 export function InsightsVideoLibrary() {
   const [shorts, setShorts] = useState<Video[]>(fallbackVideos);
-  const [workflows, setWorkflows] = useState<Video[]>(fallbackWorkflows);
+  const [workflows, setWorkflows] = useState<Video[]>([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const [search, setSearch] = useState('');
   const [playing, setPlaying] = useState<Playing | null>(null);
@@ -225,7 +207,7 @@ export function InsightsVideoLibrary() {
             <small>FEATURED WORKFLOW</small>
             <VideoThumbnail video={featuredWorkflow} featured onPlay={openVideo} />
             <h2>{featuredWorkflow.title}</h2>
-            <span>{classify(featuredWorkflow)}</span>
+            {featuredWorkflow.publishedAt && <time className="insights-date" dateTime={featuredWorkflow.publishedAt}>{formatVideoDate(featuredWorkflow.publishedAt)}</time>}
           </article>}
         </div>
       </div>
@@ -267,21 +249,18 @@ export function InsightsVideoLibrary() {
         <div className="video-carousel-shell workflow-carousel">
           <VideoCarouselPrev onClick={() => scrollTrack(workflowsTrackRef, -1)} label="Previous workflows" />
           <div className="insights-workflow-grid" ref={workflowsTrackRef}>
-            {filteredWorkflows.map(video => {
-              const label = classify(video);
-              return <article className="insights-video-card insights-workflow-card" key={video.id}>
+            {filteredWorkflows.map(video => <article className="insights-video-card insights-workflow-card" key={video.id}>
                 <VideoThumbnail video={video} onPlay={openVideo} />
                 <div className="insights-card-copy">
                   <h3>{video.title}</h3>
-                  <span className="insights-category"><i style={{ background: categoryTone(label) }} aria-hidden="true" /><span>{label}</span></span>
+                  {video.publishedAt && <time className="insights-date" dateTime={video.publishedAt}>{formatVideoDate(video.publishedAt)}</time>}
                   {video.description && <p>{video.description}</p>}
                   <div className="insights-card-actions">
                     <button type="button" onClick={() => openVideo(video)}>Watch workflow</button>
                     <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
                   </div>
                 </div>
-              </article>;
-            })}
+              </article>)}
           </div>
           <VideoCarouselNext onClick={() => scrollTrack(workflowsTrackRef, 1)} label="Next workflows" />
         </div>

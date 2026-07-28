@@ -11,7 +11,7 @@ import { YouTubeGrid } from '@/components/YouTubeGrid';
 import { WorkflowVideoGrid } from '@/components/WorkflowVideoGrid';
 import { aiTools } from '@/components/data';
 
-const PRACTICE_LAB_DEMO_URL = process.env.NEXT_PUBLIC_PRACTICE_LAB_DEMO_URL || '#';
+const PRACTICE_LAB_DEMO_URL = process.env.NEXT_PUBLIC_PRACTICE_LAB_DEMO_URL || 'https://youtu.be/_BWa3U1x920';
 
 const workflows = [
   { category: 'Email & tasks', title: 'Build an inbox triage workflow', tool: 'Claude' },
@@ -92,7 +92,7 @@ export default function Home() {
         </div>
 
         <div className="home-hero-product-image" aria-label="AI Practice Lab preview">
-          <Image src="/assets/ai-practice-lab.png" alt="AI Practice Lab interface" width={2048} height={1176} priority />
+          <Image src="/assets/ai-practice-lab-full.png" alt="AI Practice Lab interface" width={1024} height={631} priority />
           <div className="hero-window-tag"><small>UPDATED WEEKLY</small><strong>100+ guided workflows</strong></div>
         </div>
       </div>
@@ -125,7 +125,7 @@ export default function Home() {
         </div>
         <div className="product-detail-grid compact-product-grid">
           <article className="product-detail-card lab">
-            <div className="product-card-image lab-card-image"><Image src="/assets/ai-practice-lab.png" alt="AI Practice Lab" width={2048} height={1176} /></div>
+            <div className="product-card-image lab-card-image"><Image src="/assets/ai-practice-lab-full.png" alt="AI Practice Lab" width={1024} height={631} /></div>
             <span className="product-label">Open access</span>
             <h3>AI Practice Lab</h3>
             <p>Free AI for Work workflows and current content, with enterprise customization and reporting.</p>
@@ -159,24 +159,18 @@ export default function Home() {
         <div className="lab-showcase-top">
           <div className="lab-showcase-copy">
             <span className="eyebrow light">AI PRACTICE LAB</span>
-            <h2>Free for individuals. Built for enterprise teams.</h2>
-            <p>Anyone can use the public Lab for practical AI workflows. Enterprise clients can add role-based journeys, customized workflows, curated updates and an admin dashboard.</p>
+            <h2>Workshop that sparks it. Practice Lab that makes it stick.</h2>
+            <p>100+ guided AI workflows for real work tasks. Stay current with AI — without the noise. Get your AI application queries resolved by our Trained AI</p>
             <div className="button-row">
               <a className="button button-primary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Lab <Icon name="arrow" size={17} /></a>
-              <a className="button button-ghost-dark button-compact" href="#contact">See the enterprise version <Icon name="arrow" size={17} /></a>
+              <a className="button button-ghost-dark button-compact" href={PRACTICE_LAB_DEMO_URL} target="_blank" rel="noopener noreferrer">Watch the demo <Icon name="play" size={17} /></a>
             </div>
           </div>
           <div className="lab-side-stack">
-            <div className="ask-ai-card">
-              <strong>Ask anything about AI tools</strong>
-              <div className="ask-input">How is Claude different from ChatGPT?</div>
-              <small>POPULAR QUESTIONS</small>
-              <div className="ask-pills"><span>What can AI agents do?</span><span>Can AI analyze Excel files?</span><span>Which paid plan is worth it?</span></div>
+            <div className="lab-showcase-image">
+              <Image src="/assets/ai-practice-lab-full.png" alt="AI Practice Lab interface" width={1024} height={631} />
             </div>
-            <a className="lab-demo-card" href={PRACTICE_LAB_DEMO_URL} target={PRACTICE_LAB_DEMO_URL === '#' ? undefined : '_blank'} rel={PRACTICE_LAB_DEMO_URL === '#' ? undefined : 'noopener noreferrer'} aria-label="Watch the AI Practice Lab product demo">
-              <div className="demo-play dark"><Icon name="play" size={18} /></div>
-              <div><small>PRODUCT DEMO</small><strong>Insert a YouTube demo link here</strong></div>
-            </a>
+
           </div>
         </div>
         <div className="lab-workflow-header"><div><small>USE THIS WEEK</small><h3>Practical workflows for common work tasks</h3></div><a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">See the full library <Icon name="arrow" size={15} /></a></div>

@@ -2,34 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { VideoCarouselNext, VideoCarouselPrev } from './VideoCarouselNav';
-
-type Video = {
-  id: string;
-  title: string;
-  category: string;
-  duration?: string;
-  thumbnail?: string;
-  url?: string;
-  description?: string;
-};
-
-const fallbackVideos: Video[] = [
-  { id: 'workflow-1', title: 'Build a Slide Deck From a Document, Start to Finish', category: 'Claude · Presentations', duration: '9:16', thumbnail: '/insights/workflow-1.png', description: 'Turn a long document into a complete, structured presentation.' },
-  { id: 'workflow-2', title: 'Set Up an Agent That Clears Your Inbox Every Morning', category: 'ChatGPT · Automation', duration: '7:24', thumbnail: '/insights/workflow-2.png', description: 'Automate inbox triage, summaries and follow-ups.' },
-  { id: 'workflow-3', title: 'Turn a Messy Sales Export Into a Chart in Five Minutes', category: 'Gemini · Data', duration: '8:42', thumbnail: '/insights/workflow-3.png', description: 'Clean data, build charts and identify useful patterns quickly.' }
-];
-
-const topicColors: Record<string, string> = {
-  Claude: '#7c3aed',
-  Copilot: '#0ea5e9',
-  Gemini: '#2563eb',
-  ChatGPT: '#10b981',
-  'AI Agents': '#f59e0b',
-  Data: '#2563eb',
-  Presentations: '#7c3aed',
-  Research: '#7c3aed',
-  Automation: '#10b981'
-};
+import { formatVideoDate, isLiveYouTubeId, type YouTubeVideo as Video } from './youtubeVideos';
 
 function cleanTitle(title: string) {
   return title
@@ -55,40 +28,6 @@ function shortDescription(value?: string) {
   return `${sentence.slice(0, 117).trim()}…`;
 }
 
-function detectTool(text: string) {
-  if (text.includes('claude')) return 'Claude';
-  if (text.includes('copilot')) return 'Copilot';
-  if (text.includes('gemini')) return 'Gemini';
-  if (text.includes('chatgpt') || text.includes('chat gpt')) return 'ChatGPT';
-  if (text.includes('agent')) return 'AI Agents';
-  return '';
-}
-
-function detectTopic(text: string) {
-  if (text.includes('presentation') || text.includes('slide') || text.includes('ppt') || text.includes('deck')) return 'Presentations';
-  if (text.includes('research')) return 'Research';
-  if (text.includes('automat') || text.includes('email') || text.includes('inbox')) return 'Automation';
-  if (text.includes('data') || text.includes('excel') || text.includes('chart') || text.includes('sales export')) return 'Data';
-  if (text.includes('no code') || text.includes('internal tool')) return 'No code';
-  return 'AI for Work';
-}
-
-function classify(video: Video) {
-  const title = video.title.toLowerCase();
-  const body = `${video.description || ''} ${video.category || ''}`.toLowerCase();
-  const tool = detectTool(title) || detectTool(body);
-  const topic = detectTopic(`${title} ${body}`);
-  if (tool && topic && topic !== 'AI for Work') return `${tool} · ${topic}`;
-  if (tool) return tool;
-  if (video.category.includes('·')) return video.category;
-  return topic;
-}
-
-function categoryTone(label: string) {
-  const key = Object.keys(topicColors).find(name => label.includes(name));
-  return key ? topicColors[key] : '#7c3aed';
-}
-
 function thumbnailFor(video: Video) {
   if (video.thumbnail) return video.thumbnail;
   if (video.id && !video.id.startsWith('workflow-')) return `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;
@@ -96,11 +35,12 @@ function thumbnailFor(video: Video) {
 }
 
 function isPlayable(video: Video) {
-  return Boolean(video.id && !video.id.startsWith('workflow-'));
+  return isLiveYouTubeId(video.id);
 }
 
 export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
-  const [videos, setVideos] = useState<Video[]>(fallbackVideos.slice(0, limit));
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState(true);
   const [playing, setPlaying] = useState<Video | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -118,7 +58,8 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
           thumbnail: thumbnailFor(video)
         })));
       })
-      .catch(error => { if (error?.name !== 'AbortError') undefined; });
+      .catch(error => { if (error?.name !== 'AbortError') undefined; })
+      .finally(() => setLoading(false));
     return () => controller.abort();
   }, [limit]);
 
@@ -145,11 +86,12 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
   }
 
   return <>
-    <div className="video-carousel-shell workflow-carousel">
+    {loading && <p className="insights-empty">Loading workflow explainers…</p>}
+    {!loading && !videos.length && <p className="insights-empty">Workflow explainers will appear here once the YouTube playlist is available.</p>}
+    {videos.length > 0 && <div className="video-carousel-shell workflow-carousel">
       <VideoCarouselPrev onClick={() => scrollTrack(-1)} label="Previous workflows" />
       <div className="insights-workflow-grid workflow-carousel-track" ref={trackRef}>
         {videos.map(video => {
-          const label = classify(video);
           const thumbnail = thumbnailFor(video);
           return <article className="insights-video-card insights-workflow-card" key={video.id}>
             <button type="button" className="insights-thumbnail landscape" onClick={() => setPlaying(video)} aria-label={`Play ${video.title}`}>
@@ -161,7 +103,7 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
             </button>
             <div className="insights-card-copy">
               <h3>{video.title}</h3>
-              <span className="insights-category"><i style={{ background: categoryTone(label) }} aria-hidden="true" /><span>{label}</span></span>
+              {video.publishedAt && <time className="insights-date" dateTime={video.publishedAt}>{formatVideoDate(video.publishedAt)}</time>}
               {video.description && <p>{video.description}</p>}
               <div className="insights-card-actions">
                 <button type="button" onClick={() => setPlaying(video)}>Watch workflow</button>
@@ -172,7 +114,7 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
         })}
       </div>
       <VideoCarouselNext onClick={() => scrollTrack(1)} label="Next workflows" />
-    </div>
+    </div>}
 
     {playing && <div className="insights-modal" role="dialog" aria-modal="true" aria-labelledby="home-workflow-dialog-title" onClick={event => { if (event.currentTarget === event.target) setPlaying(null); }}>
       <div className="insights-modal-card">

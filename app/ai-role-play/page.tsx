@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ButtonLink } from '@/components/ButtonLink';
+import { CoachUseCasesSection } from '@/components/CoachUseCasesSection';
 import { CTA } from '@/components/CTA';
 import { Icon } from '@/components/Icon';
 import { LogoStrip } from '@/components/LogoStrip';
@@ -22,38 +23,31 @@ const SALES_DEMO_URL = 'https://www.youtube.com/watch?v=-y5uJ_2ACcM';
 const LEADERSHIP_DEMO_URL = 'https://www.youtube.com/watch?v=GBWzcb101HQ';
 const COACH_STEP_IMAGE_VERSION = '20260728';
 
-function getYouTubeEmbedUrl(videoUrl: string) {
+function getYouTubeVideoId(videoUrl: string) {
   try {
-    const url = new URL(videoUrl);
-    const videoId = url.searchParams.get('v');
-
-    if (!videoId) {
-      return null;
-    }
-
-    return `https://www.youtube-nocookie.com/embed/${videoId}`;
+    return new URL(videoUrl).searchParams.get('v') || '';
   } catch {
-    return null;
+    return '';
   }
 }
 
 const coachUseCases = [
   {
     id: 'sales-demo',
+    videoId: getYouTubeVideoId(SALES_DEMO_URL),
     title: 'AI Sales Coach',
     subtitle: 'Practice objections before they are real',
-    demoUrl: SALES_DEMO_URL,
-    embedUrl: getYouTubeEmbedUrl(SALES_DEMO_URL),
     demoLabel: 'AI Sales Coach demo',
+    variant: 'sales' as const,
     bullets: ['Onboard new sales reps faster', 'Improve pitches and objection handling', 'Assess and certify sales readiness']
   },
   {
     id: 'leadership-demo',
+    videoId: getYouTubeVideoId(LEADERSHIP_DEMO_URL),
     title: 'AI Leadership Coach',
     subtitle: 'Practice feedback, conflict and motivation',
-    demoUrl: LEADERSHIP_DEMO_URL,
-    embedUrl: getYouTubeEmbedUrl(LEADERSHIP_DEMO_URL),
     demoLabel: 'AI Leadership Coach demo',
+    variant: 'leadership' as const,
     bullets: ['Apply leadership frameworks to real situations', 'Practise difficult conversations', 'Build confidence in first-time managers']
   }
 ];
@@ -134,41 +128,7 @@ export default function AICoachPage() {
       <div className="container"><LogoStrip/></div>
     </section>
 
-    <section id="coach-use-cases" className="soft-section">
-      <div className="container">
-        <SectionHeader eyebrow="SALES AND LEADERSHIP" title="Two practice environments for critical conversations." />
-        <div className="coach-use-case-grid">
-          {coachUseCases.map((item, index) => <article className={`coach-use-case-card ${index === 1 ? 'leadership' : 'sales'}`} key={item.title} id={item.id}>
-            <div className="coach-demo-slot">
-              {item.embedUrl ? (
-                <iframe
-                  src={item.embedUrl}
-                  title={item.demoLabel}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              ) : (
-                <>
-                  <span className="demo-slot-label">DEMO VIDEO</span>
-                  <div className="demo-slot-icon"><Icon name="play" size={24}/></div>
-                  <strong>{item.demoLabel}</strong>
-                  <small>Video unavailable</small>
-                </>
-              )}
-            </div>
-            <div className="coach-use-copy">
-              <span className="eyebrow">{item.title}</span>
-              <h2>{item.subtitle}</h2>
-              <div className="check-list compact-check-list">
-                {item.bullets.map(x => <div className="check-item" key={x}><span><Icon name="check" size={15}/></span><span>{x}</span></div>)}
-              </div>
-              <a className="button button-secondary button-compact" href={item.demoUrl}>Watch demo <Icon name="play" size={15}/></a>
-            </div>
-          </article>)}
-        </div>
-      </div>
-    </section>
+    <CoachUseCasesSection items={coachUseCases} />
 
     <section id="how-it-works">
       <div className="container">
