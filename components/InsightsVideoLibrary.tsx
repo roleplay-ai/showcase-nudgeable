@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { fallbackVideos } from './data';
 import { Icon } from './Icon';
+import { VideoCarouselNext, VideoCarouselPrev } from './VideoCarouselNav';
 
 type Video = {
   id: string;
@@ -142,17 +143,6 @@ function VideoThumbnail({ video, portrait, featured, onPlay }: { video: Video; p
   </button>;
 }
 
-function CarouselNav({ onPrev, onNext, label }: { onPrev: () => void; onNext: () => void; label: string }) {
-  return <div className="video-carousel-nav" aria-label={label}>
-    <button type="button" className="video-carousel-btn" onClick={onPrev} aria-label="Previous videos">
-      <Icon name="arrow" size={16} />
-    </button>
-    <button type="button" className="video-carousel-btn" onClick={onNext} aria-label="Next videos">
-      <Icon name="arrow" size={16} />
-    </button>
-  </div>;
-}
-
 async function loadPlaylist(type: 'shorts' | 'workflows', signal: AbortSignal) {
   const response = await fetch(`/api/youtube?type=${type}&limit=250`, { signal });
   if (!response.ok) throw new Error(`${type} unavailable`);
@@ -252,15 +242,16 @@ export function InsightsVideoLibrary() {
 
         <div id="shorts" className="insights-section-head">
           <div><h2>Latest AI Shorts</h2><p>Quick insights, updates and practical experiments in under three minutes.</p></div>
-          <CarouselNav label="Short videos navigation" onPrev={() => scrollTrack(shortsTrackRef, -1)} onNext={() => scrollTrack(shortsTrackRef, 1)} />
         </div>
-        <div className="video-carousel-shell">
+        <div className="video-carousel-shell shorts-carousel">
+          <VideoCarouselPrev onClick={() => scrollTrack(shortsTrackRef, -1)} label="Previous short videos" />
           <div className="insights-shorts-grid" ref={shortsTrackRef}>
             {filteredShorts.map(video => <article className="insights-video-card" key={video.id}>
               <VideoThumbnail video={video} portrait onPlay={openVideo} />
               <div className="insights-card-copy"><h3>{video.title}</h3><span className="insights-category"><i style={{ background: categoryTone(classify(video)) }} aria-hidden="true" /><span>{classify(video)}</span></span></div>
             </article>)}
           </div>
+          <VideoCarouselNext onClick={() => scrollTrack(shortsTrackRef, 1)} label="Next short videos" />
         </div>
         {!filteredShorts.length && <p className="insights-empty">No Shorts match this filter.</p>}
 
@@ -272,9 +263,9 @@ export function InsightsVideoLibrary() {
               <p>Step-by-step videos showing how to apply AI to real workplace tasks.</p>
             </div>
           </div>
-          <CarouselNav label="Workflow videos navigation" onPrev={() => scrollTrack(workflowsTrackRef, -1)} onNext={() => scrollTrack(workflowsTrackRef, 1)} />
         </div>
-        <div className="video-carousel-shell">
+        <div className="video-carousel-shell workflow-carousel">
+          <VideoCarouselPrev onClick={() => scrollTrack(workflowsTrackRef, -1)} label="Previous workflows" />
           <div className="insights-workflow-grid" ref={workflowsTrackRef}>
             {filteredWorkflows.map(video => {
               const label = classify(video);
@@ -292,6 +283,7 @@ export function InsightsVideoLibrary() {
               </article>;
             })}
           </div>
+          <VideoCarouselNext onClick={() => scrollTrack(workflowsTrackRef, 1)} label="Next workflows" />
         </div>
         {!filteredWorkflows.length && <p className="insights-empty">No workflow explainers match this filter.</p>}
       </div>

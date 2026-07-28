@@ -1,4 +1,4 @@
-type IconName = 'arrow' | 'play' | 'spark' | 'check' | 'people' | 'workflow' | 'chart' | 'voice' | 'calendar' | 'shield' | 'book' | 'menu' | 'close';
+type IconName = 'arrow' | 'play' | 'spark' | 'check' | 'people' | 'workflow' | 'chart' | 'voice' | 'calendar' | 'shield' | 'book' | 'menu' | 'close' | 'x' | 'linkedin' | 'youtube' | 'instagram';
 
 export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   const common = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true };
@@ -15,7 +15,12 @@ export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
     shield: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>,
     book: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></>,
     menu: <><path d="M4 6h16M4 12h16M4 18h16"/></>,
-    close: <><path d="m6 6 12 12M18 6 6 18"/></>
+    close: <><path d="m6 6 12 12M18 6 6 18"/></>,
+    x: <path fill="currentColor" stroke="none" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>,
+    linkedin: <><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></>,
+    youtube: <><path d="M2.5 17a4 4 0 0 1 0-10C4.5 6.4 12 6 12 6s7.5.4 9.5.9a4 4 0 0 1 0 10c-2 .5-9.5.9-9.5.9s-7.5-.4-9.5-.9z"/><path d="m10 15 5-3-5-3z"/></>,
+    instagram: <><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/>
+    </>
   };
   return <svg {...common}>{paths[name]}</svg>;
 }

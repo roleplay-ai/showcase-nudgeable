@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { fallbackVideos } from './data';
 import { Icon } from './Icon';
+import { VideoCarouselNext, VideoCarouselPrev } from './VideoCarouselNav';
 
 type Video = { id: string; title: string; category: string; duration?: string; thumbnail?: string; url?: string };
 
@@ -55,14 +56,7 @@ export function YouTubeGrid({ limit = 6 }: { limit?: number }) {
 
   return <>
     <div className="video-carousel-shell">
-      <div className="video-carousel-nav" aria-label="Short videos navigation">
-        <button type="button" className="video-carousel-btn" onClick={() => scrollTrack(-1)} aria-label="Previous short videos">
-          <Icon name="arrow" size={16} />
-        </button>
-        <button type="button" className="video-carousel-btn" onClick={() => scrollTrack(1)} aria-label="Next short videos">
-          <Icon name="arrow" size={16} />
-        </button>
-      </div>
+      <VideoCarouselPrev onClick={() => scrollTrack(-1)} label="Previous short videos" />
       <div className="shorts-grid" ref={trackRef}>
         {videos.map((video, index) => {
           const thumb = shortsThumbnail(video);
@@ -94,6 +88,7 @@ export function YouTubeGrid({ limit = 6 }: { limit?: number }) {
           </button>;
         })}
       </div>
+      <VideoCarouselNext onClick={() => scrollTrack(1)} label="Next short videos" />
     </div>
 
     {playing && <div className="insights-modal" role="dialog" aria-modal="true" aria-labelledby="home-short-dialog-title" onClick={event => { if (event.currentTarget === event.target) setPlaying(null); }}>

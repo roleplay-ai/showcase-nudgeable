@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Icon } from './Icon';
+import { VideoCarouselNext, VideoCarouselPrev } from './VideoCarouselNav';
 
 type Video = {
   id: string;
@@ -146,14 +146,7 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
 
   return <>
     <div className="video-carousel-shell workflow-carousel">
-      <div className="video-carousel-nav" aria-label="Workflow videos navigation">
-        <button type="button" className="video-carousel-btn" onClick={() => scrollTrack(-1)} aria-label="Previous workflows">
-          <Icon name="arrow" size={16} />
-        </button>
-        <button type="button" className="video-carousel-btn" onClick={() => scrollTrack(1)} aria-label="Next workflows">
-          <Icon name="arrow" size={16} />
-        </button>
-      </div>
+      <VideoCarouselPrev onClick={() => scrollTrack(-1)} label="Previous workflows" />
       <div className="insights-workflow-grid workflow-carousel-track" ref={trackRef}>
         {videos.map(video => {
           const label = classify(video);
@@ -178,6 +171,7 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
           </article>;
         })}
       </div>
+      <VideoCarouselNext onClick={() => scrollTrack(1)} label="Next workflows" />
     </div>
 
     {playing && <div className="insights-modal" role="dialog" aria-modal="true" aria-labelledby="home-workflow-dialog-title" onClick={event => { if (event.currentTarget === event.target) setPlaying(null); }}>
