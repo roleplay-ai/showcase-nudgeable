@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { fallbackVideos } from './data';
 import { Icon } from './Icon';
 
@@ -14,6 +14,8 @@ type Video = {
   description?: string;
   publishedAt?: string;
 };
+
+type Playing = { video: Video; portrait?: boolean };
 
 const fallbackWorkflows: Video[] = [
   { id: 'workflow-1', title: 'Build a Slide Deck From a Document, Start to Finish', category: 'Claude · Presentations', duration: '9:16', thumbnail: '/insights/workflow-1.png', description: 'Turn a long document into a complete, structured presentation.' },
@@ -111,19 +113,6 @@ function youtubeThumbnail(video: Video) {
   return undefined;
 }
 
-function youtubeWatchUrl(video: Video, short?: boolean) {
-  if (video.url) {
-    if (short && video.id && !video.id.startsWith('video-') && !video.id.startsWith('workflow-')) {
-      return `https://www.youtube.com/shorts/${video.id}`;
-    }
-    return video.url;
-  }
-  if (video.id && !video.id.startsWith('video-') && !video.id.startsWith('workflow-')) {
-    return short ? `https://www.youtube.com/shorts/${video.id}` : `https://www.youtube.com/watch?v=${video.id}`;
-  }
-  return undefined;
-}
-
 function normalizeVideos(videos: Video[]) {
   return videos.map(video => ({
     ...video,
@@ -134,9 +123,12 @@ function normalizeVideos(videos: Video[]) {
   }));
 }
 
-function VideoThumbnail({ video, portrait, featured, onPlay, openOnYouTube }: { video: Video; portrait?: boolean; featured?: boolean; onPlay: (video: Video) => void; openOnYouTube?: boolean }) {
+function isPlayable(video: Video) {
+  return Boolean(video.id && !video.id.startsWith('video-') && !video.id.startsWith('workflow-'));
+}
+
+function VideoThumbnail({ video, portrait, featured, onPlay }: { video: Video; portrait?: boolean; featured?: boolean; onPlay: (video: Video, portrait?: boolean) => void }) {
   const thumbnail = youtubeThumbnail(video);
-  const href = openOnYouTube ? youtubeWatchUrl(video, portrait) : undefined;
   const media = <>
     {thumbnail
       ? <img src={thumbnail} alt="" loading={featured ? 'eager' : 'lazy'} decoding="async" onError={event => { event.currentTarget.style.display = 'none'; }} />
@@ -144,17 +136,21 @@ function VideoThumbnail({ video, portrait, featured, onPlay, openOnYouTube }: { 
     <span className="insights-play" aria-hidden="true">▶</span>
     {video.duration && <span className="insights-duration">{video.duration}</span>}
   </>;
-  const className = `insights-thumbnail ${portrait ? 'portrait' : 'landscape'}`;
 
-  if (href) {
-    return <a className={className} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Watch ${video.title} on YouTube`}>
-      {media}
-    </a>;
-  }
-
-  return <button type="button" className={className} onClick={() => onPlay(video)} aria-label={`Play ${video.title}`}>
+  return <button type="button" className={`insights-thumbnail ${portrait ? 'portrait' : 'landscape'}`} onClick={() => onPlay(video, portrait)} aria-label={`Play ${video.title}`}>
     {media}
   </button>;
+}
+
+function CarouselNav({ onPrev, onNext, label }: { onPrev: () => void; onNext: () => void; label: string }) {
+  return <div className="video-carousel-nav" aria-label={label}>
+    <button type="button" className="video-carousel-btn" onClick={onPrev} aria-label="Previous videos">
+      <Icon name="arrow" size={16} />
+    </button>
+    <button type="button" className="video-carousel-btn" onClick={onNext} aria-label="Next videos">
+      <Icon name="arrow" size={16} />
+    </button>
+  </div>;
 }
 
 async function loadPlaylist(type: 'shorts' | 'workflows', signal: AbortSignal) {
@@ -169,10 +165,10 @@ export function InsightsVideoLibrary() {
   const [workflows, setWorkflows] = useState<Video[]>(fallbackWorkflows);
   const [activeFilter, setActiveFilter] = useState('All');
   const [search, setSearch] = useState('');
-  const [shortLimit, setShortLimit] = useState(4);
-  const [workflowLimit, setWorkflowLimit] = useState(3);
-  const [playing, setPlaying] = useState<Video | null>(null);
+  const [playing, setPlaying] = useState<Playing | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const shortsTrackRef = useRef<HTMLDivElement>(null);
+  const workflowsTrackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -204,19 +200,16 @@ export function InsightsVideoLibrary() {
   const filteredWorkflows = useMemo(() => workflows.filter(video => matches(video, activeFilter, search)), [workflows, activeFilter, search]);
   const featuredShort = filteredShorts[0] || shorts[0];
   const featuredWorkflow = filteredWorkflows[0] || workflows[0];
-  const visibleWorkflows = filteredWorkflows.slice(0, workflowLimit);
-  const hasMoreWorkflows = filteredWorkflows.length > workflowLimit;
 
-  function changeFilter(filter: string) {
-    setActiveFilter(filter);
-    setShortLimit(4);
-    setWorkflowLimit(3);
+  function openVideo(video: Video, portrait?: boolean) {
+    setPlaying({ video, portrait: Boolean(portrait) });
   }
 
-  function changeSearch(value: string) {
-    setSearch(value);
-    setShortLimit(4);
-    setWorkflowLimit(3);
+  function scrollTrack(ref: RefObject<HTMLDivElement | null>, direction: -1 | 1) {
+    const track = ref.current;
+    if (!track) return;
+    const amount = Math.min(track.clientWidth * 0.85, 360);
+    track.scrollBy({ left: direction * amount, behavior: 'smooth' });
   }
 
   return <div className="insights-page">
@@ -234,13 +227,13 @@ export function InsightsVideoLibrary() {
         <div className="insights-featured-grid">
           {featuredShort && <article className="insights-feature-card short-feature">
             <small>FEATURED SHORT</small>
-            <VideoThumbnail video={featuredShort} portrait featured onPlay={setPlaying} openOnYouTube />
+            <VideoThumbnail video={featuredShort} portrait featured onPlay={openVideo} />
             <h2>{featuredShort.title}</h2>
             <span>{classify(featuredShort)}</span>
           </article>}
           {featuredWorkflow && <article className="insights-feature-card workflow-feature">
             <small>FEATURED WORKFLOW</small>
-            <VideoThumbnail video={featuredWorkflow} featured onPlay={setPlaying} />
+            <VideoThumbnail video={featuredWorkflow} featured onPlay={openVideo} />
             <h2>{featuredWorkflow.title}</h2>
             <span>{classify(featuredWorkflow)}</span>
           </article>}
@@ -252,22 +245,24 @@ export function InsightsVideoLibrary() {
       <div className="container">
         <div className="insights-filter-shell">
           <div className="insights-filters" aria-label="Filter videos by topic">
-            {filters.map(filter => <button type="button" key={filter} aria-pressed={activeFilter === filter} className={activeFilter === filter ? 'active' : ''} onClick={() => changeFilter(filter)}>{filter}</button>)}
+            {filters.map(filter => <button type="button" key={filter} aria-pressed={activeFilter === filter} className={activeFilter === filter ? 'active' : ''} onClick={() => setActiveFilter(filter)}>{filter}</button>)}
           </div>
-          <label className="insights-search"><span aria-hidden="true">⌕</span><span className="sr-only">Search videos and workflows</span><input type="search" value={search} onChange={event => changeSearch(event.target.value)} placeholder="Search videos and workflows..." /></label>
+          <label className="insights-search"><span aria-hidden="true">⌕</span><span className="sr-only">Search videos and workflows</span><input type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="Search videos and workflows..." /></label>
         </div>
 
         <div id="shorts" className="insights-section-head">
           <div><h2>Latest AI Shorts</h2><p>Quick insights, updates and practical experiments in under three minutes.</p></div>
+          <CarouselNav label="Short videos navigation" onPrev={() => scrollTrack(shortsTrackRef, -1)} onNext={() => scrollTrack(shortsTrackRef, 1)} />
         </div>
-        <div className="insights-shorts-grid">
-          {filteredShorts.slice(0, shortLimit).map(video => <article className="insights-video-card" key={video.id}>
-            <VideoThumbnail video={video} portrait onPlay={setPlaying} openOnYouTube />
-            <div className="insights-card-copy"><h3>{video.title}</h3><span className="insights-category"><i style={{ background: categoryTone(classify(video)) }} aria-hidden="true" /><span>{classify(video)}</span></span></div>
-          </article>)}
+        <div className="video-carousel-shell">
+          <div className="insights-shorts-grid" ref={shortsTrackRef}>
+            {filteredShorts.map(video => <article className="insights-video-card" key={video.id}>
+              <VideoThumbnail video={video} portrait onPlay={openVideo} />
+              <div className="insights-card-copy"><h3>{video.title}</h3><span className="insights-category"><i style={{ background: categoryTone(classify(video)) }} aria-hidden="true" /><span>{classify(video)}</span></span></div>
+            </article>)}
+          </div>
         </div>
         {!filteredShorts.length && <p className="insights-empty">No Shorts match this filter.</p>}
-        {filteredShorts.length > shortLimit && <div className="insights-view-more"><button type="button" onClick={() => setShortLimit(limit => limit + 4)}>View more</button></div>}
 
         <div id="workflows" className="insights-section-head workflow-heading">
           <div className="insights-section-title">
@@ -277,24 +272,26 @@ export function InsightsVideoLibrary() {
               <p>Step-by-step videos showing how to apply AI to real workplace tasks.</p>
             </div>
           </div>
-          {hasMoreWorkflows && <button type="button" className="insights-inline-more" onClick={() => setWorkflowLimit(limit => limit + 3)}>View more</button>}
+          <CarouselNav label="Workflow videos navigation" onPrev={() => scrollTrack(workflowsTrackRef, -1)} onNext={() => scrollTrack(workflowsTrackRef, 1)} />
         </div>
-        <div className="insights-workflow-grid">
-          {visibleWorkflows.map(video => {
-            const label = classify(video);
-            return <article className="insights-video-card insights-workflow-card" key={video.id}>
-              <VideoThumbnail video={video} onPlay={setPlaying} />
-              <div className="insights-card-copy">
-                <h3>{video.title}</h3>
-                <span className="insights-category"><i style={{ background: categoryTone(label) }} aria-hidden="true" /><span>{label}</span></span>
-                {video.description && <p>{video.description}</p>}
-                <div className="insights-card-actions">
-                  <button type="button" onClick={() => setPlaying(video)}>Watch workflow</button>
-                  <a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
+        <div className="video-carousel-shell">
+          <div className="insights-workflow-grid" ref={workflowsTrackRef}>
+            {filteredWorkflows.map(video => {
+              const label = classify(video);
+              return <article className="insights-video-card insights-workflow-card" key={video.id}>
+                <VideoThumbnail video={video} onPlay={openVideo} />
+                <div className="insights-card-copy">
+                  <h3>{video.title}</h3>
+                  <span className="insights-category"><i style={{ background: categoryTone(label) }} aria-hidden="true" /><span>{label}</span></span>
+                  {video.description && <p>{video.description}</p>}
+                  <div className="insights-card-actions">
+                    <button type="button" onClick={() => openVideo(video)}>Watch workflow</button>
+                    <a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
+                  </div>
                 </div>
-              </div>
-            </article>;
-          })}
+              </article>;
+            })}
+          </div>
         </div>
         {!filteredWorkflows.length && <p className="insights-empty">No workflow explainers match this filter.</p>}
       </div>
@@ -306,10 +303,10 @@ export function InsightsVideoLibrary() {
     </section>
 
     {playing && <div className="insights-modal" role="dialog" aria-modal="true" aria-labelledby="video-dialog-title" onClick={event => { if (event.currentTarget === event.target) setPlaying(null); }}>
-      <div className="insights-modal-card">
-        <div className="insights-modal-head"><strong id="video-dialog-title">{playing.title}</strong><button ref={closeButtonRef} type="button" onClick={() => setPlaying(null)} aria-label="Close video">×</button></div>
-        {playing.id && !playing.id.startsWith('video-') && !playing.id.startsWith('workflow-')
-          ? <iframe src={`https://www.youtube-nocookie.com/embed/${playing.id}?autoplay=1&rel=0`} title={playing.title} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen />
+      <div className={`insights-modal-card${playing.portrait ? ' portrait' : ''}`}>
+        <div className="insights-modal-head"><strong id="video-dialog-title">{playing.video.title}</strong><button ref={closeButtonRef} type="button" onClick={() => setPlaying(null)} aria-label="Close video">×</button></div>
+        {isPlayable(playing.video)
+          ? <iframe src={`https://www.youtube-nocookie.com/embed/${playing.video.id}?autoplay=1&rel=0`} title={playing.video.title} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen />
           : <div className="insights-modal-placeholder"><strong>Add the YouTube Data API key</strong><span>The live video will play here once the playlist integration is configured.</span></div>}
       </div>
     </div>}

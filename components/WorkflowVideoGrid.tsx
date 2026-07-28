@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Icon } from './Icon';
 
 type Video = {
   id: string;
@@ -102,14 +103,15 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
   const [videos, setVideos] = useState<Video[]>(fallbackVideos.slice(0, limit));
   const [playing, setPlaying] = useState<Video | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch(`/api/youtube?type=workflows&limit=${limit}`, { signal: controller.signal })
+    fetch(`/api/youtube?type=workflows&limit=${Math.max(limit, 12)}`, { signal: controller.signal })
       .then(response => response.ok ? response.json() : Promise.reject(new Error('Could not load workflows')))
       .then(data => {
         if (!Array.isArray(data.videos) || !data.videos.length) return;
-        setVideos(data.videos.map((video: Video) => ({
+        setVideos(data.videos.slice(0, Math.max(limit, 12)).map((video: Video) => ({
           ...video,
           title: cleanTitle(video.title),
           description: shortDescription(video.description),
@@ -135,30 +137,47 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
     };
   }, [playing]);
 
+  function scrollTrack(direction: -1 | 1) {
+    const track = trackRef.current;
+    if (!track) return;
+    const amount = Math.min(track.clientWidth * 0.85, 360);
+    track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+  }
+
   return <>
-    <div className="insights-workflow-grid">
-      {videos.map(video => {
-        const label = classify(video);
-        const thumbnail = thumbnailFor(video);
-        return <article className="insights-video-card insights-workflow-card" key={video.id}>
-          <button type="button" className="insights-thumbnail landscape" onClick={() => setPlaying(video)} aria-label={`Play ${video.title}`}>
-            {thumbnail
-              ? <img src={thumbnail} alt="" loading="lazy" decoding="async" onError={event => { event.currentTarget.style.display = 'none'; }} />
-              : <span className="insights-placeholder">Video thumbnail</span>}
-            <span className="insights-play" aria-hidden="true">▶</span>
-            {video.duration && <span className="insights-duration">{video.duration}</span>}
-          </button>
-          <div className="insights-card-copy">
-            <h3>{video.title}</h3>
-            <span className="insights-category"><i style={{ background: categoryTone(label) }} aria-hidden="true" /><span>{label}</span></span>
-            {video.description && <p>{video.description}</p>}
-            <div className="insights-card-actions">
-              <button type="button" onClick={() => setPlaying(video)}>Watch workflow</button>
-              <a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
+    <div className="video-carousel-shell workflow-carousel">
+      <div className="video-carousel-nav" aria-label="Workflow videos navigation">
+        <button type="button" className="video-carousel-btn" onClick={() => scrollTrack(-1)} aria-label="Previous workflows">
+          <Icon name="arrow" size={16} />
+        </button>
+        <button type="button" className="video-carousel-btn" onClick={() => scrollTrack(1)} aria-label="Next workflows">
+          <Icon name="arrow" size={16} />
+        </button>
+      </div>
+      <div className="insights-workflow-grid workflow-carousel-track" ref={trackRef}>
+        {videos.map(video => {
+          const label = classify(video);
+          const thumbnail = thumbnailFor(video);
+          return <article className="insights-video-card insights-workflow-card" key={video.id}>
+            <button type="button" className="insights-thumbnail landscape" onClick={() => setPlaying(video)} aria-label={`Play ${video.title}`}>
+              {thumbnail
+                ? <img src={thumbnail} alt="" loading="lazy" decoding="async" onError={event => { event.currentTarget.style.display = 'none'; }} />
+                : <span className="insights-placeholder">Video thumbnail</span>}
+              <span className="insights-play" aria-hidden="true">▶</span>
+              {video.duration && <span className="insights-duration">{video.duration}</span>}
+            </button>
+            <div className="insights-card-copy">
+              <h3>{video.title}</h3>
+              <span className="insights-category"><i style={{ background: categoryTone(label) }} aria-hidden="true" /><span>{label}</span></span>
+              {video.description && <p>{video.description}</p>}
+              <div className="insights-card-actions">
+                <button type="button" onClick={() => setPlaying(video)}>Watch workflow</button>
+                <a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
+              </div>
             </div>
-          </div>
-        </article>;
-      })}
+          </article>;
+        })}
+      </div>
     </div>
 
     {playing && <div className="insights-modal" role="dialog" aria-modal="true" aria-labelledby="home-workflow-dialog-title" onClick={event => { if (event.currentTarget === event.target) setPlaying(null); }}>
