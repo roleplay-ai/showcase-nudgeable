@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   creator: 'Nudgeable',
   publisher: 'Nudgeable',
   icons: {
-    icon: '/icon.png',
     apple: '/icon.png'
   },
   verification: {
@@ -43,9 +42,38 @@ export const viewport: Viewport = {
   themeColor: '#FEFCFA'
 };
 
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: 'Nudgeable',
+      url: siteUrl,
+      logo: `${siteUrl}/brand/nudgeable-black.png`,
+      description: 'Practical AI for Work training and products for corporate capability building.',
+      email: 'team@nudgeable.ai',
+      sameAs: [
+        'https://x.com/gauravxlri',
+        'https://www.linkedin.com/in/gauravpatel25',
+        'https://www.youtube.com/@Gaurav-NudgeableAI',
+        'https://www.instagram.com/gaurav.patel_gp'
+      ]
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      name: 'Nudgeable',
+      url: siteUrl,
+      publisher: { '@id': `${siteUrl}/#organization` }
+    }
+  ]
+};
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en">
     <body>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <Header />
       <main id="main-content">{children}</main>
