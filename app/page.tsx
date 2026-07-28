@@ -77,7 +77,12 @@ export default function Home() {
             <a className="button button-secondary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Practice Lab <Icon name="arrow" size={17}/></a>
           </div>
           <div className="tool-row hero-tool-row">
-            {aiTools.map(tool => <span className="tool-chip" key={tool.name}><b>{tool.mark}</b>{tool.name}</span>)}
+            {aiTools.map(tool => <span className="tool-chip" key={tool.name}>
+              <b>
+                {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon"/> : tool.mark}
+              </b>
+              {tool.name}
+            </span>)}
           </div>
         </div>
 
@@ -204,6 +209,9 @@ export default function Home() {
     <section className="testimonial-section">
       <div className="container">
         <div className="section-intro"><span className="eyebrow">CLIENT FEEDBACK</span><h2>What clients say about the experience.</h2></div>
+        <div className="testimonial-proof-shot">
+          <Image src="/testimonials/testimonial-strip.png" alt="Client testimonial highlights from corporate workshop participants" width={2048} height={507}/>
+        </div>
         <TestimonialGrid/>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { testimonials } from './data';
 
 export function TestimonialGrid() {
@@ -5,7 +6,12 @@ export function TestimonialGrid() {
     {testimonials.map((item) => <article className="testimonial" key={item.name}>
       <div className="quote-mark">“</div>
       <p>{item.quote}</p>
-      <div className="person"><div className="person-avatar">{item.name.split(' ').map(n => n[0]).join('').slice(0,2)}</div><div><strong>{item.name}</strong><span>{item.role}</span></div></div>
+      <div className="person">
+        <div className="person-avatar">
+          <Image src={item.avatarSrc} alt={item.name} width={52} height={52} className="person-avatar-image"/>
+        </div>
+        <div><strong>{item.name}</strong><span>{item.role}</span></div>
+      </div>
     </article>)}
   </div>;
 }

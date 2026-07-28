@@ -29,11 +29,17 @@ export const sessionPhotos: SessionPhoto[] = [
   { alt: 'AI training session for customer experience teams', src: '/sessions/customer-experience.png' }
 ];
 
-export const aiTools = [
-  { name: 'Claude', mark: '✦' },
-  { name: 'Copilot', mark: '◇' },
-  { name: 'Gemini', mark: '✧' },
-  { name: 'ChatGPT', mark: '◉' },
+export type AiTool = {
+  name: string;
+  iconSrc?: string;
+  mark?: string;
+};
+
+export const aiTools: AiTool[] = [
+  { name: 'Claude', iconSrc: '/tool-icons/claude.png' },
+  { name: 'Copilot', iconSrc: '/tool-icons/copilot.png' },
+  { name: 'Gemini', iconSrc: '/tool-icons/gemini.png' },
+  { name: 'ChatGPT', iconSrc: '/tool-icons/chatgpt.png' },
   { name: 'AI Agents', mark: '↗' }
 ];
 
@@ -68,20 +74,30 @@ export const fallbackVideos = [
   }
 ];
 
-export const testimonials = [
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  avatarSrc: string;
+};
+
+export const testimonials: Testimonial[] = [
   {
-    quote: 'Add an approved client testimonial about the practical value of the AI for Work masterclass.',
-    name: 'Client name',
-    role: 'Role and organization'
+    quote: 'Our team went from using AI for basic emails to building their own workflows. The workshop was tailored to our industry and roles, not generic theory.',
+    name: 'Mohan Monteiro',
+    role: 'HR Head @ HOH',
+    avatarSrc: '/testimonials/mohan-monteiro.png'
   },
   {
-    quote: 'Add an approved testimonial about how clearly the workshop connected AI tools to everyday work.',
-    name: 'Client name',
-    role: 'Role and organization'
+    quote: 'What surprised us was how practical it was. People were solving real work problems during the session itself. We saw adoption jump within weeks.',
+    name: 'Garima Pant',
+    role: 'CHRO @ MLLG',
+    avatarSrc: '/testimonials/garima-pant.png'
   },
   {
-    quote: 'Add an approved testimonial about continued practice, customized workflows or measurable adoption.',
-    name: 'Client name',
-    role: 'Role and organization'
+    quote: 'The workshop simplified complex concepts and showcased practical tools that can power everyday work, from samples of prompt engineering to problem solving.',
+    name: 'Shraddha Mudaliar',
+    role: 'L&D @ Myntra',
+    avatarSrc: '/testimonials/shraddha-mudaliar.png'
   }
 ];

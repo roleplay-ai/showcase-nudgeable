@@ -18,9 +18,24 @@ export const metadata: Metadata = {
   }
 };
 
-// Replace these two values with your final YouTube demo URLs.
-const SALES_DEMO_URL = process.env.NEXT_PUBLIC_SALES_COACH_DEMO_URL || '#sales-demo';
-const LEADERSHIP_DEMO_URL = process.env.NEXT_PUBLIC_LEADERSHIP_COACH_DEMO_URL || '#leadership-demo';
+const SALES_DEMO_URL = 'https://www.youtube.com/watch?v=-y5uJ_2ACcM';
+const LEADERSHIP_DEMO_URL = 'https://www.youtube.com/watch?v=GBWzcb101HQ';
+const COACH_STEP_IMAGE_VERSION = '20260728';
+
+function getYouTubeEmbedUrl(videoUrl: string) {
+  try {
+    const url = new URL(videoUrl);
+    const videoId = url.searchParams.get('v');
+
+    if (!videoId) {
+      return null;
+    }
+
+    return `https://www.youtube-nocookie.com/embed/${videoId}`;
+  } catch {
+    return null;
+  }
+}
 
 const coachUseCases = [
   {
@@ -28,7 +43,8 @@ const coachUseCases = [
     title: 'AI Sales Coach',
     subtitle: 'Practice objections before they are real',
     demoUrl: SALES_DEMO_URL,
-    demoLabel: 'Add sales demo link',
+    embedUrl: getYouTubeEmbedUrl(SALES_DEMO_URL),
+    demoLabel: 'AI Sales Coach demo',
     bullets: ['Onboard new sales reps faster', 'Improve pitches and objection handling', 'Assess and certify sales readiness']
   },
   {
@@ -36,37 +52,62 @@ const coachUseCases = [
     title: 'AI Leadership Coach',
     subtitle: 'Practice feedback, conflict and motivation',
     demoUrl: LEADERSHIP_DEMO_URL,
-    demoLabel: 'Add leadership demo link',
+    embedUrl: getYouTubeEmbedUrl(LEADERSHIP_DEMO_URL),
+    demoLabel: 'AI Leadership Coach demo',
     bullets: ['Apply leadership frameworks to real situations', 'Practise difficult conversations', 'Build confidence in first-time managers']
   }
 ];
 
 const steps = [
   {
-    number: '01',
+    id: 'scenario',
     title: 'Scenario',
-    copy: 'Scenarios built around your reality.',
-    detail: 'Designed using client expertise, workplace context and behavioral science.',
-    image: '/assets/coach-scenario.png',
+    label: 'SCENARIO',
+    icon: 'book',
+    theme: 'purple',
+    copy: 'Realistic scenarios built on deep expertise',
+    bullets: [
+      'Custom-built with workplace context, behavioral science and subject-matter expertise.',
+      'Each scenario is refined, tested and designed around the conversations your teams face.',
+      'From scenarios to scoring rubrics, every detail is tailored to your environment.'
+    ],
+    href: '/#contact',
+    image: `/assets/coach-scenario.png?v=${COACH_STEP_IMAGE_VERSION}`,
     alt: 'Scenario design for AI Coach'
   },
   {
-    number: '02',
+    id: 'roleplay',
     title: 'Roleplay',
-    copy: 'Voice practice in English and Hindi.',
-    detail: 'Employees rehearse realistic conversations with human-sounding AI characters.',
-    image: '/assets/coach-roleplay.png',
+    label: 'ROLEPLAY',
+    icon: 'voice',
+    theme: 'green',
+    copy: 'Practice that mirrors your reality',
+    bullets: [
+      'Human-sounding voices support realistic sales and leadership practice.',
+      'Real conversations feel natural, with nuanced prompts and believable responses.',
+      'Advanced voice models create immersive rehearsal before high-stakes conversations.'
+    ],
+    href: '/#contact',
+    image: `/assets/coach-roleplay.png?v=${COACH_STEP_IMAGE_VERSION}`,
     alt: 'Voice roleplay experience in AI Coach'
   },
   {
-    number: '03',
+    id: 'insights',
     title: 'Insights',
-    copy: 'Feedback linked to the conversation.',
-    detail: 'Reports show what worked, what to improve and relevant learning resources.',
-    image: '/assets/coach-insights.png',
+    label: 'INSIGHTS',
+    icon: 'chart',
+    theme: 'yellow',
+    copy: 'Feedback that drives growth',
+    bullets: [
+      'Every insight and score is grounded in what was actually said during the conversation.',
+      'Teams can see what worked, what to improve and which alternatives to practise next.',
+      'Actionable learning resources help employees improve right away.'
+    ],
+    href: '/#contact',
+    image: `/assets/coach-insights.png?v=${COACH_STEP_IMAGE_VERSION}`,
     alt: 'AI Coach assessment and insights report'
   }
-];
+] as const;
 
 export default function AICoachPage() {
   return <>
@@ -87,7 +128,7 @@ export default function AICoachPage() {
           </div>
         </div>
         <div className="product-hero-image coach-hero-image">
-          <Image src="/assets/ai-coach.png" alt="AI Coach roleplay interface" width={2048} height={1177} priority/>
+          <Image src="/assets/ai-coach-hero.png" alt="AI Coach roleplay interface showing a live practice conversation and feedback flow" width={1384} height={978} priority/>
         </div>
       </div>
       <div className="container"><LogoStrip/></div>
@@ -99,10 +140,22 @@ export default function AICoachPage() {
         <div className="coach-use-case-grid">
           {coachUseCases.map((item, index) => <article className={`coach-use-case-card ${index === 1 ? 'leadership' : 'sales'}`} key={item.title} id={item.id}>
             <div className="coach-demo-slot">
-              <span className="demo-slot-label">DEMO VIDEO</span>
-              <div className="demo-slot-icon"><Icon name="play" size={24}/></div>
-              <strong>{item.demoLabel}</strong>
-              <small>Add the final YouTube demo URL before launch</small>
+              {item.embedUrl ? (
+                <iframe
+                  src={item.embedUrl}
+                  title={item.demoLabel}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
+              ) : (
+                <>
+                  <span className="demo-slot-label">DEMO VIDEO</span>
+                  <div className="demo-slot-icon"><Icon name="play" size={24}/></div>
+                  <strong>{item.demoLabel}</strong>
+                  <small>Video unavailable</small>
+                </>
+              )}
             </div>
             <div className="coach-use-copy">
               <span className="eyebrow">{item.title}</span>
@@ -121,11 +174,20 @@ export default function AICoachPage() {
       <div className="container">
         <SectionHeader eyebrow="HOW AI COACH WORKS" title="From real scenarios to useful feedback." />
         <div className="coach-step-stack">
-          {steps.map((step, index) => <article className={`coach-step-card ${index % 2 ? 'reverse' : ''}`} key={step.title}>
+          {steps.map(step => <article className={`coach-step-card ${step.theme}`} key={step.id}>
             <div className="coach-step-copy">
-              <span>{step.number}</span>
-              <small>{step.title}</small>
-              <h2>{step.copy}</h2><p>{step.detail}</p>
+              <div className={`coach-step-label ${step.theme}`}>
+                <span className="coach-step-icon"><Icon name={step.icon} size={18}/></span>
+                <small>{step.label}</small>
+              </div>
+              <h2>{step.copy}</h2>
+              <div className="coach-step-points">
+                {step.bullets.map(point => <div className="coach-step-point" key={point}>
+                  <span><Icon name="arrow" size={14}/></span>
+                  <p>{point}</p>
+                </div>)}
+              </div>
+              <a className="button button-secondary button-compact coach-step-link" href={step.href}>Learn more</a>
             </div>
             <div className="coach-step-image">
               <Image src={step.image} alt={step.alt} width={1225} height={574}/>
