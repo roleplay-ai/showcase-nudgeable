@@ -153,16 +153,18 @@ export async function GET(request: NextRequest) {
         const id = item.contentDetails?.videoId || item.snippet?.resourceId?.videoId || '';
         const detail = details.get(id);
         const snippet = detail?.snippet || item.snippet || {};
+        const thumbnails = snippet.thumbnails || {};
         return {
           id,
-          title: snippet.title || 'Untitled video',
+          title: (snippet.title || 'Untitled video').replace(/\s*#[\w]+/g, '').trim(),
           category: type === 'workflows' ? 'Workflow Explainer' : 'AI Short',
           duration: isoDuration(detail?.contentDetails?.duration || ''),
           thumbnail:
-            snippet.thumbnails?.maxres?.url ||
-            snippet.thumbnails?.standard?.url ||
-            snippet.thumbnails?.high?.url ||
-            snippet.thumbnails?.medium?.url,
+            thumbnails.maxres?.url ||
+            thumbnails.standard?.url ||
+            thumbnails.high?.url ||
+            thumbnails.medium?.url ||
+            (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : undefined),
           url: `https://www.youtube.com/watch?v=${id}`,
           description: snippet.description || '',
           publishedAt: snippet.publishedAt || '',

@@ -18,6 +18,16 @@ const fallbackVideos: Video[] = [
   { id: 'workflow-3', title: 'Turn a Messy Sales Export Into a Chart in Five Minutes', category: 'Gemini · Data', duration: '8:42', thumbnail: '/insights/workflow-3.png' }
 ];
 
+function cleanTitle(title: string) {
+  return title.replace(/\s*#[\w]+/g, '').trim();
+}
+
+function thumbnailFor(video: Video) {
+  if (video.thumbnail) return video.thumbnail;
+  if (video.id && !video.id.startsWith('workflow-')) return `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;
+  return undefined;
+}
+
 export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
   const [videos, setVideos] = useState<Video[]>(fallbackVideos.slice(0, limit));
 
@@ -25,19 +35,29 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
     const controller = new AbortController();
     fetch(`/api/youtube?type=workflows&limit=${limit}`, { signal: controller.signal })
       .then(response => response.ok ? response.json() : Promise.reject(new Error('Could not load workflows')))
-      .then(data => { if (Array.isArray(data.videos) && data.videos.length) setVideos(data.videos); })
-      .catch(() => undefined);
+      .then(data => {
+        if (!Array.isArray(data.videos) || !data.videos.length) return;
+        setVideos(data.videos.map((video: Video) => ({
+          ...video,
+          title: cleanTitle(video.title),
+          thumbnail: thumbnailFor(video)
+        })));
+      })
+      .catch(error => { if (error?.name !== 'AbortError') undefined; });
     return () => controller.abort();
   }, [limit]);
 
   return <div className="landscape-video-grid">
-    {videos.map(video => <article key={video.id} className="landscape-video-card">
-      <a className="landscape-thumb" href={video.url || '/insights#workflows'} target={video.url ? '_blank' : undefined} rel={video.url ? 'noopener noreferrer' : undefined} aria-label={`Watch ${video.title}`}>
-        {video.thumbnail && <img src={video.thumbnail} alt={`Thumbnail for ${video.title}`} loading="lazy" decoding="async" />}
-        <div className="demo-play"><Icon name="play" size={20}/></div>
-        {video.duration && <span className="duration">{video.duration}</span>}
-      </a>
-      <div><h3>{video.title}</h3><a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try this in the Practice Lab <Icon name="arrow" size={14}/></a></div>
-    </article>)}
+    {videos.map(video => {
+      const thumbnail = thumbnailFor(video);
+      return <article key={video.id} className="landscape-video-card">
+        <a className="landscape-thumb" href={video.url || '/insights#workflows'} target={video.url ? '_blank' : undefined} rel={video.url ? 'noopener noreferrer' : undefined} aria-label={`Watch ${video.title}`}>
+          {thumbnail && <img src={thumbnail} alt="" loading="lazy" decoding="async" onError={event => { event.currentTarget.style.display = 'none'; }} />}
+          <div className="demo-play"><Icon name="play" size={20}/></div>
+          {video.duration && <span className="duration">{video.duration}</span>}
+        </a>
+        <div><h3>{video.title}</h3><a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try this in the Practice Lab <Icon name="arrow" size={14}/></a></div>
+      </article>;
+    })}
   </div>;
 }

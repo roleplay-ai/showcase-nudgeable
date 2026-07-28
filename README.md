@@ -72,7 +72,14 @@ The key is used only inside `app/api/youtube/route.ts` and is not exposed to the
 
 ## Contact form
 
-Set `NEXT_PUBLIC_CONTACT_ENDPOINT` to a Formspree, HubSpot, or custom form endpoint. When it is empty, the form opens a pre-filled email to `team@nudgeable.ai`.
+The contact form posts to `/api/contact`, which sends email via [Resend](https://resend.com) to `team@nudgeable.ai`, `egauravpatel@gmail.com`, and `work.nudgeable@gmail.com`.
+
+```env
+RESEND_API_KEY=
+CONTACT_FROM_EMAIL=Nudgeable <team@nudgeable.app>
+```
+
+Add `RESEND_API_KEY` in `.env.local` and in Vercel. Sender is `team@nudgeable.app` (verify that domain in Resend).
 
 ## Demo video links
 

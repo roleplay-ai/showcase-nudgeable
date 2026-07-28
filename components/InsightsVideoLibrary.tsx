@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { fallbackVideos } from './data';
+import { Icon } from './Icon';
 
 type Video = {
   id: string;
@@ -24,35 +25,143 @@ const fallbackWorkflows: Video[] = [
 
 const filters = ['All', 'Claude', 'Copilot', 'Gemini', 'ChatGPT', 'AI Agents', 'Data', 'Presentations', 'Research', 'Automation'];
 
-function classify(video: Video) {
-  const text = `${video.title} ${video.description || ''} ${video.category || ''}`.toLowerCase();
+const topicColors: Record<string, string> = {
+  Claude: '#7c3aed',
+  Copilot: '#0ea5e9',
+  Gemini: '#2563eb',
+  ChatGPT: '#10b981',
+  'AI Agents': '#f59e0b',
+  Data: '#2563eb',
+  Presentations: '#7c3aed',
+  Research: '#7c3aed',
+  Automation: '#10b981'
+};
+
+function cleanTitle(title: string) {
+  return title
+    .replace(/(?:^|\s)#[\w.-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function shortDescription(value?: string) {
+  if (!value) return '';
+  const cleaned = value
+    .replace(/!\[[^\]]*]\([^)]+\)/g, '')
+    .replace(/\[([^\]]+)]\([^)]+\)/g, '$1')
+    .replace(/https?:\/\/\S+/gi, '')
+    .replace(/(?:^|\s)#[\w.-]+/g, ' ')
+    .replace(/[\u2705\u2714\u2611]/g, '')
+    .replace(/\n+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const parts = cleaned.split(/(?<=[.!?])\s+/).filter(Boolean);
+  const sentence = parts.find(part => !/^(try|get|download|subscribe|learn more)\b/i.test(part)) || parts[0] || cleaned;
+  if (sentence.length <= 120) return sentence;
+  return `${sentence.slice(0, 117).trim()}…`;
+}
+
+function detectTool(text: string) {
   if (text.includes('claude')) return 'Claude';
   if (text.includes('copilot')) return 'Copilot';
   if (text.includes('gemini')) return 'Gemini';
-  if (text.includes('chatgpt')) return 'ChatGPT';
+  if (text.includes('chatgpt') || text.includes('chat gpt')) return 'ChatGPT';
   if (text.includes('agent')) return 'AI Agents';
-  if (text.includes('data') || text.includes('excel') || text.includes('chart')) return 'Data';
-  if (text.includes('presentation') || text.includes('slide') || text.includes('ppt')) return 'Presentations';
+  return '';
+}
+
+function detectTopic(text: string) {
+  if (text.includes('presentation') || text.includes('slide') || text.includes('ppt') || text.includes('deck')) return 'Presentations';
   if (text.includes('research')) return 'Research';
   if (text.includes('automat') || text.includes('email') || text.includes('inbox')) return 'Automation';
-  return video.category || 'AI for Work';
+  if (text.includes('data') || text.includes('excel') || text.includes('chart') || text.includes('sales export')) return 'Data';
+  if (text.includes('no code') || text.includes('internal tool')) return 'No code';
+  return 'AI for Work';
+}
+
+function classify(video: Video) {
+  const title = video.title.toLowerCase();
+  const body = `${video.description || ''} ${video.category || ''}`.toLowerCase();
+  const tool = detectTool(title) || detectTool(body);
+  const topic = detectTopic(`${title} ${body}`);
+  if (tool && topic && topic !== 'AI for Work') return `${tool} · ${topic}`;
+  if (tool) return tool;
+  if (video.category.includes('·')) return video.category;
+  return topic;
+}
+
+function categoryTone(label: string) {
+  const key = Object.keys(topicColors).find(name => label.includes(name));
+  return key ? topicColors[key] : '#7c3aed';
 }
 
 function matches(video: Video, activeFilter: string, search: string) {
-  const text = `${video.title} ${video.description || ''} ${video.category || ''}`.toLowerCase();
-  const filterMatch = activeFilter === 'All' || text.includes(activeFilter.toLowerCase()) || classify(video) === activeFilter;
+  const label = classify(video);
+  const text = `${video.title} ${video.description || ''} ${video.category || ''} ${label}`.toLowerCase();
+  const filterMatch = activeFilter === 'All' || text.includes(activeFilter.toLowerCase()) || label.includes(activeFilter);
   const searchMatch = !search || text.includes(search.toLowerCase());
   return filterMatch && searchMatch;
 }
 
-function VideoThumbnail({ video, portrait, featured, onPlay }: { video: Video; portrait?: boolean; featured?: boolean; onPlay: (video: Video) => void }) {
-  return <button type="button" className={`insights-thumbnail ${portrait ? 'portrait' : 'landscape'}`} onClick={() => onPlay(video)} aria-label={`Play ${video.title}`}>
-    {video.thumbnail
-      ? <img src={video.thumbnail} alt={`Thumbnail for ${video.title}`} loading={featured ? 'eager' : 'lazy'} decoding="async" />
+function youtubeThumbnail(video: Video) {
+  if (video.thumbnail) return video.thumbnail;
+  if (video.id && !video.id.startsWith('video-') && !video.id.startsWith('workflow-')) {
+    return `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;
+  }
+  return undefined;
+}
+
+function youtubeWatchUrl(video: Video, short?: boolean) {
+  if (video.url) {
+    if (short && video.id && !video.id.startsWith('video-') && !video.id.startsWith('workflow-')) {
+      return `https://www.youtube.com/shorts/${video.id}`;
+    }
+    return video.url;
+  }
+  if (video.id && !video.id.startsWith('video-') && !video.id.startsWith('workflow-')) {
+    return short ? `https://www.youtube.com/shorts/${video.id}` : `https://www.youtube.com/watch?v=${video.id}`;
+  }
+  return undefined;
+}
+
+function normalizeVideos(videos: Video[]) {
+  return videos.map(video => ({
+    ...video,
+    title: cleanTitle(video.title),
+    description: shortDescription(video.description),
+    thumbnail: youtubeThumbnail(video),
+    category: classify(video)
+  }));
+}
+
+function VideoThumbnail({ video, portrait, featured, onPlay, openOnYouTube }: { video: Video; portrait?: boolean; featured?: boolean; onPlay: (video: Video) => void; openOnYouTube?: boolean }) {
+  const thumbnail = youtubeThumbnail(video);
+  const href = openOnYouTube ? youtubeWatchUrl(video, portrait) : undefined;
+  const media = <>
+    {thumbnail
+      ? <img src={thumbnail} alt="" loading={featured ? 'eager' : 'lazy'} decoding="async" onError={event => { event.currentTarget.style.display = 'none'; }} />
       : <span className="insights-placeholder">Video thumbnail</span>}
     <span className="insights-play" aria-hidden="true">▶</span>
     {video.duration && <span className="insights-duration">{video.duration}</span>}
+  </>;
+  const className = `insights-thumbnail ${portrait ? 'portrait' : 'landscape'}`;
+
+  if (href) {
+    return <a className={className} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Watch ${video.title} on YouTube`}>
+      {media}
+    </a>;
+  }
+
+  return <button type="button" className={className} onClick={() => onPlay(video)} aria-label={`Play ${video.title}`}>
+    {media}
   </button>;
+}
+
+async function loadPlaylist(type: 'shorts' | 'workflows', signal: AbortSignal) {
+  const response = await fetch(`/api/youtube?type=${type}&limit=250`, { signal });
+  if (!response.ok) throw new Error(`${type} unavailable`);
+  const data = await response.json();
+  return Array.isArray(data.videos) ? normalizeVideos(data.videos) : [];
 }
 
 export function InsightsVideoLibrary() {
@@ -67,13 +176,12 @@ export function InsightsVideoLibrary() {
 
   useEffect(() => {
     const controller = new AbortController();
-    Promise.all([
-      fetch('/api/youtube?type=shorts&limit=250', { signal: controller.signal }).then(response => response.ok ? response.json() : Promise.reject(new Error('Shorts unavailable'))),
-      fetch('/api/youtube?type=workflows&limit=250', { signal: controller.signal }).then(response => response.ok ? response.json() : Promise.reject(new Error('Workflows unavailable')))
-    ]).then(([shortData, workflowData]) => {
-      if (Array.isArray(shortData.videos) && shortData.videos.length) setShorts(shortData.videos);
-      if (Array.isArray(workflowData.videos) && workflowData.videos.length) setWorkflows(workflowData.videos);
-    }).catch(() => undefined);
+    loadPlaylist('shorts', controller.signal)
+      .then(videos => { if (videos.length) setShorts(videos); })
+      .catch(error => { if (error?.name !== 'AbortError') undefined; });
+    loadPlaylist('workflows', controller.signal)
+      .then(videos => { if (videos.length) setWorkflows(videos); })
+      .catch(error => { if (error?.name !== 'AbortError') undefined; });
     return () => controller.abort();
   }, []);
 
@@ -96,6 +204,8 @@ export function InsightsVideoLibrary() {
   const filteredWorkflows = useMemo(() => workflows.filter(video => matches(video, activeFilter, search)), [workflows, activeFilter, search]);
   const featuredShort = filteredShorts[0] || shorts[0];
   const featuredWorkflow = filteredWorkflows[0] || workflows[0];
+  const visibleWorkflows = filteredWorkflows.slice(0, workflowLimit);
+  const hasMoreWorkflows = filteredWorkflows.length > workflowLimit;
 
   function changeFilter(filter: string) {
     setActiveFilter(filter);
@@ -124,7 +234,7 @@ export function InsightsVideoLibrary() {
         <div className="insights-featured-grid">
           {featuredShort && <article className="insights-feature-card short-feature">
             <small>FEATURED SHORT</small>
-            <VideoThumbnail video={featuredShort} portrait featured onPlay={setPlaying} />
+            <VideoThumbnail video={featuredShort} portrait featured onPlay={setPlaying} openOnYouTube />
             <h2>{featuredShort.title}</h2>
             <span>{classify(featuredShort)}</span>
           </article>}
@@ -152,26 +262,41 @@ export function InsightsVideoLibrary() {
         </div>
         <div className="insights-shorts-grid">
           {filteredShorts.slice(0, shortLimit).map(video => <article className="insights-video-card" key={video.id}>
-            <VideoThumbnail video={video} portrait onPlay={setPlaying} />
-            <div className="insights-card-copy"><h3>{video.title}</h3><span>{classify(video)}</span></div>
+            <VideoThumbnail video={video} portrait onPlay={setPlaying} openOnYouTube />
+            <div className="insights-card-copy"><h3>{video.title}</h3><span className="insights-category"><i style={{ background: categoryTone(classify(video)) }} aria-hidden="true" /><span>{classify(video)}</span></span></div>
           </article>)}
         </div>
         {!filteredShorts.length && <p className="insights-empty">No Shorts match this filter.</p>}
         {filteredShorts.length > shortLimit && <div className="insights-view-more"><button type="button" onClick={() => setShortLimit(limit => limit + 4)}>View more</button></div>}
 
         <div id="workflows" className="insights-section-head workflow-heading">
-          <div><h2>Workflow Explainers</h2><p>Step-by-step videos showing how to apply AI to real workplace tasks.</p></div>
+          <div className="insights-section-title">
+            <span className="insights-section-icon" aria-hidden="true"><Icon name="book" size={18} /></span>
+            <div>
+              <h2>Workflow Explainers</h2>
+              <p>Step-by-step videos showing how to apply AI to real workplace tasks.</p>
+            </div>
+          </div>
+          {hasMoreWorkflows && <button type="button" className="insights-inline-more" onClick={() => setWorkflowLimit(limit => limit + 3)}>View more</button>}
         </div>
         <div className="insights-workflow-grid">
-          {filteredWorkflows.slice(0, workflowLimit).map(video => <article className="insights-video-card workflow-card" key={video.id}>
-            <VideoThumbnail video={video} onPlay={setPlaying} />
-            <div className="insights-card-copy"><h3>{video.title}</h3><span>{classify(video)}</span>{video.description && <p>{video.description}</p>}
-              <div className="insights-card-actions"><button type="button" onClick={() => setPlaying(video)}>Watch workflow</button><a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a></div>
-            </div>
-          </article>)}
+          {visibleWorkflows.map(video => {
+            const label = classify(video);
+            return <article className="insights-video-card insights-workflow-card" key={video.id}>
+              <VideoThumbnail video={video} onPlay={setPlaying} />
+              <div className="insights-card-copy">
+                <h3>{video.title}</h3>
+                <span className="insights-category"><i style={{ background: categoryTone(label) }} aria-hidden="true" /><span>{label}</span></span>
+                {video.description && <p>{video.description}</p>}
+                <div className="insights-card-actions">
+                  <button type="button" onClick={() => setPlaying(video)}>Watch workflow</button>
+                  <a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
+                </div>
+              </div>
+            </article>;
+          })}
         </div>
         {!filteredWorkflows.length && <p className="insights-empty">No workflow explainers match this filter.</p>}
-        {filteredWorkflows.length > workflowLimit && <div className="insights-view-more"><button type="button" onClick={() => setWorkflowLimit(limit => limit + 3)}>View more</button></div>}
       </div>
     </section>
 
