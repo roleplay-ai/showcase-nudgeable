@@ -22,6 +22,11 @@ const workflows = [
   { category: 'Skills', title: 'Write instructions AI can follow repeatedly', tool: 'Any tool' }
 ];
 
+const workflowRows = [
+  workflows.slice(0, 3),
+  workflows.slice(3)
+];
+
 export const metadata: Metadata = {
   title: 'Practical AI for Work',
   description: 'Hands-on corporate AI training for non-technical employees, supported by AI Practice Lab workflows, AI Coach roleplays and the Actions Engine.',
@@ -176,11 +181,15 @@ export default function Home() {
         </div>
         <div className="lab-workflow-header"><div><small>USE THIS WEEK</small><h3>Practical workflows for common work tasks</h3></div><a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">See the full library <Icon name="arrow" size={15} /></a></div>
         <div className="lab-workflow-grid">
-          {workflows.map(item => <article key={item.title}>
-            <span>{item.category}</span>
-            <h4>{item.title}</h4>
-            <div><small>{item.tool}</small><Icon name="arrow" size={14} /></div>
-          </article>)}
+          {workflowRows.map((row, rowIndex) => <div className={`lab-workflow-row ${rowIndex % 2 === 1 ? 'reverse' : ''}`} key={`workflow-row-${rowIndex}`}>
+            <div className="lab-workflow-track">
+              {[...row, ...row].map((item, itemIndex) => <article key={`${rowIndex}-${item.title}-${itemIndex}`}>
+                <span>{item.category}</span>
+                <h4>{item.title}</h4>
+                <div><small>{item.tool}</small><Icon name="arrow" size={14} /></div>
+              </article>)}
+            </div>
+          </div>)}
         </div>
       </div>
     </section>

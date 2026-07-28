@@ -471,12 +471,64 @@ p { color: var(--muted); font-size: 1.02rem; }
 .lab-workflow-header small { color: var(--yellow); font-weight: 850; letter-spacing: .1em; }
 .lab-workflow-header h3 { margin: 7px 0 0; }
 .lab-workflow-header a { display: inline-flex; align-items: center; gap: 7px; color: var(--yellow); font-size: .75rem; font-weight: 850; }
-.lab-workflow-grid { padding: 0 50px 50px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.lab-workflow-grid article { border: 1px solid #4a434b; border-radius: 14px; padding: 16px; background: #262126; min-height: 135px; display: flex; flex-direction: column; }
+.lab-workflow-grid { padding: 4px 50px 50px; display: grid; gap: 8px; }
+.lab-workflow-row {
+  position: relative;
+  overflow: hidden;
+  padding: 8px 0 12px;
+  margin: -8px 0 -12px;
+}
+.lab-workflow-row::before,
+.lab-workflow-row::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  z-index: 1;
+  pointer-events: none;
+}
+.lab-workflow-row::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--ink) 0%, rgba(34, 29, 35, 0) 100%);
+}
+.lab-workflow-row::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--ink) 0%, rgba(34, 29, 35, 0) 100%);
+}
+.lab-workflow-track {
+  display: flex;
+  width: max-content;
+  gap: 10px;
+  animation: labWorkflowMarquee 28s linear infinite;
+}
+.lab-workflow-row.reverse .lab-workflow-track { animation-direction: reverse; }
+.lab-workflow-row:hover .lab-workflow-track { animation-play-state: paused; }
+.lab-workflow-grid article {
+  flex: 0 0 clamp(220px, 24vw, 300px);
+  border: 1px solid #4a434b;
+  border-radius: 14px;
+  padding: 16px;
+  background: #262126;
+  min-height: 135px;
+  display: flex;
+  flex-direction: column;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.lab-workflow-grid article:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, .28);
+  border-color: #6e6670;
+}
 .lab-workflow-grid article > span { color: #968f97; font-size: .57rem; text-transform: uppercase; letter-spacing: .1em; }
 .lab-workflow-grid h4 { margin: 9px 0 16px; font-size: .86rem; line-height: 1.35; }
 .lab-workflow-grid article > div { margin-top: auto; display: flex; align-items: center; justify-content: space-between; color: var(--yellow); }
 .lab-workflow-grid article small { border: 1px solid #534b54; padding: 4px 7px; border-radius: 99px; color: #c9c3ca; }
+
+@keyframes labWorkflowMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 5px)); }
+}
 
 .shorts-section { background: white; }
 .shorts-heading-row { display: flex; justify-content: space-between; align-items: end; gap: 40px; margin-bottom: 40px; }
@@ -628,7 +680,6 @@ p { color: var(--muted); font-size: 1.02rem; }
   .product-detail-grid { grid-template-columns: 1fr; }
   .product-detail-card { display: grid; grid-template-columns: .65fr 1.35fr; column-gap: 25px; }
   .product-detail-card .product-demo-placeholder { grid-row: span 6; margin-bottom: 0; }
-  .lab-workflow-grid { grid-template-columns: repeat(2, 1fr); }
   .shorts-section .shorts-grid { grid-auto-columns: minmax(210px, 240px); gap: 14px; }
   .workflow-video-section .insights-workflow-grid { grid-auto-columns: minmax(280px, 78vw); }
   .landscape-video-grid { grid-template-columns: 1fr 1fr; }
@@ -649,11 +700,14 @@ p { color: var(--muted); font-size: 1.02rem; }
   .hero-app-shell { grid-template-columns: 1fr; }
   .hero-app-shell aside { display: none; }
   .hero-window-tag { left: 8px; bottom: -28px; }
-  .metric-cards, .session-photo-row, .lab-workflow-grid, .landscape-video-grid { grid-template-columns: 1fr; }
+  .metric-cards, .session-photo-row, .landscape-video-grid { grid-template-columns: 1fr; }
   .product-detail-card { display: block; }
   .product-detail-card .product-demo-placeholder { margin-bottom: 22px; }
   .lab-showcase-top, .lab-workflow-header { padding-left: 25px; padding-right: 25px; }
   .lab-workflow-grid { padding-left: 25px; padding-right: 25px; }
+  .lab-workflow-row::before,
+  .lab-workflow-row::after { width: 24px; }
+  .lab-workflow-grid article { flex-basis: min(76vw, 260px); }
   .shorts-section .shorts-grid {
     grid-auto-columns: minmax(190px, 68vw);
     gap: 12px;
