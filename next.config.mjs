@@ -18,7 +18,7 @@ const nextConfig = {
       { source: '/nudge-engine', destination: '/nudgeengine', permanent: true },
       { source: '/videos', destination: '/insights', permanent: true },
       { source: '/ai-shorts', destination: '/insights', permanent: true },
-      { source: '/practice-lab', destination: 'https://ai.nudgeable.app/', permanent: true },
+      { source: '/practice-lab', destination: 'https://work.nudgeable.app/', permanent: true },
       { source: '/ai-training', destination: '/#training', permanent: true },
       { source: '/about', destination: '/#about', permanent: true },
       { source: '/contact', destination: '/#contact', permanent: true }

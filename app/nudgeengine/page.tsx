@@ -37,9 +37,21 @@ const process = [
 
 const weeklyActions = [532, 501, 434, 488];
 const onboardingPoints = [75, 140, 200, 270, 325, 380];
+const funnelSteps = [
+  ['Training', '100%'],
+  ['Knowledge', '97%'],
+  ['Intention', '89%'],
+  ['Action', '78%'],
+  ['Repetition', '61%']
+] as const;
 
 function Metric({ label, value }: { label: string; value: string }) {
-  return <div className="impact-metric"><small>{label}</small><strong>{value}</strong></div>;
+  return (
+    <div className="impact-metric">
+      <strong>{value}</strong>
+      <span>{label}</span>
+    </div>
+  );
 }
 
 export default function ActionsEnginePage() {
@@ -82,53 +94,119 @@ export default function ActionsEnginePage() {
       </div>
     </section>
 
-    <section className="actions-impact-section">
+    <section className="actions-impact-section compact-section">
       <div className="container">
-        <SectionHeader eyebrow="REAL PROGRAM IMPACT" title="Application data across different capability programs." />
+        <SectionHeader
+          eyebrow="REAL PROGRAM IMPACT"
+          title="Application data across different capability programs."
+          copy="Real programs. Real participation. Clear visibility into what stuck after the classroom."
+        />
         <div className="actions-impact-grid">
           <article className="impact-program-card">
-            <div className="impact-card-heading"><span className="impact-icon">♡</span><div><h3>Employee Well-Being Program</h3><small>Fortune 500 US-based pharma giant</small></div></div>
-            <div className="impact-metrics-row"><Metric label="Duration" value="12 weeks"/><Metric label="Total users" value="450"/><Metric label="Habits acquired" value="312"/></div>
-            <div className="chart-title">Weekly actions</div>
-            <div className="bar-chart" aria-label="Weekly actions: 532, 501, 434, 488">
-              {weeklyActions.map((value, index) => <div className="bar-column" key={value}><span>{value}</span><i style={{height: `${value / 6}px`}}/><small>Week {index + 1}</small></div>)}
+            <div className="impact-card-heading">
+              <span className="impact-icon impact-icon-yellow"><Icon name="people" size={22}/></span>
+              <div>
+                <h3>Employee Well-Being Program</h3>
+                <span className="impact-client">Fortune 500 US-based pharma giant</span>
+              </div>
+            </div>
+            <div className="impact-metrics-row">
+              <Metric label="Duration" value="12 weeks"/>
+              <Metric label="Total users" value="450"/>
+              <Metric label="Habits acquired" value="312"/>
+            </div>
+            <div className="impact-chart-panel">
+              <div className="chart-title">Weekly actions</div>
+              <div className="bar-chart" aria-label="Weekly actions: 532, 501, 434, 488">
+                {weeklyActions.map((value, index) => (
+                  <div className="bar-column" key={value}>
+                    <span>{value}</span>
+                    <i style={{height: `${value / 6}px`}}/>
+                    <small>Week {index + 1}</small>
+                  </div>
+                ))}
+              </div>
             </div>
           </article>
 
           <article className="impact-program-card">
-            <div className="impact-card-heading"><span className="impact-icon">◎</span><div><h3>New Joiner Onboarding &amp; Skills Development</h3><small>India-based tech GCC</small></div></div>
-            <div className="impact-metrics-row"><Metric label="Duration" value="16 weeks"/><Metric label="Total users" value="280"/><Metric label="Behavior change" value="312"/></div>
-            <div className="chart-title">Total actions successfully nudged</div>
-            <div className="line-chart-wrap">
-              <svg viewBox="0 0 240 190" role="img" aria-label="Rising actions over six weeks">
-                <line x1="18" y1="180" x2="225" y2="180" className="chart-axis"/>
-                <line x1="18" y1="20" x2="18" y2="180" className="chart-axis"/>
-                <polyline points={linePoints} className="chart-line"/>
-                {onboardingPoints.map((value, index) => <circle key={value} cx={18 + index * 40} cy={180 - value * .38} r="4" className="chart-point"/>)}
-              </svg>
-              <div className="week-labels">{onboardingPoints.map((_, index) => <span key={index}>W{index + 1}</span>)}</div>
+            <div className="impact-card-heading">
+              <span className="impact-icon impact-icon-blue"><Icon name="spark" size={22}/></span>
+              <div>
+                <h3>New Joiner Onboarding &amp; Skills Development</h3>
+                <span className="impact-client">India-based tech GCC</span>
+              </div>
+            </div>
+            <div className="impact-metrics-row">
+              <Metric label="Duration" value="16 weeks"/>
+              <Metric label="Total users" value="280"/>
+              <Metric label="Behavior change" value="312"/>
+            </div>
+            <div className="impact-chart-panel">
+              <div className="chart-title">Total actions successfully nudged</div>
+              <div className="line-chart-wrap">
+                <svg viewBox="0 0 240 190" role="img" aria-label="Rising actions over six weeks">
+                  <line x1="18" y1="180" x2="225" y2="180" className="chart-axis"/>
+                  <line x1="18" y1="20" x2="18" y2="180" className="chart-axis"/>
+                  <polyline points={linePoints} className="chart-line"/>
+                  {onboardingPoints.map((value, index) => (
+                    <circle key={value} cx={18 + index * 40} cy={180 - value * .38} r="4.5" className="chart-point"/>
+                  ))}
+                </svg>
+                <div className="week-labels">{onboardingPoints.map((_, index) => <span key={index}>W{index + 1}</span>)}</div>
+              </div>
             </div>
           </article>
 
           <article className="impact-program-card">
-            <div className="impact-card-heading"><span className="impact-icon">⚙</span><div><h3>People Leadership &amp; Psychological Safety</h3><small>European financial services company</small></div></div>
-            <div className="impact-metrics-row"><Metric label="Duration" value="20 weeks"/><Metric label="Total users" value="125"/><Metric label="Total actions" value="7,250"/></div>
-            <div className="chart-title">Behavior change funnel</div>
-            <div className="funnel-chart">
-              {[['Training','100%'],['Knowledge','97%'],['Intention','89%'],['Action','78%'],['Repetition','61%']].map(([label,value], index) => <div key={label} className={`funnel-row f${index + 1}`}><span>{label}</span><i/><b>{value}</b></div>)}
+            <div className="impact-card-heading">
+              <span className="impact-icon impact-icon-green"><Icon name="shield" size={22}/></span>
+              <div>
+                <h3>People Leadership &amp; Psychological Safety</h3>
+                <span className="impact-client">European financial services company</span>
+              </div>
+            </div>
+            <div className="impact-metrics-row">
+              <Metric label="Duration" value="20 weeks"/>
+              <Metric label="Total users" value="125"/>
+              <Metric label="Total actions" value="7,250"/>
+            </div>
+            <div className="impact-chart-panel">
+              <div className="chart-title">Behavior change funnel</div>
+              <div className="funnel-chart">
+                {funnelSteps.map(([label, value], index) => (
+                  <div key={label} className={`funnel-row f${index + 1}`}>
+                    <span>{label}</span>
+                    <i/>
+                    <b>{value}</b>
+                  </div>
+                ))}
+              </div>
             </div>
           </article>
 
           <article className="impact-program-card">
-            <div className="impact-card-heading"><span className="impact-icon">↗</span><div><h3>Driving HR Competencies</h3><small>Australian manufacturing conglomerate</small></div></div>
-            <div className="impact-metrics-row"><Metric label="Duration" value="18 weeks"/><Metric label="Total users" value="95"/><Metric label="Total habits" value="69"/></div>
-            <div className="chart-title">User engagement</div>
-            <div className="donut-layout">
-              <div className="engagement-donut" aria-label="70.6 percent consistently active, 17.6 percent sometimes active, 11.8 percent inactive"/>
-              <div className="donut-legend">
-                <span className="green-dot"><b>70.6%</b> Consistently active</span>
-                <span className="yellow-dot"><b>17.6%</b> Sometimes active</span>
-                <span className="red-dot"><b>11.8%</b> Inactive users</span>
+            <div className="impact-card-heading">
+              <span className="impact-icon impact-icon-purple"><Icon name="chart" size={22}/></span>
+              <div>
+                <h3>Driving HR Competencies</h3>
+                <span className="impact-client">Australian manufacturing conglomerate</span>
+              </div>
+            </div>
+            <div className="impact-metrics-row">
+              <Metric label="Duration" value="18 weeks"/>
+              <Metric label="Total users" value="95"/>
+              <Metric label="Total habits" value="69"/>
+            </div>
+            <div className="impact-chart-panel">
+              <div className="chart-title">User engagement</div>
+              <div className="donut-layout">
+                <div className="engagement-donut" aria-label="70.6 percent consistently active, 17.6 percent sometimes active, 11.8 percent inactive"/>
+                <div className="donut-legend">
+                  <span className="green-dot"><b>70.6%</b> Consistently active</span>
+                  <span className="yellow-dot"><b>17.6%</b> Sometimes active</span>
+                  <span className="red-dot"><b>11.8%</b> Inactive users</span>
+                </div>
               </div>
             </div>
           </article>

@@ -53,4 +53,4 @@ nudgeable-vercel-final/
 - `https://www.nudgeable.ai/nudgeengine`
 - `https://www.nudgeable.ai/insights`
 
-The Practice Lab button opens `https://ai.nudgeable.app/` directly.
+The Practice Lab button opens `https://work.nudgeable.app/` directly.

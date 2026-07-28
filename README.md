@@ -20,7 +20,7 @@ Production-ready marketing site for Vercel.
 | Actions Engine | `/nudgeengine` |
 | Insights video library | `/insights` |
 
-The Practice Lab does not have a marketing page in this project. All Practice Lab links open `https://ai.nudgeable.app/` directly.
+The Practice Lab does not have a marketing page in this project. All Practice Lab links open `https://work.nudgeable.app/` directly.
 
 Legacy aliases are handled through permanent redirects in `next.config.mjs`, including `/ai-coach`, `/actions-engine`, `/videos`, `/ai-shorts`, `/practice-lab`, `/contact`, `/about`, and `/ai-training`.
 

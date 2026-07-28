@@ -277,7 +277,7 @@ export function InsightsVideoLibrary() {
                   {video.description && <p>{video.description}</p>}
                   <div className="insights-card-actions">
                     <button type="button" onClick={() => openVideo(video)}>Watch workflow</button>
-                    <a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
+                    <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
                   </div>
                 </div>
               </article>;
@@ -291,7 +291,7 @@ export function InsightsVideoLibrary() {
 
     <section className="container insights-practice-cta">
       <div><strong>Practice what you watch.</strong><p>Explore guided AI workflows and apply them to real work.</p></div>
-      <a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open Practice Lab</a>
+      <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open Practice Lab</a>
     </section>
 
     {playing && <div className="insights-modal" role="dialog" aria-modal="true" aria-labelledby="video-dialog-title" onClick={event => { if (event.currentTarget === event.target) setPlaying(null); }}>

@@ -165,7 +165,7 @@ export function WorkflowVideoGrid({ limit = 3 }: { limit?: number }) {
               {video.description && <p>{video.description}</p>}
               <div className="insights-card-actions">
                 <button type="button" onClick={() => setPlaying(video)}>Watch workflow</button>
-                <a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
+                <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
               </div>
             </div>
           </article>;

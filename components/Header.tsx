@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Icon } from './Icon';
 
 const nav = [
-  { href: 'https://ai.nudgeable.app/', label: 'Practice Lab', external: true },
+  { href: 'https://work.nudgeable.app/', label: 'Practice Lab', external: true },
   { href: '/ai-role-play', label: 'AI Coach' },
   { href: '/nudgeengine', label: 'Actions Engine' },
   { href: '/insights', label: 'Insights' }

@@ -43,7 +43,7 @@ export default function Home() {
           <p>Hands-on masterclasses help non-technical employees use Claude, Copilot, Gemini, ChatGPT and AI agents for writing, research, data, presentations, automation and other real workplace tasks.</p>
           <div className="button-row hero-actions">
             <a className="button button-primary button-compact" href="#training">Explore AI training <Icon name="arrow" size={17}/></a>
-            <a className="button button-secondary button-compact" href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Practice Lab <Icon name="arrow" size={17}/></a>
+            <a className="button button-secondary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Practice Lab <Icon name="arrow" size={17}/></a>
           </div>
           <div className="tool-row hero-tool-row">
             {aiTools.map(tool => <span className="tool-chip" key={tool.name}><b>{tool.mark}</b>{tool.name}</span>)}
@@ -94,7 +94,7 @@ export default function Home() {
             <h3>AI Practice Lab</h3>
             <p>Free AI for Work workflows and current content, with enterprise customization and reporting.</p>
             <ul><li>100+ guided workflows</li><li>Enterprise journeys and dashboard</li></ul>
-            <a className="product-link" href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Practice Lab <Icon name="arrow" size={16}/></a>
+            <a className="product-link" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Practice Lab <Icon name="arrow" size={16}/></a>
           </article>
 
           <article className="product-detail-card coach">
@@ -126,7 +126,7 @@ export default function Home() {
             <h2>Free for individuals. Built for enterprise teams.</h2>
             <p>Anyone can use the public Lab for practical AI workflows. Enterprise clients can add role-based journeys, customized workflows, curated updates and an admin dashboard.</p>
             <div className="button-row">
-              <a className="button button-primary button-compact" href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Lab <Icon name="arrow" size={17}/></a>
+              <a className="button button-primary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Lab <Icon name="arrow" size={17}/></a>
               <a className="button button-ghost-dark button-compact" href="#contact">See the enterprise version <Icon name="arrow" size={17}/></a>
             </div>
           </div>
@@ -143,7 +143,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <div className="lab-workflow-header"><div><small>USE THIS WEEK</small><h3>Practical workflows for common work tasks</h3></div><a href="https://ai.nudgeable.app/" target="_blank" rel="noopener noreferrer">See the full library <Icon name="arrow" size={15}/></a></div>
+        <div className="lab-workflow-header"><div><small>USE THIS WEEK</small><h3>Practical workflows for common work tasks</h3></div><a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">See the full library <Icon name="arrow" size={15}/></a></div>
         <div className="lab-workflow-grid">
           {workflows.map(item => <article key={item.title}>
             <span>{item.category}</span>
