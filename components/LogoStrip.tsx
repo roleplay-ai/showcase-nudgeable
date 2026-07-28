@@ -11,9 +11,10 @@ export function LogoStrip() {
           <Image
             src={logo.src}
             alt={`${logo.name} logo`}
-            width={136}
-            height={48}
-            className="client-logo-image"
+            width={180}
+            height={64}
+            className={`client-logo-image${logo.src.endsWith('.png') || logo.src.endsWith('.webp') ? ' client-logo-image-raster' : ''}`}
+            unoptimized
           />
         </div>)}
       </div>

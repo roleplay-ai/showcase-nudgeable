@@ -4,16 +4,18 @@ export type ClientLogo = {
 };
 
 export const clientLogos: ClientLogo[] = [
-  { name: 'Flipkart', src: '/logos/flipkart-verified.png' },
+  { name: 'Flipkart', src: '/logos/flipkart.png' },
   { name: 'Myntra', src: '/logos/myntra-verified.svg' },
+  { name: 'Atomberg', src: '/logos/atomberg.png' },
   { name: 'Roche', src: '/logos/roche-verified.svg' },
   { name: 'Genentech', src: '/logos/genentech-verified.svg' },
   { name: 'Cimpress', src: '/logos/cimpress-verified.svg' },
   { name: 'IQVIA', src: '/logos/iqvia-verified.svg' },
-  { name: 'L&T Finance', src: '/logos/lt-finance-verified.png' },
+  { name: 'Lactalis', src: '/logos/lactalis.png' },
+  { name: 'L&T Finance', src: '/logos/lt-finance.png' },
   { name: 'Cosmos Films', src: '/logos/cosmos-films-verified.webp' },
-  { name: 'MullenLowe Lintas Group', src: '/logos/mllg-verified.png' },
-  { name: 'Philip Morris International', src: '/logos/ipm-verified.svg' },
+  { name: 'MullenLowe Lintas Group', src: '/logos/mllg.png' },
+  { name: 'Philip Morris International', src: '/logos/ipm.png' },
   { name: 'Boehringer Ingelheim', src: '/logos/boehringer-ingelheim-verified.svg' }
 ];
 

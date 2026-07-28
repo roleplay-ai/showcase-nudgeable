@@ -420,8 +420,9 @@ p { color: var(--muted); font-size: var(--text-lead); line-height: 1.5; }
 .logo-marquee { overflow: hidden; padding: 10px 0; mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent); }
 .logo-track { width: max-content; display: flex; align-items: center; gap: 16px; animation: logo-scroll-left 32s linear infinite; }
 .logo-marquee:hover .logo-track { animation-play-state: paused; }
-.client-logo { min-width: 172px; height: 72px; display: flex; align-items: center; justify-content: center; padding: 14px 20px; border: 1px solid rgba(34, 29, 35, 0.08); border-radius: 18px; background: rgba(255, 255, 255, 0.92); box-shadow: 0 12px 28px rgba(34, 29, 35, 0.06); backdrop-filter: blur(8px); }
-.client-logo-image { width: auto; height: 100%; max-width: 136px; object-fit: contain; opacity: 1; filter: none; }
+.client-logo { min-width: 196px; height: 88px; display: flex; align-items: center; justify-content: center; padding: 10px 16px; border: 1px solid rgba(34, 29, 35, 0.08); border-radius: 18px; background: rgba(255, 255, 255, 0.92); box-shadow: 0 12px 28px rgba(34, 29, 35, 0.06); backdrop-filter: blur(8px); }
+.client-logo-image { width: auto; height: 100%; max-width: 156px; object-fit: contain; opacity: 1; filter: none; }
+.client-logo-image-raster { max-width: 176px; height: 112%; }
 @keyframes logo-scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 .training-proof-section { background: #fffdf6; padding-top: 86px; }
