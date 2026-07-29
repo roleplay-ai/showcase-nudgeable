@@ -44,7 +44,7 @@ export const aiTools: AiTool[] = [
   { name: 'Claude', iconSrc: '/tool-icons/claude.png' },
   { name: 'Copilot', iconSrc: '/tool-icons/copilot.png' },
   { name: 'Gemini', iconSrc: '/tool-icons/gemini.png' },
-  { name: 'ChatGPT', iconSrc: '/tool-icons/chatgpt.png' }
+  { name: 'ChatGPT', iconSrc: '/tool-icons/chatgpt-app.png' }
 ];
 
 /** Featured stack tools shown on the Practice Lab login marquee. */

@@ -564,26 +564,103 @@ p { color: var(--muted); font-size: var(--text-lead); line-height: 1.5; }
 }
 .lab-workflow-row.reverse .lab-workflow-track { animation-direction: reverse; }
 .lab-workflow-row:hover .lab-workflow-track { animation-play-state: paused; }
-.lab-workflow-grid article {
+.lab-workflow-card {
+  --lab-accent: var(--yellow);
+  --lab-card: #2a252b;
+  position: relative;
   flex: 0 0 clamp(220px, 24vw, 300px);
-  border: 1px solid #4a434b;
-  border-radius: 14px;
-  padding: 16px;
-  background: #262126;
-  min-height: 135px;
   display: flex;
+  min-height: 135px;
   flex-direction: column;
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  padding: 16px;
+  overflow: hidden;
+  background: var(--lab-card);
+  border: 1px solid #4a434c;
+  border-radius: 14px;
+  color: #fff;
+  text-decoration: none;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
 }
-.lab-workflow-grid article:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, .28);
-  border-color: #6e6670;
+.lab-workflow-card::before {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  left: -1px;
+  height: 3px;
+  content: "";
+  background: var(--lab-accent);
 }
-.lab-workflow-grid article > span { color: #968f97; font-size: .57rem; text-transform: uppercase; letter-spacing: .1em; }
-.lab-workflow-grid h4 { margin: 9px 0 16px; font-size: .86rem; line-height: 1.35; }
-.lab-workflow-grid article > div { margin-top: auto; display: flex; align-items: center; justify-content: space-between; color: var(--yellow); }
-.lab-workflow-grid article small { border: 1px solid #534b54; padding: 4px 7px; border-radius: 99px; color: #c9c3ca; }
+.lab-workflow-card:hover,
+.lab-workflow-card:focus-visible {
+  transform: translateY(-4px);
+  background: #302a31;
+  border-color: var(--lab-accent);
+  outline: none;
+}
+.lab-workflow-card.presentations { --lab-accent: var(--yellow); }
+.lab-workflow-card.data { --lab-accent: var(--blue); }
+.lab-workflow-card.email { --lab-accent: var(--orange); }
+.lab-workflow-card.agents { --lab-accent: var(--purple); }
+.lab-workflow-card.research { --lab-accent: var(--green); }
+.lab-workflow-card.skills { --lab-accent: var(--red); }
+.lab-workflow-category {
+  margin-top: 2px;
+  color: #a8a0aa;
+  font-size: .57rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.lab-workflow-card h4 {
+  margin: 9px 0 14px;
+  font-size: .86rem;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+  color: #fff;
+}
+.lab-workflow-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+.lab-workflow-logos {
+  display: flex;
+  align-items: center;
+}
+.lab-workflow-tool {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  margin-right: -5px;
+  background: transparent;
+  border: 2px solid var(--lab-card);
+  border-radius: 50%;
+}
+.lab-workflow-tool svg,
+.lab-workflow-tool-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
+.lab-workflow-arrow {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid var(--lab-accent);
+  border-radius: 50%;
+  color: var(--lab-accent);
+  font-size: 16px;
+  line-height: 1;
+  transition: background .18s ease, color .18s ease;
+}
+.lab-workflow-card:hover .lab-workflow-arrow {
+  background: var(--lab-accent);
+  color: var(--ink);
+}
 
 @keyframes labWorkflowMarquee {
   from { transform: translateX(0); }
@@ -770,7 +847,7 @@ p { color: var(--muted); font-size: var(--text-lead); line-height: 1.5; }
   .lab-workflow-grid { padding-left: 25px; padding-right: 25px; }
   .lab-workflow-row::before,
   .lab-workflow-row::after { width: 24px; }
-  .lab-workflow-grid article { flex-basis: min(76vw, 260px); }
+  .lab-workflow-card { flex-basis: min(76vw, 260px); }
   .shorts-section .shorts-grid {
     grid-auto-columns: minmax(190px, 68vw);
     gap: 12px;

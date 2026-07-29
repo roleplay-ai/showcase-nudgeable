@@ -8,24 +8,11 @@ import { LogoStrip } from '@/components/LogoStrip';
 import { SessionPhotoRow } from '@/components/SessionPhotoRow';
 import { TestimonialGrid } from '@/components/TestimonialGrid';
 import { YouTubeGrid } from '@/components/YouTubeGrid';
+import { LabWorkflowCards } from '@/components/LabWorkflowCards';
 import { WorkflowVideoGrid } from '@/components/WorkflowVideoGrid';
 import { aiTools, featuredAiTools } from '@/components/data';
 
 const PRACTICE_LAB_DEMO_URL = process.env.NEXT_PUBLIC_PRACTICE_LAB_DEMO_URL || 'https://youtu.be/_BWa3U1x920';
-
-const workflows = [
-  { category: 'Email & tasks', title: 'Build an inbox triage workflow', tool: 'Claude' },
-  { category: 'Presentations', title: 'Turn a document into a presentation', tool: 'Copilot' },
-  { category: 'Data', title: 'Analyze a messy sales export', tool: 'Gemini' },
-  { category: 'Agents', title: 'Delegate a multi-step task safely', tool: 'AI Agents' },
-  { category: 'Research', title: 'Compare a market using cited sources', tool: 'ChatGPT' },
-  { category: 'Skills', title: 'Write instructions AI can follow repeatedly', tool: 'Any tool' }
-];
-
-const workflowRows = [
-  workflows.slice(0, 3),
-  workflows.slice(3)
-];
 
 export const metadata: Metadata = {
   title: 'Practical AI for Work',
@@ -89,7 +76,7 @@ export default function Home() {
             <div className="tool-row hero-tool-row">
               {aiTools.map(tool => <span className="tool-chip" key={tool.name}>
                 <b>
-                  {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" /> : tool.mark}
+                  {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" unoptimized /> : tool.mark}
                 </b>
                 {tool.name}
               </span>)}
@@ -98,7 +85,7 @@ export default function Home() {
               <div className="hero-tool-marquee-track">
                 {[...featuredAiTools, ...featuredAiTools].map((tool, index) => <span className="tool-chip" key={`${tool.name}-${index}`}>
                   <b>
-                    {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" /> : tool.mark}
+                    {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" unoptimized /> : tool.mark}
                   </b>
                   {tool.name}
                 </span>)}
@@ -189,17 +176,7 @@ export default function Home() {
           </div>
         </div>
         <div className="lab-workflow-header"><div><small>USE THIS WEEK</small><h3>Practical workflows for common work tasks</h3></div><a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">See the full library <Icon name="arrow" size={15} /></a></div>
-        <div className="lab-workflow-grid">
-          {workflowRows.map((row, rowIndex) => <div className={`lab-workflow-row ${rowIndex % 2 === 1 ? 'reverse' : ''}`} key={`workflow-row-${rowIndex}`}>
-            <div className="lab-workflow-track">
-              {[...row, ...row].map((item, itemIndex) => <article key={`${rowIndex}-${item.title}-${itemIndex}`}>
-                <span>{item.category}</span>
-                <h4>{item.title}</h4>
-                <div><small>{item.tool}</small><Icon name="arrow" size={14} /></div>
-              </article>)}
-            </div>
-          </div>)}
-        </div>
+        <LabWorkflowCards />
       </div>
     </section>
 
