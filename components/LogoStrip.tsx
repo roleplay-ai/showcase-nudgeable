@@ -7,7 +7,7 @@ export function LogoStrip() {
     <p>Trusted by teams at</p>
     <div className="logo-marquee">
       <div className="logo-track">
-        {repeated.map((logo, index) => <div className="client-logo" key={`${logo.name}-${index}`}>
+        {repeated.map((logo, index) => <div className={`client-logo client-logo-${logo.size ?? 'medium'}`} key={`${logo.name}-${index}`}>
           <Image
             src={logo.src}
             alt={`${logo.name} logo`}

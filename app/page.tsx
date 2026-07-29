@@ -75,11 +75,11 @@ export default function Home() {
       <div className="container home-hero-grid home-hero-grid-new">
         <div className="home-hero-copy">
           <span className="hero-kicker">AI FOR WORK FOR CORPORATE TEAMS</span>
-          <h1>Practical AI for everyday work.</h1>
-          <p>Hands-on masterclasses help non-technical employees use Claude, Copilot, Gemini, ChatGPT and AI agents for writing, research, data, presentations, automation and other real workplace tasks.</p>
+          <h1>Enterprise AI adoption, built through practice.</h1>
+          <p>AI changes every week. Build lasting capability through hands-on training followed by continued practice with real business workflows in the AI Practice Lab.</p>
           <div className="button-row hero-actions">
             <a className="button button-primary button-compact" href="#training">Explore AI training <Icon name="arrow" size={17} /></a>
-            <a className="button button-secondary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Practice Lab <Icon name="arrow" size={17} /></a>
+            <a className="button button-secondary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open AI Practice Lab <Icon name="arrow" size={17} /></a>
           </div>
           <div className="tool-row hero-tool-row">
             {aiTools.map(tool => <span className="tool-chip" key={tool.name}>
@@ -92,8 +92,7 @@ export default function Home() {
         </div>
 
         <div className="home-hero-product-image" aria-label="AI Practice Lab preview">
-          <Image src="/assets/ai-practice-lab-full.png" alt="AI Practice Lab interface" width={1024} height={631} priority />
-          <div className="hero-window-tag"><small>UPDATED WEEKLY</small><strong>100+ guided workflows</strong></div>
+          <Image src="/assets/hero-practice-lab.jpg" alt="Facilitator presenting AI tools beside the AI Practice Lab interface with guided workflows" width={1024} height={768} priority />
         </div>
       </div>
     </section>
@@ -223,9 +222,9 @@ export default function Home() {
         <div>
           <span className="eyebrow">FOUNDER AND FACILITATOR</span>
           <h2>AI for Work, grounded in corporate reality.</h2>
-          <p>Gaurav Patel combines 15+ years of corporate experience with behavioral science and daily hands-on work across leading AI tools. The sessions are built for employees who need practical outcomes, without requiring a technical background.</p>
-          <p>The Practice Lab, AI Coach and Actions Engine are built in-house, keeping the training close to real implementation challenges.</p>
-          <div className="founder-points"><span>40+ corporate cohorts</span><span>2,500+ professionals trained</span><span>XLRI alumnus</span><span>Author and product builder</span></div>
+          <p>Gaurav Patel designs practical AI training across industries and business functions. Each session is customized around how participants actually work, the tools they use and the outcomes they need.</p>
+          <p>The training draws on daily use of leading AI tools and first-hand experience building the Practice Lab, AI Coach and Actions Engine. This brings real product development and implementation knowledge into every session.</p>
+          <div className="founder-points"><span>40+ corporate cohorts</span><span>2,500+ professionals trained</span><span>B.E. in IT and MBA from XLRI</span><span>15+ years across India, Singapore and London</span></div>
           <a className="button button-secondary" href="https://www.linkedin.com/in/gauravpatel25/ai" target="_blank" rel="noopener noreferrer">More about Gaurav <Icon name="arrow" size={17} /></a>
         </div>
       </div>

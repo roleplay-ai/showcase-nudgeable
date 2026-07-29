@@ -1,22 +1,23 @@
 export type ClientLogo = {
   name: string;
   src: string;
+  size?: 'smaller' | 'small' | 'medium' | 'large' | 'larger';
 };
 
 export const clientLogos: ClientLogo[] = [
-  { name: 'Flipkart', src: '/logos/flipkart.png' },
-  { name: 'Myntra', src: '/logos/myntra-verified.svg' },
-  { name: 'Atomberg', src: '/logos/atomberg.png' },
-  { name: 'Roche', src: '/logos/roche-verified.svg' },
-  { name: 'Genentech', src: '/logos/genentech-verified.svg' },
-  { name: 'Cimpress', src: '/logos/cimpress-verified.svg' },
-  { name: 'IQVIA', src: '/logos/iqvia-verified.svg' },
-  { name: 'Lactalis', src: '/logos/lactalis.png' },
-  { name: 'L&T Finance', src: '/logos/lt-finance.png' },
-  { name: 'Cosmos Films', src: '/logos/cosmos-films-verified.webp' },
-  { name: 'MullenLowe Lintas Group', src: '/logos/mllg.png' },
-  { name: 'Philip Morris International', src: '/logos/ipm.png' },
-  { name: 'Boehringer Ingelheim', src: '/logos/boehringer-ingelheim-verified.svg' }
+  { name: 'Flipkart', src: '/logos/flipkart.png', size: 'large' },
+  { name: 'Myntra', src: '/logos/myntra-verified.svg', size: 'small' },
+  { name: 'Atomberg', src: '/logos/atomberg.png', size: 'large' },
+  { name: 'Roche', src: '/logos/roche-verified.svg', size: 'smaller' },
+  { name: 'Genentech', src: '/logos/genentech-verified.svg', size: 'small' },
+  { name: 'Cimpress', src: '/logos/cimpress-verified.svg', size: 'smaller' },
+  { name: 'IQVIA', src: '/logos/iqvia-verified.svg', size: 'smaller' },
+  { name: 'Lactalis', src: '/logos/lactalis.png', size: 'small' },
+  { name: 'L&T Finance', src: '/logos/lt-finance.png', size: 'larger' },
+  { name: 'Cosmos Films', src: '/logos/cosmos-films-verified.webp', size: 'smaller' },
+  { name: 'MullenLowe Lintas Group', src: '/logos/mllg.png', size: 'small' },
+  { name: 'Philip Morris International', src: '/logos/ipm.png', size: 'large' },
+  { name: 'Boehringer Ingelheim', src: '/logos/boehringer-ingelheim-verified.svg', size: 'smaller' }
 ];
 
 export type SessionPhoto = {
@@ -43,8 +44,8 @@ export const aiTools: AiTool[] = [
   { name: 'Claude', iconSrc: '/tool-icons/claude.png' },
   { name: 'Copilot', iconSrc: '/tool-icons/copilot.png' },
   { name: 'Gemini', iconSrc: '/tool-icons/gemini.png' },
-  { name: 'ChatGPT', iconSrc: '/tool-icons/chatgpt.png' },
-  { name: 'AI Agents', mark: '↗' }
+  { name: 'ChatGPT', iconSrc: '/tool-icons/chatgpt.png' }
+
 ];
 
 export const fallbackVideos = [
