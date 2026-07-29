@@ -45,7 +45,29 @@ export const aiTools: AiTool[] = [
   { name: 'Copilot', iconSrc: '/tool-icons/copilot.png' },
   { name: 'Gemini', iconSrc: '/tool-icons/gemini.png' },
   { name: 'ChatGPT', iconSrc: '/tool-icons/chatgpt.png' }
+];
 
+/** Featured stack tools shown on the Practice Lab login marquee. */
+export const featuredAiTools: AiTool[] = [
+  { name: 'Botpress', iconSrc: '/tool-icons/botpress.png' },
+  { name: 'Chatbase', iconSrc: '/tool-icons/chatbase.png' },
+  { name: 'Codex', iconSrc: '/tool-icons/codex.png' },
+  { name: 'ElevenLabs', iconSrc: '/tool-icons/elevenlabs.jpeg' },
+  { name: 'Gamma AI', iconSrc: '/tool-icons/gamma-ai.png' },
+  { name: 'Google AI Studio', iconSrc: '/tool-icons/google-ai-studio.png' },
+  { name: 'Google Work Studio', iconSrc: '/tool-icons/google-work-studio.png' },
+  { name: 'Heygen', iconSrc: '/tool-icons/heygen.png' },
+  { name: 'Kling AI', iconSrc: '/tool-icons/kling-ai.png' },
+  { name: 'LM Studio', iconSrc: '/tool-icons/lm-studio.png' },
+  { name: 'Lovable', iconSrc: '/tool-icons/lovable.png' },
+  { name: 'Napkin AI', iconSrc: '/tool-icons/napkin-ai.png' },
+  { name: 'Notebook LM', iconSrc: '/tool-icons/notebook-lm.jpeg' },
+  { name: 'Notion', iconSrc: '/tool-icons/notion.png' },
+  { name: 'Perplexity', iconSrc: '/tool-icons/perplexity.jpeg' },
+  { name: 'Shortcut AI', iconSrc: '/tool-icons/shortcut-ai.png' },
+  { name: 'Vapi', iconSrc: '/tool-icons/vapi.png' },
+  { name: 'VoiceFlow', iconSrc: '/tool-icons/voiceflow.jpeg' },
+  { name: 'Wispr Flow', iconSrc: '/tool-icons/wispr-flow.png' }
 ];
 
 export const fallbackVideos = [

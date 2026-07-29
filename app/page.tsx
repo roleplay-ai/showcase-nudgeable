@@ -9,7 +9,7 @@ import { SessionPhotoRow } from '@/components/SessionPhotoRow';
 import { TestimonialGrid } from '@/components/TestimonialGrid';
 import { YouTubeGrid } from '@/components/YouTubeGrid';
 import { WorkflowVideoGrid } from '@/components/WorkflowVideoGrid';
-import { aiTools } from '@/components/data';
+import { aiTools, featuredAiTools } from '@/components/data';
 
 const PRACTICE_LAB_DEMO_URL = process.env.NEXT_PUBLIC_PRACTICE_LAB_DEMO_URL || 'https://youtu.be/_BWa3U1x920';
 
@@ -75,19 +75,35 @@ export default function Home() {
       <div className="container home-hero-grid home-hero-grid-new">
         <div className="home-hero-copy">
           <span className="hero-kicker">AI FOR WORK FOR CORPORATE TEAMS</span>
-          <h1>Enterprise AI adoption, built through practice.</h1>
+          <h1>
+            <span className="hero-title-line">Enterprise AI</span>
+            <span className="hero-title-line">adoption, built</span>
+            <span className="hero-title-line">through practice.</span>
+          </h1>
           <p>AI changes every week. Build lasting capability through hands-on training followed by continued practice with real business workflows in the AI Practice Lab.</p>
           <div className="button-row hero-actions">
             <a className="button button-primary button-compact" href="#training">Explore AI training <Icon name="arrow" size={17} /></a>
             <a className="button button-secondary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open AI Practice Lab <Icon name="arrow" size={17} /></a>
           </div>
-          <div className="tool-row hero-tool-row">
-            {aiTools.map(tool => <span className="tool-chip" key={tool.name}>
-              <b>
-                {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" /> : tool.mark}
-              </b>
-              {tool.name}
-            </span>)}
+          <div className="hero-tools">
+            <div className="tool-row hero-tool-row">
+              {aiTools.map(tool => <span className="tool-chip" key={tool.name}>
+                <b>
+                  {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" /> : tool.mark}
+                </b>
+                {tool.name}
+              </span>)}
+            </div>
+            <div className="hero-tool-marquee" aria-label="More AI tools covered">
+              <div className="hero-tool-marquee-track">
+                {[...featuredAiTools, ...featuredAiTools].map((tool, index) => <span className="tool-chip" key={`${tool.name}-${index}`}>
+                  <b>
+                    {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" /> : tool.mark}
+                  </b>
+                  {tool.name}
+                </span>)}
+              </div>
+            </div>
           </div>
         </div>
 
