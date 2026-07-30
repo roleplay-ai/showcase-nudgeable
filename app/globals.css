@@ -28,6 +28,8 @@
   --heading-banner: clamp(28px, 3.2vw, 44px);
   --text-lead: 17px;
   --text-section: 14px;
+  --page-max: 1400px;
+  --page-gutter: 24px;
 }
 
 * { box-sizing: border-box; }
@@ -38,7 +40,7 @@ button, input, textarea, select { font: inherit; }
 button { color: inherit; }
 img { max-width: 100%; }
 main { overflow: hidden; }
-.container { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+.container { width: min(var(--page-max), calc(100% - var(--page-gutter))); margin: 0 auto; }
 section { padding: 96px 0; }
 h1, h2, h3, p { margin-top: 0; }
 h1 { font-size: var(--heading-hero); font-weight: 600; line-height: 1.06; letter-spacing: -0.05em; max-width: 650px; margin-bottom: 0; }
@@ -339,7 +341,8 @@ p { color: var(--muted); font-size: var(--text-lead); line-height: 1.5; }
 }
 
 @media (max-width: 680px) {
-  .container { width: min(100% - 28px, 1180px); }
+  :root { --page-gutter: 16px; }
+  .container { width: min(var(--page-max), calc(100% - var(--page-gutter))); }
   section { padding: 72px 0; }
   h1 { font-size: 39px; }
   h2 { font-size: 20px; }
@@ -807,7 +810,7 @@ p { color: var(--muted); font-size: var(--text-lead); line-height: 1.5; }
 .contact-home-section { background: white; }
 .contact-home-grid { display: grid; grid-template-columns: .85fr 1.15fr; align-items: start; gap: 70px; }
 
-.product-switcher { width: min(1180px, calc(100% - 40px)); margin: 0 auto 40px; padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.product-switcher { width: min(var(--page-max), calc(100% - var(--page-gutter))); margin: 0 auto 40px; padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; border: 1px solid var(--line); border-radius: 18px; background: white; }
 .product-switcher-link { padding: 10px 15px; border-radius: 99px; font-size: .78rem; font-weight: 800; border: 1px solid var(--line); }
 .product-switcher-link:hover, .product-switcher-link.current { background: var(--yellow-soft); border-color: var(--yellow); }
 
