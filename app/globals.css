@@ -70,6 +70,49 @@ p { color: var(--muted); font-size: var(--text-lead); line-height: 1.5; }
 .nav-cta { background: var(--ink); color: white; padding: 12px 17px; border-radius: 12px; }
 .menu-button { display: none; border: 0; background: transparent; padding: 8px; }
 
+/* External app handoff loader (AI Practice Lab) */
+.external-app-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  background: rgba(254, 252, 250, .92);
+  backdrop-filter: blur(10px);
+}
+.external-app-loader p {
+  margin: 0;
+  color: var(--ink);
+  font-size: .95rem;
+  font-weight: 700;
+}
+.external-app-loader-dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.external-app-loader-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink);
+  animation: bounce-dot 1s ease-in-out infinite;
+}
+.external-app-loader-dots span:nth-child(2) {
+  animation-delay: .15s;
+  background: var(--purple);
+}
+.external-app-loader-dots span:nth-child(3) {
+  animation-delay: .3s;
+  background: var(--yellow);
+}
+@keyframes bounce-dot {
+  0%, 80%, 100% { transform: translateY(0); opacity: .45; }
+  40% { transform: translateY(-10px); opacity: 1; }
+}
+
 /* Buttons */
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 50px; padding: 0 21px; border-radius: 13px; font-weight: 800; border: 1px solid transparent; transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
 .button:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(34,29,35,.12); }
