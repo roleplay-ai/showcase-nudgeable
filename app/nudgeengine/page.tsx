@@ -1,92 +1,113 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
+import { Fragment } from 'react';
 import { ButtonLink } from '@/components/ButtonLink';
-import { CTA } from '@/components/CTA';
-import { Icon } from '@/components/Icon';
 import { SectionHeader } from '@/components/SectionHeader';
 
 export const metadata: Metadata = {
-  title: 'Actions Engine',
-  description: 'AI-generated workplace actions, behavioral nudges and application tracking after classroom training.',
+  title: 'Nudge Engine',
+  description: 'Nudge Engine turns training into personalized workplace actions and makes application measurable.',
   alternates: { canonical: '/nudgeengine' },
   openGraph: {
-    title: 'Actions Engine',
-    description: 'Turn classroom learning into personalized action, practice and measurable application.',
+    title: 'Nudge Engine | From Training to Application',
+    description: 'Nudge Engine turns training into personalized workplace actions and makes application measurable.',
     url: '/nudgeengine',
     type: 'website'
   }
 };
 
-const process = [
-  {
-    number: '01',
-    title: 'Action Planning',
-    copy: 'AI generates personalized workplace actions from the classroom training.'
-  },
-  {
-    number: '02',
-    title: 'Practice',
-    copy: 'Nudges arrive in the flow of work so participants take action over time.'
-  },
-  {
-    number: '03',
-    title: 'Track',
-    copy: 'The admin dashboard shows participation, completion, validation and repetition.'
-  }
+const barriers = [
+  { icon: '↗', title: 'No immediate reward', copy: 'The benefit of applying learning comes later, while the effort is required now.' },
+  { icon: '⏱', title: 'No reminders', copy: 'Training ends, work resumes, and the intended action quickly drops out of attention.' },
+  { icon: '2', title: 'No human accountability', copy: 'Once the program ends, few people know whether the participant actually followed through.' },
+  { icon: '✓', title: 'No action plan', copy: 'People may know what to change without deciding the specific action, frequency or duration.' }
 ];
 
-const weeklyActions = [532, 501, 434, 488];
-const onboardingPoints = [75, 140, 200, 270, 325, 380];
-const funnelSteps = [
-  ['Training', '100%'],
-  ['Knowledge', '97%'],
-  ['Intention', '89%'],
-  ['Action', '78%'],
-  ['Repetition', '61%']
-] as const;
+const principles = [
+  { title: 'Pre-commitment', copy: 'Participants actively choose the actions they will take.' },
+  { title: 'Implementation intentions', copy: 'They decide the frequency and duration of their commitment.' },
+  { title: 'Timely nudges', copy: 'Actions are brought back into attention during the flow of work.' },
+  { title: 'Commitment devices', copy: 'Missed commitments affect a visible Commitment Score.' },
+  { title: 'Social accountability', copy: 'A Commitment Buddy and the training cohort make progress visible to peers.' },
+  { title: 'Immediate reinforcement', copy: 'Completed actions add to collective progress and unlock meaningful rewards.' }
+];
 
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="impact-metric">
-      <strong>{value}</strong>
-      <span>{label}</span>
-    </div>
-  );
-}
+const compareRows = [
+  { label: 'Focus', lms: { title: 'Learning', copy: 'Content, courses and completion.' }, nudge: { title: 'Application', copy: 'Specific workplace actions after training.' } },
+  { label: 'Design', lms: { title: 'Program-led', copy: 'The learning journey is defined by the program.' }, nudge: { title: 'Customized', copy: 'AI creates actions using training, company and participant context.' } },
+  { label: 'Motivation', lms: { title: 'Learning engagement', copy: 'Engagement is centered on the learning experience.' }, nudge: { title: 'Behavioral science', copy: 'Nudges, commitment devices, human accountability and immediate reinforcement.' } },
+  { label: 'Measures', lms: { title: 'Attendance & completion', copy: 'Visibility into learning activity.' }, nudge: { title: 'Application', copy: 'Actions committed, actions completed and application over time.' } }
+];
 
-export default function ActionsEnginePage() {
-  const linePoints = onboardingPoints.map((value, index) => `${18 + index * 40},${180 - value * .38}`).join(' ');
+const journey = [
+  { num: '01', chip: 'AI PERSONALIZED', title: 'Personalize', copy: 'AI uses the training content, company context and participant’s development plan to create relevant workplace actions.' },
+  { num: '02', chip: 'ACTIVE CHOICE', title: 'Commit', copy: 'Participants choose their actions, whether to practice daily or weekly, and how long they want to continue.' },
+  { num: '03', chip: 'FLOW OF WORK', title: 'Nudge', copy: 'Actions return at the chosen time. Participants confirm completion in one click.' },
+  { num: '04', chip: 'HUMAN ACCOUNTABILITY', title: 'Stay accountable', copy: 'A Commitment Buddy sees progress and can encourage them. The training cohort adds shared accountability beyond HR or the manager.' },
+  { num: '05', chip: 'IMMEDIATE REWARD', title: 'Create impact', copy: 'Completed actions add to the cohort’s Action Bank, unlocking social-impact milestones such as planting trees, funding meals or supporting education.' }
+];
 
+const weeklyApplication = [58, 74, 68, 83, 78, 88];
+const cohorts = [
+  { label: 'Cohort 03', value: 76 },
+  { label: 'Cohort 02', value: 68 },
+  { label: 'Cohort 01', value: 63 }
+];
+
+export default function NudgeEnginePage() {
   return <>
-    <section className="page-hero product-page-hero actions-page-hero">
-      <div className="container page-hero-grid product-hero-grid actions-hero-grid">
-        <div>
-          <span className="eyebrow green-eyebrow">ACTIONS ENGINE</span>
-          <h1>Turn training into action at work.</h1>
-          <p>AI creates personalized action plans from training content, nudges employees during the flow of work and gives HR clear application data.</p>
+    <section className="ne-hero">
+      <div className="container ne-hero-grid">
+        <div className="ne-hero-copy">
+          <p className="eyebrow">Awareness <svg className="ne-not-equal-sign" viewBox="0 0 28 20" aria-label="is not equal to" role="img"><path d="M3 6h22M3 14h22M9 18L19 2" /></svg> Application</p>
+          <h1>Training is completed. But how much gets <span className="ne-hero-highlight">applied?</span></h1>
+          <p>Organizations invest heavily in training, but much of the learning never becomes consistent workplace action. Nudge Engine helps people apply learning at work and makes that application measurable.</p>
           <div className="button-row">
-            <ButtonLink href="/#contact">Request a demo</ButtonLink>
-            <a className="button button-secondary" href="#actions-process">See how it works <Icon name="arrow" size={17}/></a>
+            <a className="button button-primary" href="#ne-how">See the application journey</a>
           </div>
-          <div className="actions-hero-metrics">
-            <div><strong>1,245</strong><span>Participants</span></div>
-            <div><strong>7,892</strong><span>Actions completed</span></div>
-            <div><strong>72%</strong><span>Completion rate</span></div>
-            <div><strong>3,421</strong><span>Habits acquired</span></div>
-          </div>
+          <p className="ne-hero-note">Designed for the application phase that begins when participants leave the training room.</p>
         </div>
-        <div className="product-hero-image actions-hero-image">
-          <Image src="/assets/actions-engine.png" alt="Actions Engine participant practice plan" width={702} height={1426} priority/>
+        <div>
+          <aside className="ne-gap-card" aria-label="Training application gap">
+            <div className="ne-gap-label">Training-to-application rate</div>
+            <div className="ne-big-number">&lt;20<span className="ne-percent">%</span></div>
+            <div className="ne-gap-meter" aria-label="Less than 20 percent applied and more than 80 percent application gap"><span /><span /></div>
+            <div className="ne-gap-meter-labels"><span>Applied &lt;20%</span><span>&gt;80% application gap</span></div>
+            <p className="ne-gap-question">What happens to the learning after the session ends?</p>
+            <div className="ne-gap-foot">The gap Nudge Engine is built to close</div>
+          </aside>
         </div>
       </div>
     </section>
 
-    <section id="actions-process" className="soft-section compact-section">
+    <section id="ne-why">
       <div className="container">
-        <SectionHeader eyebrow="HOW ACTIONS ENGINE WORKS" title="A three-step journey from learning to application." />
-        <div className="actions-process-grid">
-          {process.map((item, index) => <article key={item.title}>
-            <div className="actions-step-icon"><span>{item.number}</span>{index === 0 ? <Icon name="check"/> : index === 1 ? <Icon name="calendar"/> : <Icon name="chart"/>}</div>
+        <SectionHeader
+          eyebrow="Why it happens"
+          title="The application gap is a behavioral problem."
+          copy="People can leave training knowing exactly what they should do and still struggle to follow through once everyday work takes over."
+        />
+        <div className="ne-barriers">
+          {barriers.map(item => <article className="ne-barrier" key={item.title}>
+            <div className="ne-barrier-icon">{item.icon}</div>
+            <h3>{item.title}</h3>
+            <p>{item.copy}</p>
+          </article>)}
+        </div>
+        <div className="ne-problem-line">These are follow-through problems. The post-training journey needs to make action easier to plan, remember and sustain.</div>
+      </div>
+    </section>
+
+    <section id="ne-science" className="ne-science">
+      <div className="container ne-science-layout">
+        <div className="ne-science-statement">
+          <p className="eyebrow light">Beyond an LMS</p>
+          <h2>Designed around how people actually follow through.</h2>
+          <p>Learning platforms manage content and completion. Nudge Engine is an Action Management Platform built for the application phase, using behavioral science to shape how commitments are made and sustained.</p>
+          <span className="ne-platform-pill">Behavioral science + action management</span>
+        </div>
+        <div className="ne-principles">
+          {principles.map((item, index) => <article className="ne-principle" key={item.title}>
+            <div className="ne-principle-index">{String(index + 1).padStart(2, '0')}</div>
             <h3>{item.title}</h3>
             <p>{item.copy}</p>
           </article>)}
@@ -94,135 +115,96 @@ export default function ActionsEnginePage() {
       </div>
     </section>
 
-    <section className="actions-impact-section compact-section">
+    <section className="ne-compare">
       <div className="container">
         <SectionHeader
-          eyebrow="REAL PROGRAM IMPACT"
-          title="Application data across different capability programs."
-          copy="Real programs. Real participation. Clear visibility into what stuck after the classroom."
+          eyebrow="LMS vs Nudge Engine"
+          title="Extend the journey from learning to workplace application."
+          copy="Your LMS manages the learning experience. Nudge Engine focuses on what participants actually do after the training."
         />
-        <div className="actions-impact-grid">
-          <article className="impact-program-card">
-            <div className="impact-card-heading">
-              <span className="impact-icon impact-icon-yellow"><Icon name="people" size={22}/></span>
-              <div>
-                <h3>Employee Well-Being Program</h3>
-                <span className="impact-client">Fortune 500 US-based pharma giant</span>
-              </div>
-            </div>
-            <div className="impact-metrics-row">
-              <Metric label="Duration" value="12 weeks"/>
-              <Metric label="Total users" value="450"/>
-              <Metric label="Habits acquired" value="312"/>
-            </div>
-            <div className="impact-chart-panel">
-              <div className="chart-title">Weekly actions</div>
-              <div className="bar-chart" aria-label="Weekly actions: 532, 501, 434, 488">
-                {weeklyActions.map((value, index) => (
-                  <div className="bar-column" key={value}>
-                    <span>{value}</span>
-                    <i style={{height: `${value / 6}px`}}/>
-                    <small>Week {index + 1}</small>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </article>
+        <div className="ne-compare-table" role="table" aria-label="LMS and Nudge Engine comparison">
+          <div className="ne-compare-cell ne-compare-head label" />
+          <div className="ne-compare-cell ne-compare-head lms">Your LMS</div>
+          <div className="ne-compare-cell ne-compare-head nudge">Nudge Engine</div>
 
-          <article className="impact-program-card">
-            <div className="impact-card-heading">
-              <span className="impact-icon impact-icon-blue"><Icon name="spark" size={22}/></span>
-              <div>
-                <h3>New Joiner Onboarding &amp; Skills Development</h3>
-                <span className="impact-client">India-based tech GCC</span>
-              </div>
-            </div>
-            <div className="impact-metrics-row">
-              <Metric label="Duration" value="16 weeks"/>
-              <Metric label="Total users" value="280"/>
-              <Metric label="Behavior change" value="312"/>
-            </div>
-            <div className="impact-chart-panel">
-              <div className="chart-title">Total actions successfully nudged</div>
-              <div className="line-chart-wrap">
-                <svg viewBox="0 0 240 190" role="img" aria-label="Rising actions over six weeks">
-                  <line x1="18" y1="180" x2="225" y2="180" className="chart-axis"/>
-                  <line x1="18" y1="20" x2="18" y2="180" className="chart-axis"/>
-                  <polyline points={linePoints} className="chart-line"/>
-                  {onboardingPoints.map((value, index) => (
-                    <circle key={value} cx={18 + index * 40} cy={180 - value * .38} r="4.5" className="chart-point"/>
-                  ))}
-                </svg>
-                <div className="week-labels">{onboardingPoints.map((_, index) => <span key={index}>W{index + 1}</span>)}</div>
-              </div>
-            </div>
-          </article>
-
-          <article className="impact-program-card">
-            <div className="impact-card-heading">
-              <span className="impact-icon impact-icon-green"><Icon name="shield" size={22}/></span>
-              <div>
-                <h3>People Leadership &amp; Psychological Safety</h3>
-                <span className="impact-client">European financial services company</span>
-              </div>
-            </div>
-            <div className="impact-metrics-row">
-              <Metric label="Duration" value="20 weeks"/>
-              <Metric label="Total users" value="125"/>
-              <Metric label="Total actions" value="7,250"/>
-            </div>
-            <div className="impact-chart-panel">
-              <div className="chart-title">Behavior change funnel</div>
-              <div className="funnel-chart">
-                {funnelSteps.map(([label, value], index) => (
-                  <div key={label} className={`funnel-row f${index + 1}`}>
-                    <span>{label}</span>
-                    <i/>
-                    <b>{value}</b>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </article>
-
-          <article className="impact-program-card">
-            <div className="impact-card-heading">
-              <span className="impact-icon impact-icon-purple"><Icon name="chart" size={22}/></span>
-              <div>
-                <h3>Driving HR Competencies</h3>
-                <span className="impact-client">Australian manufacturing conglomerate</span>
-              </div>
-            </div>
-            <div className="impact-metrics-row">
-              <Metric label="Duration" value="18 weeks"/>
-              <Metric label="Total users" value="95"/>
-              <Metric label="Total habits" value="69"/>
-            </div>
-            <div className="impact-chart-panel">
-              <div className="chart-title">User engagement</div>
-              <div className="donut-layout">
-                <div className="engagement-donut" aria-label="70.6 percent consistently active, 17.6 percent sometimes active, 11.8 percent inactive"/>
-                <div className="donut-legend">
-                  <span className="green-dot"><b>70.6%</b> Consistently active</span>
-                  <span className="yellow-dot"><b>17.6%</b> Sometimes active</span>
-                  <span className="red-dot"><b>11.8%</b> Inactive users</span>
-                </div>
-              </div>
-            </div>
-          </article>
+          {compareRows.map(row => <Fragment key={row.label}>
+            <div className="ne-compare-cell ne-compare-label">{row.label}</div>
+            <div className="ne-compare-cell ne-compare-value"><strong>{row.lms.title}</strong><span>{row.lms.copy}</span></div>
+            <div className="ne-compare-cell ne-compare-value nudge"><strong>{row.nudge.title}</strong><span>{row.nudge.copy}</span></div>
+          </Fragment>)}
         </div>
       </div>
     </section>
 
-    <section className="soft-section compact-section">
+    <section id="ne-how">
       <div className="container">
-        <SectionHeader eyebrow="WHERE IT CAN BE USED" title="For programs where application matters after the classroom." />
-        <div className="use-case-chip-grid">
-          {['People leadership', 'Psychological safety', 'Employee wellbeing', 'New joiner onboarding', 'HR competencies', 'Customer centricity'].map(item => <span key={item}>{item}</span>)}
+        <SectionHeader
+          eyebrow="How Nudge Engine works"
+          title="From training content to everyday workplace actions."
+          copy="The application journey starts with what was taught, adapts to the individual, and keeps the commitment alive after the training ends."
+        />
+        <div className="ne-journey">
+          {journey.map(step => <article className="ne-step" key={step.num}>
+            <div className="ne-step-num">{step.num}</div>
+            <span className="ne-step-chip">{step.chip}</span>
+            <h3>{step.title}</h3>
+            <p>{step.copy}</p>
+          </article>)}
+        </div>
+        <div className="ne-voluntary"><span className="ne-voluntary-badge">VOLUNTARY</span><p>Participants choose what they commit to and how they want to apply it. Accountability strengthens a commitment they have made themselves.</p></div>
+      </div>
+    </section>
+
+    <section id="ne-measure" className="ne-measure">
+      <div className="container">
+        <div className="ne-measure-header">
+          <div>
+            <p className="eyebrow">Measurable application</p>
+            <h2>See what happened after the training.</h2>
+          </div>
+          <p>HR gets an application dashboard for each training program and batch, moving the conversation from attendance to workplace action.</p>
+        </div>
+
+        <div className="ne-dashboard-shell" aria-label="Illustrative training application dashboard">
+          <div className="ne-dashboard-top">
+            <div className="ne-dashboard-title"><strong>Training Application Dashboard</strong><span>Leadership Essentials · Cohort 03</span></div>
+            <div className="ne-filter">Training program ▾</div>
+          </div>
+          <div className="ne-metrics">
+            <div className="ne-metric"><span>Participants</span><strong>120</strong></div>
+            <div className="ne-metric"><span>Actions committed</span><strong>684</strong></div>
+            <div className="ne-metric"><span>Actions completed</span><strong>521</strong></div>
+            <div className="ne-metric highlight"><span>Application rate</span><strong>76%</strong></div>
+          </div>
+          <div className="ne-dashboard-bottom">
+            <div className="ne-chart-card">
+              <div className="ne-chart-title">Application over time</div>
+              <div className="ne-chart" aria-label="Illustrative six week application chart">
+                {weeklyApplication.map((value, index) => <div className="ne-week" key={index}>
+                  <div className="ne-bar" style={{ height: `${value}%` }} />
+                  <span>W{index + 1}</span>
+                </div>)}
+              </div>
+            </div>
+            <div className="ne-cohort-card">
+              <div className="ne-cohort-title">Application by cohort</div>
+              {cohorts.map(cohort => <div className="ne-cohort-row" key={cohort.label}>
+                <div className="ne-cohort-label"><span>{cohort.label}</span><span>{cohort.value}%</span></div>
+                <div className="ne-track"><div className="ne-fill" style={{ width: `${cohort.value}%` }} /></div>
+              </div>)}
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <CTA title="Extend training into the flow of work" copy="Share the program, audience and desired behaviors. We will show how Actions Engine can support application and measurement."/>
+    <section className="ne-closing">
+      <div className="container">
+        <div className="ne-closing-card">
+          <h2>Move the conversation from <span className="ne-closing-highlight">“Did they attend?”</span> to <span className="ne-closing-highlight">“Did they apply it?”</span></h2>
+          <ButtonLink href="/#contact">Request a demo</ButtonLink>
+        </div>
+      </div>
+    </section>
   </>;
 }
