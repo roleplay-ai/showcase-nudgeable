@@ -181,17 +181,17 @@ export function InsightsVideoLibrary() {
           <VideoCarouselPrev onClick={() => scrollTrack(workflowsTrackRef, -1)} label="Previous workflows" />
           <div className="insights-workflow-grid" ref={workflowsTrackRef}>
             {workflows.map(video => <article className="insights-video-card insights-workflow-card" key={video.id}>
-                <VideoThumbnail video={video} onPlay={openVideo} />
-                <div className="insights-card-copy">
-                  <h3>{video.title}</h3>
-                  {video.publishedAt && <time className="insights-date" dateTime={video.publishedAt}>{formatVideoDate(video.publishedAt)}</time>}
-                  {video.description && <p>{video.description}</p>}
-                  <div className="insights-card-actions">
+              <VideoThumbnail video={video} onPlay={openVideo} />
+              <div className="insights-card-copy">
+                <h3>{video.title}</h3>
+                {video.publishedAt && <time className="insights-date" dateTime={video.publishedAt}>{formatVideoDate(video.publishedAt)}</time>}
+                {video.description && <p>{video.description}</p>}
+                {/* <div className="insights-card-actions">
                     <button type="button" onClick={() => openVideo(video)}>Watch workflow</button>
                     <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
-                  </div>
-                </div>
-              </article>)}
+                  </div> */}
+              </div>
+            </article>)}
           </div>
           <VideoCarouselNext onClick={() => scrollTrack(workflowsTrackRef, 1)} label="Next workflows" />
         </div>
