@@ -1,18 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { brandedEmail, detailsTable, EMAIL_RECIPIENTS } from '@/lib/email';
 
 export const runtime = 'nodejs';
-
-const RECIPIENTS = ['team@nudgeable.ai', 'egauravpatel@gmail.com', 'work.nudgeable@gmail.com'] as const;
-
-function escapeHtml(value: string) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
 
 export async function POST(request: NextRequest) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -34,20 +24,23 @@ export async function POST(request: NextRequest) {
 
   const from = process.env.CONTACT_FROM_EMAIL || 'Nudgeable <team@nudgeable.app>';
   const resend = new Resend(apiKey);
-  const safeEmail = escapeHtml(email);
+  const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nudgeable.ai').replace(/\/$/, '');
 
   try {
     const notify = await resend.emails.send({
       from,
-      to: [...RECIPIENTS],
+      to: [...EMAIL_RECIPIENTS],
       replyTo: email,
       subject: `Newsletter signup: ${email}`,
       text: `A new subscriber joined the Nudgeable newsletter.\n\nEmail: ${email}`,
-      html: `
-        <h2>New newsletter signup</h2>
-        <p><strong>Email:</strong> ${safeEmail}</p>
-        <p>This person subscribed from the Insights blogs page.</p>
-      `
+      html: brandedEmail({
+        preview: `New newsletter signup from ${email}`,
+        eyebrow: 'Newsletter',
+        title: 'A new subscriber joined.',
+        intro: 'Someone subscribed from the Insights blogs page.',
+        bodyHtml: detailsTable([{ label: 'Email', value: email }]),
+        cta: { label: 'Reply to subscriber', href: `mailto:${email}` }
+      })
     });
 
     if (notify.error) {
@@ -65,14 +58,18 @@ export async function POST(request: NextRequest) {
         'You’ll get practical ideas about AI, behavior and work — one useful insight at a time, with no daily noise.',
         '',
         'Nudgeable',
-        'https://www.nudgeable.ai/insights/blogs'
+        `${site}/insights/blogs`
       ].join('\n'),
-      html: `
-        <h2>You’re on the list.</h2>
-        <p>Thanks for subscribing to the Nudgeable newsletter.</p>
-        <p>You’ll get practical ideas about AI, behavior and work — one useful insight at a time, with no daily noise.</p>
-        <p><a href="https://www.nudgeable.ai/insights/blogs">Read the latest articles</a></p>
-      `
+      html: brandedEmail({
+        preview: 'Practical ideas about AI, behavior and work — one useful insight at a time.',
+        eyebrow: 'You’re subscribed',
+        title: 'You’re on the list.',
+        intro: 'Thanks for joining the Nudgeable newsletter. You’ll get practical ideas about AI, behavior and work — one useful insight at a time, with no daily noise.',
+        bodyHtml: `
+          <p style="margin:0 0 22px;font-size:16px;line-height:1.6;color:#6e6870;">While you wait, the latest articles are on the Insights page.</p>
+        `,
+        cta: { label: 'Read the latest articles', href: `${site}/insights/blogs` }
+      })
     });
 
     if (confirm.error) {

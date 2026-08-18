@@ -1,22 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { brandedEmail, detailsTable, EMAIL_RECIPIENTS } from '@/lib/email';
 
 export const runtime = 'nodejs';
-
-const RECIPIENTS = ['team@nudgeable.ai', 'egauravpatel@gmail.com', 'work.nudgeable@gmail.com'] as const;
 
 function textValue(form: FormData, key: string) {
   const value = form.get(key);
   return typeof value === 'string' ? value.trim() : '';
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
 }
 
 export async function POST(request: NextRequest) {
@@ -59,22 +49,27 @@ export async function POST(request: NextRequest) {
     message || '(No message provided)'
   ].join('\n');
 
-  const html = `
-    <h2>New Nudgeable enquiry</h2>
-    <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-    <p><strong>Work email:</strong> ${escapeHtml(email)}</p>
-    <p><strong>Company:</strong> ${escapeHtml(company)}</p>
-    <p><strong>Interest:</strong> ${escapeHtml(interest)}</p>
-    <p><strong>Team size:</strong> ${escapeHtml(teamSize)}</p>
-    <p><strong>Message:</strong></p>
-    <p>${escapeHtml(message || '(No message provided)').replaceAll('\n', '<br />')}</p>
-  `;
+  const html = brandedEmail({
+    preview: `New enquiry from ${name} at ${company}`,
+    eyebrow: 'New enquiry',
+    title: `${name} wants to talk.`,
+    intro: 'A new enquiry arrived from the Nudgeable website.',
+    bodyHtml: detailsTable([
+      { label: 'Name', value: name },
+      { label: 'Work email', value: email },
+      { label: 'Company', value: company },
+      { label: 'Interest', value: interest },
+      { label: 'Team size', value: teamSize },
+      { label: 'Message', value: message || '(No message provided)' }
+    ]),
+    cta: { label: `Reply to ${name}`, href: `mailto:${email}` }
+  });
 
   try {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from,
-      to: [...RECIPIENTS],
+      to: [...EMAIL_RECIPIENTS],
       replyTo: email,
       subject,
       text,
