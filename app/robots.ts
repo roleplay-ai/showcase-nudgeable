@@ -17,8 +17,8 @@ export default function robots(): MetadataRoute.Robots {
   const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nudgeable.ai';
   return {
     rules: [
-      { userAgent: '*', allow: '/', disallow: ['/api/'] },
-      { userAgent: AI_CRAWLER_AGENTS, allow: '/', disallow: ['/api/'] }
+      { userAgent: '*', allow: '/', disallow: ['/api/', '/insights/blogs/write'] },
+      { userAgent: AI_CRAWLER_AGENTS, allow: '/', disallow: ['/api/', '/insights/blogs/write'] }
     ],
     sitemap: `${base}/sitemap.xml`,
     host: base

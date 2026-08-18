@@ -10,7 +10,8 @@ const nextConfig = {
     ],
     remotePatterns: [
       { protocol: 'https', hostname: 'i.ytimg.com' },
-      { protocol: 'https', hostname: 'img.youtube.com' }
+      { protocol: 'https', hostname: 'img.youtube.com' },
+      { protocol: 'https', hostname: '*.supabase.co' }
     ]
   },
   async redirects() {
@@ -21,6 +22,8 @@ const nextConfig = {
       { source: '/nudge-engine', destination: '/nudgeengine', permanent: true },
       { source: '/videos', destination: '/insights', permanent: true },
       { source: '/ai-shorts', destination: '/insights', permanent: true },
+      { source: '/blogs', destination: '/insights/blogs', permanent: true },
+      { source: '/blog', destination: '/insights/blogs', permanent: true },
       { source: '/practice-lab', destination: 'https://work.nudgeable.app/', permanent: true },
       { source: '/ai-training', destination: '/#training', permanent: true },
       { source: '/about', destination: '/#about', permanent: true },
