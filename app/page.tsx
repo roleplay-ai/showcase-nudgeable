@@ -12,7 +12,7 @@ import { LabWorkflowCards } from '@/components/LabWorkflowCards';
 import { WorkflowVideoGrid } from '@/components/WorkflowVideoGrid';
 import { aiTools, featuredAiTools } from '@/components/data';
 
-const PRACTICE_LAB_DEMO_URL = process.env.NEXT_PUBLIC_PRACTICE_LAB_DEMO_URL || 'https://youtu.be/_BWa3U1x920';
+const PRACTICE_LAB_DEMO_URL = process.env.NEXT_PUBLIC_PRACTICE_LAB_DEMO_URL || 'https://youtu.be/OJADHikd8BM?si=koQJaqmdxLmjXFnO';
 
 export const metadata: Metadata = {
   title: 'Practical AI for Work',
