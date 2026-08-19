@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Fragment } from 'react';
 import { ButtonLink } from '@/components/ButtonLink';
+import { Icon } from '@/components/Icon';
 import { SectionHeader } from '@/components/SectionHeader';
 
 export const metadata: Metadata = {
@@ -46,6 +47,20 @@ const journey = [
   { num: '05', chip: 'IMMEDIATE REWARD', title: 'Create impact', copy: 'Completed actions add to the cohort’s Action Bank, unlocking social-impact milestones such as planting trees, funding meals or supporting education.' }
 ];
 
+const HERO_VIDEO_URL = 'https://youtu.be/uOwDFQIvd4Q?si=DXfNYOojFOqjkf-F';
+
+function getYouTubeVideoId(videoUrl: string) {
+  try {
+    const url = new URL(videoUrl);
+    if (url.hostname.includes('youtu.be')) return url.pathname.replace('/', '');
+    return url.searchParams.get('v') || url.pathname.split('/embed/')[1] || '';
+  } catch {
+    return '';
+  }
+}
+
+const heroVideoId = getYouTubeVideoId(HERO_VIDEO_URL) || 'uOwDFQIvd4Q';
+
 const weeklyApplication = [58, 74, 68, 83, 78, 88];
 const cohorts = [
   { label: 'Cohort 03', value: 76 },
@@ -66,16 +81,12 @@ export default function NudgeEnginePage() {
           </div>
           <p className="ne-hero-note">Designed for the application phase that begins when participants leave the training room.</p>
         </div>
-        <div>
-          <aside className="ne-gap-card" aria-label="Training application gap">
-            <div className="ne-gap-label">Training-to-application rate</div>
-            <div className="ne-big-number">&lt;20<span className="ne-percent">%</span></div>
-            <div className="ne-gap-meter" aria-label="Less than 20 percent applied and more than 80 percent application gap"><span /><span /></div>
-            <div className="ne-gap-meter-labels"><span>Applied &lt;20%</span><span>&gt;80% application gap</span></div>
-            <p className="ne-gap-question">What happens to the learning after the session ends?</p>
-            <div className="ne-gap-foot">The gap Nudge Engine is built to close</div>
-          </aside>
-        </div>
+        <a className="ne-hero-video" href={HERO_VIDEO_URL} target="_blank" rel="noopener noreferrer" aria-label="Watch Actions Engine demo">
+          <div className="ne-hero-video-frame">
+            <img src={`https://i.ytimg.com/vi/${heroVideoId}/hqdefault.jpg`} alt="" />
+            <span className="demo-play" aria-hidden="true"><Icon name="play" size={18} /></span>
+          </div>
+        </a>
       </div>
     </section>
 

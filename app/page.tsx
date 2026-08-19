@@ -13,6 +13,31 @@ import { WorkflowVideoGrid } from '@/components/WorkflowVideoGrid';
 import { aiTools, featuredAiTools } from '@/components/data';
 
 const PRACTICE_LAB_DEMO_URL = process.env.NEXT_PUBLIC_PRACTICE_LAB_DEMO_URL || 'https://youtu.be/OJADHikd8BM?si=koQJaqmdxLmjXFnO';
+const AI_COACH_DEMO_URL = process.env.NEXT_PUBLIC_AI_COACH_DEMO_URL || 'https://youtu.be/mBlYRcCmp_s?si=XiovLO33ovNB0Upz';
+const ACTIONS_ENGINE_DEMO_URL = process.env.NEXT_PUBLIC_ACTIONS_ENGINE_DEMO_URL || 'https://youtu.be/uOwDFQIvd4Q?si=DXfNYOojFOqjkf-F';
+
+function getYouTubeVideoId(videoUrl: string) {
+  try {
+    const url = new URL(videoUrl);
+    if (url.hostname.includes('youtu.be')) return url.pathname.replace('/', '');
+    return url.searchParams.get('v') || url.pathname.split('/embed/')[1] || '';
+  } catch {
+    return '';
+  }
+}
+
+const practiceLabDemoId = getYouTubeVideoId(PRACTICE_LAB_DEMO_URL) || 'OJADHikd8BM';
+const aiCoachDemoId = getYouTubeVideoId(AI_COACH_DEMO_URL) || 'mBlYRcCmp_s';
+const actionsEngineDemoId = getYouTubeVideoId(ACTIONS_ENGINE_DEMO_URL) || 'uOwDFQIvd4Q';
+
+function ProductDemoLink({ href, videoId, label }: { href: string; videoId: string; label: string }) {
+  return (
+    <a className="product-demo-placeholder" href={href} target="_blank" rel="noopener noreferrer" aria-label={`Watch ${label} demo`}>
+      <img src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`} alt="" />
+      <span className="demo-play" aria-hidden="true"><Icon name="play" size={18} /></span>
+    </a>
+  );
+}
 
 export const metadata: Metadata = {
   title: 'Practical AI for Work',
@@ -127,7 +152,7 @@ export default function Home() {
         </div>
         <div className="product-detail-grid compact-product-grid">
           <article className="product-detail-card lab">
-            <div className="product-card-image lab-card-image"><Image src="/assets/ai-practice-lab-full.png" alt="AI Practice Lab" width={1024} height={631} /></div>
+            <ProductDemoLink href={PRACTICE_LAB_DEMO_URL} videoId={practiceLabDemoId} label="AI Practice Lab" />
             <span className="product-label">Open access</span>
             <h3>AI Practice Lab</h3>
             <p>Free AI for Work workflows and current content, with enterprise customization and reporting.</p>
@@ -136,7 +161,7 @@ export default function Home() {
           </article>
 
           <article className="product-detail-card coach">
-            <div className="product-card-image coach-card-image"><Image src="/assets/ai-coach.png" alt="AI Coach roleplay interface" width={2048} height={1177} /></div>
+            <ProductDemoLink href={AI_COACH_DEMO_URL} videoId={aiCoachDemoId} label="AI Coach" />
             <span className="product-label">AI roleplays</span>
             <h3>AI Coach</h3>
             <p>Voice-based practice for sales and leadership conversations with objective feedback.</p>
@@ -145,7 +170,7 @@ export default function Home() {
           </article>
 
           <article className="product-detail-card nudge">
-            <div className="product-card-image actions-card-image"><Image src="/assets/actions-engine.png" alt="Actions Engine participant interface" width={702} height={1426} /></div>
+            <ProductDemoLink href={ACTIONS_ENGINE_DEMO_URL} videoId={actionsEngineDemoId} label="Actions Engine" />
             <span className="product-label">Training application</span>
             <h3>Actions Engine</h3>
             <p>Personalized actions, workplace nudges and application data after classroom training.</p>
