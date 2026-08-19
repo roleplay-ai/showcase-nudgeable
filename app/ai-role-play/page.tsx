@@ -67,6 +67,8 @@ const steps = [
     ],
     href: '/#contact',
     image: `/assets/coach-scenario.png?v=${COACH_STEP_IMAGE_VERSION}`,
+    imageWidth: 522,
+    imageHeight: 458,
     alt: 'Scenario design for AI Coach'
   },
   {
@@ -83,6 +85,8 @@ const steps = [
     ],
     href: '/#contact',
     image: `/assets/coach-roleplay.png?v=${COACH_STEP_IMAGE_VERSION}`,
+    imageWidth: 524,
+    imageHeight: 453,
     alt: 'Voice roleplay experience in AI Coach'
   },
   {
@@ -99,6 +103,8 @@ const steps = [
     ],
     href: '/#contact',
     image: `/assets/coach-insights.png?v=${COACH_STEP_IMAGE_VERSION}`,
+    imageWidth: 526,
+    imageHeight: 454,
     alt: 'AI Coach assessment and insights report'
   }
 ] as const;
@@ -150,7 +156,7 @@ export default function AICoachPage() {
               <a className="button button-secondary button-compact coach-step-link" href={step.href}>Learn more</a>
             </div>
             <div className="coach-step-image">
-              <Image src={step.image} alt={step.alt} width={1225} height={574}/>
+              <Image src={step.image} alt={step.alt} width={step.imageWidth} height={step.imageHeight}/>
             </div>
           </article>)}
         </div>

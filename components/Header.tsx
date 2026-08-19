@@ -9,9 +9,13 @@ import { Icon } from './Icon';
 const PRACTICE_LAB_URL = 'https://work.nudgeable.app/';
 
 const nav = [
-  { href: PRACTICE_LAB_URL, label: 'AI Practice Lab', external: true },
   { href: '/ai-role-play', label: 'AI Coach' },
   { href: '/nudgeengine', label: 'Actions Engine' }
+];
+
+const labLinks = [
+  { href: '/ai-practice-lab', label: 'Overview' },
+  { href: PRACTICE_LAB_URL, label: 'Access Lab', external: true }
 ];
 
 const insightsLinks = [
@@ -22,34 +26,42 @@ const insightsLinks = [
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [labOpen, setLabOpen] = useState(false);
   const [insightsOpen, setInsightsOpen] = useState(false);
   const [leavingToLab, setLeavingToLab] = useState(false);
   const hideLoaderTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const labRef = useRef<HTMLDivElement>(null);
   const insightsRef = useRef<HTMLDivElement>(null);
+  const labActive = pathname === '/ai-practice-lab';
   const insightsActive = pathname === '/insights' || pathname.startsWith('/insights/');
 
   useEffect(() => {
     function closeOnEscape(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         setOpen(false);
+        setLabOpen(false);
         setInsightsOpen(false);
         setLeavingToLab(false);
       }
     }
-    function closeInsights(event: MouseEvent) {
+    function closeDropdowns(event: MouseEvent) {
+      if (labRef.current && !labRef.current.contains(event.target as Node)) {
+        setLabOpen(false);
+      }
       if (insightsRef.current && !insightsRef.current.contains(event.target as Node)) {
         setInsightsOpen(false);
       }
     }
     window.addEventListener('keydown', closeOnEscape);
-    window.addEventListener('mousedown', closeInsights);
+    window.addEventListener('mousedown', closeDropdowns);
     return () => {
       window.removeEventListener('keydown', closeOnEscape);
-      window.removeEventListener('mousedown', closeInsights);
+      window.removeEventListener('mousedown', closeDropdowns);
     };
   }, []);
 
   useEffect(() => {
+    setLabOpen(false);
     setInsightsOpen(false);
   }, [pathname]);
 
@@ -59,6 +71,7 @@ export function Header() {
 
   function openPracticeLab() {
     setOpen(false);
+    setLabOpen(false);
     setInsightsOpen(false);
     setLeavingToLab(true);
     if (hideLoaderTimer.current) clearTimeout(hideLoaderTimer.current);
@@ -67,6 +80,7 @@ export function Header() {
 
   function closeMenus() {
     setOpen(false);
+    setLabOpen(false);
     setInsightsOpen(false);
   }
 
@@ -86,9 +100,36 @@ export function Header() {
           <Icon name={open ? 'close' : 'menu'} />
         </button>
         <nav id="primary-navigation" className={open ? 'main-nav open' : 'main-nav'} aria-label="Primary navigation">
-          {nav.map(item => item.external
-            ? <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={openPracticeLab}>{item.label}</a>
-            : <Link key={item.href} href={item.href} aria-current={pathname === item.href ? 'page' : undefined} className={pathname === item.href ? 'active' : ''} onClick={closeMenus}>{item.label}</Link>
+          <div ref={labRef} className={`nav-dropdown${labOpen ? ' open' : ''}${labActive ? ' active' : ''}`}>
+            <button
+              type="button"
+              className="nav-dropdown-toggle"
+              aria-expanded={labOpen}
+              aria-haspopup="true"
+              aria-controls="lab-menu"
+              onClick={() => setLabOpen(value => !value)}
+            >
+              AI Practice Lab
+              <Icon name="chevron" size={16} />
+            </button>
+            <div id="lab-menu" className="nav-dropdown-menu" role="menu">
+              {labLinks.map(item => item.external
+                ? <a key={item.href} href={item.href} role="menuitem" target="_blank" rel="noopener noreferrer" onClick={openPracticeLab}>{item.label}</a>
+                : <Link
+                    key={item.href}
+                    href={item.href}
+                    role="menuitem"
+                    aria-current={pathname === item.href ? 'page' : undefined}
+                    className={pathname === item.href ? 'active' : ''}
+                    onClick={closeMenus}
+                  >
+                    {item.label}
+                  </Link>
+              )}
+            </div>
+          </div>
+          {nav.map(item =>
+            <Link key={item.href} href={item.href} aria-current={pathname === item.href ? 'page' : undefined} className={pathname === item.href ? 'active' : ''} onClick={closeMenus}>{item.label}</Link>
           )}
           <div ref={insightsRef} className={`nav-dropdown${insightsOpen ? ' open' : ''}${insightsActive ? ' active' : ''}`}>
             <button
