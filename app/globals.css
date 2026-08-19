@@ -5399,7 +5399,7 @@ h2 {
 .ne-hero-grid {
   display: grid;
   grid-template-columns: 1.05fr .95fr;
-  gap: 60px;
+  gap: 56px;
   align-items: center;
 }
 
@@ -5433,17 +5433,20 @@ h2 {
 
 .ne-hero-video {
   display: block;
+  width: 100%;
+  max-width: 560px;
+  justify-self: end;
   border-radius: 24px;
   background: var(--ink);
-  padding: 10px;
+  padding: 8px;
   box-shadow: 0 18px 50px rgba(34, 29, 35, .15);
 }
 
 .ne-hero-video-frame {
   position: relative;
-  padding-top: 56.25%;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 20px;
   background: #111;
 }
 
@@ -5453,7 +5456,7 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .35s ease;
+  object-position: center;
 }
 
 .ne-hero-video-frame::after {
@@ -5471,11 +5474,6 @@ h2 {
   z-index: 1;
   transform: translate(-50%, -50%);
   transition: transform .2s ease;
-}
-
-.ne-hero-video:hover .ne-hero-video-frame img,
-.ne-hero-video:focus-visible .ne-hero-video-frame img {
-  transform: scale(1.04);
 }
 
 .ne-hero-video:hover .ne-hero-video-frame .demo-play,
@@ -6089,6 +6087,13 @@ h2 {
 
   .ne-hero-grid {
     gap: 42px;
+  }
+
+  .ne-hero-video {
+    width: 100%;
+    max-width: 560px;
+    justify-self: center;
+    margin-right: 0;
   }
 
   .ne-barriers {

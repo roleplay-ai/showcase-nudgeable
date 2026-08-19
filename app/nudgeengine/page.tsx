@@ -83,7 +83,7 @@ export default function NudgeEnginePage() {
         </div>
         <a className="ne-hero-video" href={HERO_VIDEO_URL} target="_blank" rel="noopener noreferrer" aria-label="Watch Actions Engine demo">
           <div className="ne-hero-video-frame">
-            <img src={`https://i.ytimg.com/vi/${heroVideoId}/hqdefault.jpg`} alt="" />
+            <img src={`https://i.ytimg.com/vi/${heroVideoId}/maxresdefault.jpg`} alt="" />
             <span className="demo-play" aria-hidden="true"><Icon name="play" size={18} /></span>
           </div>
         </a>
