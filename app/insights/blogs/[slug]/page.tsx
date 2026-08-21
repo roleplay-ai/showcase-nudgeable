@@ -11,6 +11,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const post = await getPublishedPost(slug);
   if (!post) return { title: 'Blog' };
+  const shareImage = post.coverImage
+    ? [{ url: post.coverImage }]
+    : [{ url: '/assets/og-default.png', width: 1200, height: 630, alt: 'Nudgeable' }];
   return {
     title: post.title,
     description: post.excerpt,
@@ -20,7 +23,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: post.excerpt,
       url: `/insights/blogs/${post.slug}`,
       type: 'article',
-      images: post.coverImage ? [{ url: post.coverImage }] : undefined
+      images: shareImage
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: shareImage.map(image => image.url)
     }
   };
 }
