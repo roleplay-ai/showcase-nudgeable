@@ -5,6 +5,7 @@ import { ButtonLink } from '@/components/ButtonLink';
 import { ContactForm } from '@/components/ContactForm';
 import { Icon } from '@/components/Icon';
 import { LogoStrip } from '@/components/LogoStrip';
+import { ProductDemoLink } from '@/components/ProductDemoLink';
 import { SessionPhotoRow } from '@/components/SessionPhotoRow';
 import { TestimonialGrid } from '@/components/TestimonialGrid';
 import { YouTubeGrid } from '@/components/YouTubeGrid';
@@ -30,14 +31,6 @@ const practiceLabDemoId = getYouTubeVideoId(PRACTICE_LAB_DEMO_URL) || 'OJADHikd8
 const aiCoachDemoId = getYouTubeVideoId(AI_COACH_DEMO_URL) || 'mBlYRcCmp_s';
 const actionsEngineDemoId = getYouTubeVideoId(ACTIONS_ENGINE_DEMO_URL) || 'uOwDFQIvd4Q';
 
-function ProductDemoLink({ href, videoId, label }: { href: string; videoId: string; label: string }) {
-  return (
-    <a className="product-demo-placeholder" href={href} target="_blank" rel="noopener noreferrer" aria-label={`Watch ${label} demo`}>
-      <img src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`} alt="" />
-      <span className="demo-play" aria-hidden="true"><Icon name="play" size={18} /></span>
-    </a>
-  );
-}
 
 export const metadata: Metadata = {
   title: 'Practical AI for Work',
@@ -152,7 +145,7 @@ export default function Home() {
         </div>
         <div className="product-detail-grid compact-product-grid">
           <article className="product-detail-card lab">
-            <ProductDemoLink href={PRACTICE_LAB_DEMO_URL} videoId={practiceLabDemoId} label="AI Practice Lab" />
+            <ProductDemoLink videoId={practiceLabDemoId} label="AI Practice Lab" />
             <span className="product-label">Open access</span>
             <h3>AI Practice Lab</h3>
             <p>Free AI for Work workflows and current content, with enterprise customization and reporting.</p>
@@ -161,7 +154,7 @@ export default function Home() {
           </article>
 
           <article className="product-detail-card coach">
-            <ProductDemoLink href={AI_COACH_DEMO_URL} videoId={aiCoachDemoId} label="AI Coach" />
+            <ProductDemoLink videoId={aiCoachDemoId} label="AI Coach" />
             <span className="product-label">AI roleplays</span>
             <h3>AI Coach</h3>
             <p>Voice-based practice for sales and leadership conversations with objective feedback.</p>
@@ -170,7 +163,7 @@ export default function Home() {
           </article>
 
           <article className="product-detail-card nudge">
-            <ProductDemoLink href={ACTIONS_ENGINE_DEMO_URL} videoId={actionsEngineDemoId} label="Actions Engine" />
+            <ProductDemoLink videoId={actionsEngineDemoId} label="Actions Engine" />
             <span className="product-label">Training application</span>
             <h3>Actions Engine</h3>
             <p>Personalized actions, workplace nudges and application data after classroom training.</p>

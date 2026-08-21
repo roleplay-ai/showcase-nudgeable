@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Fragment } from 'react';
 import { ButtonLink } from '@/components/ButtonLink';
-import { Icon } from '@/components/Icon';
 import { SectionHeader } from '@/components/SectionHeader';
 
 export const metadata: Metadata = {
@@ -81,12 +80,11 @@ export default function NudgeEnginePage() {
           </div>
           <p className="ne-hero-note">Designed for the application phase that begins when participants leave the training room.</p>
         </div>
-        <a className="ne-hero-video" href={HERO_VIDEO_URL} target="_blank" rel="noopener noreferrer" aria-label="Watch Actions Engine demo">
+        <div className="ne-hero-video">
           <div className="ne-hero-video-frame">
-            <img src={`https://i.ytimg.com/vi/${heroVideoId}/maxresdefault.jpg`} alt="" />
-            <span className="demo-play" aria-hidden="true"><Icon name="play" size={18} /></span>
+            <iframe src={`https://www.youtube-nocookie.com/embed/${heroVideoId}?rel=0`} title="Actions Engine Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
           </div>
-        </a>
+        </div>
       </div>
     </section>
 
