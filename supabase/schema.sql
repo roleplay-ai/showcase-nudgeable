@@ -12,13 +12,19 @@ create table if not exists public.blog_posts (
   category text not null default 'AI at Work',
   published boolean not null default true,
   published_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  meta_title text,
+  meta_description text
 );
 
 create index if not exists blog_posts_published_at_idx
   on public.blog_posts (published_at desc);
 
 alter table public.blog_posts add column if not exists category text not null default 'AI at Work';
+-- SEO fields: optional overrides for the <title> tag and meta description.
+-- Left blank, the site falls back to the post title / short excerpt.
+alter table public.blog_posts add column if not exists meta_title text;
+alter table public.blog_posts add column if not exists meta_description text;
 
 alter table public.blog_posts enable row level security;
 

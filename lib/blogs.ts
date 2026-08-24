@@ -22,6 +22,8 @@ type BlogRow = {
   published: boolean;
   published_at: string;
   updated_at: string;
+  meta_title?: string | null;
+  meta_description?: string | null;
 };
 
 function fromRow(row: BlogRow): BlogPost {
@@ -36,7 +38,9 @@ function fromRow(row: BlogRow): BlogPost {
     author: row.author,
     published: row.published,
     publishedAt: row.published_at,
-    updatedAt: row.updated_at
+    updatedAt: row.updated_at,
+    metaTitle: row.meta_title || undefined,
+    metaDescription: row.meta_description || undefined
   };
 }
 
@@ -52,7 +56,9 @@ function toRow(post: BlogPost): BlogRow {
     author: post.author,
     published: post.published,
     published_at: post.publishedAt,
-    updated_at: post.updatedAt
+    updated_at: post.updatedAt,
+    meta_title: post.metaTitle || null,
+    meta_description: post.metaDescription || null
   };
 }
 
@@ -107,6 +113,8 @@ type BlogInput = {
   published?: boolean;
   slug?: string;
   publishedAt?: string;
+  metaTitle?: string;
+  metaDescription?: string;
 };
 
 async function slugIndex() {
@@ -131,7 +139,9 @@ function normalizePost(input: BlogInput, posts: Array<{ id: string; slug: string
     author: (input.author || existing?.author || 'Nudgeable').trim() || 'Nudgeable',
     published,
     publishedAt: existing?.publishedAt || input.publishedAt || now,
-    updatedAt: now
+    updatedAt: now,
+    metaTitle: (input.metaTitle || '').trim() || undefined,
+    metaDescription: (input.metaDescription || '').trim() || undefined
   };
 }
 

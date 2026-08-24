@@ -10,6 +10,8 @@ export type BlogPost = {
   published: boolean;
   publishedAt: string;
   updatedAt: string;
+  metaTitle?: string;
+  metaDescription?: string;
 };
 
 export const BLOG_CATEGORIES = ['AI at Work', 'Behavioral Science', 'Workplace', 'HR & Learning'] as const;

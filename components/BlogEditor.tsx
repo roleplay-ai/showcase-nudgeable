@@ -3,7 +3,16 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, Suspense, useEffect, useRef, useState } from 'react';
-import { BLOG_CATEGORIES, formatBlogDate, type BlogPost } from '@/lib/blogShared';
+import { BLOG_CATEGORIES, formatBlogDate, slugify, type BlogPost } from '@/lib/blogShared';
+
+const SITE_HOST = 'www.nudgeable.ai';
+
+function seoTone(length: number, min: number, max: number) {
+  if (!length) return 'muted';
+  if (length < min) return 'warn';
+  if (length > max) return 'bad';
+  return 'good';
+}
 import { RichTextEditor } from './RichTextEditor';
 
 function BlogEditorInner() {
@@ -22,6 +31,10 @@ function BlogEditorInner() {
   const [coverImage, setCoverImage] = useState('');
   const [category, setCategory] = useState<string>(BLOG_CATEGORIES[0]);
   const [published, setPublished] = useState(true);
+  const [slug, setSlug] = useState('');
+  const [slugTouched, setSlugTouched] = useState(false);
+  const [metaTitle, setMetaTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
@@ -73,8 +86,20 @@ function BlogEditorInner() {
     setCoverImage(post.coverImage || '');
     setCategory(post.category || BLOG_CATEGORIES[0]);
     setPublished(post.published);
+    setSlug(post.slug);
+    setSlugTouched(true);
+    setMetaTitle(post.metaTitle || '');
+    setMetaDescription(post.metaDescription || '');
     setEditorKey(post.slug);
   }, [editingSlug, posts, signedIn]);
+
+  // Keep the URL slug in sync with the title for a new, untouched post.
+  // Once someone edits the slug directly (or a post is loaded for editing),
+  // title changes stop overwriting it.
+  useEffect(() => {
+    if (editingSlug || slugTouched) return;
+    setSlug(title.trim() ? slugify(title) : '');
+  }, [title, editingSlug, slugTouched]);
 
   function resetForm() {
     setTitle('');
@@ -84,6 +109,10 @@ function BlogEditorInner() {
     setCoverImage('');
     setCategory(BLOG_CATEGORIES[0]);
     setPublished(true);
+    setSlug('');
+    setSlugTouched(false);
+    setMetaTitle('');
+    setMetaDescription('');
     setEditorKey(`new-${Date.now()}`);
     loadedSlug.current = null;
     setError('');
@@ -140,7 +169,7 @@ function BlogEditorInner() {
       const response = await fetch(editingSlug ? `/api/blogs/${editingSlug}` : '/api/blogs', {
         method: editingSlug ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, author, excerpt, content, coverImage, category, published })
+        body: JSON.stringify({ title, author, excerpt, content, coverImage, category, published, slug, metaTitle, metaDescription })
       });
       const payload = await response.json() as { post?: BlogPost; error?: string };
       if (!response.ok || !payload.post) throw new Error(payload.error || 'Could not save the blog.');
@@ -223,6 +252,41 @@ function BlogEditorInner() {
           </label>
         </div>
         <label><span>Short excerpt</span><textarea value={excerpt} onChange={event => setExcerpt(event.target.value)} rows={3} placeholder="One or two sentences for the blogs listing." /></label>
+
+        <div className="blog-seo-field">
+          <span>SEO &amp; search preview</span>
+
+          <div className="seo-preview">
+            <span className="seo-preview-url">{SITE_HOST} › insights › blogs › {slugify(slug) || slugify(title) || 'your-post-slug'}</span>
+            <span className="seo-preview-title">{metaTitle.trim() || title.trim() || 'Untitled post'}</span>
+            <span className="seo-preview-desc">{metaDescription.trim() || excerpt.trim() || 'Add a meta description so search engines have something useful to show.'}</span>
+          </div>
+
+          <label>
+            <span>URL slug</span>
+            <input
+              value={slug}
+              onChange={event => { setSlug(event.target.value); setSlugTouched(true); }}
+              placeholder={slugify(title) || 'post-url-slug'}
+            />
+            <div className="seo-hint-row">
+              <span className="seo-hint">Saves as /insights/blogs/{slugify(slug) || slugify(title) || 'post-url-slug'}</span>
+              <button type="button" className="button button-text" onClick={() => { setSlug(slugify(title)); setSlugTouched(true); }}>Reset to title</button>
+            </div>
+          </label>
+
+          <label>
+            <span>SEO title</span>
+            <input value={metaTitle} onChange={event => setMetaTitle(event.target.value)} placeholder={title || 'Falls back to the title above'} maxLength={120} />
+            <span className={`seo-counter ${seoTone(metaTitle.length, 30, 60)}`}>{metaTitle.length ? metaTitle.length : 0} characters · aim for 30–60</span>
+          </label>
+
+          <label>
+            <span>Meta description</span>
+            <textarea value={metaDescription} onChange={event => setMetaDescription(event.target.value)} rows={3} placeholder={excerpt || 'Falls back to the short excerpt above'} maxLength={300} />
+            <span className={`seo-counter ${seoTone(metaDescription.length, 120, 160)}`}>{metaDescription.length} characters · aim for 120–160</span>
+          </label>
+        </div>
 
         <div className="blog-cover-field">
           <span>Cover photo</span>

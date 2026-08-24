@@ -11,24 +11,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const post = await getPublishedPost(slug);
   if (!post) return { title: 'Blog' };
+  const seoTitle = post.metaTitle || post.title;
+  const seoDescription = post.metaDescription || post.excerpt;
   const shareImage = post.coverImage
     ? [{ url: post.coverImage }]
     : [{ url: '/assets/og-default.png', width: 1200, height: 630, alt: 'Nudgeable' }];
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: seoTitle,
+    description: seoDescription,
     alternates: { canonical: `/insights/blogs/${post.slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: seoTitle,
+      description: seoDescription,
       url: `/insights/blogs/${post.slug}`,
       type: 'article',
       images: shareImage
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
+      title: seoTitle,
+      description: seoDescription,
       images: shareImage.map(image => image.url)
     }
   };
