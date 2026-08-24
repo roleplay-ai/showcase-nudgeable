@@ -13,8 +13,6 @@ export function BlogsLibrary({ posts }: { posts: BlogPost[] }) {
   const [selected, setSelected] = useState('All');
   const featured = posts[0];
   const rest = posts.slice(1).filter(post => selected === 'All' || post.category === selected);
-  const first = rest.slice(0, 3);
-  const second = rest.slice(3);
 
   return <div className="blogs-page">
     <section className="blogs-hero">
@@ -66,10 +64,9 @@ export function BlogsLibrary({ posts }: { posts: BlogPost[] }) {
             </button>
           ))}
         </div>
-        {first.length > 0 && <div className="blog-cards">{first.map(post => <BlogCard key={post.id} post={post} />)}</div>}
-        <BlogNewsletter />
-        {second.length > 0 && <div className="blog-cards lower">{second.map(post => <BlogCard key={post.id} post={post} />)}</div>}
+        {rest.length > 0 && <div className="blog-cards">{rest.map(post => <BlogCard key={post.id} post={post} />)}</div>}
         {!rest.length && featured && selected !== 'All' && <p className="blogs-empty-filter">No articles in {selected} yet.</p>}
+        <BlogNewsletter />
       </div>
     </section>
 
