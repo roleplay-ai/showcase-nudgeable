@@ -44,14 +44,17 @@
     border-bottom:1px solid #E4DFF6;
   }
   .tool-stage iframe,.tool-stage video{width:100%;height:100%;border:0;display:block}
+  .tool-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .tool-stage[data-video]{cursor:pointer}
   .tool-play{
     width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
     background:#623CEA;color:#fff;font-size:15px;padding-left:3px;
-    box-shadow:0 6px 18px rgba(98,60,234,.32);
+    box-shadow:0 6px 18px rgba(98,60,234,.32);position:relative;z-index:1;
   }
   .tool-slot{
     position:absolute;bottom:10px;left:0;right:0;text-align:center;
     font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8A80BE;
+    z-index:1;
   }
 
   .tool-body{display:flex;align-items:center;gap:13px;padding:15px 16px 16px}
@@ -110,37 +113,39 @@
      title : what the video shows
      logo  : file in ../assets/logos/tools/  (omit for a lettermark tile)
      marks : use instead of logo to show the four assistant logos
+     video : Supabase-hosted mp4 (from AI_WorkStudio_Matched_Video_Mapping.xlsx)
+     poster: matching thumbnail, or omitted when the source had none
    ========================================================================== */
 const TOOLS = [
   { cat:'Agents and automation',
     items:[
-      { name:'Vapi',       title:'Build a voice agent' },
-      { name:'Zapier',     title:'Build automations',                    logo:'zapier.png' },
-      { name:'LM Studio',  title:'Run open source models on your laptop', logo:'lmstudio.png' },
-      { name:'Chatbase',   title:'Build a text based agent',             logo:'chatbase.png' },
-      { name:'Lovable',    title:'Build a website',                      logo:'lovable.png' }
+      { name:'Vapi',       title:'Build a voice agent', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-build-a-voice-appointment-agent-with-vapi.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-build-a-voice-appointment-agent-with-vapi.png' },
+      { name:'Zapier',     title:'Build automations',                    logo:'zapier.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-automate-work-with-zapier.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-automate-work-with-zapier.png' },
+      { name:'LM Studio',  title:'Run open source models on your laptop', logo:'lmstudio.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-run-local-models-with-lm-studio.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-run-local-models-with-lm-studio.png' },
+      { name:'Chatbase',   title:'Build a text based agent',             logo:'chatbase.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-build-a-website-chat-agent-with-chatbase.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-build-a-website-chat-agent-with-chatbase.png' },
+      { name:'Lovable',    title:'Build a website',                      logo:'lovable.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-build-a-website-with-lovable.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-agents-and-automation-build-a-website-with-lovable.png' }
     ]},
   { cat:'Data and presentations',
     items:[
-      { name:'Shortcut AI', title:'Analyse large data',   logo:'shortcut.png' },
-      { name:'Napkin AI',   title:'Build flowcharts',     logo:'napkin.png' },
-      { name:'Gamma AI',    title:'Build presentations',  logo:'gamma.png' }
+      { name:'Shortcut AI', title:'Analyse large data',   logo:'shortcut.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-data-and-presentations-analyze-data-with-shortcut-ai.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-data-and-presentations-analyze-data-with-shortcut-ai.png' },
+      { name:'Napkin AI',   title:'Build flowcharts',     logo:'napkin.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-data-and-presentations-build-flowcharts-with-napkin-ai.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-data-and-presentations-build-flowcharts-with-napkin-ai.png' },
+      { name:'Gamma AI',    title:'Build presentations',  logo:'gamma.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-data-and-presentations-design-presentations-with-gamma-ai.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-data-and-presentations-design-presentations-with-gamma-ai.png' }
     ]},
   { cat:'Video and avatars',
     items:[
-      { name:'HeyGen', title:'Design videos with AI avatars', logo:'heygen.png' },
-      { name:'Kling',  title:'Design realistic videos',       logo:'kling.png' }
+      { name:'HeyGen', title:'Design videos with AI avatars', logo:'heygen.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-video-and-avatars-create-avatar-videos-with-heygen.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-video-and-avatars-create-avatar-videos-with-heygen.png' },
+      { name:'Kling',  title:'Design realistic videos',       logo:'kling.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-video-and-avatars-create-realistic-videos-with-kling.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-video-and-avatars-create-realistic-videos-with-kling.png' }
     ]},
   { cat:'Voice',
     items:[
-      { name:'ElevenLabs', title:'Train AI on your voice', logo:'elevenlabs.png' },
-      { name:'Wispr Flow', title:'Dictate prompts',        logo:'wisprflow.png' },
-      { name:'Voiceflow',  title:'Build a voice chatbot' }
+      { name:'ElevenLabs', title:'Train AI on your voice', logo:'elevenlabs.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-voice-train-ai-on-your-voice-with-elevenlabs.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-voice-train-ai-on-your-voice-with-elevenlabs.png' },
+      { name:'Wispr Flow', title:'Dictate prompts',        logo:'wisprflow.png', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-voice-dictate-prompts-with-wispr-flow.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-voice-dictate-prompts-with-wispr-flow.png' },
+      { name:'Voiceflow',  title:'Build a voice chatbot', video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-voice-build-a-voice-agent-with-voiceflow.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-voice-build-a-voice-agent-with-voiceflow.png' }
     ]},
   { cat:'Compare the assistants',
     items:[
-      { name:'Presentations', title:'Compare presentation capabilities',  marks:true },
-      { name:'Data analysis', title:'Compare data analysis capabilities', marks:true }
+      { name:'Presentations', title:'Compare presentation capabilities',  marks:true, video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-compare-the-assistants-compare-presentation-capabilities.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-compare-the-assistants-compare-presentation-capabilities.png' },
+      { name:'Data analysis', title:'Compare data analysis capabilities', marks:true, video:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-compare-the-assistants-compare-data-analysis-capabilities.mp4', poster:'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/ai-tools-compare-the-assistants-compare-data-analysis-capabilities.png' }
     ]}
 ];
 
@@ -157,14 +162,23 @@ function badge(it){
   return '<span class="tool-logo mark">' + it.name.slice(0,2).toUpperCase() + '</span>';
 }
 
+function stage(it){
+  if (it.video) {
+    var poster = it.poster ? '<img class="tool-poster" src="' + it.poster + '" alt="" loading="lazy">' : '';
+    return '<div class="tool-stage" data-video="' + it.video + '">' + poster +
+             '<span class="tool-play">&#9654;</span></div>';
+  }
+  return '<div class="tool-stage"><span class="tool-play">&#9654;</span>' +
+           '<span class="tool-slot">Video</span></div>';
+}
+
 document.getElementById('feed').innerHTML = TOOLS.map(g =>
   '<section class="cat" id="c-' + slug(g.cat) + '">' +
     '<div class="cat-head"><h2>' + g.cat + '</h2><span></span></div>' +
     '<div class="tool-grid">' +
       g.items.map(it =>
         '<article class="tool">' +
-          '<div class="tool-stage"><span class="tool-play">&#9654;</span>' +
-            '<span class="tool-slot">Video</span></div>' +
+          stage(it) +
           '<div class="tool-body">' + badge(it) +
             '<div class="tool-name">' + it.name + '<small>' + it.title + '</small></div>' +
           '</div>' +
@@ -175,6 +189,16 @@ document.getElementById('feed').innerHTML = TOOLS.map(g =>
 document.getElementById('catNav').innerHTML = TOOLS.map(g =>
   '<a class="side-link" href="#c-' + slug(g.cat) + '"><span class="side-icon">&#9654;</span>' +
   g.cat + '</a>').join('');
+
+document.getElementById('feed').addEventListener('click', function (e) {
+  var el = e.target.closest('.tool-stage[data-video]');
+  if (!el || el.querySelector('video')) return;
+  var poster = el.querySelector('.tool-poster');
+  var posterSrc = poster ? poster.getAttribute('src') : '';
+  el.innerHTML = '<video controls autoplay playsinline' +
+    (posterSrc ? ' poster="' + posterSrc + '"' : '') +
+    ' src="' + el.getAttribute('data-video') + '"></video>';
+});
 </script>
 
 <script src="../assets/rail.js"></script>

@@ -661,6 +661,12 @@
     }
     .video-copy { border-top: 1px dashed #c9af91; padding: 15px 17px; background: #fff; }
     .video-copy p { color: var(--muted); font-size: 14px; }
+    .video-placeholder.has-video { border-style: solid; }
+    .video-placeholder.has-video .video-copy { border-top-style: solid; }
+    .video-stage.has-video { padding: 0; cursor: pointer; position: relative; overflow: hidden; }
+    .video-stage.has-video img.video-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .video-stage.has-video .play-mark { position: relative; z-index: 1; margin: 0; }
+    .video-stage video { width: 100%; height: 100%; min-height: 205px; display: block; border: 0; }
     .topic-footer {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1186,6 +1192,50 @@
       dispatch: ['Pairing Dispatch and sending a task', 'Managing desktop access safely']
     };
 
+    // Real recordings matched from AI_WorkStudio_Matched_Video_Mapping.xlsx.
+    // Topics with no entry here keep the empty placeholder pair below.
+    const STORAGE = 'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/';
+    const videoData = {
+      models: [
+        { title: 'Select a Model and Thinking Level', video: STORAGE + 'claude-choose-a-model-select-a-model-and-thinking-level.mp4', poster: STORAGE + 'claude-choose-a-model-select-a-model-and-thinking-level.png' }
+      ],
+      cowork: [
+        { title: 'Analyze Data with Claude', video: STORAGE + 'claude-cowork-analyze-data-with-claude.mp4', poster: STORAGE + 'claude-cowork-analyze-data-with-claude.png' },
+        { title: 'Edit Real Files with Cowork', video: STORAGE + 'claude-cowork-edit-real-files-with-cowork.mp4', poster: STORAGE + 'claude-cowork-edit-real-files-with-cowork.png' },
+        { title: 'Organize Files with Cowork', video: STORAGE + 'claude-cowork-organize-files-with-cowork.mp4', poster: STORAGE + 'claude-cowork-organize-files-with-cowork.png' },
+        { title: 'Set Up Cowork on Your Desktop', video: STORAGE + 'claude-cowork-set-up-cowork-on-your-desktop.mp4', poster: STORAGE + 'claude-cowork-set-up-cowork-on-your-desktop.png' }
+      ],
+      artifacts: [
+        { title: 'Build and Publish an Interactive App', video: STORAGE + 'claude-artifacts-build-and-publish-an-interactive-app.mp4', poster: STORAGE + 'claude-artifacts-build-and-publish-an-interactive-app.png' }
+      ],
+      projects: [
+        { title: 'Save Time and Tokens with Projects', video: STORAGE + 'claude-projects-save-time-and-tokens-with-projects.mp4', poster: STORAGE + 'claude-projects-save-time-and-tokens-with-projects.png' }
+      ],
+      skills: [
+        { title: 'Auto-Generate a Sales Dashboard', video: STORAGE + 'claude-skills-auto-generate-a-sales-dashboard.mp4', poster: null },
+        { title: 'Build Automated Workflows with Skills', video: STORAGE + 'claude-skills-build-automated-workflows-with-skills.mp4', poster: STORAGE + 'claude-skills-build-automated-workflows-with-skills.png' }
+      ],
+      scheduled: [
+        { title: 'Automate Weekly Email Actions', video: STORAGE + 'claude-scheduled-tasks-automate-weekly-email-actions.mp4', poster: STORAGE + 'claude-scheduled-tasks-automate-weekly-email-actions.png' },
+        { title: 'Schedule Tasks Automatically', video: STORAGE + 'claude-scheduled-tasks-schedule-tasks-automatically.mp4', poster: STORAGE + 'claude-scheduled-tasks-schedule-tasks-automatically.png' }
+      ],
+      design: [
+        { title: 'Build Presentations with Claude', video: STORAGE + 'claude-design-build-presentations-with-claude.mp4', poster: STORAGE + 'claude-design-build-presentations-with-claude.png' }
+      ],
+      dispatch: [
+        { title: 'Control Your Laptop Remotely', video: STORAGE + 'claude-dispatch-control-your-laptop-remotely.mp4', poster: STORAGE + 'claude-dispatch-control-your-laptop-remotely.png' }
+      ]
+    };
+
+    function videoCardHTML(video, index, fallbackLabel) {
+      if (!video) {
+        return `<div class="video-placeholder"><div class="video-stage"><div><div class="play-mark">▶</div><strong>Video placeholder ${index + 1}</strong><br><span class="muted">Upload or embed your ${fallbackLabel} video here</span></div></div><div class="video-copy"><h3>${(videoPlans[fallbackLabel] || [])[index] || ''}</h3><p>Replace this area with your training video and a short description.</p></div></div>`;
+      }
+      const posterAttr = video.poster ? ` data-poster="${video.poster}"` : '';
+      const posterImg = video.poster ? `<img class="video-poster" src="${video.poster}" alt="" loading="lazy">` : '';
+      return `<div class="video-placeholder has-video"><div class="video-stage has-video" data-video="${video.video}"${posterAttr}>${posterImg}<div class="play-mark">▶</div></div><div class="video-copy"><h3>${video.title}</h3><p>A short recording of this workflow, start to finish.</p></div></div>`;
+    }
+
     Object.entries(topics).forEach(([id, topic]) => {
       if (topic.levels.length === 1) {
         topic.levels.push({
@@ -1196,21 +1246,32 @@
         });
       }
 
-      const plan = videoPlans[id];
+      const videos = videoData[id];
+      const cards = videos
+        ? videos.map((v, i) => videoCardHTML(v, i)).join('')
+        : [0, 1].map(i => videoCardHTML(null, i, id)).join('');
+
       topic.levels.push({
         label: 'Watch',
         title: `Watch ${topic.title} in action`,
-        lead: `This third page is ready for your employee training videos about ${topic.title}. Replace either placeholder when the recordings are available.`,
+        lead: videos
+          ? `Short recordings of real ${topic.title} work, start to finish.`
+          : `This third page is ready for your employee training videos about ${topic.title}. Replace either placeholder when the recordings are available.`,
         body: `
-          <div class="video-grid">
-            <div class="video-placeholder"><div class="video-stage"><div><div class="play-mark">▶</div><strong>Video placeholder 1</strong><br><span class="muted">Upload or embed your first ${topic.title} video here</span></div></div><div class="video-copy"><h3>${plan[0]}</h3><p>Replace this area with your training video and a short description.</p></div></div>
-            <div class="video-placeholder"><div class="video-stage"><div><div class="play-mark">▶</div><strong>Video placeholder 2</strong><br><span class="muted">Upload or embed your second ${topic.title} video here</span></div></div><div class="video-copy"><h3>${plan[1]}</h3><p>Replace this area with your training video and a short description.</p></div></div>
-          </div>
+          <div class="video-grid">${cards}</div>
           <div class="insight"><strong>Video page:</strong> Both spaces support a standard 16:9 player with room for a title and short learning note.</div>`
       });
 
       topic.badges = topic.badges.filter(badge => !/learning level|learning page/i.test(badge));
       topic.badges.push('Video page included');
+    });
+
+    document.addEventListener('click', event => {
+      const stage = event.target.closest('.video-stage[data-video]');
+      if (!stage || stage.querySelector('video')) return;
+      const src = stage.getAttribute('data-video');
+      const poster = stage.getAttribute('data-poster');
+      stage.innerHTML = `<video controls autoplay playsinline${poster ? ` poster="${poster}"` : ''} src="${src}"></video>`;
     });
 
     const topicOrder = ['models','cowork','artifacts','projects','skills','scheduled','design','code','slack','dispatch'];
