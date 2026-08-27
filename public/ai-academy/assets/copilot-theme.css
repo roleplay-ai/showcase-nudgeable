@@ -1,0 +1,34 @@
+/* ==========================================================================
+   Microsoft Copilot pages — the warm neutral surface used in the Copilot app.
+   Linked last in <head> on every page in /copilot/.
+   ========================================================================== */
+:root{
+  --bg:#F9F4F1;
+  --surface:#F9F4F1;
+  --sidebar:#F0EAE7;
+  --line:#E3DAD5;
+}
+body{background:#F9F4F1 !important}
+main{background:#F9F4F1 !important}
+aside{background:#F0EAE7 !important;border-right:1px solid #E3DAD5 !important}
+.topbar{
+  background:rgba(249,244,241,.94) !important;
+  border-bottom:1px solid #E3DAD5 !important;
+}
+.card,.step,.compare,.feature-card,.page-nav a,.page-nav .disabled{
+  border-color:#E3DAD5 !important;
+}
+.card,.feature-card,.step{background:#fff !important}
+.card.blue{background:#EAF3FC !important}
+.card.violet{background:#F1EFFC !important}
+.card.aqua{background:#E9F6F5 !important}
+.card.yellow{background:#FCF4DF !important}
+.card.green{background:#EDF6ED !important}
+.card.orange{background:#FCF0E7 !important}
+.nav-item:hover{background:#FBF8F6 !important}
+.nav-item.active{background:#fff !important;box-shadow:0 1px 4px rgba(60,40,30,.09) !important}
+.compare-row:not(:first-child)>div:first-child{background:#F5EFEB !important}
+.prompt{background:#F4F1FA !important;border-color:#DCD6EE !important}
+
+/* sidebar active item */
+:root{--nav-accent:#5B5FC7}

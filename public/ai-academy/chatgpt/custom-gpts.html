@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A practical guide to Custom GPTs." />
+  <title>Custom GPTs · All ChatGPT Features</title>
+  <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="../assets/typography.css">
+<link rel="stylesheet" href="../assets/standardize.css">
+<link rel="stylesheet" href="../assets/chatgpt-theme.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="menu-btn" id="menuButton" aria-label="Open feature menu">☰</button>
+    <a class="all-features" href="index.html">← All Features</a>
+    <span class="crumb">Custom GPTs</span>
+    <span class="top-chip">Practical guide</span>
+  </header>
+  <div class="layout">
+    <aside id="sidebar" aria-label="Feature navigation">
+      <div class="brand"><span class="brand-mark">✦</span><span>ChatGPT</span></div>
+      <p class="guide-subtitle">A practical feature guide</p>
+      <nav><a class="nav-item " href="index.html"><span class="nav-icon">🏠</span><span>All Features</span></a><div class="nav-label">Start</div><a class="nav-item " href="models-and-reasoning.html"><span class="nav-icon">🧠</span><span>Models & Reasoning</span></a><a class="nav-item " href="personalization.html"><span class="nav-icon">✨</span><span>Personalization</span></a><div class="nav-label">Create and deliver</div><a class="nav-item " href="work.html"><span class="nav-icon">🧰</span><span>Work</span></a><a class="nav-item " href="images.html"><span class="nav-icon">🎨</span><span>Images</span></a><a class="nav-item " href="sites.html"><span class="nav-icon">🌐</span><span>Sites</span></a><a class="nav-item " href="codex.html"><span class="nav-icon">⌨️</span><span>Codex</span></a><div class="nav-label">Organize and repeat</div><a class="nav-item " href="projects.html"><span class="nav-icon">🗂️</span><span>Projects</span></a><a class="nav-item " href="skills.html"><span class="nav-icon">🧩</span><span>Skills</span></a><a class="nav-item active" href="custom-gpts.html"><span class="nav-icon">🤖</span><span>Custom GPTs</span></a><a class="nav-item " href="scheduled-tasks.html"><span class="nav-icon">⏰</span><span>Scheduled Tasks</span></a><div class="nav-label">Connect and interact</div><a class="nav-item " href="plugins-and-apps.html"><span class="nav-icon">🔌</span><span>Plugins & Apps</span></a><a class="nav-item " href="voice.html"><span class="nav-icon">🎙️</span><span>Voice</span></a></nav>
+    </aside>
+    <main><div class="content"><section class="topic-page" data-topic-page="0" ><section class="hero"><div class="feature-icon">🤖</div><div class="eyebrow">Custom GPTs</div><h1>Package one role into a clear assistant</h1><p class="lead">Combine instructions, knowledge, starters and capabilities so people can open a purpose-built version of ChatGPT and know exactly what it is for.</p><div class="pills"><span class="pill">No-code</span><span class="pill">Knowledge</span><span class="pill">Capabilities</span></div></section><section class="section"><h2>Use a GPT when the assistant itself should be reusable</h2><div class="grid"><article class="card yellow"><span class="card-emoji">🎯</span><h3>One named purpose</h3><p>Policy Q&A, proposal review, coaching, research or another role people can recognize instantly.</p></article><article class="card blue"><span class="card-emoji">📚</span><h3>Same reference material</h3><p>The assistant needs the same instructions and files every time someone opens it.</p></article><article class="card green"><span class="card-emoji">🔗</span><h3>Selected capabilities</h3><p>Add web search, images, data analysis, apps or custom actions where they support the workflow.</p></article></div></section><section class="section"><h2>Put the right thing in the right place</h2><div class="grid two"><article class="card"><span class="card-emoji">📌</span><h3>Instructions</h3><p>Rules, tone, workflow, definitions, response structure and what the GPT should do.</p></article><article class="card"><span class="card-emoji">📖</span><h3>Knowledge</h3><p>Handbooks, policies, documentation and source material the GPT should reference.</p></article></div></section><div class="callout"><span class="callout-icon">🧪</span><div><strong>Test before sharing</strong><p>Use realistic prompts in Preview. Long or conflicting instructions reduce consistency, and knowledge files do not replace clear behavioral guidance.</p></div></div><section class="section"><div class="section-head"><div><h2>Understand how a GPT behaves when people use it</h2><p class="section-intro">A custom GPT is a separate configured assistant, not a continuation of every preference and conversation from normal ChatGPT.</p></div></div><div class="grid"><article class="card"><span class="card-emoji">🆕</span><h3>Each conversation starts fresh</h3><p>GPT conversations do not use your saved memory, global Custom Instructions or earlier GPT conversations. Information that must persist should be included in the configuration or supplied again.</p></article><article class="card"><span class="card-emoji">🧑‍💻</span><h3>Builders do not see individual chats</h3><p>The person who created a GPT cannot inspect each private conversation people have with it. However, external Apps or APIs may receive relevant information when the GPT uses them.</p></article><article class="card"><span class="card-emoji">🧰</span><h3>Capabilities need a purpose</h3><p>Adding more tools does not fix unclear instructions. Start with a well-defined role and workflow, then enable only the capabilities that the assistant genuinely needs.</p></article></div></section><nav class="page-nav" aria-label="Adjacent features"><a class="next-link" href="skills.html"><small>Previous feature</small><b>← 🧩 Skills</b></a><a class="next-link" href="scheduled-tasks.html"><small>Next feature</small><b>Scheduled Tasks ⏰ →</b></a></nav></section></div></main>
+  </div>
+  <script>
+    document.getElementById('menuButton').addEventListener('click',()=>document.body.classList.toggle('menu-open'));
+    document.getElementById('sidebar').addEventListener('click',event=>{if(event.target.closest('a'))document.body.classList.remove('menu-open')});
+    
+  </script>
+<script src="../assets/video-tab.js"></script>
+<script src="../assets/rail.js"></script>
+</body>
+</html>

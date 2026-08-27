@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Gemini pages — Google's blue gradient, sampled from the product itself.
+   Linked last in <head> on every page in /gemini/.
+   ========================================================================== */
+body{
+  background:linear-gradient(180deg,#BADEF7 0%,#D3E9FA 16%,#E7F2FC 34%,#F6FAFE 56%,#FFFFFF 74%)
+             no-repeat fixed !important;
+  background-color:#fff !important;
+}
+main{background:transparent !important}
+aside{
+  background:rgba(255,255,255,.58) !important;
+  backdrop-filter:blur(14px);
+  border-right:1px solid rgba(11,87,208,.10) !important;
+}
+.topbar{
+  background:rgba(255,255,255,.62) !important;
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(11,87,208,.10) !important;
+}
+.hero{background:transparent !important}
+.hero:after{opacity:.45}
+.card,.flow-card,.process-card,.compare,.prompt,.page-nav a,.page-nav .disabled{
+  box-shadow:0 1px 3px rgba(11,87,208,.06);
+}
+.card.white,.compare,.prompt{background:rgba(255,255,255,.92) !important}
+.feature-card{box-shadow:0 2px 10px rgba(11,87,208,.07)}
+.nav-item.active{background:#D7E5FA !important}
+
+/* sidebar active item */
+:root{--nav-accent:#0B57D0}

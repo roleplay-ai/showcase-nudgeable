@@ -1,0 +1,56 @@
+/* ==========================================================================
+   Nudgeable AI Academy — cross-product standardisation
+   Loaded on every page. Keeps the four assistant guides structurally
+   identical where the source pages had drifted apart.
+   ========================================================================== */
+
+/* One header shape on every feature page: eyebrow, title, description.
+   Nothing else. These were the stray fourth elements. */
+.availability,
+.top-chip,
+.topic-badge-row { display: none !important; }
+
+/* No state pills on feature cards. */
+.status { display: none !important; }
+
+/* Level tabs sit at the very top of the page content and never stick.
+   The source pages disagreed: some had them above the headline, some below,
+   some pinned to the viewport. */
+.page-switch,
+.level-switch,
+.level-tabs {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+  margin-top: 0 !important;
+  margin-bottom: 26px !important;
+}
+
+/* The footer butts straight onto the page. The guide layouts are
+   min-height:100vh, so any margin above it showed as a dead band. */
+.layout { min-height: 0 !important; }
+aside   { min-height: calc(100vh - 58px); }
+
+/* "All features" leads every guide sidebar and fills with the product accent
+   when active, matching the Claude guide. */
+.nav-item.active,
+.side-link.active {
+  background: var(--nav-accent, #DF6426) !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  box-shadow: none !important;
+}
+.nav-item.active .nav-icon,
+.side-link.active .side-icon {
+  background: rgba(255,255,255,.22) !important;
+  border-color: rgba(255,255,255,.3) !important;
+}
+
+/* Always reserve the scrollbar gutter. Without it a short page and a long page
+   have different content widths, so moving between them nudged the whole
+   layout sideways. */
+html { scrollbar-gutter: stable; overflow-y: scroll; }
+
+/* The sidebar is identical on every page in a guide, so it should not appear
+   to redraw when only the content changes. */
+aside { overflow-anchor: none; }

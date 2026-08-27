@@ -27,6 +27,9 @@ const nextConfig = {
       { source: '/insights/how-ritz-carlton-hardwired-customer-centricity', destination: '/insights/blogs/how-ritz-carlton-turns-customer-centricity-into-everyday-actions', permanent: true },
       { source: '/insights/the-need-for-freedom-in-the-workplace', destination: '/insights/blogs/why-telling-people-what-to-do-can-make-them-resist', permanent: true },
       { source: '/practice-lab', destination: 'https://work.nudgeable.app/', permanent: true },
+      { source: '/ai-practice-lab', destination: 'https://work.nudgeable.app/', permanent: true },
+      { source: '/ai-academy', destination: '/ai-academy/index.html', permanent: false },
+      { source: '/ai-academy/', destination: '/ai-academy/index.html', permanent: false },
       { source: '/ai-training', destination: '/#training', permanent: true },
       { source: '/about', destination: '/#about', permanent: true },
       { source: '/contact', destination: '/#contact', permanent: true }
