@@ -13,6 +13,8 @@ const nav = [
   { href: '/nudgeengine', label: 'Actions Engine' }
 ];
 
+const ACADEMY_URL = '/ai-academy/index.html';
+
 const labLinks = [
   { href: '/ai-practice-lab', label: 'Overview' },
   { href: PRACTICE_LAB_URL, label: 'Access Lab', external: true }
@@ -131,6 +133,7 @@ export function Header() {
           {nav.map(item =>
             <Link key={item.href} href={item.href} aria-current={pathname === item.href ? 'page' : undefined} className={pathname === item.href ? 'active' : ''} onClick={closeMenus}>{item.label}</Link>
           )}
+          <a href={ACADEMY_URL} className={pathname.startsWith('/ai-academy') ? 'active' : ''} onClick={closeMenus}>AI Academy</a>
           <div ref={insightsRef} className={`nav-dropdown${insightsOpen ? ' open' : ''}${insightsActive ? ' active' : ''}`}>
             <button
               type="button"

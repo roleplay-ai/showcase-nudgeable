@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { AcademyPromo } from '@/components/AcademyPromo';
 import { AnimatedStat } from '@/components/AnimatedStat';
 import { ButtonLink } from '@/components/ButtonLink';
 import { ContactForm } from '@/components/ContactForm';
@@ -69,6 +70,13 @@ const servicesStructuredData = {
       url: `${siteUrl}/nudgeengine`,
       description: 'Personalized actions, workplace nudges and application data after classroom training.',
       provider: { '@id': `${siteUrl}/#organization` }
+    },
+    {
+      '@type': 'Service',
+      name: 'Nudgeable AI Academy',
+      url: `${siteUrl}/ai-academy/index.html`,
+      description: 'Free, always-current feature guides for ChatGPT, Claude, Gemini and Copilot, plus the AI foundations behind them.',
+      provider: { '@id': `${siteUrl}/#organization` }
     }
   ]
 };
@@ -136,67 +144,9 @@ export default function Home() {
         <SessionPhotoRow />
       </div>
     </section>
+    <AcademyPromo />
 
-    <section className="product-section">
-      <div className="container">
-        <div className="section-intro">
-          <span className="eyebrow">BUILT AROUND PRACTICE</span>
-          <h2>Products that help people practise and apply.</h2>
-        </div>
-        <div className="product-detail-grid compact-product-grid">
-          <article className="product-detail-card lab">
-            <ProductDemoLink videoId={practiceLabDemoId} label="AI Practice Lab" />
-            <span className="product-label">Open access</span>
-            <h3>AI Practice Lab</h3>
-            <p>Free AI for Work workflows and current content, with enterprise customization and reporting.</p>
-            <ul><li>100+ guided workflows</li><li>Enterprise journeys and dashboard</li></ul>
-            <a className="product-link" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Practice Lab <Icon name="arrow" size={16} /></a>
-          </article>
 
-          <article className="product-detail-card coach">
-            <ProductDemoLink videoId={aiCoachDemoId} label="AI Coach" />
-            <span className="product-label">AI roleplays</span>
-            <h3>AI Coach</h3>
-            <p>Voice-based practice for sales and leadership conversations with objective feedback.</p>
-            <ul><li>Customized scenarios</li><li>Conversation-linked assessment</li></ul>
-            <ButtonLink href="/ai-role-play" variant="text">Explore AI Coach</ButtonLink>
-          </article>
-
-          <article className="product-detail-card nudge">
-            <ProductDemoLink videoId={actionsEngineDemoId} label="Actions Engine" />
-            <span className="product-label">Training application</span>
-            <h3>Actions Engine</h3>
-            <p>Personalized actions, workplace nudges and application data after classroom training.</p>
-            <ul><li>Practice in the flow of work</li><li>Admin dashboard and habit data</li></ul>
-            <ButtonLink href="/nudgeengine" variant="text">Explore Actions Engine</ButtonLink>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section className="lab-showcase-section">
-      <div className="container lab-showcase-card">
-        <div className="lab-showcase-top">
-          <div className="lab-showcase-copy">
-            <span className="eyebrow light">AI PRACTICE LAB</span>
-            <h2>Workshop that sparks it. Practice Lab that makes it stick.</h2>
-            <p>100+ guided AI workflows for real work tasks. Stay current with AI — without the noise. Get your AI application queries resolved by our Trained AI</p>
-            <div className="button-row">
-              <a className="button button-primary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open the Lab <Icon name="arrow" size={17} /></a>
-              <a className="button button-ghost-dark button-compact" href={PRACTICE_LAB_DEMO_URL} target="_blank" rel="noopener noreferrer">Watch the demo <Icon name="play" size={17} /></a>
-            </div>
-          </div>
-          <div className="lab-side-stack">
-            <div className="lab-showcase-image">
-              <Image src="/assets/ai-practice-lab-full.png" alt="AI Practice Lab interface" width={1024} height={631} />
-            </div>
-
-          </div>
-        </div>
-        <div className="lab-workflow-header"><div><small>USE THIS WEEK</small><h3>Practical workflows for common work tasks</h3></div><a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">See the full library <Icon name="arrow" size={15} /></a></div>
-        <LabWorkflowCards />
-      </div>
-    </section>
 
     <section className="shorts-section">
       <div className="container">
@@ -218,6 +168,8 @@ export default function Home() {
         <WorkflowVideoGrid limit={3} />
       </div>
     </section>
+
+
 
     <section className="testimonial-section">
       <div className="container">

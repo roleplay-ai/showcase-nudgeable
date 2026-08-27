@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Foundations · GenAI vs Other AI</title>
+<style>
+:root{
+  --bg:#fffdf5;
+  --panel:#ffffff;
+  --ink:#221d23;
+  --muted:#6d6870;
+  --line:#e2ded7;
+  --amber:#ffce00;
+  --amber-soft:#fff6cf;
+  --orange:#f68a29;
+  --orange-soft:#fff0df;
+  --blue:#3696fc;
+  --blue-soft:#eaf5ff;
+  --green:#23ce68;
+  --green-soft:#e9fff2;
+  --purple:#623cea;
+  --purple-soft:#f1ecff;
+  --red:#ed4551;
+  --red-soft:#fdecef;
+  --sidebar:#fff9df;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;
+}
+button,input{font:inherit}
+button{color:inherit}
+.topbar{
+  height:58px;border-bottom:1px solid var(--line);display:flex;align-items:center;
+  padding:0 24px;gap:12px;background:#fff;position:sticky;top:0;z-index:20;
+}
+.topbar:before{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,var(--amber) 0 42%,var(--orange) 42% 62%,var(--blue) 62% 80%,var(--green) 80% 100%);
+}
+.back{
+  text-decoration:none;color:var(--ink);border:1px solid var(--line);background:#fff;border-radius:999px;
+  padding:7px 12px;font-size:14px;font-weight:750;
+}
+.crumb{font-size:15px;font-weight:750}.crumb span{color:var(--muted);font-weight:650}
+.layout{min-height:calc(100vh - 58px);display:grid;grid-template-columns:250px 1fr}
+aside{
+  border-right:1px solid var(--line);background:var(--sidebar);padding:24px 18px;
+  position:sticky;top:58px;height:calc(100vh - 58px);overflow:auto;
+}
+.foundation-mark{
+  width:38px;height:38px;border-radius:11px;background:var(--amber);display:grid;place-items:center;
+  font-size:19px;font-weight:900;margin-bottom:12px;border:1px solid rgba(34,29,35,.1);
+}
+.guide-title{font-family:Georgia,"Times New Roman",serif;font-size:23px;font-weight:700;line-height:1.1;margin-bottom:4px}
+.guide-subtitle{color:var(--muted);font-size:13px;margin-bottom:22px}
+.nav-label{
+  margin:18px 0 7px;color:#9a8e72;font-size:10.5px;letter-spacing:.12em;font-weight:850;text-transform:uppercase
+}
+.nav-item{
+  display:block;padding:7px 9px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:13.5px;margin:2px 0
+}
+.nav-item:hover{background:rgba(255,255,255,.6)}
+.nav-item.active{background:var(--amber);font-weight:850}
+.nav-item.next-topic{border:1px solid rgba(34,29,35,.10);background:rgba(255,255,255,.62)}
+main{padding:42px 56px 72px}.content{max-width:1060px;margin:0 auto}
+.level-switch{
+  display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px;background:#fff;margin-bottom:28px;
+  position:sticky;top:74px;z-index:12;box-shadow:0 2px 10px rgba(34,29,35,.05)
+}
+.level-btn{
+  border:0;background:transparent;border-radius:999px;padding:9px 16px;font:800 14px/1.2 Inter,system-ui;cursor:pointer
+}
+.level-btn.active{background:var(--amber)}
+.page{display:none}.page.active{display:block}
+.eyebrow{color:#9a6b00;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:850;margin-bottom:10px}
+h1{
+  font-family:Georgia,"Times New Roman",serif;font-size:44px;line-height:1.12;font-weight:600;
+  margin:0 0 20px;max-width:900px;letter-spacing:-.018em
+}
+.lead{font-size:19px;line-height:1.68;max-width:900px;margin:0 0 26px;color:#3a353d}
+h2{margin:0 0 14px;font-size:21px;line-height:1.28}h3{margin:0 0 6px;font-size:17px;line-height:1.35}
+p{margin:0 0 10px}p:last-child{margin-bottom:0}
+.card{border:1px solid var(--line);border-radius:14px;padding:21px 23px;background:var(--panel)}
+.grid-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.grid-three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.grid-four{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.soft-yellow{background:var(--amber-soft)}.soft-blue{background:var(--blue-soft)}.soft-green{background:var(--green-soft)}
+.soft-purple{background:var(--purple-soft)}.soft-orange{background:var(--orange-soft)}.soft-red{background:var(--red-soft)}
+.section{
+  border:1px solid var(--line);border-radius:15px;background:#fff;padding:22px 24px;margin:18px 0
+}
+.section.soft-yellow{background:var(--amber-soft)}.section.soft-blue{background:var(--blue-soft)}
+.section.soft-green{background:var(--green-soft)}.section.soft-purple{background:var(--purple-soft)}
+.insight{margin:18px 0;background:var(--purple-soft);border:1px solid #d8d1ff;border-radius:12px;padding:15px 18px;font-size:16px}
+.insight strong{color:#4f3db9}
+.note{font-size:14px;color:var(--muted);margin-top:10px}
+.tag{
+  display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;background:#f3eee7;
+  font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.07em
+}
+.points{display:grid;gap:10px;margin-top:8px}.point{display:grid;grid-template-columns:24px 1fr;gap:9px;align-items:start;font-size:15.5px;line-height:1.5}
+.tick{width:23px;height:23px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.82);border:1px solid rgba(34,29,35,.12);font-size:12px;font-weight:800}
+.action-btn{
+  min-height:44px;border:1px solid var(--ink);border-radius:10px;background:var(--amber);padding:9px 14px;
+  font-weight:850;font-size:14px;cursor:pointer
+}
+.action-btn.secondary{background:#fff}.action-btn.small{min-height:38px;padding:7px 11px;font-size:13px}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.pill{
+  border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font:800 13px/1 Inter,system-ui;cursor:pointer
+}
+.pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pill.amber.active{background:var(--amber);color:var(--ink);border-color:#caa400}
+.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.11em;font-weight:850;color:var(--muted);margin-bottom:5px}
+.big-number{font-size:36px;font-weight:900;line-height:1}
+.meter{height:16px;border-radius:999px;background:#f0efec;border:1px solid var(--line);overflow:hidden}
+.meter-fill{height:100%;width:0;background:var(--amber);transition:width .25s ease}
+.flow-row{display:grid;grid-template-columns:1fr 44px 1fr;gap:12px;align-items:center}
+.flow-arrow{text-align:center;font-weight:900;color:var(--muted);font-size:22px}
+.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+.compare{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.compare th,.compare td{text-align:left;padding:13px 15px;border-bottom:1px solid #ece8df;vertical-align:top}
+.compare th{background:#fbf8ef;font-size:12px;text-transform:uppercase;letter-spacing:.06em}.compare tr:last-child td{border-bottom:0}
+.timeline{display:grid;gap:10px;margin-top:12px}
+.timeline-item{display:grid;grid-template-columns:42px 1fr;gap:12px}
+.timeline-dot{width:36px;height:36px;border-radius:10px;background:#fff;border:1px solid var(--line);display:grid;place-items:center}
+.timeline-body{border:1px solid var(--line);background:#fff;border-radius:11px;padding:12px 14px}
+.timeline-body strong{display:block}
+.step-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.step-card{border:1px solid var(--line);background:#fff;border-radius:11px;padding:14px}
+.step-num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--amber-soft);border:1px solid #e8d77c;font-weight:850;font-size:13px;margin-bottom:8px}
+.next-box{border:1px solid #ead89a;background:var(--amber-soft);border-radius:14px;padding:18px 20px;margin:22px 0}
+.next-box a{color:var(--ink);font-weight:850;text-decoration:none}
+.footer-space{height:18px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(54,150,252,.35);outline-offset:2px}
+@media(max-width:980px){
+  .layout{grid-template-columns:1fr}aside{display:none}main{padding:30px 19px 56px}
+  body{font-size:18px}.lead{font-size:20px}.grid-two,.grid-three,.grid-four,.step-row,.flow-row{grid-template-columns:1fr}
+  .flow-arrow{transform:rotate(90deg)}.level-switch{top:70px}h1{font-size:38px}
+}
+@media(max-width:560px){
+  .topbar{padding:0 14px}.crumb{font-size:13px}.back{font-size:12px;padding:6px 9px}
+  main{padding-left:14px;padding-right:14px}.section,.card{padding:17px 16px}
+}
+
+/* v2 interaction refinements */
+.interactive-stage{border:1px solid var(--line);border-radius:16px;background:#fff;padding:20px;margin:16px 0;overflow:hidden}
+.demo-note{font-size:12px;color:var(--muted);margin-top:8px}
+.reveal-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0}
+.live-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:13px;font-weight:750}
+.fade-in{animation:fadeInUp .35s ease both}@keyframes fadeInUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.pulse-once{animation:pulseOnce .5s ease}@keyframes pulseOnce{50%{transform:scale(1.025)}}
+.flow-node{border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px;text-align:center;transition:.25s ease;min-width:0}
+.flow-node.active{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,206,0,.2);transform:translateY(-2px)}
+.flow-node.done{border-color:var(--green);background:var(--green-soft)}
+.flow-node .node-ico{font-size:26px;display:block;margin-bottom:3px}.flow-node .node-lbl{font-size:12px;font-weight:850}.flow-node .node-sub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}
+.machine-line{height:3px;background:#e8e4dc;border-radius:999px;position:relative;overflow:hidden}.machine-line:after{content:"";position:absolute;inset:0;background:var(--amber);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}.machine-line.on:after{transform:scaleX(1)}
+.code-box{background:var(--ink);color:#fff;border-radius:12px;padding:13px 15px;font:13px/1.55 "SFMono-Regular",Consolas,monospace;overflow:auto;white-space:pre-wrap}
+.mini-label{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.status-box{border:1px solid var(--line);border-radius:12px;background:#fff;padding:13px 15px;margin-top:12px;min-height:52px}
+@media(max-width:980px){.flow-node{padding:12px}.machine-line{width:3px;height:28px;margin:auto}.machine-line:after{transform:scaleY(0);transform-origin:top}.machine-line.on:after{transform:scaleY(1)}}
+
+
+/* lab panel adjustments: top bar removed, sidebar icons added */
+.layout{min-height:100vh}
+aside{top:0;height:100vh}
+main{padding-top:34px}
+.level-switch{top:16px}
+.nav-item{display:flex;align-items:center;gap:9px}
+.nav-ico{width:25px;height:25px;flex:0 0 auto;display:grid;place-items:center;border-radius:8px;
+  background:rgba(255,255,255,.72);border:1px solid rgba(34,29,35,.09)}
+.nav-ico svg{width:15px;height:15px;stroke:#221d23;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active .nav-ico{background:#fff;border-color:rgba(34,29,35,.16)}
+.guide-subtitle{margin-bottom:18px}
+</style>
+<link rel="stylesheet" href="../assets/typography.css">
+<link rel="stylesheet" href="../assets/standardize.css">
+</head>
+<body>
+<div class="layout">
+<aside><div class="foundation-mark">AI</div><div class="guide-title">AI Foundations</div><div class="guide-subtitle">Short explainers that build practical AI fluency</div><div class="nav-label">Understand AI</div><a class="nav-item active" href="ai-foundations-genai-vs-other-ai.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M10 12h11v11H10zM27 25h11v11H27z"/><path d="M21 17h8M25 17v11"/><circle cx="33" cy="13" r="5"/><path d="M10 34c3-5 7-7 12-7"/></svg></span><span>GenAI vs Other AI</span></a><a class="nav-item" href="ai-foundations-tokens.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M16 16h16M16 24h10M16 32h16"/><path d="M30 21l5 3-5 3"/></svg></span><span>Tokens</span></a><a class="nav-item" href="ai-foundations-context-window.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><rect x="8" y="10" width="32" height="28" rx="4"/><path d="M8 17h32M15 23h18M15 29h12"/><circle cx="14" cy="14" r="1"/></svg></span><span>Context Window</span></a><a class="nav-item" href="ai-foundations-ai-memory.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M17 13a8 8 0 0 1 14 5 7 7 0 0 1 1 13 8 8 0 0 1-15 2 7 7 0 0 1 0-20z"/><path d="M19 20h10M19 25h7M19 30h9"/></svg></span><span>AI Memory</span></a><div class="nav-label">Connect & Act</div><a class="nav-item" href="ai-foundations-api.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><rect x="7" y="13" width="12" height="22" rx="3"/><rect x="29" y="13" width="12" height="22" rx="3"/><path d="M19 20h10M25 16l4 4-4 4M29 28H19M23 24l-4 4 4 4"/></svg></span><span>API</span></a><a class="nav-item" href="ai-foundations-tool-calling.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M10 31l10-10 7 7 11-11"/><path d="M32 17h6v6"/><rect x="8" y="8" width="10" height="10" rx="2"/><path d="M12 11v4M10 13h4"/></svg></span><span>Tool Calling</span></a><a class="nav-item" href="ai-foundations-ai-agents.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><rect x="12" y="15" width="24" height="20" rx="6"/><path d="M24 10v5M20 10h8"/><circle cx="19" cy="25" r="2"/><circle cx="29" cy="25" r="2"/><path d="M20 31h8"/></svg></span><span>AI Agents</span></a><div class="nav-label">Build & Create</div><a class="nav-item" href="ai-foundations-image-video.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><rect x="8" y="10" width="32" height="28" rx="4"/><circle cx="17" cy="19" r="3"/><path d="M11 34l9-9 6 6 5-5 6 8"/><path d="M34 8v6M31 11h6"/></svg></span><span>Image &amp; Video</span></a><a class="nav-item" href="ai-foundations-vibe-coding.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M18 14l-9 10 9 10M30 14l9 10-9 10M27 10l-6 28"/></svg></span><span>Vibe Coding</span></a><div class="nav-label">Business</div><a class="nav-item" href="ai-foundations-ai-economics.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M10 36h28M13 32V25M21 32V20M29 32V15M37 32V10"/><path d="M12 18l8-5 8 2 9-9"/><path d="M32 6h5v5"/></svg></span><span>AI Economics</span></a></aside>
+<main><article class="content">
+<div class="level-switch" aria-label="Choose level">
+      <button id="btn-understand" class="level-btn active" type="button" data-page="understand">Understand</button>
+      <button id="btn-deeper" class="level-btn" type="button" data-page="deeper">Go deeper</button>
+    </div>
+<section id="understand" class="page active">
+  <div class="eyebrow">GenAI vs Other AI</div>
+  <h1>GenAI generates likely outputs. Other systems may follow rules or score patterns.</h1>
+  <p class="lead">The practical difference is easiest to see by asking what kind of job each system is built to do.</p>
+
+  <section class="section soft-blue">
+    <h2>Three different engines</h2>
+    <div class="grid-three">
+      <div class="card"><div class="tag">Code</div><h3>Rules → result</h3><p>Follow explicit logic. Same input and same rule should produce the same result.</p></div>
+      <div class="card soft-green"><div class="tag">Machine learning</div><h3>Patterns → score</h3><p>Learn from historical examples and estimate a class, probability or prediction.</p></div>
+      <div class="card soft-purple"><div class="tag">Generative AI</div><h3>Context → generation</h3><p>Generate text, images or other content by predicting a likely continuation.</p></div>
+    </div>
+  </section>
+
+  <section class="section soft-red" id="run-demo">
+    <h2>Run the same question three times</h2>
+    <p>Assume the model is answering directly, without using a calculator or code tool.</p>
+    <div class="card" style="margin:12px 0"><strong>“What is the EMI on a ₹50 lakh home loan at 8.5% for 20 years?”</strong></div>
+    <div class="grid-three" id="emi-runs">
+      <div class="card emi-card"><div class="kicker">Run 1</div><div class="big-number">—</div><div class="note">waiting</div></div>
+      <div class="card emi-card"><div class="kicker">Run 2</div><div class="big-number">—</div><div class="note">waiting</div></div>
+      <div class="card emi-card"><div class="kicker">Run 3</div><div class="big-number">—</div><div class="note">waiting</div></div>
+    </div>
+    <div class="reveal-row"><button class="action-btn" id="emi-run" type="button">▶ Run 3 times</button><button class="action-btn secondary" id="emi-reveal" type="button" disabled>Reveal which is wrong</button></div>
+    <div class="insight" id="emi-answer" style="display:none"><strong>Run 2 is wrong.</strong> The correct deterministic calculation is about ₹43,391/month. A fluent answer can still be numerically wrong when the model is generating instead of using a calculation tool.</div>
+  </section>
+
+  <section class="section">
+    <h2>Which engine fits the task?</h2>
+    <div class="grid-three tool-picker">
+      <button class="card task-card" type="button" data-tool="code" data-title="Monthly payroll for 200 staff" data-why="Use deterministic code. Every rupee must be exact and auditable."><strong>💰 Payroll</strong><span class="note">Exact calculation</span></button>
+      <button class="card task-card" type="button" data-tool="genai" data-title="Draft a job description" data-why="Use GenAI. The task needs language generation and flexible wording."><strong>✍ Job description</strong><span class="note">Language generation</span></button>
+      <button class="card task-card" type="button" data-tool="ml" data-title="Predict customer churn" data-why="Use an ML model. Historical patterns can be converted into probability scores."><strong>📉 Churn prediction</strong><span class="note">Pattern scoring</span></button>
+      <button class="card task-card" type="button" data-tool="code" data-title="Check GST invoice rules" data-why="Use explicit rules and code when the check must be repeatable and auditable."><strong>📋 GST check</strong><span class="note">Rules</span></button>
+      <button class="card task-card" type="button" data-tool="genai" data-title="Summarise a 40-page proposal" data-why="Use GenAI for language understanding and synthesis."><strong>📝 Proposal summary</strong><span class="note">Synthesis</span></button>
+      <button class="card task-card" type="button" data-tool="combo" data-title="Personalise 10,000 emails" data-why="Combine systems: code retrieves exact data, ML may segment, and GenAI writes the message."><strong>📧 Personalised email</strong><span class="note">Combination</span></button>
+    </div>
+    <div class="section soft-yellow" id="tool-detail" style="margin-bottom:0"><div class="kicker">Choose a task</div><h3>Different systems are good at different kinds of work.</h3></div>
+  </section>
+  <div class="insight"><strong>Key insight:</strong> GenAI is powerful where interpretation and creation matter. Give it deterministic tools when exact arithmetic, rules or verification matter.</div>
+</section>
+<section id="deeper" class="page">
+  <div class="eyebrow">GenAI vs Other AI · Go deeper</div>
+  <h1>Modern AI products often combine generation, prediction and deterministic logic.</h1>
+  <p class="lead">A useful AI workflow does not need one engine to do everything.</p>
+  <section class="grid-two">
+    <div class="card soft-green"><div class="tag">Deterministic code</div><h2>₹47,250 × 18%</h2><div class="points"><div class="point"><span class="tick">1</span><div>Take the exact inputs.</div></div><div class="point"><span class="tick">2</span><div>Apply the explicit arithmetic.</div></div><div class="point"><span class="tick">3</span><div>Return ₹8,505.</div></div></div></div>
+    <div class="card soft-purple"><div class="tag">Generative AI</div><h2>Generate a likely response</h2><p>The model predicts tokens that form the answer. It may know the arithmetic pattern, but that is different from explicitly running the calculation.</p><p class="note">When exactness matters, call a calculator, code or verified data source.</p></div>
+  </section>
+  <section class="section soft-blue"><h2>A combined home-loan workflow</h2><div class="timeline"><div class="timeline-item"><div class="timeline-dot">🤖</div><div class="timeline-body"><strong>GenAI reads the application</strong>Extracts messy natural-language details.</div></div><div class="timeline-item"><div class="timeline-dot">📊</div><div class="timeline-body"><strong>ML scores risk</strong>Estimates approval probability from historical patterns.</div></div><div class="timeline-item"><div class="timeline-dot">⌗</div><div class="timeline-body"><strong>Code applies rules</strong>Checks thresholds and calculates exact figures.</div></div><div class="timeline-item"><div class="timeline-dot">✉</div><div class="timeline-body"><strong>GenAI explains the outcome</strong>Turns structured results into a clear message.</div></div></div></section>
+</section>
+<div class="next-box"><strong>Next foundation:</strong> Tokens. <a href="ai-foundations-tokens.html">Continue →</a></div><div class="footer-space"></div>
+</article></main>
+</div>
+<script>
+
+(function(){
+  const buttons=document.querySelectorAll('.level-btn');
+  const pages=document.querySelectorAll('.page');
+  buttons.forEach(btn=>btn.addEventListener('click',()=>{
+    buttons.forEach(b=>b.classList.remove('active'));pages.forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');document.getElementById(btn.dataset.page).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+})();
+
+const values=['₹43,391','₹45,520','₹43,391'];
+const cards=[...document.querySelectorAll('.emi-card')];
+document.getElementById('emi-run').addEventListener('click',()=>{
+  document.getElementById('emi-answer').style.display='none';document.getElementById('emi-reveal').disabled=true;
+  cards.forEach((c,i)=>{c.querySelector('.big-number').textContent='…';c.querySelector('.note').textContent='generating';c.style.borderColor='var(--line)';setTimeout(()=>{c.querySelector('.big-number').textContent=values[i];c.querySelector('.note').textContent='per month';c.classList.add('pulse-once');setTimeout(()=>c.classList.remove('pulse-once'),550);if(i===2)document.getElementById('emi-reveal').disabled=false},350+i*520)});
+});
+document.getElementById('emi-reveal').addEventListener('click',()=>{cards[1].style.borderColor='var(--red)';cards[0].style.borderColor='var(--green)';cards[2].style.borderColor='var(--green)';document.getElementById('emi-answer').style.display='block'});
+document.querySelectorAll('.task-card').forEach(card=>card.addEventListener('click',()=>{document.querySelectorAll('.task-card').forEach(c=>c.style.borderColor='var(--line)');card.style.borderColor='var(--amber)';const map={code:'Deterministic code',genai:'Generative AI',ml:'Machine learning model',combo:'Combination'};document.getElementById('tool-detail').innerHTML='<div class="kicker">'+map[card.dataset.tool]+'</div><h3>'+card.dataset.title+'</h3><p>'+card.dataset.why+'</p>';}));
+
+</script>
+<script src="../assets/rail.js"></script>
+</body></html>

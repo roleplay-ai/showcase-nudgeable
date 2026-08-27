@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Foundations · Tool Calling</title>
+<style>
+:root{
+  --bg:#fffdf5;
+  --panel:#ffffff;
+  --ink:#221d23;
+  --muted:#6d6870;
+  --line:#e2ded7;
+  --amber:#ffce00;
+  --amber-soft:#fff6cf;
+  --orange:#f68a29;
+  --orange-soft:#fff0df;
+  --blue:#3696fc;
+  --blue-soft:#eaf5ff;
+  --green:#23ce68;
+  --green-soft:#e9fff2;
+  --purple:#623cea;
+  --purple-soft:#f1ecff;
+  --red:#ed4551;
+  --red-soft:#fdecef;
+  --sidebar:#fff9df;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;
+}
+button,input{font:inherit}
+button{color:inherit}
+.topbar{
+  height:58px;border-bottom:1px solid var(--line);display:flex;align-items:center;
+  padding:0 24px;gap:12px;background:#fff;position:sticky;top:0;z-index:20;
+}
+.topbar:before{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,var(--amber) 0 42%,var(--orange) 42% 62%,var(--blue) 62% 80%,var(--green) 80% 100%);
+}
+.back{
+  text-decoration:none;color:var(--ink);border:1px solid var(--line);background:#fff;border-radius:999px;
+  padding:7px 12px;font-size:14px;font-weight:750;
+}
+.crumb{font-size:15px;font-weight:750}.crumb span{color:var(--muted);font-weight:650}
+.layout{min-height:calc(100vh - 58px);display:grid;grid-template-columns:250px 1fr}
+aside{
+  border-right:1px solid var(--line);background:var(--sidebar);padding:24px 18px;
+  position:sticky;top:58px;height:calc(100vh - 58px);overflow:auto;
+}
+.foundation-mark{
+  width:38px;height:38px;border-radius:11px;background:var(--amber);display:grid;place-items:center;
+  font-size:19px;font-weight:900;margin-bottom:12px;border:1px solid rgba(34,29,35,.1);
+}
+.guide-title{font-family:Georgia,"Times New Roman",serif;font-size:23px;font-weight:700;line-height:1.1;margin-bottom:4px}
+.guide-subtitle{color:var(--muted);font-size:13px;margin-bottom:22px}
+.nav-label{
+  margin:18px 0 7px;color:#9a8e72;font-size:10.5px;letter-spacing:.12em;font-weight:850;text-transform:uppercase
+}
+.nav-item{
+  display:block;padding:7px 9px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:13.5px;margin:2px 0
+}
+.nav-item:hover{background:rgba(255,255,255,.6)}
+.nav-item.active{background:var(--amber);font-weight:850}
+.nav-item.next-topic{border:1px solid rgba(34,29,35,.10);background:rgba(255,255,255,.62)}
+main{padding:42px 56px 72px}.content{max-width:1060px;margin:0 auto}
+.level-switch{
+  display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px;background:#fff;margin-bottom:28px;
+  position:sticky;top:74px;z-index:12;box-shadow:0 2px 10px rgba(34,29,35,.05)
+}
+.level-btn{
+  border:0;background:transparent;border-radius:999px;padding:9px 16px;font:800 14px/1.2 Inter,system-ui;cursor:pointer
+}
+.level-btn.active{background:var(--amber)}
+.page{display:none}.page.active{display:block}
+.eyebrow{color:#9a6b00;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:850;margin-bottom:10px}
+h1{
+  font-family:Georgia,"Times New Roman",serif;font-size:44px;line-height:1.12;font-weight:600;
+  margin:0 0 20px;max-width:900px;letter-spacing:-.018em
+}
+.lead{font-size:19px;line-height:1.68;max-width:900px;margin:0 0 26px;color:#3a353d}
+h2{margin:0 0 14px;font-size:21px;line-height:1.28}h3{margin:0 0 6px;font-size:17px;line-height:1.35}
+p{margin:0 0 10px}p:last-child{margin-bottom:0}
+.card{border:1px solid var(--line);border-radius:14px;padding:21px 23px;background:var(--panel)}
+.grid-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.grid-three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.grid-four{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.soft-yellow{background:var(--amber-soft)}.soft-blue{background:var(--blue-soft)}.soft-green{background:var(--green-soft)}
+.soft-purple{background:var(--purple-soft)}.soft-orange{background:var(--orange-soft)}.soft-red{background:var(--red-soft)}
+.section{
+  border:1px solid var(--line);border-radius:15px;background:#fff;padding:22px 24px;margin:18px 0
+}
+.section.soft-yellow{background:var(--amber-soft)}.section.soft-blue{background:var(--blue-soft)}
+.section.soft-green{background:var(--green-soft)}.section.soft-purple{background:var(--purple-soft)}
+.insight{margin:18px 0;background:var(--purple-soft);border:1px solid #d8d1ff;border-radius:12px;padding:15px 18px;font-size:16px}
+.insight strong{color:#4f3db9}
+.note{font-size:14px;color:var(--muted);margin-top:10px}
+.tag{
+  display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;background:#f3eee7;
+  font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.07em
+}
+.points{display:grid;gap:10px;margin-top:8px}.point{display:grid;grid-template-columns:24px 1fr;gap:9px;align-items:start;font-size:15.5px;line-height:1.5}
+.tick{width:23px;height:23px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.82);border:1px solid rgba(34,29,35,.12);font-size:12px;font-weight:800}
+.action-btn{
+  min-height:44px;border:1px solid var(--ink);border-radius:10px;background:var(--amber);padding:9px 14px;
+  font-weight:850;font-size:14px;cursor:pointer
+}
+.action-btn.secondary{background:#fff}.action-btn.small{min-height:38px;padding:7px 11px;font-size:13px}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.pill{
+  border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font:800 13px/1 Inter,system-ui;cursor:pointer
+}
+.pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pill.amber.active{background:var(--amber);color:var(--ink);border-color:#caa400}
+.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.11em;font-weight:850;color:var(--muted);margin-bottom:5px}
+.big-number{font-size:36px;font-weight:900;line-height:1}
+.meter{height:16px;border-radius:999px;background:#f0efec;border:1px solid var(--line);overflow:hidden}
+.meter-fill{height:100%;width:0;background:var(--amber);transition:width .25s ease}
+.flow-row{display:grid;grid-template-columns:1fr 44px 1fr;gap:12px;align-items:center}
+.flow-arrow{text-align:center;font-weight:900;color:var(--muted);font-size:22px}
+.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+.compare{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.compare th,.compare td{text-align:left;padding:13px 15px;border-bottom:1px solid #ece8df;vertical-align:top}
+.compare th{background:#fbf8ef;font-size:12px;text-transform:uppercase;letter-spacing:.06em}.compare tr:last-child td{border-bottom:0}
+.timeline{display:grid;gap:10px;margin-top:12px}
+.timeline-item{display:grid;grid-template-columns:42px 1fr;gap:12px}
+.timeline-dot{width:36px;height:36px;border-radius:10px;background:#fff;border:1px solid var(--line);display:grid;place-items:center}
+.timeline-body{border:1px solid var(--line);background:#fff;border-radius:11px;padding:12px 14px}
+.timeline-body strong{display:block}
+.step-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.step-card{border:1px solid var(--line);background:#fff;border-radius:11px;padding:14px}
+.step-num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--amber-soft);border:1px solid #e8d77c;font-weight:850;font-size:13px;margin-bottom:8px}
+.next-box{border:1px solid #ead89a;background:var(--amber-soft);border-radius:14px;padding:18px 20px;margin:22px 0}
+.next-box a{color:var(--ink);font-weight:850;text-decoration:none}
+.footer-space{height:18px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(54,150,252,.35);outline-offset:2px}
+@media(max-width:980px){
+  .layout{grid-template-columns:1fr}aside{display:none}main{padding:30px 19px 56px}
+  body{font-size:18px}.lead{font-size:20px}.grid-two,.grid-three,.grid-four,.step-row,.flow-row{grid-template-columns:1fr}
+  .flow-arrow{transform:rotate(90deg)}.level-switch{top:70px}h1{font-size:38px}
+}
+@media(max-width:560px){
+  .topbar{padding:0 14px}.crumb{font-size:13px}.back{font-size:12px;padding:6px 9px}
+  main{padding-left:14px;padding-right:14px}.section,.card{padding:17px 16px}
+}
+
+/* v2 interaction refinements */
+.interactive-stage{border:1px solid var(--line);border-radius:16px;background:#fff;padding:20px;margin:16px 0;overflow:hidden}
+.demo-note{font-size:12px;color:var(--muted);margin-top:8px}
+.reveal-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0}
+.live-chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:13px;font-weight:750}
+.fade-in{animation:fadeInUp .35s ease both}@keyframes fadeInUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.pulse-once{animation:pulseOnce .5s ease}@keyframes pulseOnce{50%{transform:scale(1.025)}}
+.flow-node{border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px;text-align:center;transition:.25s ease;min-width:0}
+.flow-node.active{border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,206,0,.2);transform:translateY(-2px)}
+.flow-node.done{border-color:var(--green);background:var(--green-soft)}
+.flow-node .node-ico{font-size:26px;display:block;margin-bottom:3px}.flow-node .node-lbl{font-size:12px;font-weight:850}.flow-node .node-sub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}
+.machine-line{height:3px;background:#e8e4dc;border-radius:999px;position:relative;overflow:hidden}.machine-line:after{content:"";position:absolute;inset:0;background:var(--amber);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}.machine-line.on:after{transform:scaleX(1)}
+.code-box{background:var(--ink);color:#fff;border-radius:12px;padding:13px 15px;font:13px/1.55 "SFMono-Regular",Consolas,monospace;overflow:auto;white-space:pre-wrap}
+.mini-label{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.status-box{border:1px solid var(--line);border-radius:12px;background:#fff;padding:13px 15px;margin-top:12px;min-height:52px}
+@media(max-width:980px){.flow-node{padding:12px}.machine-line{width:3px;height:28px;margin:auto}.machine-line:after{transform:scaleY(0);transform-origin:top}.machine-line.on:after{transform:scaleY(1)}}
+
+
+.tool-machine{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr 28px 1fr 28px 1fr;gap:7px;align-items:center;margin:14px 0}.tool-machine .machine-line{height:3px}.tool-machine .flow-node{height:100%}.tool-result{border:1px solid var(--line);background:#fff;border-radius:12px;padding:14px;margin-top:12px;min-height:62px}
+@media(max-width:980px){.tool-machine{grid-template-columns:1fr}.tool-machine .machine-line{height:28px;width:3px}}
+
+
+/* lab panel adjustments: top bar removed, sidebar icons added */
+.layout{min-height:100vh}
+aside{top:0;height:100vh}
+main{padding-top:34px}
+.level-switch{top:16px}
+.nav-item{display:flex;align-items:center;gap:9px}
+.nav-ico{width:25px;height:25px;flex:0 0 auto;display:grid;place-items:center;border-radius:8px;
+  background:rgba(255,255,255,.72);border:1px solid rgba(34,29,35,.09)}
+.nav-ico svg{width:15px;height:15px;stroke:#221d23;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active .nav-ico{background:#fff;border-color:rgba(34,29,35,.16)}
+.guide-subtitle{margin-bottom:18px}
+</style>
+<link rel="stylesheet" href="../assets/typography.css">
+<link rel="stylesheet" href="../assets/standardize.css">
+</head>
+<body>
+<div class="layout">
+<aside><div class="foundation-mark">AI</div><div class="guide-title">AI Foundations</div><div class="guide-subtitle">Short explainers that build practical AI fluency</div><div class="nav-label">Understand AI</div><a class="nav-item" href="ai-foundations-genai-vs-other-ai.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M10 12h11v11H10zM27 25h11v11H27z"/><path d="M21 17h8M25 17v11"/><circle cx="33" cy="13" r="5"/><path d="M10 34c3-5 7-7 12-7"/></svg></span><span>GenAI vs Other AI</span></a><a class="nav-item" href="ai-foundations-tokens.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M16 16h16M16 24h10M16 32h16"/><path d="M30 21l5 3-5 3"/></svg></span><span>Tokens</span></a><a class="nav-item" href="ai-foundations-context-window.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><rect x="8" y="10" width="32" height="28" rx="4"/><path d="M8 17h32M15 23h18M15 29h12"/><circle cx="14" cy="14" r="1"/></svg></span><span>Context Window</span></a><a class="nav-item" href="ai-foundations-ai-memory.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M17 13a8 8 0 0 1 14 5 7 7 0 0 1 1 13 8 8 0 0 1-15 2 7 7 0 0 1 0-20z"/><path d="M19 20h10M19 25h7M19 30h9"/></svg></span><span>AI Memory</span></a><div class="nav-label">Connect & Act</div><a class="nav-item" href="ai-foundations-api.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><rect x="7" y="13" width="12" height="22" rx="3"/><rect x="29" y="13" width="12" height="22" rx="3"/><path d="M19 20h10M25 16l4 4-4 4M29 28H19M23 24l-4 4 4 4"/></svg></span><span>API</span></a><a class="nav-item active" href="ai-foundations-tool-calling.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M10 31l10-10 7 7 11-11"/><path d="M32 17h6v6"/><rect x="8" y="8" width="10" height="10" rx="2"/><path d="M12 11v4M10 13h4"/></svg></span><span>Tool Calling</span></a><a class="nav-item" href="ai-foundations-ai-agents.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><rect x="12" y="15" width="24" height="20" rx="6"/><path d="M24 10v5M20 10h8"/><circle cx="19" cy="25" r="2"/><circle cx="29" cy="25" r="2"/><path d="M20 31h8"/></svg></span><span>AI Agents</span></a><div class="nav-label">Build & Create</div><a class="nav-item" href="ai-foundations-image-video.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><rect x="8" y="10" width="32" height="28" rx="4"/><circle cx="17" cy="19" r="3"/><path d="M11 34l9-9 6 6 5-5 6 8"/><path d="M34 8v6M31 11h6"/></svg></span><span>Image &amp; Video</span></a><a class="nav-item" href="ai-foundations-vibe-coding.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M18 14l-9 10 9 10M30 14l9 10-9 10M27 10l-6 28"/></svg></span><span>Vibe Coding</span></a><div class="nav-label">Business</div><a class="nav-item" href="ai-foundations-ai-economics.html"><span class="nav-ico"><svg viewBox="0 0 48 48"><path d="M10 36h28M13 32V25M21 32V20M29 32V15M37 32V10"/><path d="M12 18l8-5 8 2 9-9"/><path d="M32 6h5v5"/></svg></span><span>AI Economics</span></a></aside>
+<main><article class="content">
+<section id="understand" class="page active"><div class="eyebrow">Tool Calling</div><h1>Tool calling lets AI get information or take action outside the chat.</h1><p class="lead">The model can decide that it needs a capability, send structured inputs to that tool, receive the result and continue the response.</p>
+<section class="section soft-purple"><h2>Pick a task, then run the tool call</h2><div class="pill-row"><button class="pill active tool-task" data-task="calendar" type="button">📅 Schedule a call</button><button class="pill tool-task" data-task="search" type="button">🔎 Check Sensex</button><button class="pill tool-task" data-task="email" type="button">✉ Send proposal</button><button class="pill tool-task" data-task="data" type="button">📊 Analyse sales</button></div><div class="card soft-yellow" id="tool-ask"><div class="kicker">Your request</div><h3>“Schedule a call with the team for Thursday afternoon.”</h3></div><button class="action-btn" id="run-tool" type="button" style="margin-top:12px">▶ Run tool call</button>
+<div class="tool-machine"><div class="flow-node" id="tm0"><span class="node-ico">💬</span><div class="node-lbl">Read</div><div class="node-sub">Understand request</div></div><div class="machine-line" id="tl0"></div><div class="flow-node" id="tm1"><span class="node-ico">🧠</span><div class="node-lbl">Decide</div><div class="node-sub">Choose capability</div></div><div class="machine-line" id="tl1"></div><div class="flow-node" id="tm2"><span class="node-ico" id="tool-ico">📅</span><div class="node-lbl" id="tool-name">Calendar tool</div><div class="node-sub">Run externally</div></div><div class="machine-line" id="tl2"></div><div class="flow-node" id="tm3"><span class="node-ico">📥</span><div class="node-lbl">Receive</div><div class="node-sub">Tool result</div></div><div class="machine-line" id="tl3"></div><div class="flow-node" id="tm4"><span class="node-ico">✅</span><div class="node-lbl">Respond</div><div class="node-sub">Use the result</div></div></div><div class="tool-result" id="tool-result">Ready. Select a task and run it.</div></section>
+<section class="grid-two"><div class="card"><div class="kicker">Without the needed tool</div><h2>Can explain or draft</h2><p>The model may know what should happen, but it cannot perform an external action it has no access to.</p></div><div class="card soft-green"><div class="kicker">With an authorised tool</div><h2>Can retrieve or act</h2><p>The external capability performs the operation and returns a result the model can use.</p></div></section>
+<section class="section soft-blue"><h2>One model, different hands</h2><div class="grid-four"><div class="card"><strong>🔎 Search</strong></div><div class="card"><strong>📅 Calendar</strong></div><div class="card"><strong>✉ Email</strong></div><div class="card"><strong>⌗ Code / data</strong></div></div><p class="note"><strong>Important:</strong> AI can only call tools that the product has actually connected and authorised.</p></section><div class="insight"><strong>Key insight:</strong> the model is not the calendar, search engine or email service. It chooses and calls an external capability, then works with the returned result.</div></section><div class="next-box"><strong>Next foundation:</strong> AI Agents. <a href="ai-foundations-ai-agents.html">Continue →</a></div><div class="footer-space"></div>
+</article></main>
+</div>
+<script>
+
+const toolTasks={calendar:{ask:'“Schedule a call with the team for Thursday afternoon.”',ico:'📅',name:'Calendar tool',steps:['Request understood: schedule a team call.','Calendar capability selected.','Calendar checks availability and creates the event.','Tool returns: Thursday 4pm, 6 invites sent.','Done. Team call created for Thursday at 4pm.']},search:{ask:'“What is today’s Sensex level?”',ico:'🔎',name:'Search / market data',steps:['Request needs current market information.','Live search or market-data capability selected.','Tool retrieves the current index value.','Tool returns a fresh result with timestamp.','Answer uses the returned live value.']},email:{ask:'“Send the proposal to the client.”',ico:'✉',name:'Email tool',steps:['Request understood: send an existing proposal.','Email capability selected.','Tool receives recipient, subject and attachment.','Tool returns: message sent successfully.','Done. Proposal sent to the client.']},data:{ask:'“Analyse this month’s sales data.”',ico:'📊',name:'Code / data tool',steps:['Request needs the actual dataset.','Code/data capability selected.','Tool reads data and runs calculations.','Tool returns structured totals and trends.','Answer explains the calculated findings.']}};
+let current='calendar',running=false;function setTask(k){current=k;const d=toolTasks[k];document.getElementById('tool-ask').innerHTML='<div class="kicker">Your request</div><h3>'+d.ask+'</h3>';document.getElementById('tool-ico').textContent=d.ico;document.getElementById('tool-name').textContent=d.name;document.getElementById('tool-result').textContent='Ready. Run the tool call.';for(let i=0;i<5;i++)document.getElementById('tm'+i).className='flow-node';for(let i=0;i<4;i++)document.getElementById('tl'+i).className='machine-line'}document.querySelectorAll('.tool-task').forEach(btn=>btn.addEventListener('click',()=>{if(running)return;document.querySelectorAll('.tool-task').forEach(b=>b.classList.remove('active'));btn.classList.add('active');setTask(btn.dataset.task)}));
+document.getElementById('run-tool').addEventListener('click',()=>{if(running)return;running=true;setTask(current);const d=toolTasks[current];for(let i=0;i<5;i++){setTimeout(()=>{if(i>0)document.getElementById('tl'+(i-1)).classList.add('on');const n=document.getElementById('tm'+i);n.classList.add('active');document.getElementById('tool-result').textContent=d.steps[i];setTimeout(()=>{n.classList.remove('active');n.classList.add('done');if(i===4)running=false},420)},i*620)}});
+
+</script>
+<script src="../assets/rail.js"></script>
+</body></html>
