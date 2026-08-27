@@ -663,10 +663,10 @@
     .video-copy p { color: var(--muted); font-size: 14px; }
     .video-placeholder.has-video { border-style: solid; }
     .video-placeholder.has-video .video-copy { border-top-style: solid; }
-    .video-stage.has-video { padding: 0; cursor: pointer; position: relative; overflow: hidden; }
+    .video-stage.has-video { aspect-ratio: 16 / 9; min-height: 0; padding: 0; cursor: pointer; position: relative; overflow: hidden; }
     .video-stage.has-video img.video-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .video-stage.has-video .play-mark { position: relative; z-index: 1; margin: 0; }
-    .video-stage video { width: 100%; height: 100%; min-height: 205px; display: block; border: 0; }
+    .video-stage video { width: 100%; height: 100%; display: block; border: 0; }
     .topic-footer {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1179,21 +1179,9 @@
         <div class="warning"><strong>The key limit:</strong> Dispatch is a remote control for your Desktop app, not an independent cloud worker.</div>`
     };
 
-    const videoPlans = {
-      models: ['Choosing the right model', 'Balancing quality, effort and cost'],
-      cowork: ['Giving Cowork a strong task', 'Reviewing autonomous work safely'],
-      artifacts: ['Building your first Artifact', 'Publishing, access and data limits'],
-      projects: ['Setting up a useful Project', 'Keeping Project knowledge current'],
-      skills: ['Creating a reusable Skill', 'Testing triggers and shared Skills'],
-      scheduled: ['Creating a Scheduled Task', 'Reviewing runs and managing approvals'],
-      design: ['Setting up a design system', 'Refining and exporting a design'],
-      code: ['Starting safely with Claude Code', 'Reviewing files, tests and commits'],
-      slack: ['Working with Claude in a channel', 'Direct messages and standing instructions'],
-      dispatch: ['Pairing Dispatch and sending a task', 'Managing desktop access safely']
-    };
-
     // Real recordings matched from AI_WorkStudio_Matched_Video_Mapping.xlsx.
-    // Topics with no entry here keep the empty placeholder pair below.
+    // Topics with no entry here (currently: code, slack) get no "Watch" tab
+    // at all — add an entry here once a recording exists to bring it back.
     const STORAGE = 'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/';
     const videoData = {
       models: [
@@ -1227,10 +1215,7 @@
       ]
     };
 
-    function videoCardHTML(video, index, fallbackLabel) {
-      if (!video) {
-        return `<div class="video-placeholder"><div class="video-stage"><div><div class="play-mark">▶</div><strong>Video placeholder ${index + 1}</strong><br><span class="muted">Upload or embed your ${fallbackLabel} video here</span></div></div><div class="video-copy"><h3>${(videoPlans[fallbackLabel] || [])[index] || ''}</h3><p>Replace this area with your training video and a short description.</p></div></div>`;
-      }
+    function videoCardHTML(video) {
       const posterAttr = video.poster ? ` data-poster="${video.poster}"` : '';
       const posterImg = video.poster ? `<img class="video-poster" src="${video.poster}" alt="" loading="lazy">` : '';
       return `<div class="video-placeholder has-video"><div class="video-stage has-video" data-video="${video.video}"${posterAttr}>${posterImg}<div class="play-mark">▶</div></div><div class="video-copy"><h3>${video.title}</h3><p>A short recording of this workflow, start to finish.</p></div></div>`;
@@ -1246,17 +1231,17 @@
         });
       }
 
+      // No matched recording for this topic yet (currently: code, slack) —
+      // hide the "Watch" tab entirely rather than show empty placeholders.
       const videos = videoData[id];
-      const cards = videos
-        ? videos.map((v, i) => videoCardHTML(v, i)).join('')
-        : [0, 1].map(i => videoCardHTML(null, i, id)).join('');
+      if (!videos) return;
+
+      const cards = videos.map(videoCardHTML).join('');
 
       topic.levels.push({
         label: 'Watch',
         title: `Watch ${topic.title} in action`,
-        lead: videos
-          ? `Short recordings of real ${topic.title} work, start to finish.`
-          : `This third page is ready for your employee training videos about ${topic.title}. Replace either placeholder when the recordings are available.`,
+        lead: `Short recordings of real ${topic.title} work, start to finish.`,
         body: `
           <div class="video-grid">${cards}</div>
           <div class="insight"><strong>Video page:</strong> Both spaces support a standard 16:9 player with room for a title and short learning note.</div>`

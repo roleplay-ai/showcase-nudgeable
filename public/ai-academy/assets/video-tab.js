@@ -8,11 +8,13 @@
    It works out which product it is on, reuses that page's own tab classes so
    the button looks native, and adds a video panel with one card per matched
    video for that page (from VIDEO_DATA below, sourced from
-   AI_WorkStudio_Matched_Video_Mapping.xlsx). Pages with no match keep the
-   original empty-slot placeholders. Nothing per-page to maintain.
+   AI_WorkStudio_Matched_Video_Mapping.xlsx). A page with no entry in
+   VIDEO_DATA gets no "Watch" tab at all — it is hidden until a video is
+   added, not shown with empty placeholders. Nothing per-page to maintain.
 
-   TO ADD OR UPDATE A VIDEO: add/edit its entry in VIDEO_DATA below, keyed by
-   "<product-folder>/<page-file>.html" — e.g. "chatgpt/codex.html".
+   TO ADD A VIDEO (this brings the "Watch" tab back for that page): add its
+   entry to VIDEO_DATA below, keyed by "<product-folder>/<page-file>.html" —
+   e.g. "chatgpt/codex.html".
    ========================================================================== */
 (function () {
 
@@ -111,28 +113,18 @@
     '.nv-lead{font-size:18px;line-height:1.6;color:#4C5561;margin:0;max-width:620px}',
 
     '.nv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}',
-    '.nv-card{border:1px dashed rgba(34,29,35,.26);border-radius:16px;overflow:hidden;background:#fff}',
-    '.nv-card.has-video{border-style:solid}',
+    '.nv-card{border:1px solid rgba(34,29,35,.16);border-radius:16px;overflow:hidden;background:#fff}',
     '.nv-stage{aspect-ratio:16/9;display:grid;place-items:center;position:relative;',
-      'background:linear-gradient(160deg,color-mix(in srgb,var(--nv) 13%,#fff),#fff)}',
+      'background:linear-gradient(160deg,color-mix(in srgb,var(--nv) 13%,#fff),#fff);cursor:pointer}',
     '.nv-stage iframe,.nv-stage video{width:100%;height:100%;border:0;display:block}',
     '.nv-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}',
-    '.nv-stage[data-video]{cursor:pointer}',
     '.nv-play{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;',
       'background:var(--nv);color:#fff;font-size:17px;padding-left:3px;position:relative;z-index:1;',
       'box-shadow:0 6px 18px color-mix(in srgb,var(--nv) 34%,transparent)}',
-    '.nv-slot{position:absolute;bottom:12px;left:0;right:0;text-align:center;z-index:1;',
-      'font-size:11.5px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;',
-      'color:color-mix(in srgb,var(--nv) 72%,#555)}',
-    '.nv-body{border-top:1px dashed rgba(34,29,35,.22);padding:15px 17px 17px;background:#fff}',
-    '.nv-card.has-video .nv-body{border-top-style:solid}',
+    '.nv-body{border-top:1px solid rgba(34,29,35,.14);padding:15px 17px 17px;background:#fff}',
     '.nv-body h3{margin:0 0 5px;font-size:17px;font-weight:750;line-height:1.3}',
     '.nv-body p{margin:0;font-size:13.5px;line-height:1.5;color:#6B6B6B}',
 
-    '.nv-note{margin-top:20px;padding:14px 17px;border-radius:12px;font-size:13.5px;',
-      'background:color-mix(in srgb,var(--nv) 8%,#fff);',
-      'border:1px solid color-mix(in srgb,var(--nv) 22%,transparent);color:#4C5561}',
-    '.nv-note b{color:var(--nv)}',
     '@media (max-width:980px){.nv-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}',
     '@media (max-width:620px){.nv-grid{grid-template-columns:1fr}}'
   ].join('');
@@ -150,19 +142,10 @@
     return parts.slice(-2).join('/');
   }
 
-  function cardHTML(video, index) {
-    if (!video) {
-      return '<div class="nv-card">' +
-               '<div class="nv-stage"><span class="nv-play">&#9654;</span>' +
-                 '<span class="nv-slot">Video ' + (index + 1) + '</span></div>' +
-               '<div class="nv-body"><h3>Video title ' + (index + 1) + '</h3>' +
-                 '<p>One line on the workflow it shows.</p></div>' +
-             '</div>';
-    }
-    var poster = video.poster ? ' style="background-image:none"' : '';
+  function cardHTML(video) {
     var posterImg = video.poster ? '<img class="nv-poster" src="' + video.poster + '" alt="" loading="lazy">' : '';
-    return '<div class="nv-card has-video">' +
-             '<div class="nv-stage" data-video="' + video.video + '"' + poster + '>' +
+    return '<div class="nv-card">' +
+             '<div class="nv-stage" data-video="' + video.video + '">' +
                posterImg +
                '<span class="nv-play">&#9654;</span>' +
              '</div>' +
@@ -189,6 +172,12 @@
     for (var k in PRODUCTS) if (location.pathname.indexOf(k) !== -1) key = k;
     if (!key) return;
 
+    // No matched recording for this page yet — hide the "Watch" tab entirely
+    // rather than show empty placeholders. Add an entry to VIDEO_DATA above
+    // to bring it back.
+    var videos = VIDEO_DATA[pageKey()] || [];
+    if (!videos.length) return;
+
     var cfg     = PRODUCTS[key];
     var content = document.querySelector('main .content') || document.querySelector('main');
     if (!content || content.querySelector('.nv-panel')) return;
@@ -198,7 +187,6 @@
     document.head.appendChild(style);
 
     var feature = featureName(cfg);
-    var videos  = VIDEO_DATA[pageKey()] || [];
     var panels  = [].slice.call(content.querySelectorAll('.' + cfg.panel));
     var bar     = content.querySelector('.' + cfg.bar);
     /* only useful as an anchor when it is a direct child of .content;
@@ -253,10 +241,7 @@
     panel.style.setProperty('--nv-accent', cfg.accent);
     panel.hidden = true;
 
-    var slotCount = videos.length || 3;
-    var slots = (videos.length ? videos : [null, null, null]).map(function (v, i) {
-      return cardHTML(v, i);
-    }).join('');
+    var slots = videos.map(cardHTML).join('');
 
     panel.innerHTML =
       '<div class="nv-head">' +
@@ -264,8 +249,7 @@
         '<h1>' + feature + ' workflows in action</h1>' +
         '<p class="nv-lead">Short recordings of real work, start to finish.</p>' +
       '</div>' +
-      '<div class="nv-grid">' + slots + '</div>' +
-      (videos.length ? '' : '<p class="nv-note"><b>Adding a video:</b> replace a slot with a 16:9 embed and change the title above it.</p>');
+      '<div class="nv-grid">' + slots + '</div>';
 
     if (pageNav) content.insertBefore(panel, pageNav);
     else content.appendChild(panel);
