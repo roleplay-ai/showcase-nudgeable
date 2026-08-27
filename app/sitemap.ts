@@ -10,7 +10,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1 },
-    { url: `${base}/ai-practice-lab`, lastModified: now, changeFrequency: 'monthly', priority: .9 },
     { url: `${base}/ai-role-play`, lastModified: now, changeFrequency: 'monthly', priority: .9 },
     { url: `${base}/nudgeengine`, lastModified: now, changeFrequency: 'monthly', priority: .9 },
     { url: `${base}/ai-academy/index.html`, lastModified: now, changeFrequency: 'weekly', priority: .9 },

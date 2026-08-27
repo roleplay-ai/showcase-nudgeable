@@ -6,19 +6,12 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from './Icon';
 
-const PRACTICE_LAB_URL = 'https://work.nudgeable.app/';
-
 const nav = [
   { href: '/ai-role-play', label: 'AI Coach' },
   { href: '/nudgeengine', label: 'Actions Engine' }
 ];
 
 const ACADEMY_URL = '/ai-academy/index.html';
-
-const labLinks = [
-  { href: '/ai-practice-lab', label: 'Overview' },
-  { href: PRACTICE_LAB_URL, label: 'Access Lab', external: true }
-];
 
 const insightsLinks = [
   { href: '/insights', label: 'Videos' },
@@ -28,28 +21,18 @@ const insightsLinks = [
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [labOpen, setLabOpen] = useState(false);
   const [insightsOpen, setInsightsOpen] = useState(false);
-  const [leavingToLab, setLeavingToLab] = useState(false);
-  const hideLoaderTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const labRef = useRef<HTMLDivElement>(null);
   const insightsRef = useRef<HTMLDivElement>(null);
-  const labActive = pathname === '/ai-practice-lab';
   const insightsActive = pathname === '/insights' || pathname.startsWith('/insights/');
 
   useEffect(() => {
     function closeOnEscape(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         setOpen(false);
-        setLabOpen(false);
         setInsightsOpen(false);
-        setLeavingToLab(false);
       }
     }
     function closeDropdowns(event: MouseEvent) {
-      if (labRef.current && !labRef.current.contains(event.target as Node)) {
-        setLabOpen(false);
-      }
       if (insightsRef.current && !insightsRef.current.contains(event.target as Node)) {
         setInsightsOpen(false);
       }
@@ -63,26 +46,11 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    setLabOpen(false);
     setInsightsOpen(false);
   }, [pathname]);
 
-  useEffect(() => () => {
-    if (hideLoaderTimer.current) clearTimeout(hideLoaderTimer.current);
-  }, []);
-
-  function openPracticeLab() {
-    setOpen(false);
-    setLabOpen(false);
-    setInsightsOpen(false);
-    setLeavingToLab(true);
-    if (hideLoaderTimer.current) clearTimeout(hideLoaderTimer.current);
-    hideLoaderTimer.current = setTimeout(() => setLeavingToLab(false), 1800);
-  }
-
   function closeMenus() {
     setOpen(false);
-    setLabOpen(false);
     setInsightsOpen(false);
   }
 
@@ -102,38 +70,10 @@ export function Header() {
           <Icon name={open ? 'close' : 'menu'} />
         </button>
         <nav id="primary-navigation" className={open ? 'main-nav open' : 'main-nav'} aria-label="Primary navigation">
-          <div ref={labRef} className={`nav-dropdown${labOpen ? ' open' : ''}${labActive ? ' active' : ''}`}>
-            <button
-              type="button"
-              className="nav-dropdown-toggle"
-              aria-expanded={labOpen}
-              aria-haspopup="true"
-              aria-controls="lab-menu"
-              onClick={() => setLabOpen(value => !value)}
-            >
-              AI Practice Lab
-              <Icon name="chevron" size={16} />
-            </button>
-            <div id="lab-menu" className="nav-dropdown-menu" role="menu">
-              {labLinks.map(item => item.external
-                ? <a key={item.href} href={item.href} role="menuitem" target="_blank" rel="noopener noreferrer" onClick={openPracticeLab}>{item.label}</a>
-                : <Link
-                    key={item.href}
-                    href={item.href}
-                    role="menuitem"
-                    aria-current={pathname === item.href ? 'page' : undefined}
-                    className={pathname === item.href ? 'active' : ''}
-                    onClick={closeMenus}
-                  >
-                    {item.label}
-                  </Link>
-              )}
-            </div>
-          </div>
+          <a href={ACADEMY_URL} className={pathname.startsWith('/ai-academy') ? 'active' : ''} onClick={closeMenus}>AI Academy</a>
           {nav.map(item =>
             <Link key={item.href} href={item.href} aria-current={pathname === item.href ? 'page' : undefined} className={pathname === item.href ? 'active' : ''} onClick={closeMenus}>{item.label}</Link>
           )}
-          <a href={ACADEMY_URL} className={pathname.startsWith('/ai-academy') ? 'active' : ''} onClick={closeMenus}>AI Academy</a>
           <div ref={insightsRef} className={`nav-dropdown${insightsOpen ? ' open' : ''}${insightsActive ? ' active' : ''}`}>
             <button
               type="button"
@@ -164,13 +104,5 @@ export function Header() {
         </nav>
       </div>
     </header>
-    {leavingToLab && (
-      <div className="external-app-loader" role="status" aria-live="polite" aria-label="Opening AI Practice Lab">
-        <div className="external-app-loader-dots" aria-hidden="true">
-          <span /><span /><span />
-        </div>
-        <p>Opening AI Practice Lab…</p>
-      </div>
-    )}
   </>;
 }
