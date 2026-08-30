@@ -29,7 +29,23 @@ const nextConfig = {
       { source: '/practice-lab', destination: 'https://work.nudgeable.app/', permanent: true },
       { source: '/ai-training', destination: '/#training', permanent: true },
       { source: '/about', destination: '/#about', permanent: true },
-      { source: '/contact', destination: '/#contact', permanent: true }
+      { source: '/contact', destination: '/#contact', permanent: true },
+      // Retired Wix/legacy URLs → homepage
+      { source: '/usecases', destination: '/', permanent: true },
+      { source: '/training', destination: '/', permanent: true },
+      { source: '/ai-mastery-course', destination: '/', permanent: true },
+      { source: '/insights/7-powerful-levers-for-driving-culture-change-in-an-organization', destination: '/', permanent: true },
+      { source: '/insights/how-nudgeable-ai-roleplays-work', destination: '/', permanent: true },
+      { source: '/insights/the-role-of-self-identity-in-goal-setting', destination: '/', permanent: true },
+      { source: '/insights/-are-all-ai-chatbots-starting-to-feel-the-same', destination: '/', permanent: true },
+      { source: '/insights/-are-all-ai-chatbots-starting-to-feel-the-same%3F', destination: '/', permanent: true },
+      { source: '/insights/the-psychological-forces-behind-digital-presenteeism', destination: '/', permanent: true },
+      { source: '/insights/the-impact-of-ai-on-our-self-perception', destination: '/', permanent: true },
+      { source: '/insights/comparison-of-feedback-frameworks', destination: '/', permanent: true },
+      { source: '/insights/comparison-of-feedback-frameworks%C2%A0', destination: '/', permanent: true },
+      { source: '/insights/similaritybiastobuildtrust', destination: '/', permanent: true },
+      { source: '/insights/when-incentives-backfire', destination: '/', permanent: true },
+      { source: '/insights/the-science-of-unpredictable-rewards', destination: '/', permanent: true }
     ];
   },
   async headers() {
