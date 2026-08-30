@@ -1,0 +1,1377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A practical, connected learning guide to Claude features for workplace users." />
+  <title>All Claude features</title>
+  <style>
+    :root {
+      --bg: #fffaf0;
+      --cream: #f8eddc;
+      --panel: #fffdf7;
+      --ink: #241e1b;
+      --muted: #6d655d;
+      --line: #d9cdbb;
+      --orange: #df6426;
+      --orange-dark: #b84718;
+      --orange-soft: #fff0e5;
+      --yellow-soft: #fff6cf;
+      --blue-soft: #eef4ff;
+      --green-soft: #eefaf1;
+      --purple-soft: #f3efff;
+      --purple: #5c43b9;
+      --green: #238a4b;
+      --red: #bd3f4b;
+      --dark: #29221e;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 17px;
+      line-height: 1.62;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+    [hidden] { display: none !important; }
+
+    .topbar {
+      min-height: 58px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248, 237, 220, .96);
+      backdrop-filter: blur(8px);
+    }
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .crumb {
+      font-size: 15px;
+      font-weight: 750;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .top-progress {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .layout {
+      min-height: calc(100vh - 58px);
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+    }
+    aside {
+      position: sticky;
+      top: 58px;
+      height: calc(100vh - 58px);
+      overflow-y: auto;
+      border-right: 1px solid var(--line);
+      background: var(--cream);
+      padding: 24px 18px;
+    }
+    .guide-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .guide-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 25px;
+    }
+    .nav-label {
+      margin: 20px 10px 7px;
+      color: #978a7b;
+      font-size: 11px;
+      letter-spacing: .12em;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+    .side-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 2px 0;
+    }
+    .side-link:hover { background: rgba(255, 255, 255, .6); }
+    .side-link.active { background: var(--orange); color: #fff; font-weight: 800; }
+    .side-icon {
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .7);
+      border: 1px solid rgba(36, 30, 27, .08);
+      font-size: 15px;
+      flex: 0 0 auto;
+    }
+    .side-link.active .side-icon { color: var(--orange-dark); background: #fff; }
+
+    main { min-width: 0; padding: 46px 56px 76px; }
+    .content { max-width: 1080px; margin: 0 auto; }
+    .eyebrow {
+      color: var(--orange-dark);
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-weight: 850;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(42px, 4.4vw, 48px);
+      line-height: 1.08;
+      font-weight: 600;
+      letter-spacing: -.023em;
+      margin: 0 0 19px;
+      max-width: 900px;
+    }
+    .lead {
+      font-size: 19px;
+      line-height: 1.68;
+      color: #3d3733;
+      max-width: 880px;
+      margin: 0 0 26px;
+    }
+    h2 { margin: 0 0 13px; font-size: 22px; line-height: 1.28; letter-spacing: -.008em; }
+    h3 { margin: 0 0 6px; font-size: 17px; line-height: 1.35; }
+    p { margin: 0 0 10px; }
+    p:last-child { margin-bottom: 0; }
+
+    .hero-board {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 16px;
+      margin: 25px 0 36px;
+    }
+    .path-panel, .search-panel {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 21px;
+      background: var(--panel);
+    }
+    .path-panel { background: var(--purple-soft); border-color: #d4c9ea; }
+    .path {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 15px;
+    }
+    .path-step {
+      position: relative;
+      border: 1px solid rgba(92, 67, 185, .15);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .75);
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.42;
+      min-height: 105px;
+    }
+    .path-num {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #d3c8ed;
+      background: #fff;
+      color: var(--purple);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .search-box {
+      position: relative;
+      margin-top: 14px;
+    }
+    .search-box span {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .search-box input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      color: var(--ink);
+      padding: 11px 13px 11px 39px;
+      outline: none;
+    }
+    .search-box input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(223, 100, 38, .1); }
+    .search-hints { color: var(--muted); font-size: 13px; line-height: 1.5; margin-top: 11px; }
+
+    .category { margin-top: 30px; }
+    .category-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+    .category-head p { color: var(--muted); font-size: 14px; }
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+    }
+    .topic-card {
+      position: relative;
+      min-height: 205px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+      padding: 19px 19px 17px;
+      text-decoration: none;
+      transition: transform .16s ease, border-color .16s ease;
+      overflow: hidden;
+    }
+    .topic-card:hover { transform: translateY(-2px); border-color: #c6ad93; }
+    .topic-card::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 5px;
+      background: var(--card-accent, var(--orange));
+    }
+    .topic-card.yellow { background: var(--yellow-soft); --card-accent: #cf9c1e; }
+    .topic-card.blue { background: var(--blue-soft); --card-accent: #4f77bd; }
+    .topic-card.green { background: var(--green-soft); --card-accent: var(--green); }
+    .topic-card.purple { background: var(--purple-soft); --card-accent: var(--purple); }
+    .topic-card.orange { background: var(--orange-soft); --card-accent: var(--orange); }
+    .topic-card.dark { background: var(--dark); color: #fffaf1; border-color: var(--dark); --card-accent: var(--orange); }
+    .topic-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+    .topic-icon {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(36, 30, 27, .12);
+      border-radius: 11px;
+      background: rgba(255, 255, 255, .72);
+      font-size: 17px;
+      font-weight: 900;
+    }
+    .dark .topic-icon { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.18); }
+    .level-count {
+      border: 1px solid rgba(36, 30, 27, .12);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .62);
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      white-space: nowrap;
+    }
+    .dark .level-count { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.18); }
+    .new-badge {
+      border: 1px solid #d9551f;
+      border-radius: 999px;
+      background: var(--orange);
+      color: #fff;
+      padding: 4px 9px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      box-shadow: 0 2px 0 rgba(140, 50, 14, .16);
+    }
+    .topic-card h3 { font-size: 19px; margin-top: 15px; }
+    .topic-card p { color: #514a45; font-size: 14.5px; line-height: 1.5; }
+    .dark.topic-card p { color: #d8cdc2; }
+    .topic-action { margin-top: auto; padding-top: 14px; color: var(--orange-dark); font-size: 13px; font-weight: 850; }
+    .dark .topic-action { color: #ffb58d; }
+
+    .empty-state {
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .system-note {
+      margin-top: 34px;
+      border: 1px solid #d5cbea;
+      background: var(--purple-soft);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: start;
+      font-size: 15.5px;
+    }
+    .note-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #d2c6ee;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--purple);
+      font-weight: 900;
+    }
+
+    /* Connected topic pages */
+    .topic-view { animation: enter .18s ease-out; }
+    @keyframes enter { from { opacity: .25; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    .topic-view-head { margin-bottom: 21px; }
+    .topic-hero-emoji {
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 15px;
+      border: 1px solid #dfc9af;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #fff, var(--orange-soft));
+      font-size: 29px;
+      line-height: 1;
+      box-shadow: 0 3px 0 rgba(112, 75, 42, .06);
+    }
+    .visual-emoji {
+      display: block;
+      width: max-content;
+      margin: 0 0 10px;
+      font-size: 23px;
+      line-height: 1;
+      filter: saturate(1.08);
+    }
+    .plain-callout .visual-emoji { display: inline-block; margin: 0 10px 0 0; vertical-align: -3px; }
+    .topic-badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 25px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 5px 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+    }
+    .level-switch {
+      position: sticky;
+      top: 73px;
+      z-index: 30;
+      display: inline-flex;
+      gap: 3px;
+      margin: 0 0 27px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 2px 10px rgba(36,30,27,.05);
+    }
+    .level-btn {
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ink);
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 850;
+    }
+    .level-btn.active { color: #fff; background: var(--orange); }
+    .section-title { margin: 36px 0 14px; }
+    .section-title p { color: var(--muted); max-width: 820px; margin-top: -5px; }
+    .grid-2, .grid-3, .grid-4 { display: grid; gap: 13px; margin: 16px 0; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+      padding: 20px 21px;
+    }
+    .card.yellow { background: var(--yellow-soft); }
+    .card.blue { background: var(--blue-soft); }
+    .card.green { background: var(--green-soft); }
+    .card.purple { background: var(--purple-soft); }
+    .card.orange { background: var(--orange-soft); }
+    .card.dark { background: var(--dark); color: #fffaf1; border-color: var(--dark); }
+    .card.dark p, .card.dark .muted { color: #ddd1c4; }
+    .card-kicker {
+      display: inline-block;
+      margin-bottom: 9px;
+      color: var(--orange-dark);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .dark .card-kicker { color: #ffb58d; }
+    .points { display: grid; gap: 9px; margin-top: 9px; }
+    .point {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      align-items: start;
+      gap: 9px;
+      font-size: 15.5px;
+      line-height: 1.5;
+    }
+    .tick {
+      width: 23px;
+      height: 23px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(36,30,27,.12);
+      border-radius: 50%;
+      background: rgba(255,255,255,.8);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .tick.warn { color: var(--red); }
+    .tick.purple { color: var(--purple); }
+    .insight, .warning, .plain-callout {
+      margin: 17px 0;
+      border-radius: 13px;
+      padding: 16px 18px;
+      font-size: 15.8px;
+    }
+    .insight { border: 1px solid #d7cff2; background: #f0edff; }
+    .insight strong { color: #4d3aa6; }
+    .warning { border: 1px solid #e8bea7; background: var(--orange-soft); }
+    .warning strong { color: #9b3d1d; }
+    .plain-callout { border: 1px solid var(--line); background: var(--panel); }
+    .steps-wrap {
+      margin: 17px 0;
+      border: 1px solid #d3c8ea;
+      border-radius: 14px;
+      background: var(--purple-soft);
+      padding: 20px;
+    }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; }
+    .steps.three { grid-template-columns: repeat(3, 1fr); }
+    .step {
+      border: 1px solid rgba(92,67,185,.14);
+      border-radius: 11px;
+      background: rgba(255,255,255,.77);
+      padding: 14px;
+      font-size: 14.5px;
+      line-height: 1.48;
+    }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #d2c8ee;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 9px;
+    }
+    .compare-panel {
+      margin: 17px 0;
+      border: 1px solid #d2c7ea;
+      border-radius: 14px;
+      background: var(--purple-soft);
+      padding: 17px;
+    }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .compare-card {
+      border: 1px solid rgba(92,67,185,.14);
+      border-radius: 11px;
+      background: rgba(255,255,255,.78);
+      padding: 17px 18px;
+    }
+    .compare-card.good { border-left: 4px solid var(--green); }
+    .compare-card.warn { border-left: 4px solid var(--red); }
+    .compare-card.orange-line { border-left: 4px solid var(--orange); }
+    .compare-card.purple-line { border-left: 4px solid var(--purple); }
+    .prompt {
+      margin: 13px 0 0;
+      border-left: 4px solid var(--orange);
+      border-radius: 9px;
+      background: #fff;
+      padding: 13px 15px;
+      font-size: 15.5px;
+      line-height: 1.55;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .flow-node {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      padding: 17px;
+      min-height: 145px;
+    }
+    .flow-node:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -19px;
+      top: 50%;
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      transform: translateY(-50%);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--orange-dark);
+      font-weight: 900;
+      z-index: 2;
+    }
+    .flow-label {
+      display: inline-block;
+      margin-bottom: 8px;
+      border-radius: 999px;
+      background: var(--orange-soft);
+      color: var(--orange-dark);
+      padding: 3px 8px;
+      font-size: 10.5px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .table-wrap { margin: 17px 0; overflow-x: auto; }
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      font-size: 15px;
+    }
+    .compare-table th, .compare-table td {
+      text-align: left;
+      vertical-align: top;
+      padding: 12px 14px;
+      border-bottom: 1px solid #ece4d7;
+    }
+    .compare-table th {
+      background: #fbf2e4;
+      font-size: 12px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .compare-table tr:last-child td { border-bottom: 0; }
+    .compare-table td:last-child { font-weight: 800; }
+    .model-ladder { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin: 17px 0; }
+    .model-card {
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--panel);
+      padding: 17px;
+      min-height: 210px;
+    }
+    .model-card.featured { border: 2px solid var(--orange); background: var(--orange-soft); }
+    .model-name { font-family: Georgia,serif; font-size: 21px; font-weight: 700; margin-bottom: 7px; }
+    .model-role { color: var(--orange-dark); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+    .model-card p { font-size: 14px; line-height: 1.48; }
+    .code-tree {
+      margin: 12px 0 0;
+      border-radius: 11px;
+      background: var(--dark);
+      color: #fff9ef;
+      padding: 15px 17px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13.5px;
+      line-height: 1.6;
+      white-space: pre;
+      overflow: auto;
+    }
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 18px 0; }
+    .video-placeholder {
+      min-height: 280px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      border: 2px dashed #c9af91;
+      border-radius: 15px;
+      background: #fff8ec;
+      overflow: hidden;
+    }
+    .video-stage {
+      min-height: 205px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      background: linear-gradient(145deg, #f2e4d0, #fffaf0);
+    }
+    .play-mark {
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--orange);
+      color: #fff;
+      font-size: 23px;
+      padding-left: 4px;
+      box-shadow: 0 0 0 8px rgba(223,100,38,.12);
+      margin: 0 auto 14px;
+    }
+    .video-copy { border-top: 1px dashed #c9af91; padding: 15px 17px; background: #fff; }
+    .video-copy p { color: var(--muted); font-size: 14px; }
+    .video-placeholder.has-video { border-style: solid; }
+    .video-placeholder.has-video .video-copy { border-top-style: solid; }
+    .video-stage.has-video { aspect-ratio: 16 / 9; min-height: 0; padding: 0; cursor: pointer; position: relative; overflow: hidden; }
+    .video-stage.has-video img.video-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .video-stage.has-video .play-mark { position: relative; z-index: 1; margin: 0; }
+    .video-stage video { width: 100%; height: 100%; display: block; border: 0; }
+    .topic-footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 44px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+    .topic-footer a {
+      display: block;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      padding: 16px 18px;
+    }
+    .topic-footer a:hover { border-color: #c6ad93; }
+    .topic-footer small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 850;
+      margin-bottom: 3px;
+    }
+    .topic-footer b { font-size: 14px; font-weight: 800; }
+    .topic-footer .next { text-align: right; }
+    .muted { color: var(--muted); }
+
+    .mobile-topics {
+      display: none;
+      position: sticky;
+      top: 58px;
+      z-index: 40;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 250, 240, .95);
+      scrollbar-width: none;
+    }
+    .mobile-topics::-webkit-scrollbar { display: none; }
+    .mobile-topics a {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 6px 10px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1000px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { display: none; }
+      .mobile-topics { display: flex; }
+      main { padding: 32px 20px 58px; }
+      .topic-grid { grid-template-columns: 1fr 1fr; }
+      .hero-board { grid-template-columns: 1fr; }
+      body { font-size: 18px; }
+      .lead { font-size: 20px; }
+      h1 { font-size: 38px; }
+      .grid-3, .grid-4, .steps, .steps.three, .model-ladder { grid-template-columns: 1fr 1fr; }
+      .level-switch { top: 70px; }
+    }
+    @media (max-width: 650px) {
+      .topbar { padding-inline: 14px; }
+      .top-progress { display: none; }
+      main { padding-inline: 16px; }
+      .topic-grid, .path { grid-template-columns: 1fr; }
+      .topic-card { min-height: 180px; }
+      .path-step { min-height: 0; }
+      .system-note { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .grid-4, .steps, .steps.three, .compare-grid, .flow, .model-ladder, .video-grid { grid-template-columns: 1fr; }
+      .flow-node:not(:last-child)::after { display: none; }
+      .topic-footer { grid-template-columns: 1fr 1fr; }
+      .topic-footer .all { grid-column: 1 / -1; grid-row: 1; text-align: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .topic-card { transition: none; }
+    }
+  </style>
+<link rel="stylesheet" href="../assets/overview-normalize.css">
+<link rel="stylesheet" href="../assets/typography.css">
+<link rel="stylesheet" href="../assets/standardize.css">
+<link rel="stylesheet" href="../assets/claude-theme.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="lab-home" href="../index.html">&larr; Nudgeable AI Academy</a>
+    <a class="home-link" href="#home" aria-label="All Claude features">&larr; All features</a>
+    <div class="crumb" id="crumb">Claude Feature Guide</div>
+    
+  </header>
+
+  <nav class="mobile-topics" aria-label="Feature topics">
+    <a href="#home">All Features</a>
+    <a href="#models">Models</a>
+    <a href="#cowork">Cowork</a>
+    <a href="#artifacts">Artifacts</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+  </nav>
+
+  <div class="layout">
+    <aside>
+      <div class="guide-title">Claude for Work</div>
+      <div class="guide-subtitle">All features in one practical guide</div>
+
+      <div class="nav-label">Start</div>
+      <a class="side-link active" data-topic="home" href="#home"><span class="side-icon">🏠</span>All Features</a>
+      <a class="side-link" data-topic="models" href="#models"><span class="side-icon">🧠</span>Choose a model</a>
+
+      <div class="nav-label">Create and deliver</div>
+      <a class="side-link" data-topic="cowork" href="#cowork"><span class="side-icon">🗂️</span>Cowork</a>
+      <a class="side-link" data-topic="artifacts" href="#artifacts"><span class="side-icon">🧩</span>Artifacts</a>
+      <a class="side-link" data-topic="design" href="#design"><span class="side-icon">🎨</span>Design</a>
+      <a class="side-link" data-topic="code" href="#code"><span class="side-icon">💻</span>Code</a>
+
+      <div class="nav-label">Organise and repeat</div>
+      <a class="side-link" data-topic="projects" href="#projects"><span class="side-icon">📚</span>Projects</a>
+      <a class="side-link" data-topic="skills" href="#skills"><span class="side-icon">🛠️</span>Skills</a>
+      <a class="side-link" data-topic="scheduled" href="#scheduled"><span class="side-icon">⏰</span>Scheduled Tasks</a>
+
+      <div class="nav-label">Work anywhere</div>
+      <a class="side-link" data-topic="dispatch" href="#dispatch"><span class="side-icon">📱</span>Dispatch</a>
+      <a class="side-link" data-topic="slack" href="#slack"><span class="side-icon">💬</span>Claude Tag</a>
+    </aside>
+
+    <main>
+      <div class="content" id="app">
+        <section id="home-view">
+          <div class="eyebrow">Workplace learning hub</div>
+          <h1>All Claude features</h1>
+
+          <div id="topic-groups">
+            <section class="category" data-group>
+              <div class="category-head"><div><h2>Start</h2><p>Choose the model and working surface before you begin.</p></div></div>
+              <div class="topic-grid">
+                <a class="topic-card orange" href="#models" data-card data-search="models haiku sonnet opus fable cost price thinking choose model">
+                  <div class="topic-top"><span class="topic-icon">🧠</span></div>
+                  <h3>Choosing a model</h3><p>Start with Sonnet, move for a reason, and understand where cost changes.</p><span class="topic-action">Open guide →</span>
+                </a>
+                <a class="topic-card blue" href="#cowork" data-card data-search="cowork files report spreadsheet deck multi-step deliverable research computer">
+                  <div class="topic-top"><span class="topic-icon">🗂️</span></div>
+                  <h3>Cowork</h3><p>Give Claude an outcome and let it work through the files and steps around it.</p><span class="topic-action">Open guide →</span>
+                </a>
+                <a class="topic-card yellow" href="#artifacts" data-card data-search="artifact app dashboard calculator tracker quiz publish share link tool">
+                  <div class="topic-top"><span class="topic-icon">🧩</span></div>
+                  <h3>Artifacts</h3><p>Turn an answer into a tool that people can click, use and share.</p><span class="topic-action">Open guide →</span>
+                </a>
+              </div>
+            </section>
+
+            <section class="category" data-group>
+              <div class="category-head"><div><h2>Organise and repeat work</h2><p>Keep context, package a method, or run work on a schedule.</p></div></div>
+              <div class="topic-grid">
+                <a class="topic-card green" href="#projects" data-card data-search="projects context knowledge files instructions chats client repeated background">
+                  <div class="topic-top"><span class="topic-icon">📚</span></div>
+                  <h3>Projects</h3><p>Keep related chats, knowledge and standing instructions in one workspace.</p><span class="topic-action">Open guide →</span>
+                </a>
+                <a class="topic-card purple" href="#skills" data-card data-search="skills reusable method prompt template instructions examples repeat process">
+                  <div class="topic-top"><span class="topic-icon">🛠️</span></div>
+                  <h3>Skills</h3><p>Package a repeated method so Claude can apply it when the request matches.</p><span class="topic-action">Open guide →</span>
+                </a>
+                <a class="topic-card orange" href="#scheduled" data-card data-search="scheduled tasks weekly daily hourly repeat recurring report automation schedule">
+                  <div class="topic-top"><span class="topic-icon">⏰</span></div>
+                  <h3>Scheduled Tasks</h3><p>Describe recurring work once and let Claude run it on your cadence.</p><span class="topic-action">Open guide →</span>
+                </a>
+              </div>
+            </section>
+
+            <section class="category" data-group>
+              <div class="category-head"><div><h2>Create, collaborate and hand off</h2><p>Design something, change software, work in Slack or send desktop work from your phone.</p></div></div>
+              <div class="topic-grid">
+                <a class="topic-card yellow" href="#design" data-card data-search="design presentation prototype landing page one pager wireframe canva powerpoint canvas">
+                  <div class="topic-top"><span class="topic-icon">🎨</span><span class="new-badge">New</span></div>
+                  <h3>Claude Design</h3><p>Build visual work on a canvas and refine it through chat or direct edits.</p><span class="topic-action">Open guide →</span>
+                </a>
+                <a class="topic-card blue" href="#code" data-card data-search="code software project developer bug refactor tests app codebase">
+                  <div class="topic-top"><span class="topic-icon">💻</span></div>
+                  <h3>Claude Code</h3><p>Edit an existing software project across files, commands and tests.</p><span class="topic-action">Open guide →</span>
+                </a>
+                <a class="topic-card purple" href="#slack" data-card data-search="slack tag channel team shared direct message standing instructions collaboration">
+                  <div class="topic-top"><span class="topic-icon">💬</span><span class="new-badge">New</span></div>
+                  <h3>Claude Tag</h3><p>Bring Claude into a Slack channel so the team can see, steer and continue the work.</p><span class="topic-action">Open guide →</span>
+                </a>
+                <a class="topic-card green" href="#dispatch" data-card data-search="dispatch phone desktop remote local files cowork computer awake">
+                  <div class="topic-top"><span class="topic-icon">📱</span><span class="new-badge">New</span></div>
+                  <h3>Dispatch</h3><p>Send a task from your phone and let Cowork complete it on your desktop.</p><span class="topic-action">Open guide →</span>
+                </a>
+              </div>
+            </section>
+
+          </div>
+
+          <div class="empty-state" id="empty-state" hidden>No topics match that search. Try a task such as “create a file”, “weekly report” or “share a tool”.</div>
+
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const topics = {
+      models: {
+        title: 'Choosing a model', icon: 'M', eyebrow: 'Models · choose deliberately',
+        badges: ['Four model choices', 'Effort is a separate setting', 'Includes pricing'],
+        levels: [
+          {
+            label: 'Understand', title: 'Start with Sonnet',
+            lead: 'Use Sonnet for most workplace work. Move down when speed matters more than depth, and move up only when the work has genuinely earned the extra reasoning and cost.',
+            body: `
+              <div class="model-ladder">
+                <div class="model-card"><div class="model-role">Fast and focused</div><div class="model-name">Haiku</div><p>Use for simple questions, lookups, categorising, extracting details and summarising an article or email chain.</p></div>
+                <div class="model-card featured"><div class="model-role">Start here</div><div class="model-name">Sonnet</div><p>Use for writing, content, coding, analysis, multi-step problems and most everyday workflows.</p></div>
+                <div class="model-card"><div class="model-role">Deeper challenge</div><div class="model-name">Opus</div><p>Use for deep research you will question and redirect, long specialised documents, live sessions where you want stronger answers, or work Sonnet handled badly.</p></div>
+                <div class="model-card"><div class="model-role">Highest stakes</div><div class="model-name">Fable</div><p>Use when being wrong is expensive, the task has many connected steps, or dense material must become a long document, chart or technical diagram.</p></div>
+              </div>
+              <div class="insight"><strong>Key insight:</strong> When you are unsure, Sonnet is the answer. Most work never needs anything else. Fable is the heaviest on your limit, so save it for the rare tasks that warrant it.</div>
+              <div class="plain-callout"><strong>Special routing:</strong> Biology and security questions are answered on Opus regardless of the model you selected.</div>
+              <div class="section-title"><h2>Three signs to move up</h2><p>Change model after the current one gives you evidence that it is not enough.</p></div>
+              <div class="grid-3">
+                <div class="card yellow"><h3>It missed a clear constraint</h3><p>The instruction was explicit, but the result ignored it.</p></div>
+                <div class="card blue"><h3>It lost the thread</h3><p>The task was long and connected, and the answer drifted halfway through.</p></div>
+                <div class="card orange"><h3>It looked right but was not</h3><p>The answer was confident enough to pass a glance, then failed a proper check.</p></div>
+              </div>
+              <div class="grid-2">
+                <div class="card purple"><h2>Effort is a separate dial</h2><p>Effort controls how hard the selected model thinks. Keep the default for most work. Use the highest setting only for genuinely hard problems.</p></div>
+                <div class="card green"><h2>Spend judgement once</h2><p>Build a template, Skill or prompt on a stronger model, then run the repeated execution on Sonnet or Haiku. Match the depth of your review to the stakes.</p></div>
+              </div>`
+          },
+          {
+            label: 'Go deeper', title: 'Cost rises in steps',
+            lead: 'Model prices are quoted per million input and output tokens. Most choices rise gradually; the jump from Opus to Fable is the one to make deliberately every time.',
+            body: `
+              <div class="table-wrap"><table class="compare-table"><thead><tr><th>Model</th><th>Input</th><th>Output</th></tr></thead><tbody>
+                <tr><td>Haiku 4.5</td><td>$1</td><td>$5</td></tr><tr><td>Sonnet 5</td><td>$2</td><td>$10</td></tr><tr><td>Opus 5</td><td>$5</td><td>$25</td></tr><tr><td>Fable 5</td><td>$10</td><td>$50</td></tr>
+              </tbody></table></div>
+              <div class="insight"><strong>Key insight:</strong> Fable is exactly twice Opus on both input and output. Sonnet 5 remains at $2 input and $10 output; the previously scheduled increase does not happen.</div>
+              <div class="grid-2">
+                <div class="card yellow"><h2>The tokenizer changes the real bill</h2><p>Newer models may count the same text as more tokens. The effect varies by language and by whether the content is code or prose, so a single published percentage is only a rough guide.</p></div>
+                <div class="card blue"><h2>Budget from your own work</h2><div class="points"><div class="point"><span class="tick">1</span><span>Run your real prompts through the token counting endpoint on both models.</span></div><div class="point"><span class="tick">2</span><span>Use those counts, not only the rate card, to estimate the cost of migration.</span></div></div></div>
+              </div>`
+          }
+        ]
+      },
+      cowork: {
+        title: 'Claude Cowork', icon: 'C', eyebrow: 'Cowork · multi-step deliverables',
+        badges: ['Files and connected apps', 'Cloud and local work', 'Two learning levels'],
+        levels: [
+          {
+            label: 'Understand', title: 'Give the outcome, not every step',
+            lead: 'Describe what should exist when the work is finished. Cowork reads the sources, uses connected apps, works through the task and hands back a completed file while you watch and steer it.',
+            body: `
+              <div class="compare-panel"><h2>Chat or Cowork?</h2><div class="compare-grid"><div class="compare-card green"><h3>Use Chat when an answer is enough</h3><p>A question, rewrite or brainstorm that one exchange can handle.</p></div><div class="compare-card orange-line"><h3>Use Cowork when work must be done</h3><p>A file to produce, several sources to combine, or roughly twenty minutes of multi-step work.</p></div></div></div>
+              <div class="insight"><strong>Key insight:</strong> Cowork runs many steps behind one request, so it uses your limit faster than Chat. Do not send it work a single message can handle.</div>
+              <div class="section-title"><h2>Give it four things</h2></div>
+              <div class="grid-4">
+                <div class="card yellow"><span class="card-kicker">1 · Outcome</span><h3>What should exist</h3><p>Name the finished deliverable.</p></div>
+                <div class="card blue"><span class="card-kicker">2 · Inputs</span><h3>What to use</h3><p>Name the files, folders or systems.</p></div>
+                <div class="card orange"><span class="card-kicker">3 · Boundaries</span><h3>What not to change</h3><p>Set the safe working limits.</p></div>
+                <div class="card green"><span class="card-kicker">4 · Format</span><h3>How to hand it back</h3><p>Report, spreadsheet, deck or tidy folder.</p></div>
+              </div>
+              <div class="compare-panel"><h2>Weak and strong briefs</h2><div class="compare-grid"><div class="compare-card warn"><span class="card-kicker">Weak</span><p>“Analyze these files.”</p></div><div class="compare-card good"><span class="card-kicker">Strong</span><p>“Review the transcripts in this folder, find the five strongest themes, support every conclusion with evidence from the source, and do not modify the original files.”</p></div></div></div>
+              <div class="section-title"><h2>What it can reach</h2></div>
+              <div class="grid-2">
+                <div class="card blue"><h3>Cloud work can continue</h3><p>Connected services and cloud files can keep running after your laptop shuts.</p></div>
+                <div class="card yellow"><h3>Local work needs your computer</h3><p>Local folders and desktop applications require the computer to stay awake with the Desktop app open.</p></div>
+              </div>
+              <div class="plain-callout"><strong>Preferred route:</strong> Cowork uses a direct app connection when one exists because it is faster and more reliable than clicking through the screen.</div>
+              <div class="section-title"><h2>Match approval to consequence</h2></div>
+              <div class="grid-3"><div class="card green"><h3>Manual approval</h3><p>Use when a mistake would matter.</p></div><div class="card blue"><h3>Automatic approval</h3><p>Use for predictable work. Claude still checks each action for safety.</p></div><div class="card orange"><h3>Skip approvals</h3><p>Removes that safety check. Claude still asks before permanently deleting anything.</p></div></div>
+              <div class="warning"><strong>The honest ceiling:</strong> Cowork can be confidently wrong after twenty minutes of unsupervised work. Web pages and inbox messages may contain instructions aimed at Claude. Local folders remain local; pointing Cowork at one does not upload it to the cloud.</div>`
+          },
+          {
+            label: 'Go deeper', title: 'Autonomy still needs review',
+            lead: 'Cowork can extend into recurring work, ongoing projects, phone-to-desktop handoffs and live views. The more autonomy you grant, the more deliberately you should check the result.',
+            body: `
+              <div class="grid-3"><div class="card yellow"><h3>Trace the conclusions</h3><p>Ask where each important finding came from.</p></div><div class="card blue"><h3>Open changed files</h3><p>Review the actual files before you act on them.</p></div><div class="card green"><h3>Check one number</h3><p>Verify at least one material figure against its source.</p></div></div>
+              <div class="insight"><strong>Key insight:</strong> The more autonomy you gave it, the more the output is owed a look.</div>
+              <div class="section-title"><h2>How Cowork extends</h2></div>
+              <div class="grid-3">
+                <div class="card purple"><h3>Scheduled Tasks</h3><p>Run recurring work in the cloud. Review past runs, and start with gathering, analysis and summaries. Work that needs a local folder runs only while that computer is available.</p></div>
+                <div class="card green"><h3>Cowork Projects</h3><p>Keep instructions, files, recurring tasks and project-scoped memory together. Import a chat project when you are ready to produce deliverables.</p></div>
+                <div class="card orange"><h3>Dispatch</h3><p>Assign desktop work from your phone in one continuous thread. Your computer and Desktop app must remain available.</p></div>
+                <div class="card blue"><h3>Live Artifacts</h3><p>Create status views, trackers and briefs that pull current information when opened. Viewers use their own access, never yours.</p></div>
+                <div class="card yellow"><h3>Computer use</h3><p>Claude can click and type in older or internal applications. It asks before opening each app, but interfaces and dialogs make this route more fragile.</p></div>
+                <div class="card"><h3>Screen visibility</h3><p>Computer use takes screenshots, so anything visible on that screen becomes visible to Claude.</p></div>
+              </div>
+              <div class="warning"><strong>Safe operating rules:</strong> Give one folder, not the whole drive. Prefer read access when possible. Keep approval on for sending, changing and deleting. Do not combine write access with a task that reads untrusted content.</div>
+              <div class="table-wrap"><table class="compare-table"><thead><tr><th>What you want</th><th>Use</th></tr></thead><tbody>
+                <tr><td>A question, rewrite or brainstorm</td><td>Chat</td></tr><tr><td>Multi-step work with a deliverable</td><td>Cowork</td></tr><tr><td>The same work every week</td><td>Scheduled Task</td></tr><tr><td>Ongoing context and memory</td><td>Cowork Project</td></tr><tr><td>Desktop work assigned from your phone</td><td>Dispatch</td></tr><tr><td>A view that stays current</td><td>Live Artifact</td></tr><tr><td>An app with no proper connection</td><td>Computer use</td></tr><tr><td>Autonomous coding</td><td>Claude Code</td></tr>
+              </tbody></table></div>`
+          }
+        ]
+      },
+      artifacts: {
+        title: 'Claude Artifacts', icon: 'A', eyebrow: 'Artifacts · usable tools',
+        badges: ['Dashboards and calculators', 'Publish with a link', 'Two learning levels'],
+        levels: [
+          {
+            label: 'Understand', title: 'Build a tool people can use',
+            lead: 'An Artifact opens beside the chat as a working dashboard, calculator, tracker, quiz or small app. You describe what it should do, then refine the same tool through conversation.',
+            body: `
+              <div class="insight"><strong>Key insight:</strong> Ask for an Artifact the moment you think, “I wish I could actually use this answer.”</div>
+              <div class="steps-wrap"><h2>Describe four things</h2><div class="steps"><div class="step"><div class="step-num">1</div><strong>Who uses it</strong><br>Name the intended person or team.</div><div class="step"><div class="step-num">2</div><strong>What they enter</strong><br>Describe the information people provide.</div><div class="step"><div class="step-num">3</div><strong>What it works out</strong><br>Explain the logic or calculation.</div><div class="step"><div class="step-num">4</div><strong>What they see</strong><br>Name the useful result or view.</div></div></div>
+              <div class="card yellow"><span class="card-kicker">Example request</span><div class="prompt">“Build a tracker where my team enters weekly training hours and it shows who is behind target.”</div><p style="margin-top:12px"><strong>Describe what it does before what it looks like.</strong> Appearance is easy to fix later; logic is not.</p></div>
+              <div class="section-title"><h2>Change it by continuing the conversation</h2></div>
+              <div class="flow"><div class="flow-node"><span class="flow-label">Ask</span><h3>Add one change</h3><p>“Add a department filter. Make it work on my phone.”</p></div><div class="flow-node"><span class="flow-label">Check</span><h3>Use the tool</h3><p>Test that change before asking for the next one.</p></div><div class="flow-node"><span class="flow-label">Recover</span><h3>Return to an earlier version</h3><p>Earlier versions remain available, and Claude can offer to fix an error.</p></div></div>
+              <div class="grid-2"><div class="card green"><h2>Share it</h2><p>Press publish and receive a link. Anyone can open the tool, while your conversation remains private.</p></div><div class="card orange"><h2>Clear sample data first</h2><p>Any data pasted into the Artifact while building can go out with the published link.</p></div></div>
+              <div class="warning"><strong>The honest ceiling:</strong> An Artifact does not give you your own login system, a full company database or a support desk. For many everyday tools, that is enough.</div>`
+          },
+          {
+            label: 'Go deeper', title: 'The link is the access control',
+            lead: 'Claude hosts the Artifact and publishing makes it live. That removes deployment work, but it also means you need to understand access, data limits and when the tool has outgrown this form.',
+            body: `
+              <div class="grid-3"><div class="card green"><h3>Claude hosts it</h3><p>Nothing sits on your laptop. There is no separate hosting account, upload step or hosting bill.</p></div><div class="card yellow"><h3>Anyone with the link gets in</h3><p>You cannot create your own accounts, roles or permissions.</p></div><div class="card blue"><h3>AI access belongs to the viewer</h3><p>Each person signs in with their own Claude account. Their usage and connected apps are theirs; your credentials never travel with the link.</p></div></div>
+              <div class="insight"><strong>Key insight:</strong> Treat the published link as the only lock on the door.</div>
+              <div class="compare-panel"><h2>What the tool can remember</h2><div class="compare-grid"><div class="compare-card green"><h3>Private storage</h3><p>Each person keeps separate entries, like a personal tracker.</p></div><div class="compare-card purple-line"><h3>Shared storage</h3><p>Everyone works on the same information, like a team leaderboard.</p></div></div></div>
+              <div class="warning"><strong>Where storage stops:</strong> Fine for a form, tracker or a few hundred entries. Not designed for thousands of records, company-wide reporting or sensitive information.</div>
+              <div class="grid-2"><div class="card blue"><h2>A normal Artifact is not live in the background</h2><p>It shows what it fetched when opened. Use a Live Artifact in Cowork for a view that must keep updating.</p></div><div class="card orange"><h2>When you outgrow it</h2><p>Move the code into a full software project. Hosting, API costs, a database, logins and ongoing maintenance then become your responsibility.</p></div></div>
+              <div class="insight"><strong>Key insight:</strong> Most ideas should not need that move. An Artifact can prove the tool is useful before anyone spends money building it properly.</div>
+              <div class="table-wrap"><table class="compare-table"><thead><tr><th>What you want</th><th>Use</th></tr></thead><tbody><tr><td>An answer</td><td>Chat</td></tr><tr><td>Word, Excel or PowerPoint</td><td>File creation</td></tr><tr><td>A clickable tool</td><td>Artifact</td></tr><tr><td>A tool that remembers people</td><td>Artifact with storage</td></tr><tr><td>A tool that reads work apps</td><td>Artifact with connections</td></tr><tr><td>A view that stays current</td><td>Live Artifact in Cowork</td></tr><tr><td>Something the business runs on</td><td>Build outside Claude</td></tr></tbody></table></div>
+              <div class="plain-callout">Storage and app connections require a paid plan. Everything else works on any account.</div>`
+          }
+        ]
+      },
+      projects: {
+        title: 'Claude Projects', icon: 'P', eyebrow: 'Projects · shared context',
+        badges: ['Knowledge and instructions', 'Separate chats', 'Two learning levels'],
+        levels: [
+          {
+            label: 'Understand', title: 'Keep recurring context together',
+            lead: 'A Project is a home for related chats, reference material and standing instructions. Every chat inside it starts with the same background, so you stop re-uploading files and re-explaining the work.',
+            body: `
+              <div class="section-title"><h2>When a chat should become a Project</h2></div><div class="grid-2"><div class="card green"><div class="points"><div class="point"><span class="tick">✓</span><span>You uploaded the same file into three chats.</span></div><div class="point"><span class="tick">✓</span><span>You retype the same background before asking anything.</span></div></div></div><div class="card yellow"><div class="points"><div class="point"><span class="tick">✓</span><span>The chat is too long to find an earlier decision.</span></div><div class="point"><span class="tick">✓</span><span>Someone else may need to pick up the work.</span></div></div></div></div>
+              <div class="insight"><strong>Key insight:</strong> A Project usually pays for itself the third time you would have re-explained the same context.</div>
+              <div class="steps-wrap"><h2>Set it up</h2><div class="steps"><div class="step"><div class="step-num">1</div><strong>Name one area</strong><br>Use “Client Account: Acme”, not “My Work”.</div><div class="step"><div class="step-num">2</div><strong>Write standing instructions</strong><br>Say how Claude should work here.</div><div class="step"><div class="step-num">3</div><strong>Upload reusable material</strong><br>Add current sources, approved templates and policies.</div><div class="step"><div class="step-num">4</div><strong>Split the work into chats</strong><br>Start one chat per deliverable.</div></div></div>
+              <div class="card blue"><span class="card-kicker">Example Project instruction</span><div class="prompt">“This Project covers the Acme account. Use the uploaded material as the primary source. Write for a senior business audience and keep findings separate from recommendations.”</div><p style="margin-top:12px">Put rules that are true every time in Project instructions. Put one-task details in that task's prompt.</p></div>
+              <div class="grid-2"><div class="card green"><h2>Upload what stays useful</h2><p>Current sources, approved templates, policies and research. Use clear filenames such as Q4-2026-Customer-Research.pdf.</p></div><div class="card orange"><h2>Remove what can mislead</h2><p>Delete drafts, duplicates and replaced versions. Claude cannot know which pricing sheet superseded another.</p></div></div>
+              <div class="insight"><strong>Two useful limits:</strong> Instructions load on every message, so keep them short. Long chats cost more per message, so start fresh when the task changes shape.</div>
+              <div class="warning"><strong>The honest ceiling:</strong> A heavy Project reaches usage limits sooner. Stale documents keep answering until removed. Chats do not share their conversation history, and Claude does not use the Project name or description as working context.</div>`
+          },
+          {
+            label: 'Go deeper', title: 'Chats stay separate inside Projects',
+            lead: 'A Project groups chats but does not merge them. Reliable shared context comes from the files and instructions placed in the Project, not from assuming one chat knows what happened in another.',
+            body: `
+              <div class="compare-panel"><div class="compare-grid"><div class="compare-card warn"><h3>What does not automatically carry</h3><p>A decision made in Monday's chat is not present in Friday's chat.</p></div><div class="compare-card good"><h3>What reliably carries</h3><p>Material placed in Project knowledge and rules placed in Project instructions.</p></div></div></div>
+              <div class="insight"><strong>Key insight:</strong> Claude may search earlier chats or remember things from working with you, but neither replaces uploading the document that must be available everywhere.</div>
+              <div class="grid-3"><div class="card yellow"><h3>30MB per file</h3><p>There is no cap on the number of files, and a Project can hold far more than one conversation.</p></div><div class="card blue"><h3>Large Projects use search</h3><p>After a certain size, Claude searches knowledge instead of loading every file in full.</p></div><div class="card green"><h3>Name the source</h3><p>Ask, “Based on the Q3 research report...” to make retrieval more precise.</p></div></div>
+              <div class="section-title"><h2>Sharing a Project</h2></div><div class="grid-2"><div class="card purple"><h3>Can view</h3><p>People can use the Project without changing its setup.</p></div><div class="card orange"><h3>Can edit</h3><p>People can change Project knowledge and instructions.</p></div></div>
+              <div class="plain-callout"><strong>Your chats stay private.</strong> Sharing a Project shares the shelf of knowledge and instructions, not the conversations. Sharing is available on Team and Enterprise.</div>
+              <div class="section-title"><h2>Projects in Cowork</h2></div><div class="card green"><p><strong>Chat Projects are where you think. Cowork Projects are where files get produced.</strong> Cowork Projects live in a computer folder with their own instructions, scheduled tasks and project-scoped memory. You can import an existing Chat Project when you are ready to make deliverables.</p></div>
+              <div class="grid-2"><div class="card yellow"><h3>Keep it useful</h3><div class="points"><div class="point"><span class="tick">→</span><span>Delete replaced documents.</span></div><div class="point"><span class="tick">→</span><span>Keep instructions short.</span></div></div></div><div class="card blue"><h3>Keep it coherent</h3><div class="points"><div class="point"><span class="tick">→</span><span>Move chats placed in the wrong Project.</span></div><div class="point"><span class="tick">→</span><span>Split a Project when its instructions contradict.</span></div></div></div></div>
+              <div class="table-wrap"><table class="compare-table"><thead><tr><th>What you want</th><th>Use</th></tr></thead><tbody><tr><td>A one-off task</td><td>Normal Chat</td></tr><tr><td>A preference across all work</td><td>Custom Instructions</td></tr><tr><td>The same background again and again</td><td>Project</td></tr><tr><td>The same method again and again</td><td>Skill</td></tr></tbody></table></div>`
+          }
+        ]
+      },
+      skills: {
+        title: 'Claude Skills', icon: 'S', eyebrow: 'Skills · reusable methods',
+        badges: ['Instructions and examples', 'Automatic matching', 'Two learning levels'],
+        levels: [
+          {
+            label: 'Understand', title: 'Package the method, not the prompt',
+            lead: 'A Skill combines instructions, examples and templates for one kind of work. Claude can apply it automatically when a request matches, so you do not need to explain the same method again.',
+            body: `
+              <div class="grid-3"><div class="card yellow"><h3>Your method</h3><p>The steps and judgement Claude should follow.</p></div><div class="card blue"><h3>Your examples</h3><p>Finished work, templates and references that show what good looks like.</p></div><div class="card green"><h3>A reusable match</h3><p>Claude can use the Skill automatically when the request fits its description.</p></div></div>
+              <div class="compare-panel"><h2>Should this become a Skill?</h2><div class="compare-grid"><div class="compare-card good"><h3>Yes, when the method repeats</h3><div class="points"><div class="point"><span class="tick">✓</span><span>You explained it three times.</span></div><div class="point"><span class="tick">✓</span><span>You know what good output looks like.</span></div><div class="point"><span class="tick">✓</span><span>You keep giving the same correction.</span></div></div></div><div class="compare-card warn"><h3>Not yet, when it is still unclear</h3><div class="points"><div class="point"><span class="tick warn">–</span><span>The approach changes every time.</span></div><div class="point"><span class="tick warn">–</span><span>You are still working it out.</span></div><div class="point"><span class="tick warn">–</span><span>You could not explain it to a colleague.</span></div></div></div></div></div>
+              <div class="insight"><strong>Key insight:</strong> Length is not the trigger. Repetition is.</div>
+              <div class="grid-2"><div class="card yellow"><span class="card-kicker">Start from the work</span><div class="prompt">“I want to create a Skill for writing quarterly business reviews.”</div><p style="margin-top:10px">Claude can ask what it should do, when to use it and what good output looks like.</p></div><div class="card orange"><span class="card-kicker">Start from a prompt</span><div class="prompt">“Turn this prompt into a reusable Skill. Keep the important instructions, write a precise description, and add a quality check.”</div></div></div>
+              <div class="insight"><strong>One strong example helps more than more instruction.</strong> Give Claude finished work that represents the standard you want.</div>
+              <div class="steps-wrap"><h2>Use it after creation</h2><div class="steps three"><div class="step"><div class="step-num">1</div><strong>Leave it enabled</strong><br>Skills live in Settings.</div><div class="step"><div class="step-num">2</div><strong>Ask normally</strong><br>You do not need to name the Skill.</div><div class="step"><div class="step-num">3</div><strong>Allow capabilities</strong><br>File creation and code execution must be enabled when needed.</div></div></div>
+              <div class="warning"><strong>The honest ceiling:</strong> A Skill may fail to activate or activate at the wrong time. It inherits ambiguity in your method, and a Skill from someone else may run code on your behalf.</div>`
+          },
+          {
+            label: 'Go deeper', title: 'The description is the trigger',
+            lead: 'A Skill can contain a detailed method and supporting files, but Claude first uses its lightweight name and description to decide whether the Skill belongs in the current request.',
+            body: `
+              <div class="grid-2"><div class="card blue"><h2>What a Skill can contain</h2><div class="code-tree">customer-feedback-analysis/
+├── SKILL.md
+├── examples.md
+├── customer-segments.md
+└── scripts/
+    └── analyze_responses.py</div></div><div class="card"><h2>What each part does</h2><div class="points"><div class="point"><span class="tick purple">1</span><span><strong>SKILL.md</strong> holds the name, description and method.</span></div><div class="point"><span class="tick purple">2</span><span><strong>Supporting files</strong> hold templates, examples, policies and terms.</span></div><div class="point"><span class="tick purple">3</span><span><strong>Scripts</strong> handle operations that should be identical each time.</span></div></div></div></div>
+              <div class="insight"><strong>Useful split:</strong> Use instructions for work that needs judgement. Use scripts for operations that should be identical every run.</div>
+              <div class="compare-panel"><h2>Write the description as a capability and a cue</h2><div class="compare-grid"><div class="compare-card warn"><span class="card-kicker">Weak</span><p>“Helps with customer research.”</p></div><div class="compare-card good"><span class="card-kicker">Strong</span><p>“Analyzes qualitative customer feedback and produces structured insight reports. Use when reviewing customer interviews, surveys or open-text feedback.”</p></div></div></div>
+              <div class="flow"><div class="flow-node"><span class="flow-label">Always available</span><h3>Name and description</h3><p>These stay in context with relatively little cost.</p></div><div class="flow-node"><span class="flow-label">When relevant</span><h3>Full instructions</h3><p>The complete method loads only when the Skill matches.</p></div><div class="flow-node"><span class="flow-label">When required</span><h3>Reference files</h3><p>Supporting material loads only when the method calls for it.</p></div></div>
+              <div class="grid-2"><div class="card green"><h2>Test with three prompts</h2><div class="points"><div class="point"><span class="tick">1</span><span>One that should activate.</span></div><div class="point"><span class="tick">2</span><span>One worded similarly that should not.</span></div><div class="point"><span class="tick">3</span><span>One in messy real-world wording.</span></div></div><p style="margin-top:10px"><strong>Use a fresh chat.</strong> The current conversation already knows what you meant.</p></div><div class="card yellow"><h2>Improve from corrections</h2><p>Use the Skill, notice the correction you keep making, and ask Claude to update the Skill. If you correct the same thing twice, consider putting it inside.</p></div></div>
+              <div class="warning"><strong>Sharing and safety:</strong> Skills are usually shared as ZIP folders. Treat an outside Skill like installed software: read SKILL.md and inspect scripts first. Never place passwords, API keys or other credentials inside.</div>
+              <div class="table-wrap"><table class="compare-table"><thead><tr><th>What you want</th><th>Use</th></tr></thead><tbody><tr><td>A one-off task</td><td>Prompt</td></tr><tr><td>A preference across all work</td><td>Custom Instructions</td></tr><tr><td>The same background again and again</td><td>Project</td></tr><tr><td>The same method again and again</td><td>Skill</td></tr></tbody></table></div>`
+          }
+        ]
+      },
+      scheduled: {
+        title: 'Scheduled Tasks', icon: '◷', eyebrow: 'Scheduled Tasks · recurring work',
+        badges: ['Hourly to weekly', 'Cowork on paid plans', 'One learning page'],
+        levels: [{
+          label: 'Understand', title: 'Run tasks on a schedule',
+          lead: 'Write a recurring task once, choose when it should run, and Claude delivers a finished result each time in a fresh Cowork session using the same connectors, Skills and plugins.',
+          body: `
+            <div class="grid-4"><div class="card yellow"><h3>Hourly</h3><p>For frequent checks.</p></div><div class="card blue"><h3>Daily or weekdays</h3><p>For briefings and monitoring.</p></div><div class="card green"><h3>Weekly</h3><p>For reports and recurring reviews.</p></div><div class="card purple"><h3>On demand</h3><p>For a repeatable task you trigger yourself.</p></div></div>
+            <div class="card yellow"><h2>What people schedule</h2><p>Daily briefings, weekly reports, recurring research and regular folder clean-up—anything you currently retype every Monday morning.</p></div>
+            <div class="section-title"><h2>Create one in two ways</h2></div><div class="grid-2"><div class="card green"><h3>Create with Claude</h3><p>Open <b>Scheduled → New task</b>, describe the work in chat, answer a few questions, then confirm the task and schedule Claude proposes.</p></div><div class="card blue"><h3>Set it up manually</h3><p>Enter the name, prompt, approval mode and frequency. Optionally choose the model and folder.</p></div></div>
+            <div class="compare-panel"><h2>Will it run while the computer is off?</h2><div class="compare-grid"><div class="compare-card good"><h3>Yes, for online sources</h3><p>Tasks using connected services or files stored in your Claude account run remotely while the computer sleeps and the app is closed.</p></div><div class="compare-card warn"><h3>No, for local files and apps</h3><p>A task that needs a computer folder or installed application can run only while that computer is available.</p></div></div></div>
+            <div class="plain-callout"><strong>Manage everything from Scheduled:</strong> review upcoming and past runs, edit instructions or timing, pause, resume, run now or delete.</div>
+            <div class="insight"><strong>Key insight:</strong> Check past runs occasionally. Work that runs while you are not watching still needs someone to notice when it starts producing the wrong thing.</div>
+            <div class="grid-3"><div class="card green"><h3>Good first automations</h3><p>Gather, analyse and summarise.</p></div><div class="card orange"><h3>Move slowly here</h3><p>Sending, deleting, buying or changing a business system.</p></div><div class="card purple"><h3>Keep approval on</h3><p>Watch several successful runs before reducing oversight.</p></div></div>`
+        }]
+      },
+      design: {
+        title: 'Claude Design', icon: 'D', eyebrow: 'Design · canvas and conversation',
+        badges: ['Presentations and prototypes', 'Design systems', 'Research preview'],
+        levels: [{
+          label: 'Understand', title: 'Build visual work on a canvas',
+          lead: 'Claude Design places the conversation beside the actual design. Describe what you need, review it on the canvas, then refine presentations, prototypes, landing pages, wireframes, one-pagers and marketing assets.',
+          body: `
+            <div class="grid-2"><div class="card purple"><h2>Chat on one side</h2><p>Use conversation for the brief, structure and design-wide changes.</p></div><div class="card yellow"><h2>The design on the other</h2><p>Review the real canvas, select elements and make precise adjustments.</p></div></div>
+            <div class="section-title"><h2>Set up the design system first</h2><p>Without one, Claude starts from nothing and guesses at your visual style each time.</p></div>
+            <div class="steps-wrap"><div class="steps three"><div class="step"><div class="step-num">1</div><strong>Upload real examples</strong><br>Brand guidelines, logo, fonts, writing principles and two or three designs you like.</div><div class="step"><div class="step-num">2</div><strong>Let Claude build the system</strong><br>It extracts colours, type, spacing, components and overall style.</div><div class="step"><div class="step-num">3</div><strong>Review before building</strong><br>Correct the system before creating work on top of it.</div></div></div>
+            <div class="insight"><strong>Key insight:</strong> Upload finished pages and decks, not only a colour palette. Claude reads style more reliably from a real example than from a list of hex codes.</div>
+            <div class="flow"><div class="flow-node"><span class="flow-label">Layer 1</span><h3>Design system</h3><p>Colours, fonts, spacing, components, logos and overall style.</p></div><div class="flow-node"><span class="flow-label">Layer 2</span><h3>Template</h3><p>Recurring layouts for an output, such as title and two-column slides.</p></div><div class="flow-node"><span class="flow-label">Layer 3</span><h3>Project instructions</h3><p>Preferences learned from feedback and carried into later work.</p></div></div>
+            <div class="section-title"><h2>Use the right editing route</h2></div><div class="grid-4"><div class="card blue"><h3>Chat</h3><p>Structural or design-wide changes.</p></div><div class="card yellow"><h3>Inline comments</h3><p>Feedback on one specific element.</p></div><div class="card green"><h3>Direct editing</h3><p>Quick text, size or alignment fixes.</p></div><div class="card purple"><h3>Tweaks</h3><p>Global controls such as logos or slide numbers.</p></div></div>
+            <div class="insight"><strong>Key insight:</strong> If you correct the same thing slide after slide, stop and fix the design system.</div>
+            <div class="grid-3"><div class="card green"><h3>Ask for directions first</h3><p>Compare two or three approaches before polishing one.</p></div><div class="card blue"><h3>Give measurable feedback</h3><p>“32px headings” or “20px card padding” beats “make it look better”.</p></div><div class="card yellow"><h3>Let it learn</h3><p>Repeated feedback becomes a project instruction.</p></div></div>
+            <div class="plain-callout"><strong>Export options:</strong> PowerPoint, PDF, standalone HTML, Canva, or hand the result to Claude Code when it must become working software.</div>
+            <div class="warning"><strong>Before you start:</strong> The design chat discusses the canvas, so work out the message in a normal chat first. Design is a research preview, usage is counted separately, and Enterprise admins must enable it.</div>`
+        }]
+      },
+      code: {
+        title: 'Claude Code', icon: '</>', eyebrow: 'Code · existing software projects',
+        badges: ['Paid plans', 'Files and commands', 'Developer review recommended'],
+        levels: [{
+          label: 'Understand', title: 'Edit an existing software project',
+          lead: 'Claude Code reads a codebase, changes files, runs commands and tests, fixes bugs, reviews code and can create commits. You describe the outcome; it works across the project needed to produce it.',
+          body: `
+            <div class="compare-panel"><h2>Can a non-technical person use it?</h2><div class="compare-grid"><div class="compare-card good"><h3>The Desktop app removes the terminal</h3><p>You can describe the change in plain language and watch the work happen.</p></div><div class="compare-card warn"><h3>It does not remove software judgement</h3><p>You still need an existing project, somewhere to run it, and someone who can judge whether the change is right before it goes live.</p></div></div></div>
+            <div class="insight"><strong>Key insight:</strong> Claude Code writes software. It does not decide whether the software is right. If you do not already have a codebase, this is probably not the starting point.</div>
+            <div class="table-wrap"><table class="compare-table"><thead><tr><th>What you want</th><th>Where to go</th></tr></thead><tbody><tr><td>A clickable tool built from nothing</td><td>Artifact</td></tr><tr><td>A document, spreadsheet, deck or tidy folder</td><td>Cowork</td></tr><tr><td>Changes to software that already exists</td><td>Claude Code</td></tr></tbody></table></div>
+            <div class="section-title"><h2>When Claude Code is the right call</h2></div><div class="grid-3"><div class="card green"><h3>An existing codebase</h3><p>Your team already has software and needs something changed.</p></div><div class="card blue"><h3>A developer review</h3><p>Someone technical will check the work afterwards.</p></div><div class="card purple"><h3>A task across many files</h3><p>A refactor, migration or bug traced through the project.</p></div></div>
+            <div class="steps-wrap"><h2>Start in the Desktop app</h2><div class="steps"><div class="step"><div class="step-num">1</div><strong>Open Code</strong><br>Select the Code tab.</div><div class="step"><div class="step-num">2</div><strong>Choose Local</strong><br>Point it at a narrow project folder.</div><div class="step"><div class="step-num">3</div><strong>Describe and watch</strong><br>Stop or redirect the work at any point.</div><div class="step"><div class="step-num">4</div><strong>Review before commit</strong><br>Check the changes before allowing the commit.</div></div></div>
+            <div class="plain-callout"><strong>Recurring developer work:</strong> Use Routines for tasks such as reviewing pull requests.</div>
+            <div class="warning"><strong>Worth knowing:</strong> Claude Code reads and writes real files and runs real commands on your machine. There is no sandbox. The chosen folder is the boundary, so keep it narrow and watch the first few runs. It also works in terminals, VS Code, Cursor, JetBrains and, on some plans, the browser.</div>`
+        }]
+      },
+      slack: {
+        title: 'Claude Tag', icon: '@', eyebrow: 'Claude Tag · shared Slack channel work',
+        badges: ['Team and Enterprise', 'Beta', 'Channel and private modes'],
+        levels: [{
+          label: 'Understand', title: 'Bring Claude into the channel',
+          lead: 'Type @Claude with a request. Claude can break the work into stages, use organisation-connected tools and post the result in the thread while everyone in the channel sees and steers the work.',
+          body: `
+            <div class="grid-3"><div class="card purple"><h3>Tag it in a channel</h3><p>Shared work visible to everyone in that channel.</p></div><div class="card blue"><h3>Send a direct message</h3><p>A private conversation using your own Claude account and connected tools.</p></div><div class="card yellow"><h3>Open the assistant panel</h3><p>Use the Claude icon in the Slack header from anywhere.</p></div></div>
+            <div class="insight"><strong>Key insight:</strong> A channel tag uses the organisation's access and billing. A direct message uses your personal Claude account and connected tools. The name looks the same; the operating context is different.</div>
+            <div class="section-title"><h2>Ask for a finished outcome</h2></div><div class="grid-2"><div class="card yellow"><div class="prompt">“@Claude pull last month's numbers from the dashboard and post a summary of where we landed against target.”</div></div><div class="card orange"><div class="prompt">“@Claude turn this thread into a list of decisions and open questions.”</div></div></div>
+            <div class="plain-callout">Say what should exist when Claude finishes. Point to the source if it is not already in the thread. In a messy thread, Claude can use the context the channel already shares.</div>
+            <div class="section-title"><h2>What makes channel work different</h2></div><div class="grid-3"><div class="card green"><h3>One Claude per channel</h3><p>The channel shares the same Claude presence.</p></div><div class="card blue"><h3>Someone else can continue</h3><p>A colleague can pick up a task you started.</p></div><div class="card purple"><h3>Channel-scoped memory</h3><p>It remembers what happens there across days, separate from other channels.</p></div></div>
+            <div class="card green"><h2>Standing instructions</h2><p>Give Claude a rule once and it can apply from then on without another tag. To inspect what is active, ask:</p><div class="prompt">“@Claude what triggers do you have set up here?”</div></div>
+            <div class="warning"><strong>Worth knowing:</strong> Channel content is visible to channel members. Channel Claude uses admin-connected tools, not personal ones. Spend is capped per channel; oversized work is declined rather than left half-finished. Slack conversations stay out of Claude chat history, and Claude web conversations stay out of Slack.</div>
+            <div class="table-wrap"><table class="compare-table"><thead><tr><th>What you want</th><th>Where to go</th></tr></thead><tbody><tr><td>A private question</td><td>Direct message Claude</td></tr><tr><td>Work the channel should see</td><td>Tag Claude in the channel</td></tr><tr><td>Something to run on its own</td><td>Standing instruction</td></tr><tr><td>A finished document from your files</td><td>Cowork</td></tr><tr><td>A tool people can click and use</td><td>Artifact</td></tr></tbody></table></div>`
+        }]
+      },
+      dispatch: {
+        title: 'Claude Dispatch', icon: '↗', eyebrow: 'Dispatch · phone to desktop',
+        badges: ['Beta', 'Pro and Max', 'Phone and Desktop apps required'],
+        levels: [{
+          label: 'Understand', title: 'Send desktop work from your phone',
+          lead: 'Start a task on your phone and Claude completes it through Cowork on your desktop using the folders, connected services, plugins, browser actions and applications you approved.',
+          body: `
+            <div class="flow"><div class="flow-node"><span class="flow-label">Phone</span><h3>Send a precise task</h3><p>Name the location, source, output and boundaries.</p></div><div class="flow-node"><span class="flow-label">Dispatch</span><h3>Carry the instruction</h3><p>One continuous conversation connects both devices.</p></div><div class="flow-node"><span class="flow-label">Desktop</span><h3>Cowork does the work</h3><p>Progress, approvals and the completed result return to your phone.</p></div></div>
+            <div class="steps-wrap"><h2>Set it up</h2><div class="steps"><div class="step"><div class="step-num">1</div><strong>Open Dispatch</strong><br>Select it in Cowork.</div><div class="step"><div class="step-num">2</div><strong>Pair the apps</strong><br>Use the same account on both devices.</div><div class="step"><div class="step-num">3</div><strong>Choose access</strong><br>Approve folders, connectors and browser actions.</div><div class="step"><div class="step-num">4</div><strong>Keep it awake</strong><br>Enable the setting for local work.</div></div></div>
+            <div class="section-title"><h2>Brief it precisely</h2></div><div class="card yellow"><div class="prompt">“In the Quarterly Reports folder, review Q4 Performance.xlsx. Create a self-contained HTML dashboard in the same folder with five KPI cards, department filters and interactive charts. Do not modify the spreadsheet or any other files. Ask before using the browser or external connectors. Tell me the saved filename when finished.”</div></div>
+            <div class="insight"><strong>Key insight:</strong> This beats “build a dashboard from my spreadsheet” because Claude knows where to look, what to produce and what it must not touch.</div>
+            <div class="compare-panel"><h2>The limitation that matters</h2><div class="compare-grid"><div class="compare-card orange-line"><h3>Dispatch needs your computer</h3><p>The computer must stay awake with the Desktop app open. Dispatch is not a separate remote worker.</p></div><div class="compare-card purple-line"><h3>A cloud session can continue</h3><p>Use one when the laptop must close, but it loses local file access after Desktop disconnects.</p></div></div></div>
+            <div class="warning"><strong>Check the full reach:</strong> Your phone can now reach approved files that may be read, moved or deleted; services Claude can act on; the browser; and desktop applications. Decide based on what it could do, not only the first task you plan. Know how to disconnect quickly.</div>
+            <div class="grid-2"><div class="card blue"><h3>One thread only</h3><p>Dispatch cannot start a second simultaneous conversation.</p></div><div class="card purple"><h3>Linux limitation</h3><p>Files, connectors and plugins work, but Claude cannot control desktop applications.</p></div></div>
+            <div class="plain-callout">Prefer the expanded standalone version? <a href="Claude Dispatch.html"><strong>Open the dedicated Dispatch guide →</strong></a></div>`
+        }]
+      }
+    };
+
+    const quickReferences = {
+      scheduled: `
+        <div class="section-title"><h2>Before you schedule it</h2></div>
+        <div class="grid-3"><div class="card green"><h3>Make the output checkable</h3><p>Start with gathering, analysis or a summary that a person can review quickly.</p></div><div class="card blue"><h3>Confirm where the sources live</h3><p>Connected services can run remotely. Local files need the computer to remain available.</p></div><div class="card purple"><h3>Keep approval on first</h3><p>Watch several successful runs before reducing oversight.</p></div></div>
+        <div class="plain-callout"><strong>From Scheduled, you can:</strong> review past and upcoming runs, change instructions or timing, pause, resume, run immediately or delete the task.</div>
+        <div class="warning"><strong>Use extra caution</strong> when the task sends, deletes, buys or changes information in another business system.</div>`,
+      design: `
+        <div class="section-title"><h2>A reliable design workflow</h2></div>
+        <div class="flow"><div class="flow-node"><span class="flow-label">Prepare</span><h3>Clarify the message</h3><p>Work out what the design must communicate in a normal Claude chat.</p></div><div class="flow-node"><span class="flow-label">Systemise</span><h3>Set the visual rules</h3><p>Use finished examples to establish typography, spacing, components and tone.</p></div><div class="flow-node"><span class="flow-label">Refine</span><h3>Make precise changes</h3><p>Choose chat, comments, direct edits or global tweaks based on the scope.</p></div></div>
+        <div class="grid-2"><div class="card green"><h3>Ask for directions before polish</h3><p>Compare two or three approaches, then develop the strongest one.</p></div><div class="card yellow"><h3>Export for the next step</h3><p>Use PowerPoint, PDF, standalone HTML, Canva, or hand the work to Claude Code.</p></div></div>
+        <div class="insight"><strong>Remember:</strong> repeated visual corrections belong in the design system, not on every individual slide.</div>`,
+      code: `
+        <div class="section-title"><h2>Use Claude Code with a narrow boundary</h2></div>
+        <div class="grid-3"><div class="card yellow"><h3>Point to one project folder</h3><p>The selected folder defines what Claude Code can read and change.</p></div><div class="card blue"><h3>Watch the early runs</h3><p>Claude shows its steps, which is your main protection when it runs real commands.</p></div><div class="card green"><h3>Review before committing</h3><p>A developer should confirm the change is correct before it goes live.</p></div></div>
+        <div class="compare-panel"><div class="compare-grid"><div class="compare-card good"><h3>Good fit</h3><p>An existing codebase, a change across several files and a technical reviewer.</p></div><div class="compare-card warn"><h3>Wrong starting point</h3><p>A new everyday tool with no existing codebase. Start with an Artifact instead.</p></div></div></div>
+        <div class="warning"><strong>No sandbox:</strong> Claude Code edits real files and runs real commands on the machine.</div>`,
+      slack: `
+        <div class="section-title"><h2>Choose the right Slack route</h2></div>
+        <div class="grid-3"><div class="card purple"><h3>Channel tag</h3><p>Shared work the channel should see and steer.</p></div><div class="card blue"><h3>Direct message</h3><p>A private question using your own Claude account and connected tools.</p></div><div class="card green"><h3>Standing instruction</h3><p>A rule Claude should apply in the channel without being tagged each time.</p></div></div>
+        <div class="insight"><strong>Access rule:</strong> channel work uses organisation access and billing. A direct message uses your personal Claude context.</div>
+        <div class="warning"><strong>Channel visibility:</strong> everything posted in a channel is visible to everyone who can access that channel.</div>`,
+      dispatch: `
+        <div class="section-title"><h2>Before the first phone task</h2></div>
+        <div class="steps-wrap"><div class="steps"><div class="step"><div class="step-num">1</div><strong>Pair both apps</strong><br>Use the same account.</div><div class="step"><div class="step-num">2</div><strong>Limit the access</strong><br>Approve only what the task needs.</div><div class="step"><div class="step-num">3</div><strong>Keep Desktop available</strong><br>Local work needs the computer awake.</div><div class="step"><div class="step-num">4</div><strong>Know how to disconnect</strong><br>Be ready to stop the connection quickly.</div></div></div>
+        <div class="grid-2"><div class="card green"><h3>Include in the brief</h3><p>The exact folder, source file, required output and saved location.</p></div><div class="card orange"><h3>Set the boundaries</h3><p>Name what Claude must not change and when it must ask.</p></div></div>
+        <div class="warning"><strong>The key limit:</strong> Dispatch is a remote control for your Desktop app, not an independent cloud worker.</div>`
+    };
+
+    // Real recordings matched from AI_WorkStudio_Matched_Video_Mapping.xlsx.
+    // Topics with no entry here (currently: code, slack) get no "Watch" tab
+    // at all — add an entry here once a recording exists to bring it back.
+    const STORAGE = 'https://rgpkgbkcypajxrralnnk.supabase.co/storage/v1/object/public/academy-videos/';
+    const videoData = {
+      models: [
+        { title: 'Select a Model and Thinking Level', video: STORAGE + 'claude-choose-a-model-select-a-model-and-thinking-level.mp4', poster: STORAGE + 'claude-choose-a-model-select-a-model-and-thinking-level.png' }
+      ],
+      cowork: [
+        { title: 'Analyze Data with Claude', video: STORAGE + 'claude-cowork-analyze-data-with-claude.mp4', poster: STORAGE + 'claude-cowork-analyze-data-with-claude.png' },
+        { title: 'Edit Real Files with Cowork', video: STORAGE + 'claude-cowork-edit-real-files-with-cowork.mp4', poster: STORAGE + 'claude-cowork-edit-real-files-with-cowork.png' },
+        { title: 'Organize Files with Cowork', video: STORAGE + 'claude-cowork-organize-files-with-cowork.mp4', poster: STORAGE + 'claude-cowork-organize-files-with-cowork.png' },
+        { title: 'Set Up Cowork on Your Desktop', video: STORAGE + 'claude-cowork-set-up-cowork-on-your-desktop.mp4', poster: STORAGE + 'claude-cowork-set-up-cowork-on-your-desktop.png' }
+      ],
+      artifacts: [
+        { title: 'Build and Publish an Interactive App', video: STORAGE + 'claude-artifacts-build-and-publish-an-interactive-app.mp4', poster: STORAGE + 'claude-artifacts-build-and-publish-an-interactive-app.png' }
+      ],
+      projects: [
+        { title: 'Save Time and Tokens with Projects', video: STORAGE + 'claude-projects-save-time-and-tokens-with-projects.mp4', poster: STORAGE + 'claude-projects-save-time-and-tokens-with-projects.png' }
+      ],
+      skills: [
+        { title: 'Auto-Generate a Sales Dashboard', video: STORAGE + 'claude-skills-auto-generate-a-sales-dashboard.mp4', poster: null },
+        { title: 'Build Automated Workflows with Skills', video: STORAGE + 'claude-skills-build-automated-workflows-with-skills.mp4', poster: STORAGE + 'claude-skills-build-automated-workflows-with-skills.png' }
+      ],
+      scheduled: [
+        { title: 'Automate Weekly Email Actions', video: STORAGE + 'claude-scheduled-tasks-automate-weekly-email-actions.mp4', poster: STORAGE + 'claude-scheduled-tasks-automate-weekly-email-actions.png' },
+        { title: 'Schedule Tasks Automatically', video: STORAGE + 'claude-scheduled-tasks-schedule-tasks-automatically.mp4', poster: STORAGE + 'claude-scheduled-tasks-schedule-tasks-automatically.png' }
+      ],
+      design: [
+        { title: 'Build Presentations with Claude', video: STORAGE + 'claude-design-build-presentations-with-claude.mp4', poster: STORAGE + 'claude-design-build-presentations-with-claude.png' }
+      ],
+      dispatch: [
+        { title: 'Control Your Laptop Remotely', video: STORAGE + 'claude-dispatch-control-your-laptop-remotely.mp4', poster: STORAGE + 'claude-dispatch-control-your-laptop-remotely.png' }
+      ]
+    };
+
+    function videoCardHTML(video) {
+      const posterAttr = video.poster ? ` data-poster="${video.poster}"` : '';
+      const posterImg = video.poster ? `<img class="video-poster" src="${video.poster}" alt="" loading="lazy">` : '';
+      return `<div class="video-placeholder has-video"><div class="video-stage has-video" data-video="${video.video}"${posterAttr}>${posterImg}<div class="play-mark">▶</div></div><div class="video-copy"><h3>${video.title}</h3><p>A short recording of this workflow, start to finish.</p></div></div>`;
+    }
+
+    Object.entries(topics).forEach(([id, topic]) => {
+      if (topic.levels.length === 1) {
+        topic.levels.push({
+          label: 'Go deeper',
+          title: `${topic.title}: key details`,
+          lead: `Use this concise reference before you start working with ${topic.title}.`,
+          body: quickReferences[id]
+        });
+      }
+
+      // No matched recording for this topic yet (currently: code, slack) —
+      // hide the "Watch" tab entirely rather than show empty placeholders.
+      const videos = videoData[id];
+      if (!videos) return;
+
+      const cards = videos.map(videoCardHTML).join('');
+
+      topic.levels.push({
+        label: 'Watch',
+        title: `Watch ${topic.title} in action`,
+        lead: `Short recordings of real ${topic.title} work, start to finish.`,
+        body: `
+          <div class="video-grid">${cards}</div>
+          <div class="insight"><strong>Video page:</strong> Both spaces support a standard 16:9 player with room for a title and short learning note.</div>`
+      });
+
+      topic.badges = topic.badges.filter(badge => !/learning level|learning page/i.test(badge));
+      topic.badges.push('Video page included');
+    });
+
+    document.addEventListener('click', event => {
+      const stage = event.target.closest('.video-stage[data-video]');
+      if (!stage || stage.querySelector('video')) return;
+      const src = stage.getAttribute('data-video');
+      const poster = stage.getAttribute('data-poster');
+      stage.innerHTML = `<video controls autoplay playsinline${poster ? ` poster="${poster}"` : ''} src="${src}"></video>`;
+    });
+
+    const topicOrder = ['models','cowork','artifacts','projects','skills','scheduled','design','code','slack','dispatch'];
+    const heroEmojis = {
+      models: '🧠', cowork: '🗂️', artifacts: '🧩', projects: '📚', skills: '🛠️',
+      scheduled: '⏰', design: '🎨', code: '💻', slack: '💬', dispatch: '📱'
+    };
+    const visualPalettes = {
+      models: ['⚡','🎯','🧠','🏆','🧭','🔍','💡','📊','💰','🧮','🚦','✅'],
+      cowork: ['🎯','📂','🚧','📄','☁️','💻','🛡️','✅','🔎','📅','🧠','🖥️'],
+      artifacts: ['🧩','👤','⌨️','⚙️','📊','🛠️','🔗','🧹','🔐','💾','🔄','🚀'],
+      projects: ['🗂️','📚','📝','📄','🧹','💬','🔍','👥','🔒','📁','✂️','🧭'],
+      skills: ['🛠️','🧭','📄','🎯','✅','⏳','💬','🧪','📦','⚙️','🔐','🧩'],
+      scheduled: ['⏰','📅','🔁','▶️','✅','☁️','💻','🛡️','📋','⚠️'],
+      design: ['🎨','💬','🖼️','🎛️','🧱','📐','✏️','💡','📤','🪄'],
+      code: ['💻','🗂️','🧪','🐛','🔧','👀','✅','🛡️','🚀','📦'],
+      slack: ['💬','📣','🔒','🧠','🎯','👥','📌','💳','🤖','🔔'],
+      dispatch: ['📱','🔄','🖥️','🔗','📂','🛡️','☁️','🐧','✅','🚦']
+    };
+    const app = document.getElementById('app');
+    const homeHTML = app.innerHTML;
+    const crumb = document.getElementById('crumb');
+
+    function bindHomeSearch() {
+      const search = document.getElementById('topic-search');
+      if (!search) return;
+      const cards = [...document.querySelectorAll('[data-card]')];
+      const groups = [...document.querySelectorAll('[data-group]')];
+      const emptyState = document.getElementById('empty-state');
+      search.addEventListener('input', () => {
+        const query = search.value.trim().toLowerCase();
+        let visibleCount = 0;
+        cards.forEach(card => {
+          const matches = !query || card.dataset.search.includes(query) || card.textContent.toLowerCase().includes(query);
+          card.hidden = !matches;
+          if (matches) visibleCount += 1;
+        });
+        groups.forEach(group => { group.hidden = !group.querySelector('[data-card]:not([hidden])'); });
+        emptyState.hidden = visibleCount !== 0;
+      });
+    }
+
+    function footerFor(id) {
+      const index = topicOrder.indexOf(id);
+      const prev = index > 0 ? topics[topicOrder[index - 1]] : null;
+      const next = index < topicOrder.length - 1 ? topics[topicOrder[index + 1]] : null;
+      return `<nav class="topic-footer" aria-label="Topic navigation">
+        ${prev ? `<a href="#${topicOrder[index-1]}"><small>Previous guide</small><b>← ${prev.title}</b></a>` : '<span></span>'}
+        ${next ? `<a class="next" href="#${topicOrder[index+1]}"><small>Next guide</small><b>${next.title} →</b></a>` : '<span></span>'}
+      </nav>`;
+    }
+
+    function renderTopic(id, requestedLevel) {
+      const topic = topics[id];
+      if (!topic) return renderHome();
+      const levelIndex = Math.min(Math.max((requestedLevel || 1) - 1, 0), topic.levels.length - 1);
+      const level = topic.levels[levelIndex];
+      const switches = topic.levels.length > 1 ? `<div class="level-switch" aria-label="Choose learning level">${topic.levels.map((item, i) => `<button class="level-btn ${i === levelIndex ? 'active' : ''}" type="button" data-level="${i+1}">${item.label}</button>`).join('')}</div>` : '';
+      app.innerHTML = `<article class="topic-view">
+        ${switches}
+        <header class="topic-view-head">
+          <div class="topic-hero-emoji" aria-hidden="true">${heroEmojis[id]}</div>
+          <div class="eyebrow">${topic.eyebrow}</div>
+          <h1>${level.title}</h1>
+          <p class="lead">${level.lead}</p>
+          <div class="topic-badge-row">${topic.badges.map(b => `<span class="pill">${b}</span>`).join('')}</div>
+        </header>
+        <div class="topic-body">${level.body}</div>
+        ${footerFor(id)}
+      </article>`;
+      document.querySelectorAll('[data-level]').forEach(button => button.addEventListener('click', () => {
+        location.hash = `#${id}/${button.dataset.level}`;
+      }));
+      decorateVisuals(id, levelIndex);
+      crumb.textContent = topic.title;
+      setActiveSide(id);
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+
+    function decorateVisuals(id, levelIndex) {
+      const palette = levelIndex === 2 ? ['🎬','▶️','👀','📝'] : visualPalettes[id];
+      const blocks = [...document.querySelectorAll('.topic-body .card, .topic-body .compare-card, .topic-body .flow-node, .topic-body .model-card, .topic-body .plain-callout')];
+      blocks.forEach((block, index) => {
+        if (block.firstElementChild?.classList.contains('visual-emoji')) return;
+        const emoji = document.createElement('span');
+        emoji.className = 'visual-emoji';
+        emoji.setAttribute('aria-hidden', 'true');
+        emoji.textContent = palette[index % palette.length];
+        block.insertBefore(emoji, block.firstChild);
+      });
+    }
+
+    function renderHome() {
+      app.innerHTML = homeHTML;
+      bindHomeSearch();
+      crumb.textContent = 'Claude Feature Guide';
+      setActiveSide('home');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+
+    function setActiveSide(id) {
+      document.querySelectorAll('.side-link').forEach(link => link.classList.toggle('active', link.dataset.topic === id));
+    }
+
+    function route() {
+      const raw = location.hash.replace(/^#/, '') || 'home';
+      const [id, level] = raw.split('/');
+      if (id === 'home') renderHome();
+      else renderTopic(id, Number(level) || 1);
+    }
+
+    window.addEventListener('hashchange', route);
+    bindHomeSearch();
+    route();
+  </script>
+<script src="../assets/rail.js"></script>
+</body>
+</html>

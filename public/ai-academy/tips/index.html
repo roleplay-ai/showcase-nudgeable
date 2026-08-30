@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Best Practices</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --n-amber:#FFCE00; --n-shadow:#221D23; --n-white:#FFFFFF;
+    --n-blue:#623CEA; --n-orange:#F68A29; --n-chiffon:#FFF6CF;
+    --n-emerald:#23CE68; --n-fuchsia:#ED4551; --n-dodger:#3696FC;
+    --n-bg:#FFFDF5; --n-card-bg:#FFFFFF; --n-border:#E8E6DC;
+    --n-text:#221D23; --n-text-muted:#6B6B6B;
+  }
+
+  * { box-sizing:border-box; margin:0; padding:0; }
+
+  body {
+    font-family:'Inter', sans-serif;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(34,29,35,0.045) 1px, transparent 0) 0 0/22px 22px,
+      var(--n-bg);
+    color:var(--n-text);
+    min-height:100vh;
+  }
+
+  /* ---------- LANDING ---------- */
+  #landing { display:block; }
+  #detail { display:none; }
+
+  .wrap { max-width:1080px; margin:0 auto; padding:56px 24px 90px; }
+
+  .hero {
+    position:relative;
+    background:var(--n-shadow);
+    border-radius:20px;
+    padding:48px 40px;
+    color:var(--n-white);
+    overflow:hidden;
+    margin-bottom:56px;
+  }
+  .hero::after {
+    content:"";
+    position:absolute; top:-60px; right:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background:var(--n-amber); opacity:0.15;
+  }
+  .tape {
+    position:absolute; top:-14px; left:44px;
+    width:110px; height:28px;
+    background:var(--n-amber);
+    opacity:0.9;
+
+    box-shadow:0 2px 6px rgba(0,0,0,0.25);
+  }
+  .hero-label {
+    font-family:'Space Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--n-amber);
+    margin-bottom:14px;
+  }
+  .hero h1 {
+    font-size:clamp(28px,4vw,42px);
+    font-weight:900;
+    line-height:1.15;
+    max-width:620px;
+    margin-bottom:14px;
+  }
+  .hero p {
+    color:#C9C6CC;
+    font-size:16px;
+    max-width:520px;
+    line-height:1.5;
+  }
+
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:22px;
+  }
+
+  .card {
+    position:relative;
+    background:var(--n-card-bg);
+    border-radius:16px;
+    padding:22px 20px 20px;
+    box-shadow:0 2px 12px rgba(34,29,35,0.08);
+    cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease;
+    border:1px solid var(--n-border);
+  }
+  .card:hover {
+    transform:translateY(-4px) !important;
+    box-shadow:0 10px 24px rgba(34,29,35,0.14);
+  }
+
+  .tab {
+    position:absolute;
+    top:-9px; left:18px;
+    width:38px; height:16px;
+    border-radius:4px 4px 0 0;
+  }
+
+  .num {
+    font-size:18px;
+    display:inline-flex;
+    align-items:center; justify-content:center;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:2px dashed var(--n-shadow);
+    margin-bottom:14px;
+    background:var(--n-chiffon);
+  }
+
+  .card h3 {
+    font-size:16px;
+    font-weight:700;
+    line-height:1.35;
+    margin-bottom:14px;
+  }
+
+  .read-btn {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    color:var(--n-shadow);
+    background:var(--n-amber);
+    padding:6px 14px;
+    border-radius:999px;
+  }
+
+  /* ---------- DETAIL PAGE ---------- */
+  .detail-wrap { max-width:720px; margin:0 auto; padding:48px 24px 100px; }
+
+  .back-link {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    font-weight:700;
+    color:var(--n-shadow);
+    text-decoration:none;
+    margin-bottom:32px;
+    cursor:pointer;
+  }
+  .back-link span.arrow { font-size:16px; }
+
+  .index-card {
+    position:relative;
+    background:var(--n-card-bg);
+    border-radius:20px;
+    padding:44px 40px 40px;
+    box-shadow:0 8px 30px rgba(34,29,35,0.10);
+  }
+
+  .pin {
+    position:absolute;
+    top:-16px; left:50%;
+    transform:translateX(-50%);
+    width:34px; height:34px;
+    border-radius:50%;
+    box-shadow:0 3px 8px rgba(0,0,0,0.25);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .pin::after {
+    content:"";
+    width:10px; height:10px;
+    background:rgba(255,255,255,0.5);
+    border-radius:50%;
+  }
+
+  .stamp-num {
+    font-size:28px;
+    display:inline-flex;
+    align-items:center; justify-content:center;
+    width:64px; height:64px;
+    border-radius:50%;
+    border:3px dashed var(--n-orange);
+    background:var(--n-chiffon);
+
+    margin-bottom:22px;
+  }
+
+  .dots {
+    display:flex;
+    gap:6px;
+  }
+  .dots span {
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--n-border);
+  }
+  .dots span.active {
+    background:var(--n-orange);
+    width:16px;
+    border-radius:4px;
+  }
+
+  .index-card h1 {
+    font-size:clamp(24px,3.4vw,30px);
+    font-weight:900;
+    line-height:1.25;
+    margin-bottom:28px;
+    max-width:540px;
+  }
+
+  .section { margin-bottom:26px; }
+  .section:last-child { margin-bottom:0; }
+
+  .section-flag {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    padding:5px 12px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  .flag-why { background:var(--n-chiffon); color:#8a6d00; }
+  .flag-do { background:#E9E4FF; color:var(--n-blue); }
+
+  .section p {
+    font-size:16px;
+    line-height:1.65;
+    color:var(--n-text);
+  }
+
+  .section ul {
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .section ul li {
+    font-size:15px;
+    line-height:1.5;
+    padding-left:22px;
+    position:relative;
+  }
+  .section ul li::before {
+    content:"—";
+    position:absolute;
+    left:0;
+    color:var(--n-orange);
+    font-weight:700;
+  }
+
+  .try-box {
+    background:var(--n-shadow);
+    color:var(--n-white);
+    border-radius:14px;
+    padding:20px 20px 18px;
+    font-family:'Space Mono', monospace;
+    font-size:14px;
+    line-height:1.6;
+    position:relative;
+  }
+  .try-box::before {
+    content:"TRY THIS";
+    position:absolute;
+    top:-11px; left:16px;
+    background:var(--n-orange);
+    color:var(--n-white);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1px;
+    padding:3px 10px;
+    border-radius:6px;
+    font-family:'Space Mono', monospace;
+  }
+
+  .nav-footer {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:36px;
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    color:var(--n-text-muted);
+  }
+
+  .nav-buttons {
+    display:flex;
+    gap:10px;
+    margin-top:36px;
+  }
+  .nav-buttons button {
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    font-weight:700;
+    padding:10px 18px;
+    border-radius:999px;
+    border:1.5px solid var(--n-border);
+    background:var(--n-white);
+    cursor:pointer;
+    color:var(--n-text);
+  }
+  .nav-buttons button:hover { background:var(--n-chiffon); }
+  .nav-buttons button:disabled { opacity:0.35; cursor:default; }
+
+  @media (max-width:600px) {
+    .index-card { padding:36px 24px 30px; }
+    .hero { padding:36px 24px; }
+  }
+
+  /* ---------- Lab shell: shared with every other overview page ---------- */
+  .lab-topbar{
+    min-height:58px;display:flex;align-items:center;gap:12px;
+    padding:9px 24px;position:sticky;top:0;z-index:50;
+    background:rgba(248,237,220,.96);
+    border-bottom:1px solid #E2DCCF;backdrop-filter:blur(8px);
+  }
+  .lab-topbar a.lab-home{
+    display:inline-flex;align-items:center;gap:7px;
+    border:1px solid #E2DCCF;background:#fff;border-radius:999px;
+    padding:6px 12px;font-size:14px;font-weight:800;color:#221D23;
+    text-decoration:none;white-space:nowrap;
+  }
+  .lab-topbar a.lab-home:hover{border-color:#C9BFAC}
+  .lab-topbar .crumb{font-size:15px;font-weight:750}
+  .lab-topbar .top-note{margin-left:auto;color:#6B6B6B;font-size:13px;font-weight:750}
+
+  /* Type scale aligned to the Claude reference page */
+  .hero h1{font-size:clamp(34px,4.4vw,44px);line-height:1.1;letter-spacing:-.02em}
+  .hero p{font-size:19px;line-height:1.68;max-width:600px}
+  .grid{gap:18px}
+  .card h3{font-size:19px;line-height:1.3}
+
+  @media (max-width:640px){
+    .lab-topbar{padding:9px 16px}
+    .lab-topbar .top-note{display:none}
+    .wrap{padding:32px 20px 64px}
+  }
+</style>
+<link rel="stylesheet" href="../assets/typography.css">
+<link rel="stylesheet" href="../assets/standardize.css">
+</head>
+<body>
+
+<header class="lab-topbar">
+  <a class="lab-home" href="../index.html">&larr; Nudgeable AI Academy</a>
+  <div class="crumb">AI Best Practices</div>
+  <div class="top-note">Get more out of any assistant</div>
+</header>
+
+<!-- ===================== LANDING PAGE ===================== -->
+<div id="landing">
+  <div class="wrap">
+    <div class="hero">
+      <div class="tape"></div>
+      <div class="hero-label">AI Best Practices</div>
+      <h1>Get more out of any assistant</h1>
+      <p>Small changes to how you ask, drawn from using these tools every day. Each note takes about a minute to read.</p>
+    </div>
+
+    <div class="grid" id="cardGrid"></div>
+  </div>
+</div>
+
+<!-- ===================== DETAIL PAGE ===================== -->
+<div id="detail">
+  <div class="detail-wrap">
+    <a class="back-link" onclick="showLanding()"><span class="arrow">←</span> Back to all notes</a>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<script>
+  const colors = ["#FFCE00","#F68A29","#623CEA","#23CE68","#ED4551","#3696FC"];
+
+  const notes = [
+    {
+      emoji: "🎯",
+      title: "Give the model context before you ask",
+      situation: "Most people type a task and hope the model fills in the rest correctly. It won't, not because it's careless, but because it has no idea who you are or what \u201cgood\u201d looks like to you.",
+      why: "Without context, the model has to guess your audience, your standards, and your format, so it defaults to something generic. That gap is where most weak first drafts come from.",
+      what: "Two sentences of context, plus one real example of the output you want, changes the entire quality of what comes back. This costs you ten seconds. Skipping it costs you three rounds of corrections.",
+      tryText: "\u201cI'm writing X for Y audience. Here's an example of the format I want: [paste example].\u201d"
+    },
+    {
+      emoji: "🎲",
+      title: "That confidence percentage means nothing",
+      situation: "When an AI tells you it's \u201c85% confident,\u201d it hasn't measured anything. It's producing a number that sounds precise because precise numbers sound trustworthy.",
+      why: "There's no calculation behind it. The model produces a plausible-sounding number the same way it produces a plausible-sounding sentence.",
+      what: "If you want to know how solid an answer is, ask a better question instead of a number.",
+      tryText: "\u201cSkip the confidence percentage. Tell me what would make this answer wrong.\u201d"
+    },
+    {
+      emoji: "🪞",
+      title: "Don't trust its account of its own thinking",
+      situation: "Ask an AI why it gave a certain answer, and it will tell you a story. The story sounds coherent. It's often wrong.",
+      why: "The model doesn't have access to its actual reasoning process, only to what a plausible explanation would look like after the fact.",
+      what: "If you need to know what really happened, look at the output itself, not the explanation attached to it.",
+      tryText: "\u201cShow me the actual data or steps you used, not just your summary of them.\u201d"
+    },
+    {
+      emoji: "🪜",
+      title: "One shot rarely beats three small ones",
+      situation: "Ask for a finished document in a single prompt, and you'll usually get structure, content, and polish all fighting each other.",
+      why: "One-shot generation tries to solve outline, substance, and tone at the same time, and quality drops across all three.",
+      what: "Break it up. Outline first. Then draft. Then edit. Each stage is a chance to catch a problem before it compounds into the next one.",
+      tryText: "\u201cGive me just the outline first. We'll draft section by section after.\u201d"
+    },
+    {
+      emoji: "⚖️",
+      title: "Not every task deserves your best model",
+      situation: "Using your strongest model for a quick brainstorm is like hiring a surgeon to put on a bandage.",
+      why: "Not every task carries the same stakes, and using maximum power everywhere wastes time, money, and often speed.",
+      what: "Save the top-tier model for what actually carries risk: client work, analysis, anything with your name on it. Use something fast and cheap for the rest.",
+      tryText: "Switch models based on the task, not out of habit."
+    },
+    {
+      emoji: "🤷",
+      title: "Let it say \u201cI don't know\u201d",
+      situation: "Left unguided, an AI will guess rather than admit a gap, because guessing looks more helpful in the moment.",
+      why: "Models are trained to be helpful above all, and an unanswered question can read as a failure to be helpful, so they fill it anyway.",
+      what: "Tell it explicitly that \u201cI don't know\u201d is an acceptable answer, and you'll get fewer confident wrong answers and more honest ones.",
+      tryText: "\u201cIf you're not sure, say so instead of guessing.\u201d"
+    },
+    {
+      emoji: "📏",
+      title: "Replace \u201cdoes this feel right\u201d with a rubric",
+      situation: "Judging AI output by gut feel is inconsistent from one day to the next.",
+      why: "\u201cGood\u201d is vague and shifts depending on your mood, your deadline, and how tired you are when you read it.",
+      what: "Before you review anything important, write down three or four things you're actually checking for. Score against those.",
+      tryText: "\u201cScore this against: accuracy, completeness, tone match, and clarity.\u201d"
+    },
+    {
+      emoji: "🗂️",
+      title: "The prompt that worked once is worth saving",
+      situation: "Everyone rewrites the same instructions from scratch every week because the good version got lost in a chat that's now three days old.",
+      why: "Good prompts are rare and specific, but chat history isn't searchable the way a real document is, so the work quietly disappears.",
+      what: "Keep a running document of prompts that actually delivered, tagged by what they're for.",
+      tryText: "Start a doc titled \u201cPrompts that worked\u201d and add to it weekly."
+    },
+    {
+      emoji: "📊",
+      title: "A table is easier to check than a paragraph",
+      situation: "When accuracy matters, ask for the answer in a format you can actually audit.",
+      why: "A paragraph hides its own errors inside flowing sentences, where a wrong fact reads just as smoothly as a right one.",
+      what: "A table with clear columns, like claim, source, and confidence, exposes errors immediately.",
+      tryText: "\u201cGive me this as a table with columns for claim, source, and confidence.\u201d"
+    },
+    {
+      emoji: "🎈",
+      title: "Long and confident isn't the same as right",
+      situation: "A single detailed answer feels finished. It isn't verified.",
+      why: "Length creates an illusion of thoroughness that has nothing to do with accuracy.",
+      what: "Before you act on anything that matters, ask for the short version first, check if it holds up, then decide whether the long one is worth trusting.",
+      tryText: "\u201cGive me the short version first. If it still holds up, we'll expand it.\u201d"
+    },
+    {
+      emoji: "🎙️",
+      title: "Say it before you type it",
+      situation: "Typing a prompt forces you to compress your thinking before you've finished having it.",
+      why: "Speech is faster and more natural than typing, so it captures the intent before you start editing yourself.",
+      what: "Talk it through first, then tighten the wording in text. This matters most for anything complicated.",
+      tryText: "Dictate your first attempt, then edit the transcript before sending it."
+    },
+    {
+      emoji: "🔍",
+      title: "Make the model show its assumptions",
+      situation: "Every ambiguous prompt gets resolved one way, silently, by whatever the model guesses you meant.",
+      why: "You don't find out the guess was wrong until you're looking at a finished output that missed the point.",
+      what: "Ask it to state its assumptions about scope and audience before it answers, and you catch the wrong guess early.",
+      tryText: "\u201cBefore you answer, tell me what you're assuming about scope and audience.\u201d"
+    },
+    {
+      emoji: "🧷",
+      title: "Your instructions and your content aren't the same thing",
+      situation: "Paste a document into a prompt without separating it from your actual task, and the model can lose track of which is which.",
+      why: "Instructions and material sit in the same block of text, so the model sometimes follows a line buried inside the pasted content instead of your actual task.",
+      what: "Label them clearly. One block for what you want done, one block for what it's working from.",
+      tryText: "TASK: [your instruction]. CONTENT TO USE: [pasted material]."
+    },
+    {
+      emoji: "🔄",
+      title: "A derailed conversation doesn't fix itself",
+      situation: "After enough back-and-forth edits, a chat can anchor on an earlier wrong direction and never fully shake it.",
+      why: "Each new message builds on everything before it, so an early misstep keeps resurfacing no matter how clearly you correct it.",
+      what: "When you notice this happening, don't keep pushing. Open a new chat and carry over your latest requirements.",
+      tryText: "Copy your latest requirements into a new chat instead of the tenth edit of the same one."
+    },
+    {
+      emoji: "📱",
+      title: "You're probably still using AI in a browser tab",
+      situation: "Most people never install the apps they're already paying for, and stay stuck opening a tab every time.",
+      why: "A browser tab is the default first touchpoint, so it becomes the only one, even after the apps exist.",
+      what: "The mobile and desktop apps let you work with AI while walking, commuting, or away from your desk, and voice mode makes dictating a prompt almost effortless.",
+      tryText: "Download the app you're already paying for and try voice mode once this week."
+    },
+    {
+      emoji: "🔒",
+      title: "Check whether your data is training the next model",
+      situation: "Most AI tools default to using your conversations to improve future versions, and this setting is rarely surfaced clearly.",
+      why: "Training on user data is the default because it improves the product for the company, not because it's what most people would choose if asked.",
+      what: "Look for it under account or privacy settings, usually something like \u201cimprove the model\u201d or \u201cdata retention.\u201d Turn it off once.",
+      tryText: "Go to Settings, then Privacy, and turn off model training before you paste anything sensitive."
+    },
+    {
+      emoji: "💧",
+      title: "Detection is moving from guesswork to a built-in check",
+      situation: "As AI writing gets harder to spot by reading alone, providers are building verification into the output itself.",
+      why: "Reading for tone and style is a losing game as models keep improving, so the more durable signal has to live in the file, not the reader's judgment.",
+      what: "Google's SynthID watermarks AI-generated images and audio. Claude embeds an invisible statistical pattern into text that a detector can check without changing how it reads.",
+      tryText: "If a tool offers a provenance or watermark check, use it instead of relying on instinct."
+    },
+    {
+      emoji: "🕵️",
+      title: "Ten habits that give AI writing away",
+      situation: "Language models lean on a small set of stylistic habits because they're trained to sound safe and impressive, and those habits repeat across outputs regardless of topic.",
+      why: "The habits come from training on what reads as polished and safe, so the same patterns surface again and again.",
+      list: [
+        "Overblown importance (\u201cthis marks a pivotal moment\u201d)",
+        "Name dropping without context (\u201cfeatured by Wired, Forbes and BBC\u201d)",
+        "Commentary that sounds deep but says nothing (\u201cthis shows how layered the issue is\u201d)",
+        "Sales language in neutral writing (\u201cnestled in the heart of the city\u201d)",
+        "Unnamed experts (\u201cexperts argue,\u201d \u201cmany believe\u201d)",
+        "Dressed-up verbs (\u201cserves as\u201d instead of \u201cis\u201d)",
+        "Forced contrast (\u201cnot just a tool, but\u2026\u201d)",
+        "Everything arriving in threes",
+        "Caveats nobody needed (\u201cevery situation is different\u201d)",
+        "Chatbot phrasing itself (\u201cunleash,\u201d \u201cit's worth noting\u201d)"
+      ],
+      tryText: "Read the piece once for content, then again just hunting for these ten patterns. Spot three or more, and treat it as a draft, not a finished answer."
+    }
+  ];
+
+  const grid = document.getElementById('cardGrid');
+  notes.forEach((note, i) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="tab" style="background:${colors[i % colors.length]}"></div>
+      <div class="num">${note.emoji}</div>
+      <h3>${note.title}</h3>
+      <span class="read-btn">Read this →</span>
+    `;
+    div.onclick = () => showDetail(i);
+    grid.appendChild(div);
+  });
+
+  function renderNote(i) {
+    const n = notes[i];
+    const container = document.getElementById('detailContent');
+    const bodyBlock = n.list
+      ? `<div class="section">
+           <div class="section-flag flag-why">Why it happens</div>
+           <p>${n.why}</p>
+         </div>
+         <div class="section">
+           <ul>${n.list.map(item => `<li>${item}</li>`).join('')}</ul>
+         </div>`
+      : `<div class="section"><p>${n.situation}</p></div>
+         <div class="section">
+           <div class="section-flag flag-why">Why it happens</div>
+           <p>${n.why}</p>
+         </div>
+         <div class="section">
+           <div class="section-flag flag-do">What to do</div>
+           <p>${n.what}</p>
+         </div>`;
+
+    container.innerHTML = `
+      <div class="index-card">
+        <div class="pin" style="background:${colors[i % colors.length]}"></div>
+        <div class="stamp-num">${n.emoji}</div>
+        <h1>${n.title}</h1>
+        ${bodyBlock}
+        <div class="section">
+          <div class="try-box">${n.tryText}</div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button ${i === 0 ? 'disabled' : ''} onclick="showDetail(${i-1})">← Previous</button>
+        <button ${i === notes.length - 1 ? 'disabled' : ''} onclick="showDetail(${i+1})">Next →</button>
+      </div>
+      <div class="nav-footer">
+        <div class="dots">
+          ${notes.map((_, idx) => `<span class="${idx === i ? 'active' : ''}"></span>`).join('')}
+        </div>
+        <span>Nudgeable AI Best Practices</span>
+      </div>
+    `;
+  }
+
+  function showDetail(i) {
+    renderNote(i);
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('detail').style.display = 'block';
+    window.scrollTo(0,0);
+  }
+  function showLanding() {
+    document.getElementById('detail').style.display = 'none';
+    document.getElementById('landing').style.display = 'block';
+    window.scrollTo(0,0);
+  }
+</script>
+
+<script src="../assets/rail.js"></script>
+</body>
+</html>

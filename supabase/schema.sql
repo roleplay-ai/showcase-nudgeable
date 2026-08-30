@@ -44,6 +44,21 @@ create policy "Public can view blog images"
   for select
   using (bucket_id = 'blog-images');
 
+-- AI Academy training videos + thumbnails, uploaded from
+-- AI_WorkStudio_Matched_Video_Mapping.xlsx and referenced directly by public
+-- URL from public/ai-academy pages (see assets/video-tab.js, tools/index.html
+-- and claude/index.html). Objects are named by a slug of the original
+-- "Video File Name" / thumbnail column, e.g. "chatgpt-codex-compare-ai-coding-tools.mp4".
+insert into storage.buckets (id, name, public, file_size_limit)
+values ('academy-videos', 'academy-videos', true, 52428800)
+on conflict (id) do nothing;
+
+drop policy if exists "Public can view academy videos" on storage.objects;
+create policy "Public can view academy videos"
+  on storage.objects
+  for select
+  using (bucket_id = 'academy-videos');
+
 insert into public.blog_posts (
   id, slug, title, excerpt, content, cover_image, author, category, published, published_at, updated_at
 ) values (

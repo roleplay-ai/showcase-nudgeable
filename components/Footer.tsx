@@ -27,7 +27,7 @@ export function Footer() {
         </div>
       </div>
       <div><strong>Training</strong><Link href="/#training">Corporate workshops</Link><Link href="/#contact">Contact</Link><Link href="/#about">About Gaurav</Link></div>
-      <div><strong>Products</strong><Link href="/ai-practice-lab">Practice Lab</Link><Link href="/ai-role-play">AI Coach</Link><Link href="/nudgeengine">Actions Engine</Link></div>
+      <div><strong>Products</strong><a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Practice Lab</a><Link href="/ai-role-play">AI Coach</Link><Link href="/nudgeengine">Actions Engine</Link></div>
       <div><strong>Content</strong><Link href="/insights#shorts">AI Shorts</Link><Link href="/insights#workflows">Workflow explainers</Link><Link href="/insights/blogs">Blogs</Link><a href="https://www.youtube.com/playlist?list=PLX2kcOVk5064" target="_blank" rel="noopener noreferrer">YouTube</a></div>
     </div>
     <div className="container footer-bottom"><span>© 2026 Nudgeable. All rights reserved.</span><span>AI for Work, made practical.</span></div>
