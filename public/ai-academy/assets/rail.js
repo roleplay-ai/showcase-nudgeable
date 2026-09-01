@@ -209,7 +209,7 @@
 
   /* ---- shared footer -------------------------------------------------- */
   var LINKS = {
-    website  : 'https://nudgeable.ai',
+    website  : '/',
     linkedin : 'https://www.linkedin.com/in/gauravpatel25',
     youtube  : 'https://www.youtube.com/@Gaurav-NudgeableAI',
     instagram: 'https://www.instagram.com/gaurav.patel_gp',
