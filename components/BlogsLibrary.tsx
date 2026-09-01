@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { BLOG_CATEGORIES, formatBlogDate, readingTimeMinutes, type BlogPost } from '@/lib/blogShared';
+import { BLOG_CATEGORIES, type BlogPost } from '@/lib/blogShared';
 import { BlogCard } from './BlogCard';
 import { BlogNewsletter } from './BlogNewsletter';
 import { BlogThumb } from './BlogThumb';
@@ -11,8 +11,8 @@ const FILTERS = ['All', ...BLOG_CATEGORIES];
 
 export function BlogsLibrary({ posts }: { posts: BlogPost[] }) {
   const [selected, setSelected] = useState('All');
-  const featured = posts[0];
-  const rest = posts.slice(1).filter(post => selected === 'All' || post.category === selected);
+  const featured = posts.find(post => post.featured) ?? posts[0];
+  const rest = posts.filter(post => post.id !== featured?.id).filter(post => selected === 'All' || post.category === selected);
 
   return <div className="blogs-page">
     <section className="blogs-hero">
@@ -24,15 +24,11 @@ export function BlogsLibrary({ posts }: { posts: BlogPost[] }) {
         </div>
         {featured
           ? <Link className="blog-featured" href={`/insights/blogs/${featured.slug}`}>
-            <BlogThumb post={featured} large />
-            <div className="blog-featured-copy">
-              <span className="eyebrow">FEATURED ARTICLE</span>
-              <span className="blog-pill">{featured.category}</span>
-              <h2>{featured.title}</h2>
-              <p>{featured.excerpt}</p>
-              <div className="blog-meta">
-                <span>{formatBlogDate(featured.publishedAt)} · {readingTimeMinutes(featured.content)} min read</span>
-                <b>Read article ↗</b>
+            <div className="blog-featured-media">
+              <BlogThumb post={featured} photo />
+              <div className="blog-featured-overlay">
+                <h2>{featured.title}</h2>
+                <p>{featured.excerpt}</p>
               </div>
             </div>
           </Link>

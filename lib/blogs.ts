@@ -24,6 +24,7 @@ type BlogRow = {
   updated_at: string;
   meta_title?: string | null;
   meta_description?: string | null;
+  featured?: boolean | null;
 };
 
 function fromRow(row: BlogRow): BlogPost {
@@ -40,7 +41,8 @@ function fromRow(row: BlogRow): BlogPost {
     publishedAt: row.published_at,
     updatedAt: row.updated_at,
     metaTitle: row.meta_title || undefined,
-    metaDescription: row.meta_description || undefined
+    metaDescription: row.meta_description || undefined,
+    featured: row.featured === true
   };
 }
 
@@ -58,7 +60,8 @@ function toRow(post: BlogPost): BlogRow {
     published_at: post.publishedAt,
     updated_at: post.updatedAt,
     meta_title: post.metaTitle || null,
-    meta_description: post.metaDescription || null
+    meta_description: post.metaDescription || null,
+    featured: post.featured === true
   };
 }
 
@@ -115,6 +118,7 @@ type BlogInput = {
   publishedAt?: string;
   metaTitle?: string;
   metaDescription?: string;
+  featured?: boolean;
 };
 
 async function slugIndex() {
@@ -128,6 +132,7 @@ function normalizePost(input: BlogInput, posts: Array<{ id: string; slug: string
   const content = sanitizeHtml(input.content || '');
   const now = new Date().toISOString();
   const published = input.published !== false;
+  const featured = input.featured === true;
   return {
     id: existing?.id || randomUUID(),
     slug: uniqueSlug(input.slug?.trim() || title, posts, existing?.id),
@@ -141,7 +146,8 @@ function normalizePost(input: BlogInput, posts: Array<{ id: string; slug: string
     publishedAt: existing?.publishedAt || input.publishedAt || now,
     updatedAt: now,
     metaTitle: (input.metaTitle || '').trim() || undefined,
-    metaDescription: (input.metaDescription || '').trim() || undefined
+    metaDescription: (input.metaDescription || '').trim() || undefined,
+    featured
   };
 }
 
@@ -151,6 +157,16 @@ export async function savePost(input: BlogInput, slug?: string) {
   const existing = slug ? await getPost(slug) : null;
   if (slug && !existing) throw new Error('Blog post not found.');
   const post = normalizePost(input, await slugIndex(), existing || undefined);
+
+  if (post.featured) {
+    const { error: clearError } = await supabase
+      .from('blog_posts')
+      .update({ featured: false, updated_at: post.updatedAt })
+      .eq('featured', true)
+      .neq('id', post.id);
+    throwIfError(clearError);
+  }
+
   const row = toRow(post);
 
   if (existing) {

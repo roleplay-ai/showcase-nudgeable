@@ -4,7 +4,7 @@ import { BlogThumb } from './BlogThumb';
 
 export function BlogCard({ post }: { post: BlogPost }) {
   return <Link className="blog-card" href={`/insights/blogs/${post.slug}`}>
-    <BlogThumb post={post} />
+    <BlogThumb post={post} photo />
     <div className="blog-card-body">
       <span className="blog-pill">{post.category}</span>
       <h2>{post.title}</h2>

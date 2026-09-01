@@ -3,16 +3,19 @@ import { blogVisual, type BlogPost } from '@/lib/blogShared';
 export function BlogThumb({
   post,
   large,
-  photo
+  photo,
+  titleOverlay
 }: {
-  post: Pick<BlogPost, 'slug' | 'category'> & { coverImage?: string };
+  post: Pick<BlogPost, 'slug' | 'category' | 'title'> & { coverImage?: string };
   large?: boolean;
   photo?: boolean;
+  titleOverlay?: boolean;
 }) {
   const visual = blogVisual(post);
   if (photo && post.coverImage) {
-    return <div className={`blog-thumb ${large ? 'large' : ''}`}>
-      <img src={post.coverImage} alt="" />
+    return <div className={`blog-thumb ${large ? 'large' : ''}${titleOverlay ? ' has-caption' : ''}`}>
+      <img src={post.coverImage} alt={post.title || ''} />
+      {titleOverlay && post.title && <div className="blog-thumb-caption"><span>{post.title}</span></div>}
     </div>;
   }
 

@@ -31,6 +31,7 @@ function BlogEditorInner() {
   const [coverImage, setCoverImage] = useState('');
   const [category, setCategory] = useState<string>(BLOG_CATEGORIES[0]);
   const [published, setPublished] = useState(true);
+  const [featured, setFeatured] = useState(false);
   const [slug, setSlug] = useState('');
   const [slugTouched, setSlugTouched] = useState(false);
   const [metaTitle, setMetaTitle] = useState('');
@@ -86,6 +87,7 @@ function BlogEditorInner() {
     setCoverImage(post.coverImage || '');
     setCategory(post.category || BLOG_CATEGORIES[0]);
     setPublished(post.published);
+    setFeatured(post.featured === true);
     setSlug(post.slug);
     setSlugTouched(true);
     setMetaTitle(post.metaTitle || '');
@@ -109,6 +111,7 @@ function BlogEditorInner() {
     setCoverImage('');
     setCategory(BLOG_CATEGORIES[0]);
     setPublished(true);
+    setFeatured(false);
     setSlug('');
     setSlugTouched(false);
     setMetaTitle('');
@@ -169,7 +172,7 @@ function BlogEditorInner() {
       const response = await fetch(editingSlug ? `/api/blogs/${editingSlug}` : '/api/blogs', {
         method: editingSlug ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, author, excerpt, content, coverImage, category, published, slug, metaTitle, metaDescription })
+        body: JSON.stringify({ title, author, excerpt, content, coverImage, category, published, featured, slug, metaTitle, metaDescription })
       });
       const payload = await response.json() as { post?: BlogPost; error?: string };
       if (!response.ok || !payload.post) throw new Error(payload.error || 'Could not save the blog.');
@@ -182,6 +185,38 @@ function BlogEditorInner() {
     } finally {
       setSaving(false);
     }
+  }
+
+  async function setHeroFeatured(post: BlogPost) {
+    if (!post.published) {
+      setError('Publish the article before featuring it on the blogs hero.');
+      return;
+    }
+    setError('');
+    const response = await fetch(`/api/blogs/${post.slug}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: post.title,
+        author: post.author,
+        excerpt: post.excerpt,
+        content: post.content,
+        coverImage: post.coverImage,
+        category: post.category,
+        published: post.published,
+        featured: true,
+        slug: post.slug,
+        metaTitle: post.metaTitle,
+        metaDescription: post.metaDescription
+      })
+    });
+    const payload = await response.json().catch(() => ({})) as { error?: string };
+    if (!response.ok) {
+      setError(payload.error || 'Could not update the featured article.');
+      return;
+    }
+    if (editingSlug === post.slug) setFeatured(true);
+    await loadPosts();
   }
 
   async function remove(slug: string) {
@@ -247,8 +282,25 @@ function BlogEditorInner() {
             </select>
           </label>
           <label className="blog-publish-toggle">
-            <input type="checkbox" checked={published} onChange={event => setPublished(event.target.checked)} />
+            <input
+              type="checkbox"
+              checked={published}
+              onChange={event => {
+                const next = event.target.checked;
+                setPublished(next);
+                if (!next) setFeatured(false);
+              }}
+            />
             <span>Publish on the blogs page</span>
+          </label>
+          <label className="blog-publish-toggle">
+            <input
+              type="checkbox"
+              checked={featured}
+              disabled={!published}
+              onChange={event => setFeatured(event.target.checked)}
+            />
+            <span>Feature on blogs hero</span>
           </label>
         </div>
         <label><span>Short excerpt</span><textarea value={excerpt} onChange={event => setExcerpt(event.target.value)} rows={3} placeholder="One or two sentences for the blogs listing." /></label>
@@ -318,11 +370,12 @@ function BlogEditorInner() {
         {!posts.length && <p>No posts yet. The first article you save will appear here.</p>}
         <ul>
           {posts.map(post => (
-            <li key={post.id}>
+            <li key={post.id} className={post.featured ? 'is-featured' : undefined}>
               <Link href={`/insights/blogs/write?slug=${post.slug}`}>{post.title}</Link>
-              <span>{post.published ? 'Published' : 'Draft'} · {formatBlogDate(post.updatedAt)}</span>
+              <span>{post.published ? 'Published' : 'Draft'}{post.featured ? ' · Hero featured' : ''} · {formatBlogDate(post.updatedAt)}</span>
               <div>
                 <Link href={`/insights/blogs/write?slug=${post.slug}`}>Edit</Link>
+                {post.published && !post.featured && <button type="button" onClick={() => void setHeroFeatured(post)}>Set as hero</button>}
                 <button type="button" onClick={() => void remove(post.slug)}>Delete</button>
               </div>
             </li>

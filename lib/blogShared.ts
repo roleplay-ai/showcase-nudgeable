@@ -12,6 +12,7 @@ export type BlogPost = {
   updatedAt: string;
   metaTitle?: string;
   metaDescription?: string;
+  featured?: boolean;
 };
 
 export const BLOG_CATEGORIES = ['AI at Work', 'Behavioral Science', 'Workplace', 'HR & Learning'] as const;

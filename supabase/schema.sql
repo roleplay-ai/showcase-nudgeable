@@ -26,6 +26,13 @@ alter table public.blog_posts add column if not exists category text not null de
 alter table public.blog_posts add column if not exists meta_title text;
 alter table public.blog_posts add column if not exists meta_description text;
 
+-- Hero featured article: only one post should be featured at a time (enforced in app code).
+alter table public.blog_posts add column if not exists featured boolean not null default false;
+
+create index if not exists blog_posts_featured_idx
+  on public.blog_posts (featured)
+  where featured = true;
+
 alter table public.blog_posts enable row level security;
 
 drop policy if exists "Public can read published posts" on public.blog_posts;
