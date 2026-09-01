@@ -65,40 +65,79 @@ export function AcademyPromo() {
             </a>
           </div>
 
-          <div className="academy-row-head">
-            <h3>Learn and keep up</h3>
-            <a className="academy-see-all" href="/ai-academy/index.html">Browse the Academy &rarr;</a>
+          <div className="academy-central-head">
+            <h2>Learn and keep up</h2>
+            <a className="academy-browse-link" href="/ai-academy/index.html">Browse the Academy &rarr;</a>
           </div>
-          <div className="academy-learn">
-            <a className="academy-ln-card" href="/ai-academy/foundations/index.html" style={{ '--c': '#FFCE00', '--bg': '#FFFDF5' } as CSSProperties}>
-              <span className="academy-tag">Start here</span>
-              <h3>AI Foundations</h3>
-              <p>Ten short topics on how modern AI actually works, in a sensible order.</p>
-              <ul className="academy-ln-list">
-                <li>Tokens, context windows and memory</li>
-                <li>Tool calling, agents and where cost comes from</li>
-              </ul>
-              <span className="academy-nud-btn violet">Learn &rarr;</span>
+          <div className="academy-central-grid" aria-label="AI Academy resources">
+            <a className="academy-central-card" href="/ai-academy/foundations/index.html">
+              <div className="academy-central-top">
+                <span className="academy-central-eyebrow">Start here</span>
+                <span className="academy-central-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="13" cy="12" r="5" />
+                    <circle cx="35" cy="12" r="5" />
+                    <circle cx="24" cy="35" r="5" />
+                    <path d="M17 15.5 21 30M31 15.5 27 30M18 12h12" />
+                  </svg>
+                </span>
+              </div>
+              <div className="academy-central-body">
+                <h3>AI Foundations</h3>
+                <p className="academy-central-desc">Understand how AI assistants work and what happens when you use them.</p>
+                <ul className="academy-central-points">
+                  <li>Learn the key concepts behind AI</li>
+                  <li>Understand how its main features work</li>
+                  <li>Know what affects the quality of its answers</li>
+                </ul>
+                <span className="academy-central-btn">Learn &rarr;</span>
+              </div>
             </a>
-            <a className="academy-ln-card" href="/ai-academy/tips/index.html" style={{ '--c': '#623CEA', '--tagink': '#fff', '--bg': '#FBFAFF' } as CSSProperties}>
-              <span className="academy-tag">Practise</span>
-              <h3>AI Best Practices</h3>
-              <p>Small habits that change the quality of an answer. Each takes a minute to read.</p>
-              <ul className="academy-ln-list">
-                <li>What to put in a brief before you ask</li>
-                <li>When to start fresh instead of pushing on</li>
-              </ul>
-              <span className="academy-nud-btn">Read this &rarr;</span>
+
+            <a className="academy-central-card academy-central-card--practice" href="/ai-academy/tips/index.html">
+              <div className="academy-central-top">
+                <span className="academy-central-eyebrow">Practise</span>
+                <span className="academy-central-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M10 12h20M10 24h20M10 36h14" />
+                    <path d="m35 30 3 3 6-8" />
+                    <circle cx="38" cy="12" r="3" />
+                  </svg>
+                </span>
+              </div>
+              <div className="academy-central-body">
+                <h3>AI Best Practices</h3>
+                <p className="academy-central-desc">Small habits that improve the quality and reliability of AI responses.</p>
+                <ul className="academy-central-points">
+                  <li>Give AI the right context and instructions</li>
+                  <li>Know when to continue, restart or change approach</li>
+                  <li>Review and improve weak or incomplete answers</li>
+                </ul>
+                <span className="academy-central-btn">Read this &rarr;</span>
+              </div>
             </a>
-            <a className="academy-ln-card" href="/ai-academy/news/index.html" style={{ '--c': '#23CE68', '--tagink': '#fff', '--bg': '#F8FDFA' } as CSSProperties}>
-              <span className="academy-tag">Every week</span>
-              <h3>What&rsquo;s New</h3>
-              <p>The updates across the major assistants that change how you work.</p>
-              <ul className="academy-ln-list">
-                <li>One short entry per update, no release-note noise</li>
-                <li>Filter by tool, browse by month</li>
-              </ul>
-              <span className="academy-nud-btn ink">See updates &rarr;</span>
+
+            <a className="academy-central-card academy-central-card--updates" href="/ai-academy/news/index.html">
+              <div className="academy-central-top">
+                <span className="academy-central-eyebrow">Every week</span>
+                <span className="academy-central-icon" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="7" y="10" width="34" height="31" rx="5" />
+                    <path d="M15 6v8M33 6v8M7 20h34" />
+                    <path d="m17 30 5 5 10-11" />
+                  </svg>
+                </span>
+              </div>
+              <div className="academy-central-body">
+                <h3>What&rsquo;s New</h3>
+                <p className="academy-central-desc">Important updates across the major AI assistants, added every week.</p>
+                <ul className="academy-central-points">
+                  <li>One short entry per update, without release-note noise</li>
+                  <li>Understand what changed and why it matters</li>
+                  <li>Filter by assistant or browse by month</li>
+                </ul>
+                <span className="academy-central-btn">See updates &rarr;</span>
+              </div>
             </a>
           </div>
 
