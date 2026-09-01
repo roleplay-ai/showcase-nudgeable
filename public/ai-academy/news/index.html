@@ -1,329 +1,705 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Recent features and improvements across the AI tools you use.">
-<title>What&rsquo;s New</title>
-<link rel="stylesheet" href="../assets/lab.css">
-<link rel="stylesheet" href="../assets/typography.css">
-<style>
-  /* ======================================================================
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Recent features and improvements across the AI tools you use.">
+  <title>What&rsquo;s New</title>
+  <link rel="stylesheet" href="../assets/lab.css">
+  <link rel="stylesheet" href="../assets/typography.css">
+  <style>
+    /* ======================================================================
      What's New runs its own cool news-desk palette, deliberately unlike the
      Claude guide: dark sidebar, #F4F7FB content, blue accents.
      ====================================================================== */
-  body{background:#F4F7FB !important}
+    body {
+      background: #F4F7FB !important
+    }
 
-  .topbar{background:#141A22 !important;border-bottom:1px solid #232C38 !important;color:#EAF0F7}
-  .topbar .crumb{color:#EAF0F7}
-  .topbar .top-note{color:#8FA3BA}
-  .topbar .home-link{background:rgba(255,255,255,.08) !important;border-color:rgba(255,255,255,.16) !important;color:#EAF0F7 !important}
-  .topbar .home-link:hover{background:rgba(255,255,255,.16) !important}
+    .topbar {
+      background: #141A22 !important;
+      border-bottom: 1px solid #232C38 !important;
+      color: #EAF0F7
+    }
 
-  aside{background:#1B222C !important;border-right:1px solid #262F3B !important}
-  aside .guide-title{color:#fff}
-  aside .guide-subtitle{color:#8FA3BA}
-  aside .nav-label{color:#6C7E93}
-  .side-link{color:#C3CFDD}
-  .side-link:hover{background:rgba(255,255,255,.07)}
-  .side-link.active{background:#2C7BE5 !important;color:#fff}
-  .side-icon{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.13)}
+    .topbar .crumb {
+      color: #EAF0F7
+    }
 
-  /* month navigation */
-  .month-link{
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    margin:2px 0;padding:9px 12px;border-radius:10px;
-    color:#C3CFDD;font-size:14px;font-weight:650;cursor:pointer;
-  }
-  .month-link:hover{background:rgba(255,255,255,.07);color:#fff}
-  .month-link.active{background:rgba(44,123,229,.18);color:#7FB6F5}
-  .month-link .dot{width:7px;height:7px;border-radius:50%;background:#3B4757;flex:0 0 auto}
-  .month-link.active .dot{background:#2C7BE5}
+    .topbar .top-note {
+      color: #8FA3BA
+    }
 
-  main{background:#F4F7FB}
-  .eyebrow{color:#2C7BE5 !important;letter-spacing:.15em}
-  h1{color:#101821}
-  .lead{color:#43536A;margin-bottom:22px}
+    .topbar .home-link {
+      background: rgba(255, 255, 255, .08) !important;
+      border-color: rgba(255, 255, 255, .16) !important;
+      color: #EAF0F7 !important
+    }
 
-  /* ---------- filter chips ---------- */
-  .filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:30px}
-  .chip{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:8px 15px 8px 10px;border-radius:999px;
-    border:1px solid #DDE5EE;background:#fff;color:#3B4A5C;
-    font-size:14px;font-weight:700;cursor:pointer;transition:.15s ease;
-  }
-  .chip img{width:19px;height:19px;object-fit:contain;display:block}
-  .chip .glyph{
-    width:19px;height:19px;border-radius:50%;display:grid;place-items:center;
-    background:#101821;color:#FFCE00;
-  }
-  .chip .glyph svg{width:11px;height:11px;display:block}
-  .chip:hover{border-color:#B9C7D8}
-  .chip.active{background:#FFF6CF;border-color:#E8C64A;color:#6E5305}
-  .chip.all{padding-left:15px}
+    .topbar .home-link:hover {
+      background: rgba(255, 255, 255, .16) !important
+    }
 
-  /* ---------- month heading ---------- */
-  .month-head{
-    display:flex;align-items:center;gap:14px;
-    margin:34px 0 14px;
-  }
-  .month-head:first-of-type{margin-top:0}
-  .month-head b{
-    font-size:12px;font-weight:850;letter-spacing:.15em;text-transform:uppercase;color:#5F7186;
-    white-space:nowrap;
-  }
-  .month-head span{flex:1;height:1px;background:#DDE5EE}
+    aside {
+      background: #1B222C !important;
+      border-right: 1px solid #262F3B !important
+    }
 
-  /* ---------- news card ---------- */
-  .entry{
-    display:block;background:#fff;border:1px solid #DDE5EE;border-radius:16px;
-    padding:20px 22px 18px;margin-bottom:13px;text-decoration:none;color:inherit;
-    box-shadow:0 1px 3px rgba(16,24,33,.05);
-    transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;
-  }
-  .entry:hover{transform:translateY(-2px);border-color:#B9C7D8;box-shadow:0 8px 20px rgba(16,24,33,.07)}
-  .entry.featured{border:1.5px solid #E8C64A;box-shadow:0 4px 16px rgba(232,198,74,.18)}
+    aside .guide-title {
+      color: #fff
+    }
 
-  .entry-head{display:flex;align-items:center;gap:10px;margin-bottom:11px}
-  .entry-src{
-    width:26px;height:26px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;
-    background:#F2F6FA;border:1px solid #E4EBF3;overflow:hidden;
-  }
-  .entry-src img{width:17px;height:17px;object-fit:contain;display:block}
-  .entry-src.generic{background:#101821;border-color:#101821;color:#FFCE00}
-  .entry-src.generic svg{width:14px;height:14px;display:block}
-  .entry-name{font-size:13.5px;font-weight:750;color:#26374B}
-  .entry-date{margin-left:auto;font-size:12.5px;font-weight:650;color:#8395A9;white-space:nowrap}
+    aside .guide-subtitle {
+      color: #8FA3BA
+    }
 
-  .entry h3{font-size:19px;font-weight:750;line-height:1.32;color:#101821;margin:0 0 7px;letter-spacing:-.01em}
-  .entry p{font-size:14.5px;line-height:1.55;color:#4C5C70;margin:0 0 15px}
+    aside .nav-label {
+      color: #6C7E93
+    }
 
-  .entry-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .tag{
-    border-radius:7px;padding:5px 10px;background:#EEF2F7;color:#54657A;
-    font-size:12px;font-weight:700;
-  }
-  .tag.skills{background:#EDE9FB;color:#4B3F9E}
-  .tag.model{background:#E3EDFD;color:#1A56C4}
-  .tag.agents{background:#E3F6EF;color:#0B6E56}
-  .entry-go{margin-left:auto;font-size:13.5px;font-weight:800;color:#2C7BE5;white-space:nowrap}
+    .side-link {
+      color: #C3CFDD
+    }
 
-  .empty{
-    background:#fff;border:1px dashed #C3D0DF;border-radius:16px;
-    padding:34px 28px;text-align:center;color:#5F7186;
-  }
-  .empty b{display:block;color:#101821;font-size:17px;margin-bottom:5px}
+    .side-link:hover {
+      background: rgba(255, 255, 255, .07)
+    }
 
-  .callout{background:#101821 !important;border:0 !important;border-radius:16px}
-  .callout strong{color:#fff}
-  .callout p{color:#AFBDCE}
-  .callout-icon{background:rgba(255,255,255,.1)}
+    .side-link.active {
+      background: #2C7BE5 !important;
+      color: #fff
+    }
 
-  @media (max-width:700px){
-    .entry{padding:17px 17px 15px}
-    .entry h3{font-size:17px}
-  }
-</style>
-<link rel="stylesheet" href="../assets/standardize.css">
+    .side-icon {
+      background: rgba(255, 255, 255, .09);
+      border-color: rgba(255, 255, 255, .13)
+    }
+
+    /* month navigation */
+    .month-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 2px 0;
+      padding: 9px 12px;
+      border-radius: 10px;
+      color: #C3CFDD;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .month-link:hover {
+      background: rgba(255, 255, 255, .07);
+      color: #fff
+    }
+
+    .month-link.active {
+      background: rgba(44, 123, 229, .18);
+      color: #7FB6F5
+    }
+
+    .month-link .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #3B4757;
+      flex: 0 0 auto
+    }
+
+    .month-link.active .dot {
+      background: #2C7BE5
+    }
+
+    main {
+      background: #F4F7FB
+    }
+
+    .eyebrow {
+      color: #2C7BE5 !important;
+      letter-spacing: .15em
+    }
+
+    h1 {
+      color: #101821
+    }
+
+    .lead {
+      color: #43536A;
+      margin-bottom: 22px
+    }
+
+    /* ---------- filter chips ---------- */
+    .filters {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-bottom: 30px
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 15px 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #DDE5EE;
+      background: #fff;
+      color: #3B4A5C;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .15s ease;
+    }
+
+    .chip img {
+      width: 19px;
+      height: 19px;
+      object-fit: contain;
+      display: block
+    }
+
+    .chip .glyph {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #101821;
+      color: #FFCE00;
+    }
+
+    .chip .glyph svg {
+      width: 11px;
+      height: 11px;
+      display: block
+    }
+
+    .chip:hover {
+      border-color: #B9C7D8
+    }
+
+    .chip.active {
+      background: #FFF6CF;
+      border-color: #E8C64A;
+      color: #6E5305
+    }
+
+    .chip.all {
+      padding-left: 15px
+    }
+
+    /* ---------- month heading ---------- */
+    .month-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 34px 0 14px;
+    }
+
+    .month-head:first-of-type {
+      margin-top: 0
+    }
+
+    .month-head b {
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: #5F7186;
+      white-space: nowrap;
+    }
+
+    .month-head span {
+      flex: 1;
+      height: 1px;
+      background: #DDE5EE
+    }
+
+    /* ---------- news card ---------- */
+    .entry {
+      display: block;
+      background: #fff;
+      border: 1px solid #DDE5EE;
+      border-radius: 16px;
+      padding: 20px 22px 18px;
+      margin-bottom: 13px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 1px 3px rgba(16, 24, 33, .05);
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .entry:hover {
+      transform: translateY(-2px);
+      border-color: #B9C7D8;
+      box-shadow: 0 8px 20px rgba(16, 24, 33, .07)
+    }
+
+    .entry.featured {
+      border: 1.5px solid #E8C64A;
+      box-shadow: 0 4px 16px rgba(232, 198, 74, .18)
+    }
+
+    .entry-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 11px
+    }
+
+    .entry-src {
+      width: 26px;
+      height: 26px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #F2F6FA;
+      border: 1px solid #E4EBF3;
+      overflow: hidden;
+    }
+
+    .entry-src img {
+      width: 17px;
+      height: 17px;
+      object-fit: contain;
+      display: block
+    }
+
+    .entry-src.generic {
+      background: #101821;
+      border-color: #101821;
+      color: #FFCE00
+    }
+
+    .entry-src.generic svg {
+      width: 14px;
+      height: 14px;
+      display: block
+    }
+
+    .entry-name {
+      font-size: 13.5px;
+      font-weight: 750;
+      color: #26374B
+    }
+
+    .entry-date {
+      margin-left: auto;
+      font-size: 12.5px;
+      font-weight: 650;
+      color: #8395A9;
+      white-space: nowrap
+    }
+
+    .entry h3 {
+      font-size: 19px;
+      font-weight: 750;
+      line-height: 1.32;
+      color: #101821;
+      margin: 0 0 7px;
+      letter-spacing: -.01em
+    }
+
+    .entry p {
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: #4C5C70;
+      margin: 0 0 15px
+    }
+
+    .entry-foot {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .tag {
+      border-radius: 7px;
+      padding: 5px 10px;
+      background: #EEF2F7;
+      color: #54657A;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tag.skills {
+      background: #EDE9FB;
+      color: #4B3F9E
+    }
+
+    .tag.model {
+      background: #E3EDFD;
+      color: #1A56C4
+    }
+
+    .tag.agents {
+      background: #E3F6EF;
+      color: #0B6E56
+    }
+
+    .entry-go {
+      margin-left: auto;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #2C7BE5;
+      white-space: nowrap
+    }
+
+    .empty {
+      background: #fff;
+      border: 1px dashed #C3D0DF;
+      border-radius: 16px;
+      padding: 34px 28px;
+      text-align: center;
+      color: #5F7186;
+    }
+
+    .empty b {
+      display: block;
+      color: #101821;
+      font-size: 17px;
+      margin-bottom: 5px
+    }
+
+    .callout {
+      background: #101821 !important;
+      border: 0 !important;
+      border-radius: 16px
+    }
+
+    .callout strong {
+      color: #fff
+    }
+
+    .callout p {
+      color: #AFBDCE
+    }
+
+    .callout-icon {
+      background: rgba(255, 255, 255, .1)
+    }
+
+    @media (max-width:700px) {
+      .entry {
+        padding: 17px 17px 15px
+      }
+
+      .entry h3 {
+        font-size: 17px
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/standardize.css">
 </head>
+
 <body>
 
-<header class="topbar">
-  <a class="home-link" href="../index.html">&larr; Nudgeable AI Academy</a>
-  <div class="crumb">What&rsquo;s New</div>
-  <div class="top-note">Latest releases</div>
-</header>
+  <header class="topbar">
+    <a class="home-link" href="../index.html">&larr; Nudgeable AI Academy</a>
+    <div class="crumb">What&rsquo;s New</div>
+    <div class="top-note">Latest releases</div>
+  </header>
 
-<div class="layout">
-  <aside>
-    <div class="guide-title">What&rsquo;s New</div>
-    <div class="guide-subtitle">Updates worth knowing at work</div>
+  <div class="layout">
+    <aside>
+      <div class="guide-title">What&rsquo;s New</div>
+      <div class="guide-subtitle">Updates worth knowing at work</div>
 
-    <div class="nav-label">Browse by month</div>
-    <div id="monthNav"></div>
+      <div class="nav-label">Browse by month</div>
+      <div id="monthNav"></div>
 
-  </aside>
+    </aside>
 
-  <main>
-    <div class="content">
+    <main>
+      <div class="content">
 
-      <div class="eyebrow">Latest releases</div>
-      <h1>What&rsquo;s new</h1>
-      <p class="lead">Recent features and improvements across the AI tools you use. One short entry per update: what shipped, which tool it lands in, and where to read more.</p>
+        <div class="eyebrow">Latest releases</div>
+        <h1>What&rsquo;s new</h1>
+        <p class="lead">Recent features and improvements across the AI tools you use. One short entry per update: what
+          shipped, which tool it lands in, and where to read more.</p>
 
-      <div class="filters" id="filters"></div>
-      <div id="feed"></div>
+        <div class="filters" id="filters"></div>
+        <div id="feed"></div>
 
-      <div class="callout" style="margin-top:34px">
-        <div class="callout-icon">&#128161;</div>
-        <div>
-          <strong>Keep the bar high for what gets listed</strong>
-          <p>An entry earns its place if it changes a decision someone makes at work: which tool to open, how much to trust an output, or whether a task can now be handed over. Model version numbers on their own do not.</p>
+        <div class="callout" style="margin-top:34px">
+          <div class="callout-icon">&#128161;</div>
+          <div>
+            <strong>Keep the bar high for what gets listed</strong>
+            <p>An entry earns its place if it changes a decision someone makes at work: which tool to open, how much to
+              trust an output, or whether a task can now be handed over. Model version numbers on their own do not.</p>
+          </div>
         </div>
+
       </div>
+    </main>
+  </div>
 
-    </div>
-  </main>
-</div>
+  <script>
+    /* ==========================================================================
+       ADD AN UPDATE HERE — newest first. That is the only edit you need to make.
+       The month headings, the month list in the sidebar and the filter chips all
+       build themselves from this array.
+    
+         source : chatgpt | claude | gemini | copilot | ai
+         date   : YYYY-MM-DD
+         tag    : short label, e.g. New feature, Skills, Model, Agents
+         href   : optional. Where "Read more" points. Leave out for no link.
+       ========================================================================== */
+    const UPDATES = [
+      {
+        source: 'ai', date: '2026-08-17', tag: 'New feature',
+        title: 'Salesforce Plans to Enable Agentforce by Default for Organizations With Access',
+        copy: 'Salesforce announced that the Agentforce platform would be enabled by default for eligible organizations by the end of August.',
+        href: 'https://help.salesforce.com/s/articleView?id=release-notes.rn_agentforce_auto_enable.htm&release=262&type=5'
+      },
+      {
+        source: 'gemini', date: '2026-05-19', tag: 'New feature',
+        title: 'Google Launches Gemini 3.5 Pro',
+        copy: 'Google expands its push into coding, agentic workflows and advanced reasoning with a new top-tier model.',
+        href: 'https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/'
+      },
+      {
+        source: 'chatgpt', date: '2026-08-13', tag: 'New feature',
+        title: 'ChatGPT Enterprise Release Updates',
+        copy: 'OpenAI\u2019s enterprise release notes highlight GPT-Live support for file uploads and Projects.',
+        href: 'https://help.openai.com/en/articles/10128477-chatgpt-enterprise-edu-release-notes'
+      },
+      {
+        source: 'claude', date: '2026-08-06', tag: 'New feature',
+        title: 'Claude Enterprise Adds Skill and Plugin Security Scanning',
+        copy: 'Enterprise administrators can enable security scanning for third-party skills and plugins when they are uploaded or edited.',
+        href: 'https://support.claude.com/en/articles/12138966-release-notes'
+      },
+      {
+        source: 'gemini', date: '2026-07-29', tag: 'New feature',
+        title: 'Gemini Adds More AI Features to Google Slides, Vids, Docs, and Meet',
+        copy: 'Google\u2019s July Workspace update introduced AI-powered capabilities for creating presentations and videos, acting on comments in Docs, generating visuals, and using Meet while traveling.',
+        href: 'https://workspace.google.com/blog/product-announcements/july-2026-workspace-feature-drop'
+      },
+      {
+        source: 'claude', date: '2026-07-24', tag: 'Models',
+        title: 'Claude Opus 5 released',
+        copy: 'The model improves coding, professional work and long-running agent performance.',
+        href: 'https://www.anthropic.com/news/claude-opus-5'
+      },
+      {
+        source: 'chatgpt', date: '2026-07-20', tag: 'Voice',
+        title: 'ChatGPT Voice expanded across Chat, Work and Codex',
+        copy: 'Voice can start, monitor and steer work across different threads.',
+        href: 'https://learn.chatgpt.com/docs/features/voice'
+      },
+      {
+        source: 'gemini', date: '2026-07-17', tag: 'Tasks',
+        title: 'Tasks added to Gemini Spark',
+        copy: 'Users can assign goals, monitor progress and manage task threads from a dedicated page.',
+        href: 'https://support.google.com/gemini/answer/17094196?co=GENIE.Platform%3DAndroid&hl=en'
+      },
+      {
+        source: 'gemini', date: '2026-07-17', tag: 'Skills',
+        title: 'Skills added to Gemini Spark',
+        copy: 'Skills save reusable instructions that Spark can apply across tasks and schedules.',
+        href: 'https://support.google.com/gemini/answer/17094296?co=GENIE.Platform%3DDesktop&hl=en'
+      },
+      {
+        source: 'claude', date: '2026-07-09', tag: 'Reflection',
+        title: 'Claude usage reflection dashboard introduced',
+        copy: 'The dashboard shows usage patterns and includes quiet hours and break reminders.',
+        href: 'https://www.anthropic.com/news/reflect-with-claude'
+      },
+      {
+        source: 'chatgpt', date: '2026-07-09', tag: 'Codex',
+        title: 'Codex added to the ChatGPT desktop app',
+        copy: 'Codex retains a dedicated coding workspace with inline diffs, pull-request review and multi-repository projects.',
+        href: 'https://learn.chatgpt.com/docs/app'
+      },
+      {
+        source: 'chatgpt', date: '2026-07-06', tag: 'Work',
+        title: 'ChatGPT Work introduced',
+        copy: 'It completes long-running tasks using files and plugins, producing reviewable documents and other outputs.',
+        href: 'https://learn.chatgpt.com/docs/get-started-with-work'
+      },
+      {
+        source: 'claude', date: '2026-06-30', tag: 'Models',
+        title: 'Claude Sonnet 5 released',
+        copy: 'The model can plan, use tools and complete autonomous tasks at a lower cost than Opus models.',
+        href: 'https://www.anthropic.com/news/claude-sonnet-5'
+      },
+      {
+        source: 'claude', date: '2026-06-23', tag: 'Collaboration',
+        title: 'Claude Tag introduced for Slack',
+        copy: 'Teams can tag Claude to complete tasks using approved channels, tools and codebases.',
+        href: 'https://www.anthropic.com/news/introducing-claude-tag'
+      },
+      {
+        source: 'copilot', date: '2026-06-01', tag: 'Skills',
+        title: 'Custom skill builder added to Copilot Cowork',
+        copy: 'Users can create, upload and share reusable skills from the Customize page.',
+        href: 'https://learn.microsoft.com/en-us/microsoft-365/copilot/cowork/whats-new'
+      },
+      {
+        source: 'copilot', date: '2026-06-01', tag: 'Cowork',
+        title: 'Copilot Cowork becomes generally available',
+        copy: 'Cowork completes tasks across Outlook, Teams, Calendar, OneDrive and Microsoft 365 documents.',
+        href: 'https://learn.microsoft.com/en-us/microsoft-365/copilot/cowork/'
+      },
+      {
+        source: 'copilot', date: '2026-06-01', tag: 'Billing',
+        title: 'Usage-based billing added to Copilot Cowork',
+        copy: 'Administrators can monitor consumption and set limits for users or groups.',
+        href: 'https://learn.microsoft.com/en-us/microsoft-365/copilot/cowork/cowork-admin-governance'
+      },
+      {
+        source: 'chatgpt', date: '2026-06-01', tag: 'Sites',
+        title: 'ChatGPT Sites introduced',
+        copy: 'Sites creates, previews and hosts websites, dashboards, internal tools and web apps.',
+        href: 'https://learn.chatgpt.com/docs/sites'
+      },
+      {
+        source: 'gemini', date: '2026-05-19', tag: 'Video',
+        title: 'AI avatars added through Gemini Omni',
+        copy: 'Users can create a video avatar designed to look and sound like them.',
+        href: 'https://gemini.google/release-notes/'
+      },
+      {
+        source: 'gemini', date: '2026-05-19', tag: 'Spark',
+        title: 'Gemini Spark introduced',
+        copy: 'Google\u2019s personal AI agent can complete background tasks across connected apps.',
+        href: 'https://gemini.google/release-notes/'
+      },
+      {
+        source: 'claude', date: '2026-05-05', tag: 'Agents',
+        title: 'Financial-services agents added to Claude',
+        copy: 'Ten agent templates cover work such as pitchbooks, KYC screening, financial models and month-end closing.',
+        href: 'https://www.anthropic.com/news/finance-agents'
+      },
+      {
+        source: 'claude', date: '2026-04-17', tag: 'Design',
+        title: 'Claude Design introduced',
+        copy: 'The tool creates prototypes, slides, one-pagers and other visual assets from prompts.',
+        href: 'https://www.anthropic.com/news/claude-design-anthropic-labs'
+      }
+    ];
 
-<script>
-/* ==========================================================================
-   ADD AN UPDATE HERE — newest first. That is the only edit you need to make.
-   The month headings, the month list in the sidebar and the filter chips all
-   build themselves from this array.
+    /* -------------------------------------------------------------------------- */
 
-     source : chatgpt | claude | gemini | copilot | ai
-     date   : YYYY-MM-DD
-     tag    : short label, e.g. New feature, Skills, Model, Agents
-     href   : optional. Where "Read the guide" points. Leave out for no link.
-   ========================================================================== */
-const UPDATES = [
-  {
-    source:'ai', date:'2026-08-17', tag:'Agents',
-    title:'Salesforce plans to enable Agentforce by default for organisations with access',
-    copy:'Salesforce announced that the Agentforce platform would be enabled by default for eligible organisations by the end of August.',
-    href:'../foundations/ai-foundations-ai-agents.html'
-  },
-  {
-    source:'gemini', date:'2026-08-17', tag:'Model',
-    title:'Google launches Gemini 3.5 Pro',
-    copy:'Google expands its push into coding, agentic workflows and advanced reasoning with a new top-tier model.',
-    href:'../gemini/gemini-models.html'
-  },
-  {
-    source:'chatgpt', date:'2026-08-13', tag:'New feature',
-    title:'ChatGPT enterprise release updates',
-    copy:'OpenAI’s enterprise release notes highlight GPT-Live support for file uploads and Projects.',
-    href:'../chatgpt/projects.html'
-  },
-  {
-    source:'gemini', date:'2026-07-29', tag:'New feature',
-    title:'Gemini adds more AI features to Slides, Vids, Docs and Meet',
-    copy:'July’s Workspace update introduced creating presentations and videos, acting on comments in Docs, generating visuals, and using Meet while travelling.',
-    href:'../gemini/workspace-studio.html'
-  },
-  {
-    source:'gemini', date:'2026-07-17', tag:'Skills',
-    title:'Skills added to Gemini Spark',
-    copy:'Skills save reusable instructions that Spark can apply across tasks and schedules.',
-    href:'../gemini/gemini-spark.html'
-  }
-];
+    const SOURCES = {
+      chatgpt: { name: 'ChatGPT', img: '../assets/logos/chatgpt.png' },
+      claude: { name: 'Claude', img: '../assets/logos/claude.png' },
+      gemini: { name: 'Gemini', img: '../assets/logos/gemini.svg' },
+      copilot: { name: 'Copilot', img: '../assets/logos/copilot.png' },
+      ai: { name: 'Industry', img: null }   /* anything outside the four assistants */
+    };
+    const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'];
+    const TAG_CLASS = { 'Skills': 'skills', 'Model': 'model', 'Models': 'model', 'Agents': 'agents' };
 
-/* -------------------------------------------------------------------------- */
+    let filter = 'all';
 
-const SOURCES = {
-  chatgpt:{ name:'ChatGPT',  img:'../assets/logos/chatgpt.png' },
-  claude: { name:'Claude',   img:'../assets/logos/claude.png'  },
-  gemini: { name:'Gemini',   img:'../assets/logos/gemini.svg'  },
-  copilot:{ name:'Copilot',  img:'../assets/logos/copilot.png' },
-  ai:     { name:'Industry', img:null }   /* anything outside the four assistants */
-};
-const MONTHS = ['January','February','March','April','May','June',
-                'July','August','September','October','November','December'];
-const TAG_CLASS = { 'Skills':'skills', 'Model':'model', 'Agents':'agents' };
+    function monthKey(d) { return d.slice(0, 7); }
+    function monthName(k) {
+      const [y, m] = k.split('-');
+      return MONTHS[parseInt(m, 10) - 1] + ' ' + y;
+    }
+    function shortDate(d) {
+      const [y, m, day] = d.split('-');
+      return MONTHS[parseInt(m, 10) - 1].slice(0, 3) + ' ' + parseInt(day, 10) + ', ' + y;
+    }
+    function srcBadge(key, cls) {
+      const s = SOURCES[key] || SOURCES.ai;
+      return s.img
+        ? '<span class="' + cls + '"><img src="' + s.img + '" alt=""></span>'
+        : '<span class="' + cls + ' generic"><svg viewBox="0 0 24 24" fill="currentColor">' +
+        '<path d="M12 2.4l2.4 5.9L20.6 10.7l-5.8 2.4L12 19.1l-2.4-6L3.4 10.7 9.6 8.3z"/></svg></span>';
+    }
 
-let filter = 'all';
+    function renderFilters() {
+      /* every assistant always gets a chip, so the set reads as complete.
+         A chip with no entries shows the empty state, which is honest. */
+      const order = ['claude', 'chatgpt', 'gemini', 'copilot', 'ai'];
+      let html = '<button class="chip all' + (filter === 'all' ? ' active' : '') +
+        '" data-f="all">All</button>';
+      order.forEach(k => {
+        html += '<button class="chip' + (filter === k ? ' active' : '') + '" data-f="' + k + '">' +
+          srcBadge(k, 'glyph-wrap') + SOURCES[k].name + '</button>';
+      });
+      const el = document.getElementById('filters');
+      el.innerHTML = html.replace(/class="glyph-wrap"/g, 'class="chip-ico"')
+        .replace(/class="glyph-wrap generic"/g, 'class="glyph"');
+      el.querySelectorAll('.chip').forEach(b =>
+        b.addEventListener('click', () => { filter = b.dataset.f; renderFilters(); renderFeed(); }));
+    }
 
-function monthKey(d){ return d.slice(0,7); }
-function monthName(k){
-  const [y,m] = k.split('-');
-  return MONTHS[parseInt(m,10)-1] + ' ' + y;
-}
-function shortDate(d){
-  const [y,m,day] = d.split('-');
-  return MONTHS[parseInt(m,10)-1].slice(0,3) + ' ' + parseInt(day,10) + ', ' + y;
-}
-function srcBadge(key, cls){
-  const s = SOURCES[key] || SOURCES.ai;
-  return s.img
-    ? '<span class="' + cls + '"><img src="' + s.img + '" alt=""></span>'
-    : '<span class="' + cls + ' generic"><svg viewBox="0 0 24 24" fill="currentColor">' +
-      '<path d="M12 2.4l2.4 5.9L20.6 10.7l-5.8 2.4L12 19.1l-2.4-6L3.4 10.7 9.6 8.3z"/></svg></span>';
-}
+    function renderFeed() {
+      const list = UPDATES
+        .filter(u => filter === 'all' || u.source === filter)
+        .slice()
+        .sort((a, b) => b.date.localeCompare(a.date));
 
-function renderFilters(){
-  /* every assistant always gets a chip, so the set reads as complete.
-     A chip with no entries shows the empty state, which is honest. */
-  const order = ['claude','chatgpt','gemini','copilot','ai'];
-  let html = '<button class="chip all' + (filter === 'all' ? ' active' : '') +
-             '" data-f="all">All</button>';
-  order.forEach(k => {
-    html += '<button class="chip' + (filter === k ? ' active' : '') + '" data-f="' + k + '">' +
-              srcBadge(k, 'glyph-wrap') + SOURCES[k].name + '</button>';
-  });
-  const el = document.getElementById('filters');
-  el.innerHTML = html.replace(/class="glyph-wrap"/g, 'class="chip-ico"')
-                     .replace(/class="glyph-wrap generic"/g, 'class="glyph"');
-  el.querySelectorAll('.chip').forEach(b =>
-    b.addEventListener('click', () => { filter = b.dataset.f; renderFilters(); renderFeed(); }));
-}
+      const feed = document.getElementById('feed');
+      const nav = document.getElementById('monthNav');
 
-function renderFeed(){
-  const list = UPDATES
-    .filter(u => filter === 'all' || u.source === filter)
-    .slice()
-    .sort((a,b) => b.date.localeCompare(a.date));
+      if (!list.length) {
+        feed.innerHTML = '<div class="empty"><b>Nothing here yet</b>No updates recorded for this tool.</div>';
+        nav.innerHTML = '';
+        return;
+      }
 
-  const feed = document.getElementById('feed');
-  const nav  = document.getElementById('monthNav');
+      const groups = [];
+      list.forEach(u => {
+        const k = monthKey(u.date);
+        let g = groups.find(x => x.key === k);
+        if (!g) { g = { key: k, items: [] }; groups.push(g); }
+        g.items.push(u);
+      });
 
-  if (!list.length){
-    feed.innerHTML = '<div class="empty"><b>Nothing here yet</b>No updates recorded for this tool.</div>';
-    nav.innerHTML = '';
-    return;
-  }
-
-  const groups = [];
-  list.forEach(u => {
-    const k = monthKey(u.date);
-    let g = groups.find(x => x.key === k);
-    if (!g){ g = { key:k, items:[] }; groups.push(g); }
-    g.items.push(u);
-  });
-
-  feed.innerHTML = groups.map((g, gi) => {
-    const cards = g.items.map((u, i) => {
-      const s   = SOURCES[u.source] || SOURCES.ai;
-      const tag = TAG_CLASS[u.tag] ? ' ' + TAG_CLASS[u.tag] : '';
-      const feat = (gi === 0 && i === 0) ? ' featured' : '';
-      const go  = u.href ? '<span class="entry-go">Read the guide &rarr;</span>' : '';
-      const tagEl = u.tag ? '<span class="tag' + tag + '">' + u.tag + '</span>' : '';
-      const open = u.href ? '<a class="entry' + feat + '" href="' + u.href + '">'
-                          : '<div class="entry' + feat + '">';
-      const close = u.href ? '</a>' : '</div>';
-      return open +
-          '<div class="entry-head">' + srcBadge(u.source, 'entry-src') +
+      feed.innerHTML = groups.map((g, gi) => {
+        const cards = g.items.map((u, i) => {
+          const s = SOURCES[u.source] || SOURCES.ai;
+          const tag = TAG_CLASS[u.tag] ? ' ' + TAG_CLASS[u.tag] : '';
+          const feat = (gi === 0 && i === 0) ? ' featured' : '';
+          const go = u.href ? '<span class="entry-go">Read more &rarr;</span>' : '';
+          const tagEl = u.tag ? '<span class="tag' + tag + '">' + u.tag + '</span>' : '';
+          const ext = u.href && /^https?:\/\//.test(u.href) ? ' target="_blank" rel="noopener noreferrer"' : '';
+          const open = u.href ? '<a class="entry' + feat + '" href="' + u.href + '"' + ext + '>'
+            : '<div class="entry' + feat + '">';
+          const close = u.href ? '</a>' : '</div>';
+          return open +
+            '<div class="entry-head">' + srcBadge(u.source, 'entry-src') +
             '<span class="entry-name">' + s.name + '</span>' +
             '<span class="entry-date">' + shortDate(u.date) + '</span>' +
-          '</div>' +
-          '<h3>' + u.title + '</h3>' +
-          '<p>' + u.copy + '</p>' +
-          '<div class="entry-foot">' + tagEl + go + '</div>' +
-        close;
-    }).join('');
-    return '<div class="month-head" id="m-' + g.key + '"><b>' + monthName(g.key) +
-           '</b><span></span></div>' + cards;
-  }).join('');
+            '</div>' +
+            '<h3>' + u.title + '</h3>' +
+            '<p>' + u.copy + '</p>' +
+            '<div class="entry-foot">' + tagEl + go + '</div>' +
+            close;
+        }).join('');
+        return '<div class="month-head" id="m-' + g.key + '"><b>' + monthName(g.key) +
+          '</b><span></span></div>' + cards;
+      }).join('');
 
-  nav.innerHTML = groups.map((g, i) =>
-    '<div class="month-link' + (i === 0 ? ' active' : '') + '" data-m="' + g.key + '">' +
-      '<span>' + monthName(g.key) + '</span><span class="dot"></span></div>').join('');
+      nav.innerHTML = groups.map((g, i) =>
+        '<div class="month-link' + (i === 0 ? ' active' : '') + '" data-m="' + g.key + '">' +
+        '<span>' + monthName(g.key) + '</span><span class="dot"></span></div>').join('');
 
-  nav.querySelectorAll('.month-link').forEach(el =>
-    el.addEventListener('click', () => {
-      document.getElementById('m-' + el.dataset.m)
-              .scrollIntoView({ behavior:'smooth', block:'start' });
-      nav.querySelectorAll('.month-link').forEach(x => x.classList.remove('active'));
-      el.classList.add('active');
-    }));
-}
+      nav.querySelectorAll('.month-link').forEach(el =>
+        el.addEventListener('click', () => {
+          document.getElementById('m-' + el.dataset.m)
+            .scrollIntoView({ behavior: 'smooth', block: 'start' });
+          nav.querySelectorAll('.month-link').forEach(x => x.classList.remove('active'));
+          el.classList.add('active');
+        }));
+    }
 
-renderFilters();
-renderFeed();
-</script>
+    renderFilters();
+    renderFeed();
+  </script>
 
-<script src="../assets/rail.js"></script>
+  <script src="../assets/rail.js"></script>
 </body>
+
 </html>
