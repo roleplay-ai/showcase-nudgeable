@@ -27,7 +27,6 @@ code, pre, kbd, samp,
 .prompt, .prompt *,
 .prompt-box, .prompt-box *,
 .work-prompt-box, .work-prompt-box *,
-.note-read,
 [class*="mono"] {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace !important;
 }
