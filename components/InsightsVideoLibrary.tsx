@@ -109,9 +109,6 @@ export function InsightsVideoLibrary() {
     };
   }, [playing]);
 
-  const featuredShort = shorts[0];
-  const featuredWorkflow = workflows[0];
-
   function openVideo(video: Video, portrait?: boolean) {
     setPlaying({ video, portrait: Boolean(portrait) });
   }
@@ -125,28 +122,75 @@ export function InsightsVideoLibrary() {
 
   return <div className="insights-page">
     <section className="insights-hero">
-      <div className="container insights-hero-grid">
+      <div className="container insights-hero-inner">
         <div className="insights-hero-copy">
-          <span className="eyebrow">INSIGHTS</span>
+          <span className="eyebrow">Insights</span>
           <h1>Practical AI insights for work.</h1>
-          <p>Short videos on what is changing in AI, plus step-by-step workflow explainers showing how to apply it.</p>
-          {/* <div className="insights-counts" aria-label="Video library totals">
-            <div><strong>{shorts.length}+</strong><span>Short videos</span></div>
-            <div><strong>{workflows.length}+</strong><span>Workflow explainers</span></div>
-          </div> */}
+          <p>
+            Short videos on what is changing in AI, plus step-by-step workflow explainers showing how to apply it.
+          </p>
+          <div className="insights-hero-features">
+            <div className="insights-hero-feature">
+              <div className="insights-hero-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3" y="5" width="18" height="14" rx="3" />
+                  <path d="M10 9.5l5 3-5 3z" />
+                </svg>
+              </div>
+              <div className="insights-hero-feature-label">Short videos</div>
+            </div>
+            <div className="insights-hero-feature">
+              <div className="insights-hero-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="5" y="3" width="14" height="18" rx="2" />
+                  <path d="M8.5 8h7M8.5 12h7M8.5 16h5" />
+                </svg>
+              </div>
+              <div className="insights-hero-feature-label">Workflow explainers</div>
+            </div>
+            <div className="insights-hero-feature">
+              <div className="insights-hero-feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M9 18h6" />
+                  <path d="M10 21h4" />
+                  <path d="M8.6 15.6A6 6 0 1 1 15.4 15.6C14.5 16.3 14 17 14 18h-4c0-1-.5-1.7-1.4-2.4z" />
+                </svg>
+              </div>
+              <div className="insights-hero-feature-label">Practical &amp; actionable</div>
+            </div>
+          </div>
         </div>
-        <div className="insights-featured-grid">
-          {featuredShort && <article className="insights-feature-card short-feature">
-            <small>FEATURED SHORT</small>
-            <VideoThumbnail video={featuredShort} portrait featured onPlay={openVideo} />
-            <h2>{featuredShort.title}</h2>
-          </article>}
-          {featuredWorkflow && <article className="insights-feature-card workflow-feature">
-            <small>FEATURED WORKFLOW</small>
-            <VideoThumbnail video={featuredWorkflow} featured onPlay={openVideo} />
-            <h2>{featuredWorkflow.title}</h2>
-            {featuredWorkflow.publishedAt && <time className="insights-date" dateTime={featuredWorkflow.publishedAt}>{formatVideoDate(featuredWorkflow.publishedAt)}</time>}
-          </article>}
+
+        <div className="insights-hero-visual" aria-hidden="true">
+          <div className="insights-hero-glow" />
+          <div className="insights-video-stack">
+            <div className="insights-hero-bubble">
+              <div className="insights-hero-bubble-dots"><i /><i /><i /></div>
+            </div>
+            <div className="insights-hero-squiggle">
+              <svg viewBox="0 0 60 26">
+                <path d="M3 7c7 0 4 12 12 12s7-12 14-12 5 12 13 12 6-7 15-7" />
+              </svg>
+            </div>
+            <div className="insights-hero-spark">✦</div>
+            <div className="insights-hero-video-card">
+              <div className="insights-hero-screen">
+                <div className="insights-hero-play" />
+              </div>
+              <div className="insights-hero-progress"><span /></div>
+              <div className="insights-hero-meta-lines">
+                <span /><span />
+              </div>
+            </div>
+            <div className="insights-hero-phone">
+              <div className="insights-hero-phone-screen">
+                <div className="insights-hero-play" />
+              </div>
+              <div className="insights-hero-phone-line" />
+              <div className="insights-hero-phone-line short" />
+            </div>
+            <div className="insights-hero-dots" />
+          </div>
         </div>
       </div>
     </section>
@@ -186,10 +230,6 @@ export function InsightsVideoLibrary() {
                 <h3>{video.title}</h3>
                 {video.publishedAt && <time className="insights-date" dateTime={video.publishedAt}>{formatVideoDate(video.publishedAt)}</time>}
                 {video.description && <p>{video.description}</p>}
-                {/* <div className="insights-card-actions">
-                    <button type="button" onClick={() => openVideo(video)}>Watch workflow</button>
-                    <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Try in Practice Lab →</a>
-                  </div> */}
               </div>
             </article>)}
           </div>
@@ -198,11 +238,6 @@ export function InsightsVideoLibrary() {
         {!workflows.length && <p className="insights-empty">No workflow explainers available yet.</p>}
       </div>
     </section>
-
-    {/* <section className="container insights-practice-cta">
-      <div><strong>Practice what you watch.</strong><p>Explore guided AI workflows and apply them to real work.</p></div>
-      <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open Practice Lab</a>
-    </section> */}
 
     {playing && <div className="insights-modal" role="dialog" aria-modal="true" aria-labelledby="video-dialog-title" onClick={event => { if (event.currentTarget === event.target) setPlaying(null); }}>
       <div className={`insights-modal-card${playing.portrait ? ' portrait' : ''}`}>
