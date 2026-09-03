@@ -50,7 +50,7 @@
       'background:#221D23;color:#B7B0B7;display:flex;flex-direction:column;',
       'padding:10px 11px 14px;overflow:hidden;',
       'transition:width .19s cubic-bezier(.4,0,.2,1);',
-      'font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}',
+      'font-family:Roboto,ui-sans-serif,system-ui,-apple-system,sans-serif}',
     '.nlab:hover,.nlab.nlab-pinned{width:var(--nlab-open);overflow-y:auto;box-shadow:14px 0 34px rgba(0,0,0,.22)}',
     '.nlab::-webkit-scrollbar{width:0}',
 
@@ -97,14 +97,14 @@
     /* tooltip when collapsed */
     '.nlab:not(:hover):not(.nlab-pinned) .nlab-item::after{content:attr(data-tip);position:absolute;',
       'left:52px;top:50%;transform:translateY(-50%);background:#221D23;color:#fff;',
-      'font:600 12.5px/1 Inter,system-ui,sans-serif;padding:7px 10px;border-radius:8px;',
+      'font:600 12.5px/1 Roboto,system-ui,sans-serif;padding:7px 10px;border-radius:8px;',
       'white-space:nowrap;opacity:0;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.3)}',
     '.nlab:not(:hover):not(.nlab-pinned) .nlab-item:hover::after{opacity:1}',
 
     /* pin */
     '.nlab-pin{margin-top:auto;display:flex;align-items:center;gap:11px;padding:7px 5px;',
       'border:0;background:transparent;color:#7E7782;border-radius:11px;cursor:pointer;',
-      'font:700 12.5px/1.2 Inter,system-ui,sans-serif;text-align:left;flex:0 0 auto}',
+      'font:700 12.5px/1.2 Roboto,system-ui,sans-serif;text-align:left;flex:0 0 auto}',
     '.nlab-pin:hover{background:rgba(255,255,255,.08);color:#fff}',
     '.nlab-pin i{width:32px;height:32px;flex:0 0 auto;display:grid;place-items:center}',
     '.nlab-pin i svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}',
@@ -231,7 +231,7 @@
   var FOOT_CSS = [
     '.nlab-foot{border-top:1px solid rgba(34,29,35,.12);margin-top:0;padding:26px 34px 30px;',
       'display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;',
-      'font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:transparent}',
+      'font-family:Roboto,ui-sans-serif,system-ui,sans-serif;background:transparent}',
     '.nlab-foot .nf-name{font-size:14px;font-weight:750;color:#221D23}',
     '.nlab-foot .nf-name small{display:block;font-weight:500;color:#6B6B6B;font-size:12.5px;margin-top:2px}',
     '.nlab-foot .nf-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap}',
