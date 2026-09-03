@@ -130,10 +130,10 @@ export function InsightsVideoLibrary() {
           <span className="eyebrow">INSIGHTS</span>
           <h1>Practical AI insights for work.</h1>
           <p>Short videos on what is changing in AI, plus step-by-step workflow explainers showing how to apply it.</p>
-          <div className="insights-counts" aria-label="Video library totals">
+          {/* <div className="insights-counts" aria-label="Video library totals">
             <div><strong>{shorts.length}+</strong><span>Short videos</span></div>
             <div><strong>{workflows.length}+</strong><span>Workflow explainers</span></div>
-          </div>
+          </div> */}
         </div>
         <div className="insights-featured-grid">
           {featuredShort && <article className="insights-feature-card short-feature">
@@ -199,10 +199,10 @@ export function InsightsVideoLibrary() {
       </div>
     </section>
 
-    <section className="container insights-practice-cta">
+    {/* <section className="container insights-practice-cta">
       <div><strong>Practice what you watch.</strong><p>Explore guided AI workflows and apply them to real work.</p></div>
       <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open Practice Lab</a>
-    </section>
+    </section> */}
 
     {playing && <div className="insights-modal" role="dialog" aria-modal="true" aria-labelledby="video-dialog-title" onClick={event => { if (event.currentTarget === event.target) setPlaying(null); }}>
       <div className={`insights-modal-card${playing.portrait ? ' portrait' : ''}`}>
