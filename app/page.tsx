@@ -96,7 +96,7 @@ export default function Home() {
           <p>AI changes every week. Build lasting capability through hands-on training followed by continued practice with real business workflows in the AI Practice Lab.</p>
           <div className="button-row hero-actions">
             <a className="button button-primary button-compact" href="#training">Explore AI training <Icon name="arrow" size={17} /></a>
-            <a className="button button-secondary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open AI Academy <Icon name="arrow" size={17} /></a>
+            <a className="button button-secondary button-compact" href="/ai-academy/index.html">Open AI Academy <Icon name="arrow" size={17} /></a>
           </div>
           <div className="hero-tools">
             <div className="tool-row hero-tool-row">
@@ -187,7 +187,7 @@ export default function Home() {
           <h2>AI for Work, grounded in corporate reality.</h2>
           <p>Gaurav Patel designs practical AI training across industries and business functions. Each session is customized around how participants actually work, the tools they use and the outcomes they need.</p>
           <p>The training draws on daily use of leading AI tools and first-hand experience building the Practice Lab, AI Coach and Actions Engine. This brings real product development and implementation knowledge into every session.</p>
-          <div className="founder-points"><span>40+ corporate cohorts</span><span>2,500+ professionals trained</span><span>B.E. in IT and MBA from XLRI</span><span>15+ years across India, Singapore and London</span></div>
+          <div className="founder-points"><span>45+ corporate cohorts</span><span>2,500+ professionals trained</span><span>B.E. in IT and MBA from XLRI</span><span>15+ years across India, Singapore and London</span></div>
           <a className="button button-secondary" href="https://www.linkedin.com/in/gauravpatel25/ai" target="_blank" rel="noopener noreferrer">More about Gaurav <Icon name="arrow" size={17} /></a>
         </div>
       </div>

@@ -27,7 +27,7 @@ export function Footer() {
         </div>
       </div>
       <div><strong>Training</strong><Link href="/#training">Corporate workshops</Link><Link href="/#contact">Contact</Link><Link href="/#about">About Gaurav</Link></div>
-      <div><strong>Products</strong><a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Practice Lab</a><Link href="/nudgeengine">Actions Engine</Link></div>
+      <div><strong>Products</strong><a href="/ai-academy/index.html">AI Academy</a><Link href="/nudgeengine">Actions Engine</Link></div>
       <div><strong>Content</strong><Link href="/insights">Videos</Link><Link href="/insights/blogs">Blogs</Link></div>
     </div>
     <div className="container footer-bottom">
