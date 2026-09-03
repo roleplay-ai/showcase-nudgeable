@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon } from './Icon';
 
 const nav = [
-  { href: '/ai-role-play', label: 'AI Coach' },
   { href: '/nudgeengine', label: 'Actions Engine' }
 ];
 
