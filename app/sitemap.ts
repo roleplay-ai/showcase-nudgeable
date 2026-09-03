@@ -32,6 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...tipPages,
     { url: `${base}/insights`, lastModified: now, changeFrequency: 'weekly', priority: .9 },
     { url: `${base}/insights/blogs`, lastModified: now, changeFrequency: 'weekly', priority: .8 },
+    { url: `${base}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: .3 },
     ...posts.map(post => ({
       url: `${base}/insights/blogs/${post.slug}`,
       lastModified: new Date(post.updatedAt || post.publishedAt),
