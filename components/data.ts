@@ -17,7 +17,9 @@ export const clientLogos: ClientLogo[] = [
   { name: 'Cosmos Films', src: '/logos/cosmos-films-verified.webp', size: 'smaller' },
   { name: 'MullenLowe Lintas Group', src: '/logos/mllg.png', size: 'small' },
   { name: 'Philip Morris International', src: '/logos/ipm.png', size: 'large' },
-  { name: 'Boehringer Ingelheim', src: '/logos/boehringer-ingelheim-verified.svg', size: 'smaller' }
+  { name: 'Boehringer Ingelheim', src: '/logos/boehringer-ingelheim-verified.svg', size: 'smaller' },
+  { name: 'Amherst', src: '/logos/amherst.webp', size: 'large' },
+  { name: 'Reliance Retail', src: '/logos/reliance-retail.png', size: 'large' }
 ];
 
 export type SessionPhoto = {
@@ -44,7 +46,7 @@ export const aiTools: AiTool[] = [
   { name: 'Claude', iconSrc: '/tool-icons/claude.png' },
   { name: 'Copilot', iconSrc: '/tool-icons/copilot.png' },
   { name: 'Gemini', iconSrc: '/tool-icons/gemini.png' },
-  { name: 'ChatGPT', iconSrc: '/tool-icons/chatgpt-app.png' }
+  { name: 'ChatGPT', iconSrc: '/tool-icons/chatgpt.png' }
 ];
 
 /** Featured stack tools shown on the Practice Lab login marquee. */

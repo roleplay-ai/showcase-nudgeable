@@ -46,7 +46,7 @@ export function BlogsLibrary({ posts }: { posts: BlogPost[] }) {
             <span className="eyebrow purple">EXPLORE BY TOPIC</span>
             <h2>Latest articles</h2>
           </div>
-          <p>Clear thinking you can use at work.</p>
+          {/* <p>Clear thinking you can use at work.</p> */}
         </div>
         <div className="blog-filters" role="tablist" aria-label="Article topics">
           {FILTERS.map(filter => (
@@ -66,12 +66,12 @@ export function BlogsLibrary({ posts }: { posts: BlogPost[] }) {
       </div>
     </section>
 
-    <section className="container blog-practice">
+    {/* <section className="container blog-practice">
       <div>
         <strong>Put these ideas into practice.</strong>
         <span>Explore guided AI workflows and apply them to real work.</span>
       </div>
       <a href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">OPEN PRACTICE LAB</a>
-    </section>
+    </section> */}
   </div>;
 }

@@ -15,7 +15,7 @@ export type BlogPost = {
   featured?: boolean;
 };
 
-export const BLOG_CATEGORIES = ['AI at Work', 'Behavioral Science', 'Workplace', 'HR & Learning'] as const;
+export const BLOG_CATEGORIES = ['AI at Work', 'Behavioral Science', 'Workplace'] as const;
 export const BLOG_TONES = ['yellow', 'blue', 'purple', 'orange', 'green', 'pink'] as const;
 export const BLOG_ARTS = ['bridge', 'loop', 'shield', 'target', 'people', 'steps', 'spark', 'brain'] as const;
 

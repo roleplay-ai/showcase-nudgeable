@@ -33,7 +33,7 @@ export function AcademyPromo() {
 
           <div className="academy-ai-grid" id="academy-assistants">
             <a className="academy-ai-card" href="/ai-academy/chatgpt/index.html" style={{ '--tint': '#E2F6EE', '--brand': '#10A37F', '--edge': '#B6E3D4', '--glow': 'rgba(16,163,127,.20)', '--name': '#0B6E56' } as CSSProperties}>
-              <span className="academy-ai-updated">Updated Aug 2026</span>
+              <span className="academy-ai-updated">Updated Sep 2026</span>
               <span className="academy-ai-mark"><img src="/ai-academy/assets/logos/chatgpt.png" alt="ChatGPT logo" /></span>
               <h3>ChatGPT</h3>
               <div className="academy-chips"><span>Work</span><span>Projects</span><span>Skills</span><span>Codex</span><span className="more">and more</span></div>
@@ -41,7 +41,7 @@ export function AcademyPromo() {
             </a>
 
             <a className="academy-ai-card" href="/ai-academy/claude/index.html" style={{ '--tint': '#FCEBE1', '--brand': '#D97757', '--edge': '#F0C7B2', '--glow': 'rgba(217,119,87,.22)', '--name': '#A9502F' } as CSSProperties}>
-              <span className="academy-ai-updated">Updated Aug 2026</span>
+              <span className="academy-ai-updated">Updated Sep 2026</span>
               <span className="academy-ai-mark"><img src="/ai-academy/assets/logos/claude.png" alt="Claude logo" /></span>
               <h3>Claude</h3>
               <div className="academy-chips"><span>Cowork</span><span>Artifacts</span><span>Skills</span><span>Projects</span><span className="more">and more</span></div>
@@ -49,7 +49,7 @@ export function AcademyPromo() {
             </a>
 
             <a className="academy-ai-card" href="/ai-academy/gemini/index.html" style={{ '--tint': '#E3EDFD', '--brand': '#4285F4', '--edge': '#B9D0F8', '--glow': 'rgba(66,133,244,.20)', '--name': '#1A56C4' } as CSSProperties}>
-              <span className="academy-ai-updated">Updated Aug 2026</span>
+              <span className="academy-ai-updated">Updated Sep 2026</span>
               <span className="academy-ai-mark"><img src="/ai-academy/assets/logos/gemini.svg" alt="Gemini logo" /></span>
               <h3>Gemini</h3>
               <div className="academy-chips"><span>Spark</span><span>Gems</span><span>Notebook</span><span className="more">and more</span></div>
@@ -57,7 +57,7 @@ export function AcademyPromo() {
             </a>
 
             <a className="academy-ai-card" href="/ai-academy/copilot/index.html" style={{ '--tint': '#ECEBFB', '--brand': '#5B5FC7', '--edge': '#C6C5EE', '--glow': 'rgba(91,95,199,.22)', '--name': '#43469E' } as CSSProperties}>
-              <span className="academy-ai-updated">Updated Aug 2026</span>
+              <span className="academy-ai-updated">Updated Sep 2026</span>
               <span className="academy-ai-mark"><img src="/ai-academy/assets/logos/copilot.png" alt="Copilot logo" /></span>
               <h3>Microsoft Copilot</h3>
               <div className="academy-chips"><span>Cowork</span><span>Work IQ</span><span>Notebooks</span><span className="more">and more</span></div>

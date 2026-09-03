@@ -96,7 +96,7 @@ export default function Home() {
           <p>AI changes every week. Build lasting capability through hands-on training followed by continued practice with real business workflows in the AI Practice Lab.</p>
           <div className="button-row hero-actions">
             <a className="button button-primary button-compact" href="#training">Explore AI training <Icon name="arrow" size={17} /></a>
-            <a className="button button-secondary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open AI Practice Lab <Icon name="arrow" size={17} /></a>
+            <a className="button button-secondary button-compact" href="https://work.nudgeable.app/" target="_blank" rel="noopener noreferrer">Open AI Academy <Icon name="arrow" size={17} /></a>
           </div>
           <div className="hero-tools">
             <div className="tool-row hero-tool-row">
@@ -136,10 +136,10 @@ export default function Home() {
           <p>Employees practise on realistic tasks from their functions. The program can cover prompting, writing, research, presentations, data analysis, images, automation, AI agents and responsible use.</p>
         </div>
         <div className="metric-cards">
-          <div><AnimatedStat value={40} suffix="+" /><span>Corporate cohorts</span></div>
+          <div><AnimatedStat value={45} suffix="+" /><span>Corporate cohorts</span></div>
           <div><AnimatedStat value={2500} suffix="+" /><span>Professionals trained</span></div>
-          <div><AnimatedStat value={100} suffix="+" /><span>Workflows in the Lab</span></div>
-          <div><AnimatedStat value={18} /><span>Work categories covered</span></div>
+          <div><AnimatedStat value={100} suffix="+" /><span>Workflows in the AI Academy</span></div>
+          <div><AnimatedStat value={8} /><span>Industries</span></div>
         </div>
         <SessionPhotoRow />
       </div>
