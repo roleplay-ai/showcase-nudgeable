@@ -7,12 +7,11 @@ export function AcademyPromo() {
 
         <section className="academy-banner">
           <div className="academy-banner-copy">
-            <div className="academy-banner-eyebrow">Practical AI for work</div>
+            <div className="eyebrow light academy-banner-eyebrow">Practical AI for work</div>
             <h2>Nudgeable AI Academy</h2>
             <p className="academy-banner-lead">Every assistant explained feature by feature, in plain language, with the ideas underneath that make all of them easier to use.</p>
             <div className="academy-banner-actions">
-              <a className="academy-btn" href="#academy-assistants">Pick your assistant &rarr;</a>
-              <a className="academy-btn academy-btn-ghost" href="/ai-academy/foundations/index.html">Start with the basics</a>
+              <a className="button button-primary" href="/ai-academy/index.html">Access AI Academy</a>
             </div>
           </div>
 
