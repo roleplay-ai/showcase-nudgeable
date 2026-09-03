@@ -108,6 +108,36 @@ export function formatBlogDate(value?: string) {
   return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+export function toDateInputValue(value?: string) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+export function dateInputToIso(value: string, existingIso?: string) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+  if (!match) return undefined;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const existing = existingIso ? new Date(existingIso) : null;
+  const keepTime = existing && !Number.isNaN(existing.getTime());
+  const date = new Date(
+    year,
+    month - 1,
+    day,
+    keepTime ? existing.getHours() : 12,
+    keepTime ? existing.getMinutes() : 0,
+    keepTime ? existing.getSeconds() : 0
+  );
+  if (Number.isNaN(date.getTime())) return undefined;
+  return date.toISOString();
+}
+
 export function readingTimeMinutes(html: string) {
   const words = html.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200) || 1);

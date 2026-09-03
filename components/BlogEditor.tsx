@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FormEvent, Suspense, useEffect, useRef, useState } from 'react';
-import { BLOG_CATEGORIES, formatBlogDate, slugify, type BlogPost } from '@/lib/blogShared';
+import { BLOG_CATEGORIES, dateInputToIso, formatBlogDate, slugify, toDateInputValue, type BlogPost } from '@/lib/blogShared';
 
 const SITE_HOST = 'www.nudgeable.ai';
 
@@ -31,6 +31,7 @@ function BlogEditorInner() {
   const [coverImage, setCoverImage] = useState('');
   const [category, setCategory] = useState<string>(BLOG_CATEGORIES[0]);
   const [published, setPublished] = useState(true);
+  const [publishedDate, setPublishedDate] = useState('');
   const [featured, setFeatured] = useState(false);
   const [slug, setSlug] = useState('');
   const [slugTouched, setSlugTouched] = useState(false);
@@ -87,6 +88,7 @@ function BlogEditorInner() {
     setCoverImage(post.coverImage || '');
     setCategory(post.category || BLOG_CATEGORIES[0]);
     setPublished(post.published);
+    setPublishedDate(toDateInputValue(post.publishedAt));
     setFeatured(post.featured === true);
     setSlug(post.slug);
     setSlugTouched(true);
@@ -111,6 +113,7 @@ function BlogEditorInner() {
     setCoverImage('');
     setCategory(BLOG_CATEGORIES[0]);
     setPublished(true);
+    setPublishedDate('');
     setFeatured(false);
     setSlug('');
     setSlugTouched(false);
@@ -172,11 +175,25 @@ function BlogEditorInner() {
       const response = await fetch(editingSlug ? `/api/blogs/${editingSlug}` : '/api/blogs', {
         method: editingSlug ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, author, excerpt, content, coverImage, category, published, featured, slug, metaTitle, metaDescription })
+        body: JSON.stringify({
+          title,
+          author,
+          excerpt,
+          content,
+          coverImage,
+          category,
+          published,
+          featured,
+          slug,
+          metaTitle,
+          metaDescription,
+          publishedAt: dateInputToIso(publishedDate, posts.find(post => post.slug === editingSlug)?.publishedAt)
+        })
       });
       const payload = await response.json() as { post?: BlogPost; error?: string };
       if (!response.ok || !payload.post) throw new Error(payload.error || 'Could not save the blog.');
       loadedSlug.current = payload.post.slug;
+      setPublishedDate(toDateInputValue(payload.post.publishedAt));
       setStatus(published ? 'Published.' : 'Saved as draft.');
       await loadPosts();
       router.replace(`/insights/blogs/write?slug=${payload.post.slug}`);
@@ -207,7 +224,8 @@ function BlogEditorInner() {
         featured: true,
         slug: post.slug,
         metaTitle: post.metaTitle,
-        metaDescription: post.metaDescription
+        metaDescription: post.metaDescription,
+        publishedAt: post.publishedAt
       })
     });
     const payload = await response.json().catch(() => ({})) as { error?: string };
@@ -276,6 +294,9 @@ function BlogEditorInner() {
         <label><span>Title</span><input value={title} onChange={event => setTitle(event.target.value)} required placeholder="What should the reader take away?" /></label>
         <div className="blog-write-row">
           <label><span>Author</span><input value={author} onChange={event => setAuthor(event.target.value)} placeholder="Nudgeable" /></label>
+          <label><span>Publish date</span>
+            <input type="date" value={publishedDate} onChange={event => setPublishedDate(event.target.value)} required />
+          </label>
           <label><span>Topic</span>
             <select value={category} onChange={event => setCategory(event.target.value)}>
               {BLOG_CATEGORIES.map(item => <option key={item} value={item}>{item}</option>)}
@@ -372,7 +393,7 @@ function BlogEditorInner() {
           {posts.map(post => (
             <li key={post.id} className={post.featured ? 'is-featured' : undefined}>
               <Link href={`/insights/blogs/write?slug=${post.slug}`}>{post.title}</Link>
-              <span>{post.published ? 'Published' : 'Draft'}{post.featured ? ' · Hero featured' : ''} · {formatBlogDate(post.updatedAt)}</span>
+              <span>{post.published ? 'Published' : 'Draft'}{post.featured ? ' · Hero featured' : ''} · {formatBlogDate(post.publishedAt)}</span>
               <div>
                 <Link href={`/insights/blogs/write?slug=${post.slug}`}>Edit</Link>
                 {post.published && !post.featured && <button type="button" onClick={() => void setHeroFeatured(post)}>Set as hero</button>}

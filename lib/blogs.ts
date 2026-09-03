@@ -69,6 +69,16 @@ function throwIfError(error: { message: string } | null) {
   if (error) throw new Error(error.message);
 }
 
+function parsePublishedAt(value?: string) {
+  if (!value?.trim()) return undefined;
+  const trimmed = value.trim();
+  const dayOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmed);
+  const iso = dayOnly ? `${dayOnly[1]}-${dayOnly[2]}-${dayOnly[3]}T12:00:00.000Z` : trimmed;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) throw new Error('Enter a valid publish date.');
+  return date.toISOString();
+}
+
 export async function listPosts() {
   if (!supabaseConfigured()) return [];
   const { data, error } = await getSupabase()
@@ -143,7 +153,7 @@ function normalizePost(input: BlogInput, posts: Array<{ id: string; slug: string
     category: (input.category || existing?.category || 'AI at Work').trim() || 'AI at Work',
     author: (input.author || existing?.author || 'Nudgeable').trim() || 'Nudgeable',
     published,
-    publishedAt: existing?.publishedAt || input.publishedAt || now,
+    publishedAt: parsePublishedAt(input.publishedAt) || existing?.publishedAt || now,
     updatedAt: now,
     metaTitle: (input.metaTitle || '').trim() || undefined,
     metaDescription: (input.metaDescription || '').trim() || undefined,
