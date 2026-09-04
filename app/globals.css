@@ -7681,6 +7681,11 @@ h2 {
 }
 
 @media (max-width: 760px) {
+  .blogs-page .container,
+  .blog-article-page .container {
+    width: min(var(--page-max), calc(100% - 40px));
+  }
+
   .blogs-hero {
     padding-top: 48px;
   }
