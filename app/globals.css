@@ -7661,8 +7661,7 @@ h2 {
     width: 100%;
   }
 
-  .blog-reading,
-  .blog-reading:not(:has(.blog-toc)) {
+  .blog-reading {
     grid-template-columns: minmax(0, 720px) 50px;
   }
 
@@ -7740,8 +7739,11 @@ h2 {
     font-size: 49px;
   }
 
-  .blog-reading {
-    grid-template-columns: 1fr;
+  /* Match tablet selector specificity (:is rewrite) so 1fr actually wins on mobile */
+  .blog-reading,
+  .blog-reading:not(:has(.blog-toc)) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
     padding-top: 50px;
   }
 
