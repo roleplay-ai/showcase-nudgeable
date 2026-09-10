@@ -25,18 +25,6 @@ export function AcademyPromo() {
           </div>
         </section>
 
-        <div className="academy-subhead"><h3>Featured explainers</h3><span>Two practical topics that show how much work people can now hand over or build with AI.</span></div>
-        <div className="feature-grid">
-          <a className="feature-card agent" href="/ai-academy/foundations/anatomy-of-ai-agent.html">
-            <div><span className="tag">Interactive explainer</span><h3>How AI Agents Work</h3><p>See how instructions, models, context, tools, memory, feedback, evaluation and the agent harness work together.</p></div>
-            <span className="feature-link">Explore the agent <Icon name="arrow" size={14} /></span>
-          </a>
-          <a className="feature-card vibe" href="/ai-academy/foundations/bake-sale-app.html">
-            <div><span className="tag">Build with AI</span><h3>Vibe Coding</h3><p>Learn how to create working websites and apps by describing, testing and improving what you want.</p></div>
-            <span className="feature-link">See how it works <Icon name="arrow" size={14} /></span>
-          </a>
-        </div>
-
         <div className="academy-subhead"><h3>Explore your AI assistant</h3><span>Compact guides covering the features people use inside the four major workplace assistants.</span></div>
         <div className="assistant-grid" id="academy-assistants">
           <a className="assistant-card chatgpt" href="/ai-academy/chatgpt/index.html">
@@ -120,6 +108,18 @@ export function AcademyPromo() {
           </span>
           <span className="academy-tools-go"><span className="academy-nud-btn violet">Watch the walkthroughs &rarr;</span></span>
         </a>
+
+        <div className="academy-subhead"><h3>Try it yourself</h3><span>Two interactive labs that show how much work people can now hand over or build with AI.</span></div>
+        <div className="feature-grid">
+          <a className="feature-card agent" href="/ai-academy/foundations/anatomy-of-ai-agent.html">
+            <div><span className="tag">Interactive explainer</span><h3>How AI Agents Work</h3><p>See how instructions, models, context, tools, memory, feedback, evaluation and the agent harness work together.</p></div>
+            <span className="feature-link">Explore the agent <Icon name="arrow" size={14} /></span>
+          </a>
+          <a className="feature-card vibe" href="/ai-academy/foundations/vibe-coding-simulation.html">
+            <div><span className="tag">Build with AI</span><h3>Vibe Coding</h3><p>Learn how to create working websites and apps by describing, testing and improving what you want.</p></div>
+            <span className="feature-link">See how it works <Icon name="arrow" size={14} /></span>
+          </a>
+        </div>
 
       </div>
     </section>

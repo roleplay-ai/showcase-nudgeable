@@ -38,7 +38,13 @@
           svg:'<path d="M3.5 9.2h4l7-3.9v13.4l-7-3.9h-4z"/><path d="M18 9.2a4 4 0 0 1 0 5.6"/><path d="M7.5 14.8v4.4h2.6"/>' },
         { id:'tools', name:'AI Tools', note:'Beyond the four assistants',
           href:'tools/index.html', match:'/tools/', tint:'#9B85F5',
-          svg:'<circle cx="5.5" cy="6.5" r="2.6"/><circle cx="18.5" cy="6.5" r="2.6"/><circle cx="12" cy="18" r="2.6"/><path d="M7.7 8.2l2.9 7.4M16.3 8.2l-2.9 7.4M8.1 6.5h7.8"/>' }
+          svg:'<circle cx="5.5" cy="6.5" r="2.6"/><circle cx="18.5" cy="6.5" r="2.6"/><circle cx="12" cy="18" r="2.6"/><path d="M7.7 8.2l2.9 7.4M16.3 8.2l-2.9 7.4M8.1 6.5h7.8"/>' },
+        { id:'agent-anatomy', name:'Anatomy of an AI Agent', note:'Interactive explainer',
+          href:'foundations/anatomy-of-ai-agent.html', match:'/foundations/anatomy-of-ai-agent', tint:'#FFCE00',
+          svg:'<rect x="4" y="6" width="16" height="13" rx="4"/><path d="M12 3v3M9 3h6"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M9 16h6"/>' },
+        { id:'vibe-coding-sim', name:'Vibe Coding Simulation', note:'Build an app by describing it',
+          href:'foundations/vibe-coding-simulation.html', match:'/foundations/vibe-coding-simulation', tint:'#7FE0C4',
+          svg:'<path d="M8 7 3 12l5 5M16 7l5 5-5 5M13 4 11 20"/>' }
       ]
     }
   ];
