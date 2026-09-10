@@ -106,6 +106,14 @@
   .modal-steps li{margin-bottom:6px;}
   .modal-steps code{background:#EFE7D2; border-radius:4px; padding:1px 5px; font-family:var(--font-code); font-size:0.82em;}
 
+  .prompt-box{margin-top:10px; border:1px dashed var(--string); border-radius:9px; background:#FBF1E0; padding:11px 13px;}
+  .prompt-box-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:7px;}
+  .prompt-box-label{display:flex; align-items:center; gap:6px; font-size:0.68rem; font-weight:700; color:var(--string); text-transform:uppercase; letter-spacing:.04em;}
+  .prompt-copy{flex:none; font-size:0.68rem; font-weight:700; padding:4px 10px; border-radius:20px; border:1px solid var(--string); background:#fff; color:var(--string); cursor:pointer;}
+  .prompt-copy:hover{background:var(--string); color:#fff;}
+  .prompt-copy.copied{background:var(--green); border-color:var(--green); color:#fff;}
+  .prompt-box-text{margin:0; font-size:0.84rem; line-height:1.55; color:var(--ink); font-style:italic;}
+
   .tools-block{border-top:1px dashed var(--line); padding-top:12px; margin-bottom:16px;}
   .tools-heading{font-size:0.8rem; font-weight:600; color:var(--ink); margin:0;}
   .tools-block ul{list-style:none; margin:9px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px;}
@@ -351,10 +359,11 @@ const stages = {
     def:"A system that checks who's using your app, and keeps each person's data separate.",
     problem:"Two people sharing one login mix up each other's data \u2014 like sharing a single email account.",
     steps:[
-      "Sign up for Firebase or Auth0 \u2014 both have a free tier to start on.",
-      "Install their SDK with one command, e.g. <code>npm install firebase</code>.",
-      "Call their sign-in function from your login button \u2014 they handle passwords and sessions for you."
+      "Sign up for Firebase (free) at firebase.google.com and create a new project.",
+      "Inside the project, open \u201cAuthentication\u201d \u2192 \u201cSign-in method\u201d and turn on \u201cEmail/Password\u201d.",
+      "Copy the small config snippet Firebase gives you, under Project settings."
     ],
+    prompt:"Add Firebase authentication to my app using this config: [paste your Firebase config]. Let people sign up and log in with their email and password, and keep them signed in when they come back.",
     outcome:{type:"browser", kind:"auth", mode:"preview"}, codeFile:"auth"
   },
   db: {
@@ -363,9 +372,9 @@ const stages = {
     problem:"Ever filled a long form, then lost everything on refresh? Apps face this too.",
     steps:[
       "Create a free project at supabase.com \u2014 you get a live database in minutes.",
-      "Easiest: connect an AI coding tool (like Claude Code) to Supabase's MCP server, and just ask it to set up your tables.",
-      "Or manually: <code>npm install @supabase/supabase-js</code>, then call <code>.from('table').insert()</code> in your code."
+      "In its dashboard, go to Settings \u2192 API and copy the Project URL and API key \u2014 you'll need both to connect."
     ],
+    prompt:"Connect my app to my Supabase project using this URL and key: [paste your Project URL and API key]. Set up a table to store the form entries, and save each submission to it so it's still there even after a refresh.",
     outcome:{type:"browser", kind:"db", mode:"preview"}, codeFile:"db"
   },
   vcs: {
@@ -373,10 +382,11 @@ const stages = {
     def:"A tool that saves a dated history of every change you make to your code.",
     problem:"Two people editing one file at once often erase each other's work.",
     steps:[
-      "Run <code>git init</code> in your project folder to start tracking changes.",
-      "<code>git add .</code> then <code>git commit -m \"message\"</code> saves a version with a note.",
-      "<code>git push</code> sends it to GitHub \u2014 a backup, and a shared history your team can see."
+      "Install Git if you don't have it, then run <code>git init</code> once in your project folder to start tracking changes.",
+      "Each time you make progress: <code>git add .</code> then <code>git commit -m \"message\"</code> saves a version with a note.",
+      "Create a free repository on github.com, then <code>git push</code> sends your code there \u2014 a backup, and a shared history your team can see."
     ],
+    prompt:"Set up Git for this project, connect it to a new GitHub repository, and push my current code there.",
     outcome:{type:"terminal", kind:"git"}, codeFile:null
   },
   deploy: {
@@ -384,10 +394,11 @@ const stages = {
     def:"Putting your app on a server that stays on, at a real address people can visit.",
     problem:"A recipe saved on your phone is useless to guests until you actually cook it.",
     steps:[
-      "Quickest: run <code>vercel</code> in your terminal \u2014 it deploys in under a minute.",
-      "Better long-term: connect your GitHub repo to Vercel \u2014 every push deploys a new version automatically.",
-      "Each version gets its own preview link, so you can test before it goes live."
+      "Sign up at vercel.com \u2014 it's free.",
+      "Install their CLI: <code>npm install -g vercel</code>.",
+      "Run <code>vercel</code> in your project's terminal \u2014 it deploys in under a minute and gives you a live link."
     ],
+    prompt:"Deploy this project to Vercel and give me the live link.",
     outcome:{type:"browser", kind:"deploy", mode:"live"}, codeFile:"deploy"
   },
   trace: {
@@ -395,10 +406,10 @@ const stages = {
     def:"A running record of what your app was doing, so a failure can be traced, not guessed at.",
     problem:"A car's black box records what happened before a crash. Apps need the same.",
     steps:[
-      "Sign up at sentry.io and copy your project's DSN key.",
-      "Add one line \u2014 <code>Sentry.init({ dsn: '...' })</code> \u2014 and it starts tracking errors.",
-      "Or simpler: just ask an AI coding assistant to \u201cadd Sentry error tracking\u201d \u2014 most can wire it up directly."
+      "Sign up at sentry.io and create a new project for your app.",
+      "Copy your project's DSN key from its setup page — this is the address error reports get sent to."
     ],
+    prompt:"Add Sentry error tracking to this app using this DSN: [paste your DSN key], so any crash gets logged automatically instead of failing silently.",
     outcome:{type:"terminal", kind:"logs"}, codeFile:"trace"
   },
   integ: {
@@ -406,10 +417,11 @@ const stages = {
     def:"A connection from your app to a tool people already use, like WhatsApp or email.",
     problem:"Nobody checks five apps for one update \u2014 people expect an alert instead.",
     steps:[
-      "Pick a service like Twilio for SMS \u2014 sign up and grab an API key.",
-      "Call their API from your code when something happens, like \u201corder ready.\u201d",
-      "No-code option: send Zapier a webhook (one line of code) when something happens \u2014 Zapier then talks to Twilio for you, no Twilio code needed."
+      "Honestly, this one isn't always simple \u2014 how much work it takes depends entirely on which app you're connecting to and how custom you want the flow to be.",
+      "Pick a service like Twilio for SMS/WhatsApp \u2014 sign up and grab an API key from its dashboard.",
+      "Note the phone number or sender ID Twilio gives you \u2014 messages will be sent from that."
     ],
+    prompt:"When someone places an order, send them a WhatsApp message through Twilio confirming it's received. Here's my API key and sender number: [paste your key and number].",
     outcome:{type:"phone"}, codeFile:"integ"
   },
   pay: {
@@ -417,10 +429,11 @@ const stages = {
     def:"A licensed service that moves money for you, so your code never touches card details.",
     problem:"Handing cash to a stranger with no receipt feels risky \u2014 apps face the same problem.",
     steps:[
-      "Not plug-and-play: create a business account on Stripe or Razorpay first \u2014 ID and bank verification required.",
-      "Once approved, add their SDK and use their Checkout API to charge someone.",
-      "Card details go straight from the customer's browser to Stripe or Razorpay, never through your own code. You just tell them how much to charge."
+      "Create a business account on Stripe or Razorpay \u2014 this needs ID and bank verification, so start it early; approval can take a few days.",
+      "Once approved, grab your API keys from the dashboard (Stripe calls them the \u201cPublishable key\u201d and \u201cSecret key\u201d).",
+      "Card details always go straight from the customer's browser to Stripe or Razorpay \u2014 your code never sees or touches them."
     ],
+    prompt:"Add a Stripe Checkout button to this app using these API keys: [paste your keys]. Charge \u20b9500 for [describe what you're selling], and show a confirmation once payment succeeds.",
     outcome:{type:"browser", kind:"pay", mode:"preview"}, codeFile:"pay"
   }
 };
@@ -728,6 +741,15 @@ function outcomePanelHtml(outcome){
   return '';
 }
 
+function escapeAttr(str){ return escapeHtml(str).replace(/"/g,'&quot;'); }
+
+function promptBoxHtml(text){
+  return '<div class="prompt-box">' +
+    '<div class="prompt-box-head"><span class="prompt-box-label">\ud83d\udcac Try this prompt</span>' +
+    '<button class="prompt-copy" type="button" data-prompt="' + escapeAttr(text) + '">Copy</button></div>' +
+    '<p class="prompt-box-text">\u201c' + escapeHtml(text) + '\u201d</p></div>';
+}
+
 function openStageModal(id){
   const s = stages[id];
   const codeHtml = s.codeFile
@@ -740,11 +762,31 @@ function openStageModal(id){
     '<p class="modal-blurb">' + s.problem + '</p>' +
     '<div class="modal-steps"><p class="tools-heading">How to actually add it</p><ol>' +
       s.steps.map(st => '<li>' + st + '</li>').join('') +
-    '</ol></div>' +
+    '</ol>' +
+    (s.prompt ? promptBoxHtml(s.prompt) : '') +
+    '</div>' +
     '<div class="tools-block"><p class="tools-heading">Tools you could use</p><ul>' +
       toolOptions[id].map(t => '<li>' + t + '</li>').join('') +
     '</ul></div>' +
     '<div class="modal-panels">' + outcomePanelHtml(s.outcome) + codeHtml + '</div>';
+
+  const copyBtn = modalContent.querySelector('.prompt-copy');
+  if(copyBtn){
+    copyBtn.addEventListener('click', () => {
+      const text = copyBtn.dataset.prompt;
+      const done = () => {
+        const original = 'Copy';
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => { copyBtn.textContent = original; copyBtn.classList.remove('copied'); }, 1600);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(done);
+      } else {
+        done();
+      }
+    });
+  }
 
   openModal();
   modalBox.scrollTop = 0;
