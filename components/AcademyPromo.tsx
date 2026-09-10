@@ -1,164 +1,125 @@
 import type { CSSProperties } from 'react';
+import { Icon } from '@/components/Icon';
 
 export function AcademyPromo() {
   return (
     <section className="academy-promo">
       <div className="container">
 
-        <section className="academy-banner">
-          <div className="academy-banner-copy">
-            <div className="eyebrow light academy-banner-eyebrow">Practical AI for work</div>
+        <section className="academy-lead">
+          <div className="academy-lead-copy">
+            <div className="eyebrow light">Practical AI for Work</div>
             <h2>Nudgeable AI Academy</h2>
-            <p className="academy-banner-lead">Every assistant explained feature by feature, in plain language, with the ideas underneath that make all of them easier to use.</p>
-            <div className="academy-banner-actions">
-              <a className="button button-primary" href="/ai-academy/index.html">Access AI Academy</a>
+            <p>Every assistant explained feature by feature, in plain language, with the ideas underneath that make all of them easier to use.</p>
+            <div className="academy-lead-actions">
+              <a className="button button-primary button-compact" href="/ai-academy/index.html">Access AI Academy <Icon name="arrow" size={17} /></a>
             </div>
           </div>
-
-          <div className="academy-banner-marks" aria-hidden="true">
-            <span><img src="/ai-academy/assets/logos/chatgpt.png" alt="" /></span>
-            <span><img src="/ai-academy/assets/logos/claude.png" alt="" /></span>
-            <span><img src="/ai-academy/assets/logos/gemini.svg" alt="" /></span>
-            <span><img src="/ai-academy/assets/logos/copilot.png" alt="" /></span>
+          <div className="academy-categories" aria-label="Content inside the AI Academy">
+            <a className="academy-category" href="/ai-academy/tools/index.html"><span className="academy-category-icon" style={{ '--category-color': '#ffce00' } as CSSProperties}>↗</span><strong>AI Workflows</strong></a>
+            <a className="academy-category" href="/ai-academy/news/index.html"><span className="academy-category-icon" style={{ '--category-color': '#23ce68' } as CSSProperties}>●</span><strong>AI News</strong></a>
+            <a className="academy-category" href="/ai-academy/tips/index.html"><span className="academy-category-icon" style={{ '--category-color': '#f68a29' } as CSSProperties}>✓</span><strong>Best Practices</strong></a>
+            <a className="academy-category" href="/ai-academy/index.html"><span className="academy-category-icon" style={{ '--category-color': '#3696fc' } as CSSProperties}>▤</span><strong>Enterprise AI Guides</strong></a>
+            <a className="academy-category" href="/ai-academy/foundations/index.html"><span className="academy-category-icon" style={{ '--category-color': '#b7a4ff' } as CSSProperties}>◎</span><strong>AI Foundations</strong></a>
+            <a className="academy-category" href="/ai-academy/tools/index.html"><span className="academy-category-icon" style={{ '--category-color': '#ed4551' } as CSSProperties}>✦</span><strong>Tool Walkthroughs</strong></a>
           </div>
         </section>
 
-        <section className="academy-light">
-          <div className="academy-head">
-            <div className="eyebrow">Where to start</div>
-            <h2>Pick the assistant you use. Or start with how any of it works.</h2>
-            <p>Feature guides for every assistant, the foundations behind them, and a weekly round-up. Free and open, no sign-in.</p>
-          </div>
-
-          <div className="academy-ai-grid" id="academy-assistants">
-            <a className="academy-ai-card" href="/ai-academy/chatgpt/index.html" style={{ '--tint': '#E2F6EE', '--brand': '#10A37F', '--edge': '#B6E3D4', '--glow': 'rgba(16,163,127,.20)', '--name': '#0B6E56' } as CSSProperties}>
-              <span className="academy-ai-updated">Updated Sep 2026</span>
-              <span className="academy-ai-mark"><img src="/ai-academy/assets/logos/chatgpt.png" alt="ChatGPT logo" /></span>
-              <h3>ChatGPT</h3>
-              <div className="academy-chips"><span>Work</span><span>Projects</span><span>Skills</span><span>Codex</span><span className="more">and more</span></div>
-              <span className="academy-nud-btn ink">Know more &rarr;</span>
-            </a>
-
-            <a className="academy-ai-card" href="/ai-academy/claude/index.html" style={{ '--tint': '#FCEBE1', '--brand': '#D97757', '--edge': '#F0C7B2', '--glow': 'rgba(217,119,87,.22)', '--name': '#A9502F' } as CSSProperties}>
-              <span className="academy-ai-updated">Updated Sep 2026</span>
-              <span className="academy-ai-mark"><img src="/ai-academy/assets/logos/claude.png" alt="Claude logo" /></span>
-              <h3>Claude</h3>
-              <div className="academy-chips"><span>Cowork</span><span>Artifacts</span><span>Skills</span><span>Projects</span><span className="more">and more</span></div>
-              <span className="academy-nud-btn ink">Know more &rarr;</span>
-            </a>
-
-            <a className="academy-ai-card" href="/ai-academy/gemini/index.html" style={{ '--tint': '#E3EDFD', '--brand': '#4285F4', '--edge': '#B9D0F8', '--glow': 'rgba(66,133,244,.20)', '--name': '#1A56C4' } as CSSProperties}>
-              <span className="academy-ai-updated">Updated Sep 2026</span>
-              <span className="academy-ai-mark"><img src="/ai-academy/assets/logos/gemini.svg" alt="Gemini logo" /></span>
-              <h3>Gemini</h3>
-              <div className="academy-chips"><span>Spark</span><span>Gems</span><span>Notebook</span><span className="more">and more</span></div>
-              <span className="academy-nud-btn ink">Know more &rarr;</span>
-            </a>
-
-            <a className="academy-ai-card" href="/ai-academy/copilot/index.html" style={{ '--tint': '#ECEBFB', '--brand': '#5B5FC7', '--edge': '#C6C5EE', '--glow': 'rgba(91,95,199,.22)', '--name': '#43469E' } as CSSProperties}>
-              <span className="academy-ai-updated">Updated Sep 2026</span>
-              <span className="academy-ai-mark"><img src="/ai-academy/assets/logos/copilot.png" alt="Copilot logo" /></span>
-              <h3>Microsoft Copilot</h3>
-              <div className="academy-chips"><span>Cowork</span><span>Work IQ</span><span>Notebooks</span><span className="more">and more</span></div>
-              <span className="academy-nud-btn ink">Know more &rarr;</span>
-            </a>
-          </div>
-
-          <div className="academy-central-head">
-            <h2>Learn and keep up</h2>
-            <a className="academy-browse-link" href="/ai-academy/index.html">Browse the Academy &rarr;</a>
-          </div>
-          <div className="academy-central-grid" aria-label="AI Academy resources">
-            <a className="academy-central-card" href="/ai-academy/foundations/index.html">
-              <div className="academy-central-top">
-                <span className="academy-central-eyebrow">Start here</span>
-                <span className="academy-central-icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="13" cy="12" r="5" />
-                    <circle cx="35" cy="12" r="5" />
-                    <circle cx="24" cy="35" r="5" />
-                    <path d="M17 15.5 21 30M31 15.5 27 30M18 12h12" />
-                  </svg>
-                </span>
-              </div>
-              <div className="academy-central-body">
-                <h3>AI Foundations</h3>
-                <p className="academy-central-desc">Understand how AI assistants work and what happens when you use them.</p>
-                <ul className="academy-central-points">
-                  <li>Learn the key concepts behind AI</li>
-                  <li>Understand how its main features work</li>
-                  <li>Know what affects the quality of its answers</li>
-                </ul>
-                <span className="academy-central-btn">Learn &rarr;</span>
-              </div>
-            </a>
-
-            <a className="academy-central-card academy-central-card--practice" href="/ai-academy/tips/index.html">
-              <div className="academy-central-top">
-                <span className="academy-central-eyebrow">Practise</span>
-                <span className="academy-central-icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10 12h20M10 24h20M10 36h14" />
-                    <path d="m35 30 3 3 6-8" />
-                    <circle cx="38" cy="12" r="3" />
-                  </svg>
-                </span>
-              </div>
-              <div className="academy-central-body">
-                <h3>AI Best Practices</h3>
-                <p className="academy-central-desc">Small habits that improve the quality and reliability of AI responses.</p>
-                <ul className="academy-central-points">
-                  <li>Give AI the right context and instructions</li>
-                  <li>Know when to continue, restart or change approach</li>
-                  <li>Review and improve weak or incomplete answers</li>
-                </ul>
-                <span className="academy-central-btn">Read this &rarr;</span>
-              </div>
-            </a>
-
-            <a className="academy-central-card academy-central-card--updates" href="/ai-academy/news/index.html">
-              <div className="academy-central-top">
-                <span className="academy-central-eyebrow">Every week</span>
-                <span className="academy-central-icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="7" y="10" width="34" height="31" rx="5" />
-                    <path d="M15 6v8M33 6v8M7 20h34" />
-                    <path d="m17 30 5 5 10-11" />
-                  </svg>
-                </span>
-              </div>
-              <div className="academy-central-body">
-                <h3>What&rsquo;s New</h3>
-                <p className="academy-central-desc">Important updates across the major AI assistants, added every week.</p>
-                <ul className="academy-central-points">
-                  <li>One short entry per update, without release-note noise</li>
-                  <li>Understand what changed and why it matters</li>
-                  <li>Filter by assistant or browse by month</li>
-                </ul>
-                <span className="academy-central-btn">See updates &rarr;</span>
-              </div>
-            </a>
-          </div>
-
-          <div className="academy-row-head">
-            <h3>Beyond the assistants</h3>
-            <a className="academy-see-all" href="/ai-academy/tools/index.html">See all tools &rarr;</a>
-          </div>
-          <a className="academy-tools-strip" href="/ai-academy/tools/index.html">
-            <span className="academy-tools-icons">
-              <img src="/ai-academy/assets/logos/tools/lovable.png" alt="Lovable" />
-              <img src="/ai-academy/assets/logos/tools/gamma.png" alt="Gamma AI" />
-              <img src="/ai-academy/assets/logos/tools/napkin.png" alt="Napkin AI" />
-              <img src="/ai-academy/assets/logos/tools/heygen.png" alt="HeyGen" />
-              <img src="/ai-academy/assets/logos/tools/kling.png" alt="Kling" />
-              <img src="/ai-academy/assets/logos/tools/elevenlabs.png" alt="ElevenLabs" />
-              <img src="/ai-academy/assets/logos/tools/lmstudio.png" alt="LM Studio" />
-              <img src="/ai-academy/assets/logos/tools/shortcut.png" alt="Shortcut AI" />
-              <span className="more">+7</span>
-            </span>
-            <span className="academy-tools-go"><span className="academy-nud-btn violet">Watch the walkthroughs &rarr;</span></span>
+        <div className="academy-subhead"><h3>Featured explainers</h3><span>Two practical topics that show how much work people can now hand over or build with AI.</span></div>
+        <div className="feature-grid">
+          <a className="feature-card agent" href="/ai-academy/foundations/anatomy-of-ai-agent.html">
+            <div><span className="tag">Interactive explainer</span><h3>How AI Agents Work</h3><p>See how instructions, models, context, tools, memory, feedback, evaluation and the agent harness work together.</p></div>
+            <span className="feature-link">Explore the agent <Icon name="arrow" size={14} /></span>
           </a>
-        </section>
+          <a className="feature-card vibe" href="/ai-academy/foundations/bake-sale-app.html">
+            <div><span className="tag">Build with AI</span><h3>Vibe Coding</h3><p>Learn how to create working websites and apps by describing, testing and improving what you want.</p></div>
+            <span className="feature-link">See how it works <Icon name="arrow" size={14} /></span>
+          </a>
+        </div>
+
+        <div className="academy-subhead"><h3>Explore your AI assistant</h3><span>Compact guides covering the features people use inside the four major workplace assistants.</span></div>
+        <div className="assistant-grid" id="academy-assistants">
+          <a className="assistant-card chatgpt" href="/ai-academy/chatgpt/index.html">
+            <div className="assistant-top"><span className="assistant-logo"><img src="/ai-academy/assets/logos/chatgpt.png" alt="ChatGPT logo" /></span><span className="assistant-arrow"><Icon name="arrow" size={14} /></span></div>
+            <h3>ChatGPT</h3>
+            <p>Work · Projects · Skills · Codex</p>
+            <b>View guide</b>
+          </a>
+          <a className="assistant-card claude" href="/ai-academy/claude/index.html">
+            <div className="assistant-top"><span className="assistant-logo"><img src="/ai-academy/assets/logos/claude.png" alt="Claude logo" /></span><span className="assistant-arrow"><Icon name="arrow" size={14} /></span></div>
+            <h3>Claude</h3>
+            <p>Cowork · Artifacts · Skills · Projects</p>
+            <b>View guide</b>
+          </a>
+          <a className="assistant-card gemini" href="/ai-academy/gemini/index.html">
+            <div className="assistant-top"><span className="assistant-logo"><img src="/ai-academy/assets/logos/gemini.svg" alt="Gemini logo" /></span><span className="assistant-arrow"><Icon name="arrow" size={14} /></span></div>
+            <h3>Gemini</h3>
+            <p>Spark · Gems · Notebook</p>
+            <b>View guide</b>
+          </a>
+          <a className="assistant-card copilot" href="/ai-academy/copilot/index.html">
+            <div className="assistant-top"><span className="assistant-logo"><img src="/ai-academy/assets/logos/copilot.png" alt="Microsoft Copilot logo" /></span><span className="assistant-arrow"><Icon name="arrow" size={14} /></span></div>
+            <h3>Microsoft Copilot</h3>
+            <p>Cowork · Work IQ · Notebooks</p>
+            <b>View guide</b>
+          </a>
+        </div>
+
+        <div className="academy-subhead"><h3>Learn and keep up</h3><span>Foundational knowledge, practical habits and a clear view of what changed this week.</span></div>
+        <div className="learn-grid">
+          <a className="learn-card foundation" href="/ai-academy/foundations/index.html">
+            <div className="learn-card-top">
+              <span className="icon-box">
+                <svg className="learn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z" /><path d="M8 4v16M11 8h5M11 12h5" /></svg>
+              </span>
+              <span className="learn-badge">Start here</span>
+            </div>
+            <h3>AI Foundations</h3>
+            <p>Understand models, tokens, context, hallucinations, memory, tools and agents.</p>
+            <b>Start learning <Icon name="arrow" size={14} /></b>
+          </a>
+          <a className="learn-card practice" href="/ai-academy/tips/index.html">
+            <div className="learn-card-top">
+              <span className="icon-box">
+                <svg className="learn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h11M8 12h11M8 19h11" /><path d="m3 5 1 1 2-2M3 12l1 1 2-2M3 19l1 1 2-2" /></svg>
+              </span>
+              <span className="learn-badge">Practise</span>
+            </div>
+            <h3>AI Best Practices</h3>
+            <p>Give AI better context, improve weak output and check important work.</p>
+            <b>Read the notes <Icon name="arrow" size={14} /></b>
+          </a>
+          <a className="learn-card news" href="/ai-academy/news/index.html">
+            <div className="learn-card-top">
+              <span className="icon-box">
+                <svg className="learn-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4M17 3v4M3 10h18M7 14h4M7 17h8" /></svg>
+              </span>
+              <span className="learn-badge">Every week</span>
+            </div>
+            <h3>What&rsquo;s New in AI</h3>
+            <p>Follow important changes across major AI assistants, explained every week.</p>
+            <b>See the updates <Icon name="arrow" size={14} /></b>
+          </a>
+        </div>
+
+        <div className="academy-row-head">
+          <h3>Beyond the assistants</h3>
+          <a className="academy-see-all" href="/ai-academy/tools/index.html">See all tools &rarr;</a>
+        </div>
+        <a className="academy-tools-strip" href="/ai-academy/tools/index.html">
+          <span className="academy-tools-icons">
+            <img src="/ai-academy/assets/logos/tools/lovable.png" alt="Lovable" />
+            <img src="/ai-academy/assets/logos/tools/gamma.png" alt="Gamma AI" />
+            <img src="/ai-academy/assets/logos/tools/napkin.png" alt="Napkin AI" />
+            <img src="/ai-academy/assets/logos/tools/heygen.png" alt="HeyGen" />
+            <img src="/ai-academy/assets/logos/tools/kling.png" alt="Kling" />
+            <img src="/ai-academy/assets/logos/tools/elevenlabs.png" alt="ElevenLabs" />
+            <img src="/ai-academy/assets/logos/tools/lmstudio.png" alt="LM Studio" />
+            <img src="/ai-academy/assets/logos/tools/shortcut.png" alt="Shortcut AI" />
+            <span className="more">+7</span>
+          </span>
+          <span className="academy-tools-go"><span className="academy-nud-btn violet">Watch the walkthroughs &rarr;</span></span>
+        </a>
 
       </div>
     </section>

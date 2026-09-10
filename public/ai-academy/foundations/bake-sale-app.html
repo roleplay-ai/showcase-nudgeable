@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="/ai-academy/foundations/bake-sale-app.html">
+<link rel="icon" href="/icon.png" type="image/png" sizes="256x256">
+<title>What the Chatbot Didn't Show You</title>
+<style>
+  :root{
+    --paper:#F5EFE1;
+    --card:#FFFCF4;
+    --ink:#2E2618;
+    --ink-mut:#7A6D57;
+    --string:#B94A3B;
+    --highlight:#F3C94D;
+    --green:#4C7A4A;
+    --line:#DCCFAE;
+    --font-head: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --font-body: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --font-code: 'SFMono-Regular', Menlo, Consolas, 'IBM Plex Mono', monospace;
+
+    --ide-bg:#1E1E1E;
+    --ide-chrome:#2D2D2D;
+    --ide-text:#D4D4D4;
+    --ide-mut:#8A8A8A;
+    --ide-kw:#C586C0;
+    --ide-str:#CE9178;
+    --ide-cm:#6A9955;
+    --ide-added:#26362A;
+    --ide-added-bar:#4EC96A;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0; height:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    min-height:100vh;
+    padding:22px 24px;
+    display:flex;
+    flex-direction:column;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition-duration:0.01ms !important; animation-duration:0.01ms !important;}
+  }
+  .wrap{max-width:1300px; margin:0 auto; width:100%; flex:1; display:flex; flex-direction:column;}
+
+  .landing-row{display:flex; flex-direction:row; align-items:center; gap:34px; flex:1; min-height:0;}
+  .landing-left{flex:1 1 340px; max-width:400px; display:flex; flex-direction:column; justify-content:center;}
+  .landing-right{flex:1 1 560px; min-width:0; display:flex; align-items:center; justify-content:center;}
+
+  header{text-align:left; margin-bottom:4px;}
+  header h1{font-family:var(--font-head); font-size:1.8rem; font-weight:700; line-height:1.2; margin:0 0 12px;}
+  header p{font-size:0.92rem; line-height:1.58; color:var(--ink-mut); margin:0 0 4px;}
+
+  .story-card{text-align:left; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:17px 20px; min-height:96px; display:flex; flex-direction:column; justify-content:center; animation:captionFade .4s ease; transition:opacity .22s ease; margin:18px 0 6px;}
+  .story-card.fading{opacity:0;}
+  @keyframes captionFade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+  .story-chapter{font-size:0.7rem; color:var(--string); font-weight:600; margin:0 0 5px; letter-spacing:0.02em;}
+  .story-line{font-family:var(--font-head); font-size:1.08rem; font-weight:600; margin:0; color:var(--ink); line-height:1.35;}
+  .story-fix{font-size:0.83rem; font-weight:700; margin:8px 0 0; min-height:1.1em; color:var(--string);}
+  .replay-link{display:block; text-align:left; margin:2px 0 0; background:none; border:none; color:var(--ink-mut); font-size:0.8rem; cursor:pointer; text-decoration:underline; padding:4px 0;}
+  .replay-link:hover{color:var(--string);}
+
+  .diagram-wrap{width:100%; display:flex; justify-content:center;}
+  .diagram-wrap svg{width:min(780px, 82vh, 100%); height:auto; aspect-ratio:1/1; display:block;}
+
+
+  .node-group{cursor:pointer; transition:opacity .5s ease, transform .5s ease;}
+  .node-group.hidden-node{opacity:0; transform:scale(0.75); pointer-events:none;}
+  .node-group.active-story .node-card{stroke-width:3; filter:drop-shadow(0 0 6px rgba(185,74,59,0.45));}
+  .node-card{fill:var(--card); stroke-width:1.6; transition:filter .15s ease;}
+  .node-icon{stroke-linecap:round; stroke-linejoin:round; fill:none;}
+  .node-group:hover .node-card{filter:brightness(0.97);}
+  .node-card.core{stroke:var(--ink-mut); stroke-width:2; stroke-dasharray:7 5; transition:stroke .5s ease, stroke-width .5s ease;}
+  .node-card.core.complete{stroke:var(--green); stroke-width:2.6; stroke-dasharray:none;}
+  .core-badge{opacity:0; transition:opacity .5s ease;}
+  .core-badge.show{opacity:1;}
+  .node-label{font-family:var(--font-body); font-weight:700; text-anchor:middle; pointer-events:none;}
+  .node-sub{font-family:var(--font-body); text-anchor:middle; pointer-events:none; fill:var(--ink-mut); font-style:italic; transition:fill .5s ease;}
+  .node-sub.complete-sub{fill:var(--green); font-weight:700; font-style:normal;}
+  .node-dot{pointer-events:none;}
+  .connector{stroke:var(--string); stroke-width:1.6; fill:none; stroke-dasharray:100; stroke-dashoffset:100; transition:stroke-dashoffset .5s ease;}
+  .connector.on{stroke-dashoffset:0;}
+  .node-group:focus{outline:none;}
+  .node-group:focus .node-card{stroke-width:3;}
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{position:fixed; inset:0; background:rgba(30,22,12,0.55); display:flex; align-items:center; justify-content:center; padding:24px; z-index:100;}
+  .modal-overlay.hidden{display:none;}
+  .modal-box{background:var(--card); border-radius:10px; max-width:860px; width:100%; max-height:88vh; overflow-y:auto; position:relative; padding:28px 30px 26px; box-shadow:0 20px 50px rgba(0,0,0,0.35); animation:modalIn 0.2s ease;}
+  @keyframes modalIn{ from{opacity:0; transform:translateY(10px) scale(0.98);} to{opacity:1; transform:translateY(0) scale(1);} }
+  .modal-close{position:absolute; top:14px; right:16px; background:none; border:none; font-size:1.5rem; line-height:1; color:var(--ink-mut); cursor:pointer; padding:4px 8px;}
+  .modal-close:hover{color:var(--string);}
+
+  .modal-tag{font-size:0.76rem; color:var(--string); font-weight:600; margin:0 0 6px;}
+  .modal-tag.resolved{color:var(--green);}
+  .modal-title{font-family:var(--font-head); font-size:1.4rem; font-weight:700; margin:0 0 8px;}
+  .modal-def{font-size:0.85rem; line-height:1.5; color:var(--ink-mut); margin:0 0 10px; max-width:66ch;}
+  .modal-def strong{color:var(--ink); font-weight:700;}
+  .modal-blurb{font-size:0.94rem; line-height:1.55; color:var(--ink); margin:0 0 16px; max-width:66ch;}
+
+  .modal-steps{border-top:1px dashed var(--line); padding-top:12px; margin-bottom:16px;}
+  .modal-steps ol{margin:9px 0 0; padding-left:19px; font-size:0.85rem; line-height:1.55; color:var(--ink);}
+  .modal-steps li{margin-bottom:6px;}
+  .modal-steps code{background:#EFE7D2; border-radius:4px; padding:1px 5px; font-family:var(--font-code); font-size:0.82em;}
+
+  .tools-block{border-top:1px dashed var(--line); padding-top:12px; margin-bottom:16px;}
+  .tools-heading{font-size:0.8rem; font-weight:600; color:var(--ink); margin:0;}
+  .tools-block ul{list-style:none; margin:9px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px;}
+  .tools-block li{font-size:0.74rem; color:var(--ink-mut); background:#fff; border:1px solid var(--line); border-radius:16px; padding:4px 10px;}
+
+  .modal-panels{display:flex; flex-wrap:wrap; gap:14px;}
+  .outcome-panel{flex:1 1 300px; min-width:0; display:flex; flex-direction:column;}
+  .code-rail{flex:0 1 240px; max-width:260px; min-width:190px; display:flex; flex-direction:column;}
+  .panel-label{font-size:0.72rem; color:var(--ink-mut); margin:0 0 5px; font-weight:600;}
+
+  .win-dot{width:9px; height:9px; border-radius:50%;}
+  .win-dot.r{background:#ED6A5E;} .win-dot.y{background:#F4BF4F;} .win-dot.g{background:#61C454;}
+  .win-titlebar{background:var(--ide-chrome); padding:7px 11px; display:flex; align-items:center; gap:7px;}
+  .win-title{flex:1; text-align:center; color:var(--ide-mut); font-size:0.68rem; margin-right:30px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+
+  .code-window{background:var(--ide-bg); border-radius:8px; overflow:hidden; box-shadow:0 6px 16px rgba(0,0,0,0.24); font-family:var(--font-code); flex:1; display:flex; flex-direction:column; min-width:0;}
+  .code-window .ide-editor{height:300px;}
+  .code-empty{background:var(--ide-bg); color:var(--ide-mut); border-radius:8px; flex:1; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px; font-size:0.78rem; line-height:1.5; height:300px;}
+
+  .ide-line{display:flex; font-size:0.71rem; line-height:1.5; white-space:pre; border-left:3px solid transparent;}
+  .ide-line.added{background:var(--ide-added); border-left-color:var(--ide-added-bar);}
+  .ide-gutter{width:25px; flex:none; text-align:right; padding-right:6px; color:var(--ide-mut); user-select:none;}
+  .ide-line.added .ide-gutter{color:var(--ide-added-bar); font-weight:700;}
+  .ide-code{color:var(--ide-text); padding-right:10px;}
+  .kw{color:var(--ide-kw);} .str{color:var(--ide-str);} .cm{color:var(--ide-cm);}
+  .ide-editor{flex:1; padding:7px 0; overflow-y:auto; overflow-x:auto;}
+
+  .browser-window{background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 6px 16px rgba(0,0,0,0.14); border:1px solid #D8D2C4; flex:1; display:flex; flex-direction:column; min-width:0;}
+  .browser-chrome{background:#E7E2D4; padding:6px 9px; display:flex; align-items:center; gap:7px;}
+  .browser-addr{flex:1; background:#fff; border-radius:14px; padding:4px 11px; font-family:var(--font-code); font-size:0.68rem; color:#3A3226; display:flex; align-items:center; gap:6px; border:1px solid #D8D2C4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .badge-pill{font-size:0.62rem; font-weight:700; padding:3px 8px; border-radius:20px; display:flex; align-items:center; gap:4px; flex:none;}
+  .badge-pill.live{background:#E6F2E4; color:var(--green);}
+  .badge-pill.preview{background:#F1E9D2; color:#8A6A2A;}
+  .badge-pill .dot{width:6px; height:6px; border-radius:50%; background:currentColor;}
+  .browser-body{padding:15px 17px 17px; flex:1; min-height:300px;}
+  .site-header{display:flex; align-items:center; gap:8px; padding-bottom:9px; margin-bottom:11px; border-bottom:1px solid var(--line);}
+  .site-mark{width:21px; height:21px; border-radius:6px; background:var(--ink); color:var(--card); font-family:var(--font-head); font-weight:700; font-size:0.78rem; display:flex; align-items:center; justify-content:center; flex:none;}
+  .site-name{font-family:var(--font-head); font-weight:700; font-size:0.88rem; color:var(--ink);}
+  .site-sub{color:var(--ink-mut); font-size:0.76rem; margin:0 0 11px;}
+  .field-labeled{margin-bottom:8px;}
+  .field-labeled label{display:block; font-size:0.64rem; color:var(--ink-mut); margin-bottom:3px; font-weight:600;}
+  .fake-field{border:1px solid #D8D2C4; border-radius:5px; padding:7px 9px; font-size:0.76rem; color:#4a4335; background:#FCFAF4;}
+  .fake-btn{display:inline-block; margin-top:4px; background:var(--ink); color:#fff; font-size:0.76rem; font-weight:600; padding:7px 15px; border-radius:5px;}
+  .browser-note{margin-top:11px; font-size:0.72rem; color:var(--ink-mut); border-top:1px dashed var(--line); padding-top:8px;}
+  .ticket-block{text-align:center; padding:7px 0 2px;}
+  .tk-label{font-size:0.7rem; color:var(--ink-mut); margin:0;}
+  .big-number{font-family:var(--font-head); font-size:1.8rem; font-weight:700; margin:4px 0;}
+  .lock-line{color:var(--ink-mut); font-size:0.7rem; display:flex; align-items:center; gap:5px; margin-top:7px;}
+
+  .phone-wrap{display:flex; justify-content:center; align-items:flex-start; flex:1; min-width:0;}
+  .phone-frame{width:190px; max-width:100%; background:#1B1B1B; border-radius:24px; padding:9px; box-shadow:0 10px 22px rgba(0,0,0,0.24);}
+  .phone-screen{background:#F5F5F7; border-radius:15px; min-height:280px; padding:11px 9px; display:flex; flex-direction:column;}
+  .phone-status{display:flex; justify-content:space-between; font-size:0.62rem; color:#555; margin-bottom:10px;}
+  .msg-sender{font-size:0.65rem; color:#8a8a8a; text-align:center; margin-bottom:7px;}
+  .msg-bubble{background:#E9E9EB; color:#1B1B1B; border-radius:14px; padding:9px 11px; font-size:0.8rem; line-height:1.4; max-width:88%; align-self:flex-start;}
+  .msg-time{font-size:0.6rem; color:#9a9a9a; margin-top:6px; align-self:flex-start;}
+
+  .terminal-window{background:#151515; border-radius:8px; overflow:hidden; box-shadow:0 6px 16px rgba(0,0,0,0.24); flex:1; display:flex; flex-direction:column; min-width:0;}
+  .terminal-body{padding:11px 13px; font-family:var(--font-code); font-size:0.7rem; line-height:1.65; color:#D7D7D7; flex:1; overflow-y:auto; height:300px;}
+  .terminal-body .prompt{color:#6FCF97;}
+  .terminal-body .out{color:#9A9A9A;}
+  .terminal-body .comment{color:#6A9955;}
+
+  .before-after{display:flex; flex-wrap:wrap; gap:18px; margin-top:4px;}
+  .ba-col{flex:1 1 300px; min-width:0;}
+  .ba-heading{font-size:0.9rem; font-weight:700; margin:0 0 3px;}
+  .ba-sub{font-size:0.78rem; color:var(--ink-mut); line-height:1.5; margin:0 0 10px;}
+
+  footer{max-width:440px; margin:14px 0 0; text-align:left; color:var(--ink-mut); font-size:0.78rem; line-height:1.55;}
+
+  @media (max-width:900px){
+    body{padding:20px 18px;}
+    .landing-row{flex-direction:column; align-items:stretch; gap:6px;}
+    .landing-left{max-width:100%;}
+    header{text-align:center;}
+    .story-card, .replay-link, footer{text-align:center; margin-left:auto; margin-right:auto;}
+    .diagram-wrap svg{width:min(520px, 58vh, 100%);}
+  }
+
+  @media (max-width:700px){
+    .modal-box{padding:22px 18px 20px;}
+    .modal-title{font-size:1.2rem;}
+    .code-rail{flex:1 1 100%; max-width:100%;}
+    .code-window .ide-editor, .code-empty, .terminal-body{height:auto; max-height:240px;}
+  }
+</style>
+</head>
+<body>
+<a href="/" style="align-self:flex-start;width:fit-content;display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;padding:7px 13px;border-radius:999px;background:#2E2618;color:#F5EFE1;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;font-weight:700;text-decoration:none;">&larr; Back to Nudgeable</a>
+<div class="wrap">
+
+  <div class="landing-row">
+    <div class="landing-left">
+      <header>
+        <h1>What the chatbot didn't show you</h1>
+        <p>A chatbot writes working code in seconds. Here's what it doesn't tell you — one problem at a time.</p>
+      </header>
+
+      <div class="story-card" id="storyCard">
+        <p class="story-chapter" id="storyChapter">Right now</p>
+        <p class="story-line" id="storyLine">It works. But only for you, right now.</p>
+        <p class="story-fix" id="storyFix"></p>
+      </div>
+
+      <button class="replay-link" id="replayBtn">↺ Replay the story</button>
+      <footer>Click any piece to see the problem it solves. Click "Your App" for the before and after.</footer>
+    </div>
+
+    <div class="landing-right">
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" id="diagramSvg"></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+function L(code, added, comment){ return {code:code, added:!!added, comment:comment||null}; }
+
+const appVersions = {
+0:[
+  L("function onOrderPageOpen() {"),
+  L("  showOrderForm();"),
+  L("}"),
+  L(""),
+  L("document.addEventListener('DOMContentLoaded', onOrderPageOpen);")
+],
+8:[
+  L("import { checkWhoIsAsking } from './auth.js';"),
+  L("import { saveEntry } from './database.js';"),
+  L("import { chargeCustomer } from './payments.js';"),
+  L("import { notifyUser } from './integrations.js';"),
+  L("import { logEvent } from './logger.js';"),
+  L(""),
+  L("function onOrderPageOpen(visitor) {"),
+  L("  const ticket = checkWhoIsAsking(visitor);"),
+  L("  showOrderForm();"),
+  L("}"),
+  L(""),
+  L("async function onFormSubmit(entry) {"),
+  L("  const entryId = saveEntry(entry);"),
+  L("  logEvent('entry_submitted', { entryId });"),
+  L("  return entryId;"),
+  L("}"),
+  L(""),
+  L("async function onCheckout(entry, payment) {"),
+  L("  const result = await chargeCustomer(payment);"),
+  L("  if (!result.success) {"),
+  L("    logEvent('payment_failed', { reason: result.reason });"),
+  L("    return showError('Payment failed.');"),
+  L("  }"),
+  L("  await onEntryReady(entry);"),
+  L("}"),
+  L(""),
+  L("async function onEntryReady(entry) {"),
+  L("  await notifyUser(entry);"),
+  L("  logEvent('entry_ready', { entryId: entry.id });"),
+  L("}"),
+  L(""),
+  L("document.addEventListener('DOMContentLoaded', () => {"),
+  L("  onOrderPageOpen(getCurrentVisitor());"),
+  L("});")
+]
+};
+
+const otherFiles = {
+  auth: { name:"auth.js", lines:[
+    L("export function checkWhoIsAsking(visitor) {"),
+    L("  if (activeSessions.has(visitor.id)) {"),
+    L("    return activeSessions.get(visitor.id);"),
+    L("  }"),
+    L("  const ticket = randomTicketNumber();", false, "everyone gets one"),
+    L("  activeSessions.set(visitor.id, ticket);"),
+    L("  return ticket;"),
+    L("}")
+  ]},
+  db: { name:"database.js", lines:[
+    L("const records = [];"),
+    L(""),
+    L("export function saveEntry(entry) {"),
+    L("  const record = {"),
+    L("    id: records.length + 1,"),
+    L("    ...entry,"),
+    L("    savedAt: new Date().toISOString()", false, "survives a closed tab"),
+    L("  };"),
+    L("  records.push(record);"),
+    L("  return record.id;"),
+    L("}")
+  ]},
+  pay: { name:"payments.js", lines:[
+    L("import { paymentGateway } from './gateway-sdk.js';"),
+    L(""),
+    L("export async function chargeCustomer(payment) {"),
+    L("  const result = await paymentGateway.charge({"),
+    L("    amount: payment.amount,"),
+    L("    currency: 'INR',"),
+    L("    source: payment.token", false, "never touches the card number"),
+    L("  });"),
+    L("  return { success: true, id: result.id };"),
+    L("}")
+  ]},
+  deploy: { name:"deploy.config.js", lines:[
+    L("export default {"),
+    L("  service: 'your-app',"),
+    L("  region: 'ap-south-1',"),
+    L("  alwaysOn: true,", false, "open even while you sleep"),
+    L("  scaling: { minInstances: 1, maxInstances: 3 }"),
+    L("};")
+  ]},
+  integ: { name:"integrations.js", lines:[
+    L("import { messageClient } from './message-provider.js';"),
+    L(""),
+    L("export async function notifyUser(entry) {"),
+    L("  if (!entry.contact) return;"),
+    L("  await messageClient.send({"),
+    L("    to: entry.contact,"),
+    L("    body: 'Your request is confirmed.'", false, "meets people where they are"),
+    L("  });"),
+    L("}")
+  ]},
+  trace: { name:"logger.js", lines:[
+    L("const logbook = [];"),
+    L(""),
+    L("export function logEvent(event, details = {}) {"),
+    L("  logbook.push({"),
+    L("    event, details,"),
+    L("    timestamp: Date.now()", false, "so mistakes leave a trail"),
+    L("  });"),
+    L("}")
+  ]}
+};
+
+const stages = {
+  auth: {
+    title:"Authentication",
+    def:"A system that checks who's using your app, and keeps each person's data separate.",
+    problem:"Two people sharing one login mix up each other's data \u2014 like sharing a single email account.",
+    steps:[
+      "Sign up for Firebase or Auth0 \u2014 both have a free tier to start on.",
+      "Install their SDK with one command, e.g. <code>npm install firebase</code>.",
+      "Call their sign-in function from your login button \u2014 they handle passwords and sessions for you."
+    ],
+    outcome:{type:"browser", kind:"auth", mode:"preview"}, codeFile:"auth"
+  },
+  db: {
+    title:"Database",
+    def:"A separate service that stores your app's data permanently, outside the app itself.",
+    problem:"Ever filled a long form, then lost everything on refresh? Apps face this too.",
+    steps:[
+      "Create a free project at supabase.com \u2014 you get a live database in minutes.",
+      "Easiest: connect an AI coding tool (like Claude Code) to Supabase's MCP server, and just ask it to set up your tables.",
+      "Or manually: <code>npm install @supabase/supabase-js</code>, then call <code>.from('table').insert()</code> in your code."
+    ],
+    outcome:{type:"browser", kind:"db", mode:"preview"}, codeFile:"db"
+  },
+  vcs: {
+    title:"Version Control",
+    def:"A tool that saves a dated history of every change you make to your code.",
+    problem:"Two people editing one file at once often erase each other's work.",
+    steps:[
+      "Run <code>git init</code> in your project folder to start tracking changes.",
+      "<code>git add .</code> then <code>git commit -m \"message\"</code> saves a version with a note.",
+      "<code>git push</code> sends it to GitHub \u2014 a backup, and a shared history your team can see."
+    ],
+    outcome:{type:"terminal", kind:"git"}, codeFile:null
+  },
+  deploy: {
+    title:"Deployment",
+    def:"Putting your app on a server that stays on, at a real address people can visit.",
+    problem:"A recipe saved on your phone is useless to guests until you actually cook it.",
+    steps:[
+      "Quickest: run <code>vercel</code> in your terminal \u2014 it deploys in under a minute.",
+      "Better long-term: connect your GitHub repo to Vercel \u2014 every push deploys a new version automatically.",
+      "Each version gets its own preview link, so you can test before it goes live."
+    ],
+    outcome:{type:"browser", kind:"deploy", mode:"live"}, codeFile:"deploy"
+  },
+  trace: {
+    title:"Tracing & Logging",
+    def:"A running record of what your app was doing, so a failure can be traced, not guessed at.",
+    problem:"A car's black box records what happened before a crash. Apps need the same.",
+    steps:[
+      "Sign up at sentry.io and copy your project's DSN key.",
+      "Add one line \u2014 <code>Sentry.init({ dsn: '...' })</code> \u2014 and it starts tracking errors.",
+      "Or simpler: just ask an AI coding assistant to \u201cadd Sentry error tracking\u201d \u2014 most can wire it up directly."
+    ],
+    outcome:{type:"terminal", kind:"logs"}, codeFile:"trace"
+  },
+  integ: {
+    title:"Integrations",
+    def:"A connection from your app to a tool people already use, like WhatsApp or email.",
+    problem:"Nobody checks five apps for one update \u2014 people expect an alert instead.",
+    steps:[
+      "Pick a service like Twilio for SMS \u2014 sign up and grab an API key.",
+      "Call their API from your code when something happens, like \u201corder ready.\u201d",
+      "No-code option: send Zapier a webhook (one line of code) when something happens \u2014 Zapier then talks to Twilio for you, no Twilio code needed."
+    ],
+    outcome:{type:"phone"}, codeFile:"integ"
+  },
+  pay: {
+    title:"Payments",
+    def:"A licensed service that moves money for you, so your code never touches card details.",
+    problem:"Handing cash to a stranger with no receipt feels risky \u2014 apps face the same problem.",
+    steps:[
+      "Not plug-and-play: create a business account on Stripe or Razorpay first \u2014 ID and bank verification required.",
+      "Once approved, add their SDK and use their Checkout API to charge someone.",
+      "Card details go straight from the customer's browser to Stripe or Razorpay, never through your own code. You just tell them how much to charge."
+    ],
+    outcome:{type:"browser", kind:"pay", mode:"preview"}, codeFile:"pay"
+  }
+};
+
+const nodeOrder = ["auth","db","vcs","deploy","trace","integ","pay"];
+const nodeColor = {auth:"#4FC1FF", db:"#4EC9B0", pay:"#C586C0", deploy:"#CE9178", integ:"#F48FB1", trace:"#DCDCAA", vcs:"#B94A3B"};
+const nodeLabel = {auth:"Authentication", db:"Database", pay:"Payments", deploy:"Deployment", integ:"Integrations", trace:"Tracing", vcs:"Version control"};
+const toolOptions = {
+  auth: ["Firebase Authentication","Auth0","Clerk"],
+  db: ["Supabase","Firebase Firestore","PostgreSQL"],
+  pay: ["Stripe","Razorpay","PayPal"],
+  deploy: ["Vercel","Netlify","Railway"],
+  integ: ["Twilio","Slack API","Zapier"],
+  trace: ["Sentry","Datadog","LogRocket"],
+  vcs: ["Git","GitHub","GitLab"]
+};
+
+// positions are fixed clock slots around the circle; ids are assigned to them
+// in priority order (most essential at the top, sweeping clockwise) so the
+// story reveals in a natural order instead of jumping around the circle.
+const positions = {
+  auth:   {x:320, y:90},      // top            - priority 1
+  db:     {x:499.7, y:176.5}, // upper-right     - priority 2
+  vcs:    {x:544.3, y:371.2}, // right           - priority 3
+  deploy: {x:419.8, y:527.2}, // bottom-right    - priority 4
+  trace:  {x:220.2, y:527.2}, // bottom-left     - priority 5
+  integ:  {x:95.7, y:371.2},  // left            - priority 6
+  pay:    {x:140.3, y:176.5}  // upper-left      - priority 7
+};
+
+/* ---------------- diagram build ---------------- */
+const svg = document.getElementById('diagramSvg');
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs){
+  const el = document.createElementNS(NS, tag);
+  Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+  return el;
+}
+
+function appendIcon(g, id, ox, oy, color){
+  const mk = (tag, attrs) => g.appendChild(svgEl(tag, Object.assign({class:'node-icon', stroke:color, 'stroke-width':'1.5'}, attrs)));
+  if(id==='auth'){
+    mk('rect', {x:ox+2, y:oy+7, width:12, height:9, rx:1.5});
+    mk('path', {d:'M'+(ox+4)+','+(oy+7)+' V'+(oy+5)+' a4,4 0 0 1 8,0 v2'});
+  } else if(id==='db'){
+    mk('ellipse', {cx:ox+8, cy:oy+3, rx:7, ry:2.2});
+    mk('path', {d:'M'+(ox+1)+','+(oy+3)+' V'+(oy+12)+' a7,2.2 0 0 0 14,0 V'+(oy+3)});
+    mk('path', {d:'M'+(ox+1)+','+(oy+7.5)+' a7,2.2 0 0 0 14,0'});
+  } else if(id==='pay'){
+    mk('rect', {x:ox, y:oy+2, width:17, height:11, rx:2});
+    mk('line', {x1:ox, y1:oy+6, x2:ox+17, y2:oy+6});
+  } else if(id==='deploy'){
+    mk('rect', {x:ox, y:oy, width:14, height:4, rx:1});
+    mk('rect', {x:ox, y:oy+5, width:14, height:4, rx:1});
+    mk('rect', {x:ox, y:oy+10, width:14, height:4, rx:1});
+  } else if(id==='integ'){
+    mk('path', {d:'M'+(ox+3)+','+(oy+5)+' V'+(oy+1)+' M'+(ox+9)+','+(oy+5)+' V'+(oy+1)});
+    mk('rect', {x:ox+1, y:oy+5, width:10, height:7, rx:2});
+    mk('line', {x1:ox+6, y1:oy+12, x2:ox+6, y2:oy+17});
+  } else if(id==='trace'){
+    mk('path', {d:'M'+ox+','+(oy+7)+' H'+(ox+4)+' L'+(ox+6)+','+(oy+1)+' L'+(ox+10)+','+(oy+13)+' L'+(ox+13)+','+(oy+7)+' H'+(ox+20)});
+  } else if(id==='vcs'){
+    mk('circle', {cx:ox+2, cy:oy+2, r:2, fill:color, stroke:'none'});
+    mk('circle', {cx:ox+2, cy:oy+14, r:2, fill:color, stroke:'none'});
+    mk('circle', {cx:ox+14, cy:oy+8, r:2, fill:color, stroke:'none'});
+    mk('path', {d:'M'+(ox+2)+','+(oy+4)+' V'+(oy+12)});
+    mk('path', {d:'M'+(ox+2)+','+(oy+8)+' Q'+(ox+2)+','+(oy+8)+' '+(ox+12)+','+(oy+8)});
+  }
+}
+
+nodeOrder.forEach(id => {
+  const p = positions[id];
+  svg.appendChild(svgEl('path', {
+    class:'connector', 'data-conn':id, pathLength:'100',
+    d:'M320,320 Q'+((320+p.x)/2)+','+((320+p.y)/2+18)+' '+p.x+','+p.y
+  }));
+});
+
+const coreGroup = svgEl('g', {class:'node-group', tabindex:'0', role:'button', 'aria-label':'Your App, before and after', 'data-node':'core'});
+coreGroup.appendChild(svgEl('rect', {class:'node-card core', id:'coreCardRect', x:238, y:278, width:164, height:84, rx:9}));
+const coreBadge = svgEl('g', {class:'core-badge', id:'coreBadge'});
+coreBadge.appendChild(svgEl('circle', {cx:397, cy:286, r:12, fill:'#4C7A4A'}));
+coreBadge.appendChild(svgEl('path', {d:'M391,286 L395,290 L404,278', stroke:'#fff', 'stroke-width':'2.4', fill:'none', 'stroke-linecap':'round', 'stroke-linejoin':'round'}));
+coreGroup.appendChild(coreBadge);
+const coreLabel = svgEl('text', {class:'node-label', x:320, y:313, 'font-size':'18'});
+coreLabel.textContent = 'Your App';
+coreGroup.appendChild(coreLabel);
+const coreSub = svgEl('text', {class:'node-sub', id:'coreSubText', x:320, y:338, 'font-size':'12.5'});
+coreSub.textContent = 'just a demo, for now';
+coreGroup.appendChild(coreSub);
+svg.appendChild(coreGroup);
+
+nodeOrder.forEach(id => {
+  const p = positions[id];
+  const g = svgEl('g', {class:'node-group hidden-node', tabindex:'0', role:'button', 'aria-label':nodeLabel[id], 'data-node':id});
+  g.appendChild(svgEl('rect', {class:'node-card', x:p.x-77, y:p.y-40, width:154, height:80, rx:8, stroke:nodeColor[id]}));
+  const words = nodeLabel[id].split(' ');
+  appendIcon(g, id, p.x-77+11, p.y-40+(words.length > 1 ? 9 : 17), nodeColor[id]);
+  if(words.length > 1){
+    const t1 = svgEl('text', {class:'node-label', x:p.x, y:p.y+10, 'font-size':'15'});
+    t1.textContent = words[0];
+    const t2 = svgEl('text', {class:'node-label', x:p.x, y:p.y+28, 'font-size':'15'});
+    t2.textContent = words.slice(1).join(' ');
+    g.appendChild(t1);
+    g.appendChild(t2);
+  } else {
+    const t = svgEl('text', {class:'node-label', x:p.x, y:p.y+22, 'font-size':'15'});
+    t.textContent = nodeLabel[id];
+    g.appendChild(t);
+  }
+  svg.appendChild(g);
+});
+
+function handleNodeActivate(e){
+  const g = e.target.closest('[data-node]');
+  if(!g) return;
+  const id = g.getAttribute('data-node');
+  if(id === 'core') openCoreModal();
+  else openStageModal(id);
+}
+svg.addEventListener('click', handleNodeActivate);
+svg.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); handleNodeActivate(e); }
+});
+
+/* ---------------- the story, told automatically ---------------- */
+const storyChapter = document.getElementById('storyChapter');
+const storyLine = document.getElementById('storyLine');
+const storyFix = document.getElementById('storyFix');
+const storyCard = document.getElementById('storyCard');
+const coreSubText = document.getElementById('coreSubText');
+const coreCardRect = document.getElementById('coreCardRect');
+const replayBtn = document.getElementById('replayBtn');
+
+const storyBeats = [
+  {id:"auth",   chapter:"Problem 1 of 7", line:"Two people log in \u2014 and become the same person."},
+  {id:"db",     chapter:"Problem 2 of 7", line:"Refresh the page. Everything just typed? Gone."},
+  {id:"vcs",    chapter:"Problem 3 of 7", line:"Two people edit the same thing. One erases the other."},
+  {id:"deploy", chapter:"Problem 4 of 7", line:"It only exists on your laptop. Nobody else can open it."},
+  {id:"trace",  chapter:"Problem 5 of 7", line:"Something breaks at 2am. No record of what happened."},
+  {id:"integ",  chapter:"Problem 6 of 7", line:"Something happens. But who's checking the app to find out?"},
+  {id:"pay",    chapter:"Problem 7 of 7", line:"Someone wants to pay you. There's nowhere for the money to go."}
+];
+
+let storyTimers = [];
+function clearStoryTimers(){ storyTimers.forEach(t => clearTimeout(t)); storyTimers = []; }
+
+// fades the caption out, swaps the text once it's invisible, then fades it back in
+function setCaption(chapter, line, fixText, fixColor){
+  storyCard.classList.add('fading');
+  storyTimers.push(setTimeout(() => {
+    storyChapter.textContent = chapter;
+    storyLine.textContent = line;
+    storyFix.textContent = fixText || '';
+    storyFix.style.color = fixColor || 'var(--string)';
+    storyCard.classList.remove('fading');
+  }, 220));
+}
+
+function playStory(){
+  clearStoryTimers();
+  nodeOrder.forEach(id => {
+    const g = svg.querySelector('[data-node="'+id+'"]');
+    g.classList.add('hidden-node');
+    g.classList.remove('active-story');
+    svg.querySelector('[data-conn="'+id+'"]').classList.remove('on');
+  });
+  coreCardRect.classList.remove('complete');
+  coreBadge.classList.remove('show');
+  coreSubText.classList.remove('complete-sub');
+  coreSubText.textContent = 'just a demo, for now';
+  storyChapter.textContent = 'Right now';
+  storyLine.textContent = 'It works. But only for you, right now.';
+  storyFix.textContent = '';
+  storyCard.classList.remove('fading');
+
+  const READ_TIME = 3000; // enough time to read the problem AND the fix before the next one arrives
+  const START = 1200;
+
+  storyBeats.forEach((beat, i) => {
+    storyTimers.push(setTimeout(() => {
+      const g = svg.querySelector('[data-node="'+beat.id+'"]');
+      g.classList.remove('hidden-node');
+      svg.querySelector('[data-conn="'+beat.id+'"]').classList.add('on');
+      g.classList.add('active-story');
+      setCaption(beat.chapter, beat.line, '\u2192 Fixed by: ' + nodeLabel[beat.id], nodeColor[beat.id]);
+      storyTimers.push(setTimeout(() => g.classList.remove('active-story'), READ_TIME - 500));
+    }, START + i * READ_TIME));
+  });
+
+  storyTimers.push(setTimeout(() => {
+    coreCardRect.classList.add('complete');
+    coreBadge.classList.add('show');
+    coreSubText.classList.add('complete-sub');
+    coreSubText.textContent = 'a real, working app';
+    setCaption('All 7 problems fixed', 'This is what a complete, working app actually needs.', '\u2705 Nothing missing now', 'var(--green)');
+  }, START + storyBeats.length * READ_TIME));
+}
+
+replayBtn.addEventListener('click', playStory);
+setTimeout(playStory, 800);
+
+/* ---------------- code + outcome rendering (shared) ---------------- */
+function escapeHtml(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+const KEYWORDS = /\b(import|export|from|function|async|await|try|catch|throw|new|return|default|true|false|const|let|if|else)\b/g;
+function highlightCode(code){
+  const parts = code.split(/('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/);
+  return parts.map((part, i) => {
+    if(i % 2 === 1) return '<span class="str">' + escapeHtml(part) + '</span>';
+    return escapeHtml(part).replace(KEYWORDS, '<span class="kw">$1</span>');
+  }).join('');
+}
+function codeLinesHtml(lines){
+  let n = 0;
+  return lines.map(ln => {
+    if(ln.code === '') return '<div class="ide-line"><span class="ide-gutter"></span><span class="ide-code">&nbsp;</span></div>';
+    n++;
+    const c = ln.comment ? ' <span class="cm">// ' + ln.comment + '</span>' : '';
+    return '<div class="ide-line' + (ln.added?' added':'') + '"><span class="ide-gutter">' + (ln.added?'+':n) + '</span><span class="ide-code">' + highlightCode(ln.code) + c + '</span></div>';
+  }).join('');
+}
+function codeWindowHtml(name, lines){
+  return '<div class="code-window">' +
+    '<div class="win-titlebar"><span class="win-dot r"></span><span class="win-dot y"></span><span class="win-dot g"></span><span class="win-title">'+name+'</span></div>' +
+    '<div class="ide-editor">'+codeLinesHtml(lines)+'</div></div>';
+}
+function codeRailHtml(fileId){
+  if(fileId === 'app0') return codeWindowHtml('app.js', appVersions[0]);
+  if(fileId === 'app8') return codeWindowHtml('app.js', appVersions[8]);
+  const f = otherFiles[fileId];
+  return codeWindowHtml(f.name, f.lines);
+}
+
+const siteHeader = '<div class="site-header"><span class="site-mark">Y</span><span class="site-name">Your App</span></div>';
+function browserBody(kind){
+  if(kind==='auth') return siteHeader + '<div class="ticket-block"><p class="tk-label">Your ticket</p><p class="big-number">#482</p></div><p class="browser-note">You\u2019re recognized every time you come back, even mid-form.</p>';
+  if(kind==='db') return siteHeader + '<p class="site-sub">Entry saved</p><div class="field-labeled"><label>Reference</label><div class="fake-field">#7</div></div><p class="browser-note">Close this tab, come back tomorrow, it\u2019ll still be here.</p>';
+  if(kind==='pay') return siteHeader + '<p class="site-sub">Checkout</p><div class="field-labeled"><label>Card number</label><div class="fake-field">\u2022\u2022\u2022\u2022 4242</div></div><div class="field-labeled"><label>Expires</label><div class="fake-field">04 / 27</div></div><div class="fake-btn">Pay \u20b91,200</div><p class="lock-line">\uD83D\uDD12 A separate payment service</p>';
+  if(kind==='deploy') return siteHeader + '<p class="site-sub">Now live for anyone with the link</p><div class="field-labeled"><label>Full name</label><div class="fake-field">A. Sharma</div></div><div class="field-labeled"><label>Message</label><div class="fake-field">General enquiry</div></div><div class="fake-btn">Submit</div><p class="browser-note">Same app, now sitting on a server that never turns off.</p>';
+  return '';
+}
+function browserHtml(kind, mode){
+  const addr = mode === 'live' ? 'your-app.up.app' : 'localhost:3000';
+  const badge = mode === 'live'
+    ? '<span class="badge-pill live"><span class="dot"></span>Live</span>'
+    : '<span class="badge-pill preview"><span class="dot"></span>Preview</span>';
+  return '<div class="browser-window"><div class="browser-chrome">' +
+    '<span class="win-dot r"></span><span class="win-dot y"></span><span class="win-dot g"></span>' +
+    '<div class="browser-addr">'+addr+'</div>'+badge+
+    '</div><div class="browser-body">'+browserBody(kind)+'</div></div>';
+}
+function phoneHtml(){
+  return '<div class="phone-wrap"><div class="phone-frame"><div class="phone-screen">' +
+    '<div class="phone-status"><span>9:41</span><span>\uD83D\uDCF6 \uD83D\uDD0B</span></div>' +
+    '<div class="msg-sender">Your App</div>' +
+    '<div class="msg-bubble">Hi! Your request has been confirmed.</div>' +
+    '<div class="msg-time">Delivered \u00b7 just now</div></div></div></div>';
+}
+function terminalHtml(kind){
+  let rows;
+  if(kind === 'git'){
+    rows = [
+      ['comment','# saving today\u2019s changes so nothing gets lost'],
+      ['prompt','$ git commit -m "connect checkout to payments"'],
+      ['out','[main 4a7c1f2] connect checkout to payments'],
+      ['out',' 2 files changed, 21 insertions(+)'],
+      ['prompt','$ git log --oneline -4'],
+      ['out','4a7c1f2 connect checkout to payments'],
+      ['out','9d3e8b1 add notifications'],
+      ['out','5f2a9c0 add a database'],
+      ['out','0a1f9c3 add authentication']
+    ];
+  } else {
+    rows = [
+      ['comment','# every action logger.js sees gets written here'],
+      ['out','[12:03:41] entry_submitted { entryId: 214 }'],
+      ['out','[12:04:02] payment_failed { reason: "card_declined" }'],
+      ['out','[12:04:58] entry_ready { entryId: 213 }'],
+      ['prompt','$ tail -f logger.output']
+    ];
+  }
+  return '<div class="terminal-window"><div class="win-titlebar"><span class="win-dot r"></span><span class="win-dot y"></span><span class="win-dot g"></span><span class="win-title">terminal</span></div>' +
+    '<div class="terminal-body">'+rows.map(r=>'<div class="'+r[0]+'">'+r[1]+'</div>').join('')+'</div></div>';
+}
+
+/* ---------------- modal open/close ---------------- */
+const modalOverlay = document.getElementById('modalOverlay');
+const modalBox = document.getElementById('modalBox');
+const modalContent = document.getElementById('modalContent');
+const modalClose = document.getElementById('modalClose');
+
+function openModal(){ modalOverlay.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+function closeModal(){ modalOverlay.classList.add('hidden'); document.body.style.overflow = ''; modalContent.innerHTML = ''; }
+modalClose.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) closeModal(); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && !modalOverlay.classList.contains('hidden')) closeModal(); });
+
+function outcomePanelHtml(outcome){
+  if(outcome.type === 'browser') return '<div class="outcome-panel"><p class="panel-label">What the user sees</p>' + browserHtml(outcome.kind, outcome.mode) + '</div>';
+  if(outcome.type === 'phone') return '<div class="outcome-panel"><p class="panel-label">What lands on their phone</p>' + phoneHtml() + '</div>';
+  if(outcome.type === 'terminal'){
+    const label = outcome.kind === 'git' ? 'The terminal' : 'The log stream';
+    return '<div class="outcome-panel"><p class="panel-label">' + label + '</p>' + terminalHtml(outcome.kind) + '</div>';
+  }
+  return '';
+}
+
+function openStageModal(id){
+  const s = stages[id];
+  const codeHtml = s.codeFile
+    ? '<div class="code-rail"><p class="panel-label">The code</p>' + codeRailHtml(s.codeFile) + '</div>'
+    : '<div class="code-rail"><p class="panel-label">The code</p><div class="code-empty">Not one file \u2014 it happens in the terminal with every change.</div></div>';
+
+  modalContent.innerHTML =
+    '<p class="modal-title">' + s.title + '</p>' +
+    '<p class="modal-def"><strong>What it is:</strong> ' + s.def + '</p>' +
+    '<p class="modal-blurb">' + s.problem + '</p>' +
+    '<div class="modal-steps"><p class="tools-heading">How to actually add it</p><ol>' +
+      s.steps.map(st => '<li>' + st + '</li>').join('') +
+    '</ol></div>' +
+    '<div class="tools-block"><p class="tools-heading">Tools you could use</p><ul>' +
+      toolOptions[id].map(t => '<li>' + t + '</li>').join('') +
+    '</ul></div>' +
+    '<div class="modal-panels">' + outcomePanelHtml(s.outcome) + codeHtml + '</div>';
+
+  openModal();
+  modalBox.scrollTop = 0;
+}
+
+function openCoreModal(){
+  modalContent.innerHTML =
+    '<p class="modal-title">Before and after</p>' +
+    '<p class="modal-blurb">The code takes seconds either way. Everything else is what actually makes it usable.</p>' +
+    '<div class="before-after">' +
+      '<div class="ba-col">' +
+        '<p class="ba-heading">No code wired in</p>' +
+        '<p class="ba-sub">Works, but only on your laptop. Nobody else can use it yet.</p>' +
+        codeRailHtml('app0') +
+      '</div>' +
+      '<div class="ba-col">' +
+        '<p class="ba-heading">All eight pieces integrated</p>' +
+        '<p class="ba-sub">Auth, a database, payments, deployment, messaging, and logging \u2014 wired in.</p>' +
+        codeRailHtml('app8') +
+      '</div>' +
+    '</div>';
+
+  openModal();
+  modalBox.scrollTop = 0;
+}
+</script>
+</body>
+</html>

@@ -87,41 +87,21 @@ export default function Home() {
     <section className="home-hero home-hero-new">
       <div className="container home-hero-grid home-hero-grid-new">
         <div className="home-hero-copy">
-          <span className="hero-kicker">AI FOR WORK FOR CORPORATE TEAMS</span>
-          <h1>
-            <span className="hero-title-line">Enterprise AI</span>
-            <span className="hero-title-line">adoption, built</span>
-            <span className="hero-title-line">through practice.</span>
-          </h1>
-          <p>AI changes every week. Build lasting capability through hands-on training followed by continued practice with real business workflows in the AI Practice Lab.</p>
+          <span className="eyebrow">AI for Work for Corporate Teams</span>
+          <h1>Build practical AI capability that lasts.</h1>
+          <p>Hands-on workshops help employees use AI on real work. The Nudgeable AI Academy gives them practical workflows, clear explainers and weekly updates as the tools change.</p>
           <div className="button-row hero-actions">
-            <a className="button button-primary button-compact" href="#training">Explore AI training <Icon name="arrow" size={17} /></a>
-            <a className="button button-secondary button-compact" href="/ai-academy/index.html">Open AI Academy <Icon name="arrow" size={17} /></a>
-          </div>
-          <div className="hero-tools">
-            <div className="tool-row hero-tool-row">
-              {aiTools.map(tool => <span className="tool-chip" key={tool.name}>
-                <b>
-                  {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" unoptimized /> : tool.mark}
-                </b>
-                {tool.name}
-              </span>)}
-            </div>
-            <div className="hero-tool-marquee" aria-label="More AI tools covered">
-              <div className="hero-tool-marquee-track">
-                {[...featuredAiTools, ...featuredAiTools].map((tool, index) => <span className="tool-chip" key={`${tool.name}-${index}`}>
-                  <b>
-                    {tool.iconSrc ? <Image src={tool.iconSrc} alt="" width={18} height={18} className="tool-chip-icon" unoptimized /> : tool.mark}
-                  </b>
-                  {tool.name}
-                </span>)}
-              </div>
-            </div>
+            <a className="button button-primary button-compact" href="#training">Explore the Workshops <Icon name="arrow" size={17} /></a>
+            <a className="button button-secondary button-compact" href="/ai-academy/index.html">See the AI Academy <Icon name="arrow" size={17} /></a>
           </div>
         </div>
 
-        <div className="home-hero-product-image" aria-label="AI Practice Lab preview">
-          <Image src="/assets/hero-practice-lab.jpg" alt="Facilitator presenting AI tools beside the AI Practice Lab interface with guided workflows" width={1024} height={768} priority />
+        <div className="home-hero-product-image hero-visual" aria-label="AI Practice Lab preview">
+          <Image src="/assets/hero-practice-lab.jpg" alt="Facilitator presenting AI tools alongside the Nudgeable AI Academy" width={1024} height={768} priority />
+          <a className="hero-note-card" href="/ai-academy/index.html">
+            <div><strong>Workshop + Nudgeable AI Academy</strong><br /><span>Hands-on learning supported by workflows, guides and weekly updates.</span></div>
+            <strong>Explore <Icon name="arrow" size={15} /></strong>
+          </a>
         </div>
       </div>
     </section>
@@ -131,16 +111,33 @@ export default function Home() {
     <section id="training" className="training-proof-section">
       <div className="container">
         <div className="section-intro">
-          <span className="eyebrow">GENAI MASTERCLASS</span>
+          <span className="eyebrow">CORPORATE AI WORKSHOPS</span>
           <h2>Hands-on AI training built around real work.</h2>
-          <p>Employees practise on realistic tasks from their functions. The program can cover prompting, writing, research, presentations, data analysis, images, automation, AI agents and responsible use.</p>
+          <p>Employees practise with realistic activities from their own functions. The agenda is customized around their roles, available AI tools and business priorities.</p>
         </div>
-        <div className="metric-cards">
-          <div><AnimatedStat value={45} suffix="+" /><span>Corporate cohorts</span></div>
-          <div><AnimatedStat value={2500} suffix="+" /><span>Professionals trained</span></div>
-          <div><AnimatedStat value={100} suffix="+" /><span>Workflows in the AI Academy</span></div>
-          <div><AnimatedStat value={8} /><span>Industries</span></div>
+
+        <div className="card-grid topic-grid">
+          <div className="info-card"><div className="icon-box"><Icon name="spark" size={22} /></div><h3>How GenAI Works</h3><p>Models, context, hallucinations, research modes and why the quality of AI output changes.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="calendar" size={22} /></div><h3>AI for Everyday Work</h3><p>Research, writing, meetings, presentations and workflows connected to participants&rsquo; roles.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="chart" size={22} /></div><h3>Data, Dashboards and Design</h3><p>Analyse files, identify insights, create charts and turn findings into clear visual outputs.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="workflow" size={22} /></div><h3>Workflow Automation</h3><p>Connect steps, tools and information to reduce repetitive work and manual handovers.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="people" size={22} /></div><h3>Building AI Agents</h3><p>Understand agent systems and build practical agents using no-code or coding tools.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="shield" size={22} /></div><h3>Governance and Data Security</h3><p>Protect company information, verify output and manage permissions, copyright and human review.</p></div>
         </div>
+
+        <div className="format-bar">
+          <div><strong>Designed around your team</strong><p>Half-day Masterclass &middot; One-day Workshop &middot; Multi-session Program &middot; Leadership Session</p></div>
+          <a className="button button-primary button-compact" href="#contact">Discuss a Program <Icon name="arrow" size={17} /></a>
+        </div>
+
+        <h3 className="proof-title">Built across functions, levels and industries.</h3>
+        <div className="proof-band">
+          <div className="proof-item"><AnimatedStat value={45} suffix="+" /><b>Corporate cohorts</b><span>Customized AI programs</span></div>
+          <div className="proof-item"><AnimatedStat value={2500} suffix="+" /><b>Professionals trained</b><span>From employees to senior leaders</span></div>
+          <div className="proof-item"><AnimatedStat value={10} suffix="+" /><b>Business functions</b><span>HR, Finance, Sales, Marketing and more</span></div>
+          <div className="proof-item"><AnimatedStat value={8} /><b>Industries</b><span>Pharma, retail, finance, manufacturing and more</span></div>
+        </div>
+
         <SessionPhotoRow />
       </div>
     </section>
@@ -180,22 +177,22 @@ export default function Home() {
     </section>
 
     <section id="about" className="founder-section">
-      <div className="container founder-home-grid">
-        <div className="founder-image"><Image src="/brand/gaurav-patel.webp" alt="Gaurav Patel, founder and facilitator at Nudgeable" width={1200} height={1200} sizes="(max-width: 860px) 100vw, 42vw" /></div>
-        <div>
-          <span className="eyebrow">FOUNDER AND FACILITATOR</span>
+      <div className="container founder-panel">
+        <div className="founder-photo"><Image src="/brand/gaurav-patel.webp" alt="Gaurav Patel, founder and facilitator at Nudgeable" width={900} height={1080} sizes="(max-width: 860px) 100vw, 34vw" /></div>
+        <div className="founder-copy">
+          <span className="eyebrow">Founder and Facilitator</span>
           <h2>AI for Work, grounded in corporate reality.</h2>
           <p>Gaurav Patel designs practical AI training across industries and business functions. Each session is customized around how participants actually work, the tools they use and the outcomes they need.</p>
           <p>The training draws on daily use of leading AI tools and first-hand experience building the Practice Lab, AI Coach and Actions Engine. This brings real product development and implementation knowledge into every session.</p>
           <div className="founder-points"><span>45+ corporate cohorts</span><span>2,500+ professionals trained</span><span>B.E. in IT and MBA from XLRI</span><span>15+ years across India, Singapore and London</span></div>
-          <a className="button button-secondary" href="https://www.linkedin.com/in/gauravpatel25/ai" target="_blank" rel="noopener noreferrer">More about Gaurav <Icon name="arrow" size={17} /></a>
+          <a className="button button-ghost-dark" href="https://www.linkedin.com/in/gauravpatel25/ai" target="_blank" rel="noopener noreferrer">More about Gaurav <Icon name="arrow" size={17} /></a>
         </div>
       </div>
     </section>
 
     <section id="contact" className="contact-home-section">
       <div className="container contact-home-grid">
-        <div><span className="eyebrow">CONTACT</span><h2>What should employees do better with AI?</h2><p>Share the audience, tools available and workplace outcomes that matter. The program can be designed around those realities.</p></div>
+        <div className="contact-copy"><span className="eyebrow">Contact</span><h2>What should employees do better with AI?</h2><p>Share the audience, tools available and workplace outcomes that matter. The program can be designed around those realities.</p></div>
         <div className="contact-card"><ContactForm compact /></div>
       </div>
     </section>

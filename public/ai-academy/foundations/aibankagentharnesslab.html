@@ -1,0 +1,1553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="/ai-academy/foundations/aibankagentharnesslab.html">
+<link rel="icon" href="/icon.png" type="image/png" sizes="256x256">
+<title>AI Bank Agent Harness Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFDF5;
+  --panel:rgba(255,255,255,.90);
+  --panel-2:rgba(255,253,245,.78);
+  --line:rgba(34,29,35,.10);
+  --border:rgba(34,29,35,.20);
+  --ink:#221D23;
+  --ink-soft:#4A4047;
+  --muted:#8A8090;
+  --amber:#FFCE00;
+  --amber-ink:#221D23;
+  --guard:#23CE6B;
+  --guard-soft:rgba(35,206,107,.13);
+  --guard-ink:#0A6632;
+  --risk:#ED4551;
+  --risk-soft:rgba(237,69,81,.12);
+  --risk-ink:#8C1C24;
+  --warn:#FFCE00;
+  --warn-soft:rgba(255,206,0,.16);
+  --warn-ink:#7A5F00;
+  --accent2:#623CEA;
+  --accent2-soft:rgba(98,60,234,.12);
+  --accent2-ink:#2D1580;
+  --user-bubble:#221D23;
+  --user-bubble-text:#FFFDF5;
+  --shadow:0 4px 12px rgba(34,29,35,.08), 0 2px 4px rgba(34,29,35,.04);
+  --shadow-yellow:0 4px 20px rgba(255,206,0,.35);
+  --focus:#FFCE00;
+  --blur:16px;
+}
+/* Light theme only — committed brand look, no dark variant. */
+
+*{box-sizing:border-box;}
+[hidden]{display:none !important;}
+:root{color-scheme:light;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size:14px;
+  line-height:1.5;
+}
+.app{max-width:1280px;margin:0 auto;padding:28px 20px 60px;}
+
+h1,h2,h3{font-family:"Inter", ui-sans-serif, system-ui, sans-serif; font-weight:700; text-wrap:balance; margin:0;}
+code, .mono{font-family:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;}
+.tabular{font-variant-numeric:tabular-nums;}
+
+/* ---------- header ---------- */
+.masthead{
+  display:flex; flex-wrap:wrap; gap:18px 28px; align-items:flex-end; justify-content:space-between;
+  padding-bottom:18px; margin-bottom:20px; border-bottom:1px solid var(--border);
+}
+.masthead .title-block{max-width:640px;}
+.eyebrow{
+  font-family:"JetBrains Mono"; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 8px;
+}
+.masthead h1{font-size:clamp(28px,3.4vw,38px); font-weight:600; color:var(--ink);}
+.masthead p{margin:8px 0 0; color:var(--ink-soft); max-width:56ch;}
+.model-badge{
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid var(--border); background:var(--panel); border-radius:999px;
+  padding:7px 14px 7px 8px; box-shadow:var(--shadow); flex:0 0 auto;
+}
+.model-badge .dot{width:9px;height:9px;border-radius:50%;background:var(--guard); box-shadow:0 0 0 3px var(--guard-soft);}
+.model-badge .txt{display:flex; flex-direction:column; line-height:1.25;}
+.model-badge .txt b{font-size:12.5px; font-weight:600;}
+.model-badge .txt span{font-size:11px; color:var(--muted); font-family:"JetBrains Mono";}
+
+/* ---------- tabs ---------- */
+.tabbar{display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;}
+.tab{
+  appearance:none; cursor:pointer; text-align:left;
+  border:1px solid var(--border); background:var(--panel); border-radius:9999px;
+  padding:12px 16px; flex:1 1 260px; min-width:240px;
+  display:flex; align-items:center; gap:12px;
+  transition:border-color .15s, box-shadow .15s, transform .1s;
+  color:var(--ink); font-family:inherit;
+}
+.tab:hover{border-color:var(--muted);}
+.tab:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+.tab .num{
+  font-family:"Inter"; font-weight:900; font-size:22px; width:34px; text-align:center; flex:0 0 auto;
+}
+.tab .lbl{display:flex; flex-direction:column; gap:2px;}
+.tab .lbl b{font-size:13.5px;}
+.tab .lbl span{font-size:11.5px; color:var(--muted);}
+.tab[data-phase="p1"] .num{color:var(--risk);}
+.tab[data-phase="p2"] .num{color:var(--guard);}
+.tab[data-phase="behind"] .num{color:var(--accent2); font-size:19px;}
+.tab[aria-selected="true"]{box-shadow:var(--shadow); border-color:var(--ink-soft);}
+.tab[aria-selected="true"][data-phase="p1"]{background:var(--risk-soft); border-color:var(--risk);}
+.tab[aria-selected="true"][data-phase="p2"]{background:var(--guard-soft); border-color:var(--guard);}
+.tab[aria-selected="true"][data-phase="behind"]{background:var(--accent2-soft); border-color:var(--accent2);}
+
+/* ---------- phase panel ---------- */
+.phase-panel{}
+.phase-strip{
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:14px 16px; border-radius:20px; margin-bottom:16px; border:1px solid var(--border);
+}
+.phase-strip.risk{background:var(--risk-soft); border-color:color-mix(in srgb, var(--risk) 40%, var(--border));}
+.phase-strip.guard{background:var(--guard-soft); border-color:color-mix(in srgb, var(--guard) 40%, var(--border));}
+.phase-pill{
+  font-family:"JetBrains Mono"; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  padding:5px 10px; border-radius:999px; font-weight:600; flex:0 0 auto;
+}
+.phase-strip.risk .phase-pill{background:var(--risk); color:#fff;}
+.phase-strip.guard .phase-pill{background:var(--guard); color:#fff;}
+.phase-strip p{margin:0; color:var(--ink-soft); flex:1 1 320px; min-width:220px;}
+.reset-btn{
+  appearance:none; cursor:pointer; border:1px solid var(--border); background:var(--panel);
+  color:var(--ink); font:inherit; font-size:12.5px; padding:8px 14px; border-radius:9999px;
+  display:flex; align-items:center; gap:6px; flex:0 0 auto;
+}
+.reset-btn:hover{border-color:var(--muted);}
+
+.workspace{
+  display:grid;
+  grid-template-columns: 220px minmax(0,1fr) 250px;
+  grid-template-areas: "ledger chat rail" "log log log";
+  gap:16px;
+}
+@media (max-width: 940px){
+  .workspace{grid-template-columns:1fr; grid-template-areas:"chat" "rail" "ledger" "log";}
+}
+
+.card{
+  background:var(--panel); border:1px solid var(--border); border-radius:20px;
+  box-shadow:var(--shadow); backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur));
+  display:flex; flex-direction:column; min-height:0;
+}
+.card > h3{
+  font-family:"Inter"; font-weight:600; font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--muted); padding:12px 14px 10px; border-bottom:1px solid var(--line); margin:0;
+}
+
+/* ledger : my account + beneficiaries */
+.ledger{grid-area:ledger;}
+.my-account{padding:13px 14px 14px; border-bottom:1px solid var(--line);}
+.ma-name{font-size:12.5px; font-weight:600;}
+.ma-type{font-size:10.5px; color:var(--muted); font-family:"JetBrains Mono"; text-transform:uppercase; letter-spacing:.03em; margin-top:1px;}
+.ma-balance{
+  font-family:"JetBrains Mono"; font-size:21px; font-weight:700; margin:8px -6px 0; padding:4px 10px;
+  border-radius:9999px; display:inline-block;
+}
+.ma-balance.neg{color:var(--risk);}
+.ma-balance.flash-num{animation:flash 1.4s ease-out;}
+.ledger-sub{border-top:none;}
+.ledger-body{overflow-y:auto; max-height:300px;}
+.ben-row{
+  display:flex; justify-content:space-between; align-items:baseline; gap:8px;
+  padding:7px 14px;
+  background-image:repeating-linear-gradient(180deg, transparent 0 25px, var(--line) 25px 26px);
+}
+.ben-row .ben-name{font-size:12px;}
+.ben-row .ben-masked{font-family:"JetBrains Mono"; font-size:10.5px; color:var(--muted);}
+.ben-row.flash{animation:flash 1.4s ease-out;}
+@keyframes flash{0%{background-color:var(--warn-soft);}100%{background-color:transparent;}}
+
+.ledger-more{border-top:1px solid var(--line);}
+.ledger-more summary{
+  cursor:pointer; padding:9px 14px; font-size:11px; font-family:"JetBrains Mono"; color:var(--muted);
+  list-style:none; user-select:none;
+}
+.ledger-more summary::-webkit-details-marker{display:none;}
+.ledger-more summary::before{content:'+ ';}
+.ledger-more[open] summary::before{content:'\2212 ';}
+.ledger-more summary:hover{color:var(--ink-soft);}
+
+/* chat */
+.chat{grid-area:chat;}
+.chat-scroll{flex:1; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px; min-height:360px; max-height:520px;}
+.msg{max-width:88%; display:flex; flex-direction:column; gap:6px;}
+.msg.user{align-self:flex-end; align-items:flex-end;}
+.msg.model{align-self:flex-start; align-items:flex-start;}
+.bubble{border-radius:18px; padding:10px 14px; font-size:13.5px; line-height:1.5;}
+.msg.user .bubble{background:var(--user-bubble); color:var(--user-bubble-text); border-bottom-right-radius:4px;}
+.msg.model .bubble{background:var(--panel-2); border:1px solid var(--line); border-bottom-left-radius:4px;}
+.msg .who{font-family:"JetBrains Mono"; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted);}
+.sysline{
+  align-self:center; font-family:"JetBrains Mono"; font-size:11px; color:var(--muted);
+  background:var(--panel-2); border:1px dashed var(--border); border-radius:999px; padding:5px 12px; max-width:92%; text-align:center;
+}
+.notes{display:flex; flex-wrap:wrap; gap:6px;}
+.note-chip{
+  font-family:"JetBrains Mono"; font-size:10.5px; padding:3px 10px; border-radius:9999px; border:1px solid;
+}
+.note-chip.risk{color:var(--risk-ink); background:var(--risk-soft); border-color:color-mix(in srgb, var(--risk) 45%, transparent);}
+.note-chip.guard{color:var(--guard-ink); background:var(--guard-soft); border-color:color-mix(in srgb, var(--guard) 45%, transparent);}
+details.trace{font-size:11px; color:var(--muted);}
+details.trace summary{cursor:pointer; font-family:"JetBrains Mono"; user-select:none;}
+details.trace pre{
+  margin:6px 0 0; padding:8px 10px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+  font-family:"JetBrains Mono"; font-size:11px; overflow-x:auto; color:var(--ink-soft);
+}
+.hitl-card{
+  border:1px solid var(--border); border-radius:20px; padding:14px 16px; max-width:100%;
+  background:var(--panel-2);
+}
+.hitl-card.pending{border-color:color-mix(in srgb, var(--warn) 50%, var(--border)); background:var(--warn-soft);}
+.hitl-card h4{margin:0 0 6px; font-size:12.5px; font-family:"Inter"; font-weight:600; color:var(--warn-ink);}
+.hitl-card .row{display:flex; justify-content:space-between; font-size:12px; padding:2px 0; gap:10px;}
+.hitl-card .row span:first-child{color:var(--muted);}
+.hitl-card .row span:last-child{font-family:"JetBrains Mono"; text-align:right;}
+.hitl-actions{display:flex; gap:8px; margin-top:10px;}
+.btn{
+  appearance:none; cursor:pointer; border-radius:9999px; padding:8px 16px; font:inherit; font-size:12.5px; font-weight:600;
+  border:1px solid transparent;
+}
+.btn:focus-visible{outline:2px solid var(--focus); outline-offset:2px;}
+.btn.approve{background:var(--guard); color:#fff;}
+.btn.approve:hover{filter:brightness(1.08);}
+.btn.deny{background:transparent; border-color:var(--border); color:var(--ink-soft);}
+.btn.deny:hover{border-color:var(--risk); color:var(--risk);}
+.btn.pick{background:var(--panel); border-color:var(--border); color:var(--ink); text-align:left; padding:9px 14px;}
+.btn.pick:hover{border-color:var(--accent2); background:var(--accent2-soft);}
+.pick-list{display:flex; flex-direction:column; gap:6px; margin-top:8px;}
+
+.typing{display:flex; gap:4px; padding:4px 2px;}
+.typing span{width:6px; height:6px; border-radius:50%; background:var(--muted); opacity:.5; animation:blink 1.1s infinite;}
+.typing span:nth-child(2){animation-delay:.15s;} .typing span:nth-child(3){animation-delay:.3s;}
+@keyframes blink{0%,80%,100%{opacity:.25;}40%{opacity:.9;}}
+
+.composer{border-top:1px solid var(--line); padding:10px 12px 12px;}
+.chips{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:9px;}
+.chip{
+  appearance:none; cursor:pointer; border:1px solid var(--border); background:var(--panel-2); color:var(--ink-soft);
+  font:inherit; font-size:11.5px; padding:6px 10px; border-radius:999px; font-family:"JetBrains Mono";
+}
+.chip:hover{border-color:var(--guard); color:var(--ink);}
+.input-row{display:flex; gap:8px;}
+.input-row input{
+  flex:1; border:1px solid var(--border); background:var(--panel); color:var(--ink); border-radius:12px;
+  padding:10px 14px; font:inherit; font-size:13.5px;
+}
+.input-row input:focus-visible, .input-row input:focus{outline:2px solid var(--focus); outline-offset:1px;}
+.send-btn{background:var(--amber); color:var(--amber-ink); border:none; border-radius:9999px; padding:0 18px; font:inherit; font-weight:700; cursor:pointer; font-size:13px; box-shadow:var(--shadow-yellow);}
+.send-btn:hover{filter:brightness(1.06);}
+
+/* rail */
+.rail{grid-area:rail;}
+.rail-body{padding:14px; display:flex; flex-direction:column; gap:0;}
+.rail-step{display:flex; gap:10px; position:relative; padding-bottom:22px;}
+.rail-step:last-child{padding-bottom:0;}
+.rail-step::before{
+  content:""; position:absolute; left:9px; top:20px; bottom:0; width:1px; background:var(--border);
+}
+.rail-step:last-child::before{display:none;}
+.rail-dot{
+  width:19px; height:19px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+  border:1.5px solid var(--border); background:var(--panel); font-size:11px; margin-top:1px; z-index:1;
+}
+.rail-txt b{display:block; font-size:12.5px;}
+.rail-txt span{display:block; font-size:11px; color:var(--muted); margin-top:2px;}
+.rail-step[data-status="idle"] .rail-dot{border-color:var(--border); color:var(--muted);}
+.rail-step[data-status="active"] .rail-dot{border-color:var(--ink-soft); background:var(--ink-soft); color:var(--panel);}
+.rail-step[data-status="pass"] .rail-dot{border-color:var(--guard); background:var(--guard); color:#fff;}
+.rail-step[data-status="fail"] .rail-dot{border-color:var(--risk); background:var(--risk); color:#fff;}
+.rail-step[data-status="pending"] .rail-dot{border-color:var(--warn); background:var(--warn); color:#fff;}
+.rail-step[data-status="skipped"] .rail-dot{border-style:dashed; color:var(--muted);}
+.rail-step[data-status="skipped"] .rail-txt b{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--border);}
+.rail-step[data-status="pass"] .rail-txt b{color:var(--guard-ink);}
+.rail-step[data-status="fail"] .rail-txt b{color:var(--risk-ink);}
+.rail-step[data-status="pending"] .rail-txt b{color:var(--warn-ink);}
+
+/* log */
+.log{grid-area:log;}
+.log-body{overflow-x:auto;}
+table.ledger-log{width:100%; border-collapse:collapse; font-size:12px;}
+table.ledger-log th{
+  text-align:left; font-family:"JetBrains Mono"; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--muted); padding:8px 14px; border-bottom:1px solid var(--line); white-space:nowrap;
+}
+table.ledger-log td{padding:8px 14px; border-bottom:1px solid var(--line); white-space:nowrap; font-family:"JetBrains Mono"; font-size:11.5px;}
+table.ledger-log tr:last-child td{border-bottom:none;}
+.log-empty{padding:16px 14px; color:var(--muted); font-size:12px;}
+.tag{font-family:"JetBrains Mono"; font-size:10px; padding:2px 9px; border-radius:9999px; text-transform:uppercase;}
+.tag.ok{background:var(--guard-soft); color:var(--guard-ink);}
+.tag.bad{background:var(--risk-soft); color:var(--risk-ink);}
+
+
+/* ---------- behind the scenes ---------- */
+.behind{display:flex; flex-direction:column; gap:28px;}
+
+.diagram-card{
+  background:var(--panel); border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow);
+  backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur));
+  padding:18px 18px 8px;
+}
+.diagram-card svg{display:block; width:100%; height:auto;}
+.diagram-card figcaption{padding:10px 4px 14px; font-size:12px; color:var(--muted); max-width:70ch;}
+
+.outcome-card{background:var(--panel); border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow); backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur)); overflow:hidden;}
+.outcome-card h3{padding:13px 16px; margin:0; border-bottom:1px solid var(--line); font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600; font-family:"Inter";}
+.outcome-body{overflow-x:auto;}
+table.outcome{width:100%; border-collapse:collapse; font-size:12.5px;}
+table.outcome th{
+  text-align:left; font-family:"JetBrains Mono"; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--muted); padding:9px 16px; border-bottom:1px solid var(--line); white-space:nowrap;
+}
+table.outcome td{padding:11px 16px; border-bottom:1px solid var(--line); vertical-align:top; max-width:280px;}
+table.outcome tr:last-child td{border-bottom:none;}
+table.outcome td.risk-cell{color:var(--risk-ink);}
+table.outcome td.guard-cell{color:var(--guard-ink);}
+table.outcome td.scenario{font-family:"JetBrains Mono"; font-size:11.5px; color:var(--ink-soft); white-space:normal;}
+
+
+.compare-note{font-size:12.5px; color:var(--muted); text-align:center; max-width:62ch; margin:0 auto;}
+
+/* ---------- code card ---------- */
+.code-card{background:var(--panel); border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow); backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur)); overflow:hidden;}
+.code-card .code-head{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 16px; border-bottom:1px solid var(--line); background:var(--panel-2);}
+.code-card .code-head span{font-family:"JetBrains Mono"; font-size:11px; color:var(--muted);}
+.code-label{
+  font-family:"JetBrains Mono"; font-size:10px; font-weight:700; letter-spacing:.06em;
+  padding:3px 9px; border-radius:999px; flex:0 0 auto;
+}
+.code-label.label-guardrail{background:var(--warn-soft); color:var(--warn-ink);}
+.code-label.label-harness{background:var(--guard-soft); color:var(--guard-ink);}
+pre.code-block{margin:0; padding:16px 18px; overflow-x:auto; font-family:"JetBrains Mono"; font-size:12px; line-height:1.7; color:var(--ink-soft);}
+pre.code-block .cm{color:var(--muted);}
+pre.code-block .g{color:var(--guard-ink);}
+pre.code-block .w{color:var(--warn-ink);}
+.code-foot{padding:10px 16px 14px; font-size:11.5px; color:var(--muted); border-top:1px dashed var(--border);}
+.code-card.frail{border-color:color-mix(in srgb, var(--warn) 45%, var(--border));}
+.code-card.solid{border-color:color-mix(in srgb, var(--guard) 45%, var(--border));}
+.code-card .code-head.frail-head{background:var(--warn-soft);}
+.code-card .code-head.solid-head{background:var(--guard-soft);}
+.code-foot.frail-foot{color:var(--warn-ink); border-top-color:color-mix(in srgb, var(--warn) 35%, var(--border));}
+.code-foot.solid-foot{color:var(--guard-ink); border-top-color:color-mix(in srgb, var(--guard) 35%, var(--border));}
+
+/* ---------- harness hero ---------- */
+.harness-hero{max-width:70ch;}
+.harness-hero h2{font-size:clamp(21px,2.8vw,27px); font-weight:600; margin:0 0 10px;}
+.harness-hero p{margin:0 0 10px; color:var(--ink-soft); font-size:14.5px; line-height:1.6;}
+.harness-hero p:last-child{margin-bottom:0;}
+.harness-hero b{color:var(--ink); font-weight:600;}
+
+.editor-pair{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px;}
+
+/* ---------- IDE file browser ---------- */
+.ide-card{background:var(--panel); border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow); backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur)); overflow:hidden;}
+.ide-toolbar{display:flex; align-items:center; gap:14px; padding:10px 14px; background:var(--panel-2); border-bottom:1px solid var(--line);}
+.ide-dots{display:flex; gap:6px; flex:0 0 auto;}
+.ide-dots i{width:11px; height:11px; border-radius:50%; display:block;}
+.ide-dots i.tl-red{background:#FF5F57;}
+.ide-dots i.tl-yellow{background:#FEBC2E;}
+.ide-dots i.tl-green{background:#28C840;}
+.ide-path{font-family:"JetBrains Mono"; font-size:11.5px; color:var(--muted);}
+.ide-path b{color:var(--ink-soft); font-weight:600;}
+
+.ide-tabstrip{display:flex; align-items:stretch; background:var(--panel-2); border-bottom:1px solid var(--line); padding:0 6px; overflow-x:auto;}
+.ide-tab{
+  display:flex; align-items:center; gap:8px; padding:9px 16px 8px; font-family:"JetBrains Mono"; font-size:11.5px;
+  color:var(--muted); border-right:1px solid var(--line); background:transparent; border-top:2px solid transparent;
+  white-space:nowrap;
+}
+.ide-tab.active{background:var(--panel); color:var(--ink); font-weight:600; border-top-color:var(--accent2);}
+.file-ico{
+  display:inline-flex; align-items:center; justify-content:center; width:16px; height:14px; border-radius:4px;
+  background:var(--accent2); color:#fff; font-size:7.5px; font-weight:700; font-family:"JetBrains Mono";
+  letter-spacing:.02em; flex:0 0 auto;
+}
+
+.ide-body{display:grid; grid-template-columns:210px minmax(0,1fr);}
+@media (max-width:720px){ .ide-body{grid-template-columns:1fr;} .ide-tree{border-right:none; border-bottom:1px solid var(--line);} }
+.ide-tree{border-right:1px solid var(--line); padding:10px 6px; display:flex; flex-direction:column; gap:1px; background:var(--panel-2);}
+.tree-root{font-family:"JetBrains Mono"; font-size:11px; color:var(--muted); padding:4px 8px 8px; letter-spacing:.02em;}
+.tree-folder{font-family:"JetBrains Mono"; font-size:11.5px; color:var(--ink-soft); font-weight:600; padding:6px 8px 3px 14px;}
+.tree-file{
+  appearance:none; cursor:pointer; border:none; background:transparent; text-align:left; width:100%;
+  display:flex; align-items:center; gap:8px;
+  font-family:"JetBrains Mono"; font-size:11.5px; color:var(--muted); padding:6px 10px 6px 26px; border-radius:8px;
+  border-left:2px solid transparent;
+}
+.tree-file:hover{background:var(--panel); color:var(--ink-soft);}
+.tree-file.active{background:var(--accent2-soft); color:var(--accent2-ink); font-weight:600; border-left-color:var(--accent2);}
+
+.ide-pane{min-width:0; display:flex; flex-direction:column;}
+.ide-code-wrap{overflow-x:auto; background:var(--panel);}
+.ide-code{margin:0; padding:14px 0; font-family:"JetBrains Mono"; font-size:12px; line-height:1.7; counter-reset:line;}
+.ide-code .line{display:flex; gap:14px; padding:0 16px; white-space:pre;}
+.ide-code .line::before{
+  counter-increment:line; content:counter(line); flex:0 0 24px; text-align:right;
+  color:var(--muted); opacity:.5; user-select:none;
+}
+.ide-code .line .txt{color:var(--ink-soft);}
+.ide-code .line .txt.cm{color:var(--muted);}
+.ide-code .line .txt.g{color:var(--guard-ink);}
+.ide-code .line .txt.w{color:var(--warn-ink);}
+.ide-code .line.hl-g{background:var(--guard-soft);}
+.ide-code .line.hl-w{background:var(--warn-soft);}
+.py-kw{color:var(--accent2); font-weight:600;}
+.py-str{color:#B26B00;}
+.py-num{color:var(--guard-ink);}
+.py-cm{color:var(--muted);}
+.ide-caption{padding:11px 16px 14px; font-size:11.5px; color:var(--muted); border-top:1px dashed var(--border);}
+.ide-statusbar{
+  display:flex; align-items:center; gap:16px; padding:6px 14px; background:var(--accent2); color:#fff;
+  font-family:"JetBrains Mono"; font-size:10.5px;
+}
+.ide-statusbar .ide-status-spacer{flex:1;}
+.ide-statusbar span{opacity:.92;}
+
+/* ---------- step-through ---------- */
+.steps{display:flex; flex-direction:column; gap:20px;}
+.steps-dots{display:flex; gap:7px; justify-content:center;}
+.steps-dots button{
+  appearance:none; cursor:pointer; border:none; padding:0; width:8px; height:8px; border-radius:5px;
+  background:var(--border);
+}
+.steps-dots button:hover{background:var(--muted);}
+.steps-dots button.active{background:var(--amber); width:22px;}
+.step{display:flex; flex-direction:column; gap:0; min-height:1px;}
+.steps-controls{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding-top:16px; border-top:1px solid var(--border);
+}
+.step-btn{
+  appearance:none; cursor:pointer; border:1px solid var(--border); background:var(--panel); color:var(--ink-soft);
+  font:inherit; font-size:13px; font-weight:600; padding:9px 18px; border-radius:9999px;
+}
+.step-btn:hover{border-color:var(--muted); color:var(--ink);}
+.step-btn:disabled{opacity:.35; cursor:default;}
+.step-btn:disabled:hover{border-color:var(--border); color:var(--ink-soft);}
+.step-btn.primary{background:var(--amber); color:var(--amber-ink); border-color:var(--amber); box-shadow:var(--shadow-yellow); animation:nextPulse 1.7s ease-in-out infinite;}
+.step-btn.primary:hover, .step-btn.primary:focus-visible{filter:brightness(1.06); border-color:var(--amber); animation:none;}
+@keyframes nextPulse{
+  0%, 100%{box-shadow:0 0 0 0 color-mix(in srgb, var(--amber) 55%, transparent);}
+  50%{box-shadow:0 0 0 7px color-mix(in srgb, var(--amber) 0%, transparent);}
+}
+@media (prefers-reduced-motion: reduce){ .step-btn.primary{animation:none;} }
+.step-count{font-family:"JetBrains Mono"; font-size:11.5px; color:var(--muted);}
+
+/* ---------- landing ---------- */
+.landing{max-width:660px; margin:0 auto; padding:32px 4px 8px; display:flex; flex-direction:column; gap:22px;}
+.landing .lede{margin:0; color:var(--ink-soft); font-size:15.5px; line-height:1.65; max-width:60ch;}
+.landing .lede em{font-style:italic; color:var(--ink); font-weight:500;}
+.landing-section h2{font-size:15.5px; font-weight:600; margin:0 0 8px;}
+.landing-section p{margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.65;}
+.landing-section p em{font-style:italic; color:var(--ink);}
+
+.procedure{
+  display:flex; flex-direction:column; gap:14px; border:1px solid var(--border); border-radius:20px;
+  background:var(--panel); box-shadow:var(--shadow); backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur)); padding:18px 20px;
+}
+.procedure-item{display:flex; gap:13px; align-items:flex-start;}
+.procedure-item .pnum{
+  width:24px; height:24px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+  font-family:"JetBrains Mono"; font-size:11.5px; font-weight:700; color:#fff; margin-top:1px;
+}
+.procedure-item:nth-child(1) .pnum{background:var(--risk);}
+.procedure-item:nth-child(2) .pnum{background:var(--guard);}
+.procedure-item:nth-child(3) .pnum{background:var(--ink-soft);}
+.procedure-item .ptxt{display:flex; flex-direction:column; gap:2px;}
+.procedure-item .ptxt b{font-size:13.5px;}
+.procedure-item .ptxt span{font-size:12.5px; color:var(--muted); line-height:1.5;}
+
+.landing-cta-wrap{display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin:4px 0 12px;}
+.landing-cta{
+  font-size:14px; padding:13px 26px; background:var(--amber); color:var(--amber-ink); border-color:var(--amber);
+  box-shadow:var(--shadow-yellow);
+}
+.landing-cta:hover, .landing-cta:focus-visible{filter:brightness(1.06); border-color:var(--amber);}
+.landing-note{font-family:"JetBrains Mono"; font-size:11px; color:var(--muted);}
+
+.about-link{
+  appearance:none; cursor:pointer; border:none; background:none; padding:0; margin-bottom:8px;
+  color:var(--muted); font-family:"JetBrains Mono"; font-size:11px; text-decoration:underline; text-underline-offset:2px;
+}
+.about-link:hover{color:var(--ink-soft);}
+
+/* ---------- continue CTA ---------- */
+.continue-btn{
+  appearance:none; cursor:pointer; border:1px solid var(--ink); background:var(--ink); color:var(--amber);
+  font:inherit; font-size:12.5px; font-weight:700; padding:9px 16px; border-radius:9999px; flex:0 0 auto;
+  animation:nextPulse 1.7s ease-in-out infinite;
+}
+.continue-btn:hover, .continue-btn:focus-visible{filter:brightness(1.3); animation:none;}
+@media (prefers-reduced-motion: reduce){ .continue-btn{animation:none;} }
+</style>
+
+</head>
+<body>
+<div class="app">
+
+  <a href="/" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;padding:7px 13px;border-radius:999px;background:var(--ink);color:var(--paper);font-family:'Inter',ui-sans-serif,system-ui,sans-serif;font-size:12px;font-weight:700;text-decoration:none;">&larr; Back to Nudgeable</a>
+
+  <section id="landing" class="landing">
+    <p class="eyebrow">A hands-on look at agent safety</p>
+    <h1>AI Bank Agent Harness Lab</h1>
+    <p class="lede">AI agents are starting to do real things — book flights, send emails, move money. This lab is a small, honest demonstration of the difference between an agent that's merely <em>told</em> to be careful, and one that's actually <em>stopped</em> from being careless.</p>
+
+    <div class="landing-section">
+      <h2>What's an agent harness?</h2>
+      <p>In one sentence: it's the code that runs outside an AI model's instructions, deciding what the model is actually allowed to do. Not a stricter prompt — a separate layer the model can't see, argue with, or forget.</p>
+    </div>
+
+    <div class="landing-section">
+      <h2>Why this is showing up everywhere right now</h2>
+      <p>Every major AI lab is shipping agents that use real tools — browsers, code, calendars, payments. The open question isn't whether these agents make mistakes; small models especially do, constantly. It's whether anything <em>outside</em> the model actually catches those mistakes before they become real. That's what a harness is for, and it's the design problem behind most of today's agent-safety work.</p>
+    </div>
+
+    <div class="landing-section">
+      <h2>What you'll do in this lab</h2>
+      <div class="procedure">
+        <div class="procedure-item">
+          <span class="pnum">1</span>
+          <span class="ptxt"><b>Break it</b><span>Send money through a bank agent with no harness. Watch it fire blind.</span></span>
+        </div>
+        <div class="procedure-item">
+          <span class="pnum">2</span>
+          <span class="ptxt"><b>Fix it</b><span>Send the exact same requests through a harness. Watch them get checked.</span></span>
+        </div>
+        <div class="procedure-item">
+          <span class="pnum">3</span>
+          <span class="ptxt"><b>See why</b><span>A step-by-step walkthrough of the code. No engineering background required.</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="landing-cta-wrap">
+      <button type="button" class="continue-btn landing-cta" id="beginLab">Begin the lab &rarr;</button>
+      <span class="landing-note">Takes about 3 minutes · nothing here is real money</span>
+    </div>
+  </section>
+
+  <div id="labApp" hidden>
+
+  <div class="masthead">
+    <div class="title-block">
+      <button type="button" class="about-link" id="aboutLink">&larr; About this lab</button>
+      <p class="eyebrow">Guardrail teaching sandbox</p>
+      <h1>AI Bank Agent Harness Lab</h1>
+      <p>Sends money to a saved beneficiary from a single savings account. Phase 1 has no checks. Phase 2 does.</p>
+    </div>
+    <div class="model-badge">
+      <span class="dot"></span>
+      <span class="txt"><b>AI Bank Agent</b><span>1B params · identical weights in both phases</span></span>
+    </div>
+  </div>
+
+  <div class="tabbar" role="tablist" aria-label="Simulation phase">
+    <button class="tab" data-phase="p1" role="tab" aria-selected="true" id="tabbtn-p1" aria-controls="panel-p1">
+      <span class="num">1</span>
+      <span class="lbl"><b>No harness</b><span>Model calls the tool, tool fires — nothing else happens</span></span>
+    </button>
+    <button class="tab" data-phase="p2" role="tab" aria-selected="false" id="tabbtn-p2" aria-controls="panel-p2">
+      <span class="num">2</span>
+      <span class="lbl"><b>Harness active</b><span>Balance, limit &amp; identity checks, plus your approval</span></span>
+    </button>
+    <button class="tab" data-phase="behind" role="tab" aria-selected="false" id="tabbtn-behind" aria-controls="panel-behind">
+      <span class="num">&#9881;</span>
+      <span class="lbl"><b>Behind the scenes</b><span>What an agent harness actually is, file by file</span></span>
+    </button>
+  </div>
+
+  <section id="panel-p1" class="phase-panel" role="tabpanel" aria-labelledby="tabbtn-p1"></section>
+  <section id="panel-p2" class="phase-panel" role="tabpanel" aria-labelledby="tabbtn-p2" hidden></section>
+  <section id="panel-behind" class="behind" role="tabpanel" aria-labelledby="tabbtn-behind" hidden>
+
+    <div class="steps" id="behindSteps">
+    <div class="steps-dots" id="stepsDots" aria-hidden="true"></div>
+
+    <div class="step" data-step="1">
+      <div class="harness-hero">
+        <p class="eyebrow" style="margin-bottom:6px;">Step 3 of 3 · the full story</p>
+        <h2>What is an agent harness?</h2>
+        <p>An AI model is good at exactly one thing: deciding what to do next, and saying so with total confidence. It doesn't get tired, doesn't second-guess itself, and has no way of knowing when it's wrong — left alone, whatever it decides simply happens.</p>
+        <p>An <b>agent harness</b> is the answer to that: a separate piece of code, sitting quietly outside the conversation, that every action has to pass through before it touches anything real. It checks, it remembers, it knows when to stop for a person — and the model is never even told it's there. Think of it less as advice, more as plumbing: the pipe a decision travels through before it's allowed to become a consequence.</p>
+      </div>
+    </div>
+
+    <div class="step" data-step="2" hidden>
+      <h2 style="font-size:16px;font-weight:600;margin:0 0 10px;">Guardrail vs. harness, in code</h2>
+      <p style="margin:0 0 14px;color:var(--ink-soft);font-size:13.5px;">One version lives in the prompt, as English. The other lives in a separate file, as code.</p>
+      <div class="editor-pair">
+        <div class="code-card frail">
+          <div class="code-head frail-head"><span>shared/prompt.py — if the rules lived here</span><span class="code-label label-guardrail">GUARDRAIL</span></div>
+          <pre class="code-block"><code>SYSTEM_PROMPT = """You are a helpful
+banking assistant...
+
+RULES YOU MUST FOLLOW:
+- Never transfer more than &#8377;25,000
+  at once
+- If a beneficiary name is ambiguous,
+  ask which one before transferring
+- Always ask the user to confirm
+  before moving any money
+"""</code></pre>
+          <div class="code-foot frail-foot">&#9888; Still English — easy to misread or skip a line.</div>
+        </div>
+        <div class="code-card solid">
+          <div class="code-head solid-head"><span>phase2_bank_agent/harness.py — how this repo does it</span><span class="code-label label-harness">HARNESS</span></div>
+          <pre class="code-block"><code>if amount > MAX_SINGLE_TRANSFER:
+    return blocked("over the limit")
+
+if not enough_balance(amount):
+    return blocked("insufficient balance")
+
+if ambiguous(beneficiary) and not confirmed:
+    return blocked("confirm identity")</code></pre>
+          <div class="code-foot solid-foot">&#10003; Plain code — runs the same way, every time.</div>
+        </div>
+      </div>
+      <p class="compare-note" style="margin-top:12px;">This repo only ever uses the version on the right — <b>shared/prompt.py</b> contains none of the rule text on the left.</p>
+    </div>
+
+    <div class="step" data-step="3" hidden>
+      <h2 style="font-size:16px;font-weight:600;margin:0 0 12px;">Where the harness actually sits</h2>
+      <figure class="diagram-card">
+      <svg viewBox="0 0 900 300" role="img" aria-label="Diagram comparing two paths from the agent's decision to the bank ledger. In Phase 1 an arrow runs directly from the model's decision to the ledger with nothing in between. In Phase 2 the same decision passes through a harness gate holding three checks — validate limits and balance, confirm identity, human approval — before a second arrow reaches the ledger.">
+        <defs>
+          <marker id="arrowRisk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" style="fill:var(--risk)"/>
+          </marker>
+          <marker id="arrowGuard" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" style="fill:var(--guard)"/>
+          </marker>
+        </defs>
+
+        <text x="20" y="30" font-family="JetBrains Mono" font-size="11" letter-spacing="1" style="fill:var(--risk)">PHASE 1 · NO HARNESS</text>
+        <rect x="20" y="56" width="170" height="56" rx="9" style="fill:var(--panel-2);stroke:var(--border);stroke-width:1.3"/>
+        <text x="105" y="79" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12.5" style="fill:var(--ink)">AI Bank Agent</text>
+        <text x="105" y="95" text-anchor="middle" font-family="Inter" font-size="10.3" style="fill:var(--ink-soft)">decides to transfer</text>
+        <line x1="192" y1="84" x2="706" y2="84" style="stroke:var(--risk);stroke-width:2" marker-end="url(#arrowRisk)"/>
+        <text x="449" y="74" text-anchor="middle" font-family="Inter" font-size="11.5" style="fill:var(--ink-soft)">calls transfer_money(to, amount)</text>
+        <text x="449" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="10.5" style="fill:var(--risk)">nothing else runs — it executes immediately</text>
+        <rect x="710" y="56" width="170" height="56" rx="9" style="fill:var(--panel-2);stroke:var(--border);stroke-width:1.3"/>
+        <text x="795" y="79" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12.5" style="fill:var(--ink)">Your balance</text>
+        <text x="795" y="95" text-anchor="middle" font-family="Inter" font-size="10.3" style="fill:var(--ink-soft)">changes</text>
+
+        <text x="20" y="168" font-family="JetBrains Mono" font-size="11" letter-spacing="1" style="fill:var(--guard-ink)">PHASE 2 · HARNESS ACTIVE</text>
+        <rect x="20" y="198" width="170" height="56" rx="9" style="fill:var(--panel-2);stroke:var(--border);stroke-width:1.3"/>
+        <text x="105" y="221" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12.5" style="fill:var(--ink)">AI Bank Agent</text>
+        <text x="105" y="237" text-anchor="middle" font-family="Inter" font-size="10.3" style="fill:var(--ink-soft)">decides to transfer</text>
+        <line x1="192" y1="226" x2="246" y2="226" style="stroke:var(--guard);stroke-width:2" marker-end="url(#arrowGuard)"/>
+        <text x="219" y="212" text-anchor="middle" font-family="Inter" font-size="10" style="fill:var(--ink-soft)">calls the tool</text>
+
+        <rect x="250" y="176" width="420" height="100" rx="12" style="fill:var(--guard-soft);stroke:var(--guard);stroke-width:1.5;stroke-dasharray:5 4"/>
+        <text x="264" y="194" font-family="JetBrains Mono" font-size="10" letter-spacing="1" style="fill:var(--guard-ink)">HARNESS GATE</text>
+        <line x1="278" y1="211" x2="278" y2="257" style="stroke:var(--guard);stroke-width:1.3"/>
+        <circle cx="278" cy="211" r="7.5" style="fill:var(--guard)"/>
+        <text x="278" y="214.5" text-anchor="middle" font-family="JetBrains Mono" font-size="9" style="fill:var(--panel)">1</text>
+        <text x="293" y="215" font-family="Inter" font-weight="600" font-size="11.5" style="fill:var(--ink)">Validate limit &amp; balance</text>
+        <text x="655" y="215" text-anchor="end" font-family="JetBrains Mono" font-size="8.5" letter-spacing=".4" style="fill:var(--guard-ink)">CODE</text>
+        <circle cx="278" cy="234" r="7.5" style="fill:var(--guard)"/>
+        <text x="278" y="237.5" text-anchor="middle" font-family="JetBrains Mono" font-size="9" style="fill:var(--panel)">2</text>
+        <text x="293" y="238" font-family="Inter" font-weight="600" font-size="11.5" style="fill:var(--ink)">Confirm identity</text>
+        <text x="655" y="238" text-anchor="end" font-family="JetBrains Mono" font-size="8.5" letter-spacing=".4" style="fill:var(--guard-ink)">CODE</text>
+        <circle cx="278" cy="257" r="7.5" style="fill:var(--guard)"/>
+        <text x="278" y="260.5" text-anchor="middle" font-family="JetBrains Mono" font-size="9" style="fill:var(--panel)">3</text>
+        <text x="293" y="261" font-family="Inter" font-weight="600" font-size="11.5" style="fill:var(--ink)">Human approval</text>
+        <text x="655" y="261" text-anchor="end" font-family="JetBrains Mono" font-size="8.5" letter-spacing=".4" style="fill:var(--warn-ink)">HUMAN STEP</text>
+
+        <line x1="674" y1="226" x2="706" y2="226" style="stroke:var(--guard);stroke-width:2" marker-end="url(#arrowGuard)"/>
+        <text x="690" y="212" text-anchor="middle" font-family="Inter" font-size="10" style="fill:var(--ink-soft)">approved</text>
+        <rect x="710" y="198" width="170" height="56" rx="9" style="fill:var(--panel-2);stroke:var(--border);stroke-width:1.3"/>
+        <text x="795" y="221" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12.5" style="fill:var(--ink)">Your balance</text>
+        <text x="795" y="237" text-anchor="middle" font-family="Inter" font-size="10.3" style="fill:var(--ink-soft)">changes</text>
+      </svg>
+      <figcaption>The decision is identical in both rows. What Phase 2 adds sits entirely between that decision and your balance.</figcaption>
+      </figure>
+    </div>
+
+    <div class="step" data-step="4" hidden>
+      <h2 style="font-size:16px;font-weight:600;margin:0 0 12px;">How it's built — click a file</h2>
+      <div class="ide-card">
+        <div class="ide-toolbar">
+          <span class="ide-dots"><i class="tl-red"></i><i class="tl-yellow"></i><i class="tl-green"></i></span>
+          <span class="ide-path" id="idePath">phase2_bank_agent / <b>harness.py</b></span>
+        </div>
+        <div class="ide-tabstrip">
+          <div class="ide-tab active"><span class="file-ico">PY</span><span id="ideTabName">harness.py</span></div>
+        </div>
+        <div class="ide-body">
+          <nav class="ide-tree" id="ideTree">
+            <div class="tree-root">&#9662; Bank Harness/</div>
+            <div class="tree-folder">&#9662; shared/</div>
+            <button type="button" class="tree-file" data-file="prompt"><span class="file-ico">PY</span>prompt.py</button>
+            <button type="button" class="tree-file" data-file="tools"><span class="file-ico">PY</span>tools.py</button>
+            <div class="tree-folder">&#9662; phase1_bank_agent/</div>
+            <button type="button" class="tree-file" data-file="p1agent"><span class="file-ico">PY</span>agent.py</button>
+            <div class="tree-folder">&#9662; phase2_bank_agent/</div>
+            <button type="button" class="tree-file" data-file="p2agent"><span class="file-ico">PY</span>agent.py</button>
+            <button type="button" class="tree-file active" data-file="harness"><span class="file-ico">PY</span>harness.py</button>
+          </nav>
+          <div class="ide-pane">
+            <div class="ide-code-wrap"><pre class="ide-code" id="ideCode"></pre></div>
+            <div class="ide-caption" id="ideCaption"></div>
+          </div>
+        </div>
+        <div class="ide-statusbar">
+          <span>&#9889; main</span>
+          <span id="ideStatusLines">26 lines</span>
+          <span class="ide-status-spacer"></span>
+          <span>UTF-8</span>
+          <span>Python</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="5" hidden>
+      <div class="outcome-card">
+        <h3>Same three requests, two outcomes</h3>
+        <div class="outcome-body">
+          <table class="outcome">
+            <thead><tr><th>You ask for&#8230;</th><th>Phase 1 · no harness</th><th>Phase 2 · harness active</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="scenario">&#8220;Transfer &#8377;500 to Amit&#8221;</td>
+                <td class="risk-cell">Guesses one of 2 Amits, sends it, never mentions the guess</td>
+                <td class="guard-cell">Flags the name as ambiguous, waits for you to pick</td>
+              </tr>
+              <tr>
+                <td class="scenario">&#8220;Transfer &#8377;40,000 to Priya Menon&#8221;</td>
+                <td class="risk-cell">Sends it anyway — no transfer limit exists</td>
+                <td class="guard-cell">Blocked — over the &#8377;25,000 single-transfer limit</td>
+              </tr>
+              <tr>
+                <td class="scenario">&#8220;Transfer &#8377;20,000 to Amit Shah&#8221;</td>
+                <td class="risk-cell">Sends it anyway — your balance goes negative</td>
+                <td class="guard-cell">Blocked — insufficient balance</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:16px;">
+        <button type="button" class="step-btn" id="backToPhase1">&larr; Back to Phase 1, try your own scenario</button>
+      </div>
+    </div>
+
+    <div class="steps-controls">
+      <button type="button" class="step-btn" id="stepBack" disabled>&larr; Back</button>
+      <span class="step-count" id="stepCount">1 / 5</span>
+      <button type="button" class="step-btn primary" id="stepNext">Next &rarr;</button>
+    </div>
+
+    </div>
+
+  </section>
+
+  </div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+const MY_ACCOUNT_SEED = { name: 'Rahul Verma', type: 'Savings A/C', masked: '4821', balance: 8400 };
+
+const BENEFICIARIES = [
+  { id:'b1', name:'Amit Shah',     masked:'2210' },
+  { id:'b2', name:'Amit Nair',     masked:'7734' },
+  { id:'b3', name:'Priya Menon',   masked:'5563' },
+  { id:'b4', name:'Rohit Kapoor',  masked:'1187' },
+  { id:'b5', name:'Sanjay Iyer',   masked:'9048' },
+  { id:'b6', name:'Neha Reddy',    masked:'3399' }
+];
+const FEATURED_BENEFICIARY_IDS = ['b1', 'b2', 'b3']; // the beneficiaries the quick prompts use
+
+const MAX_SINGLE_TRANSFER = 25000;
+const DAILY_LIMIT = 100000;
+
+function round(n){ return Math.round(n); }
+function fmtINR(n){
+  const sign = n < 0 ? '-' : '';
+  return sign + '₹' + Math.abs(round(n)).toLocaleString('en-IN');
+}
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function firstNameOf(name){
+  const parts = String(name).split(/\s+/).filter(Boolean);
+  return (parts[0]||'').toLowerCase();
+}
+
+function resolveBeneficiary(rawToken){
+  if(!rawToken) return {status:'not_found', query:''};
+  const raw = rawToken.trim().replace(/^[.,]+|[.,!?]+$/g,'');
+  const clean = raw.toLowerCase()
+    .replace(/'s\b/g,'')
+    .replace(/\b(account|a\/c|ac|to|the|his|her|their|its|my|mr|mrs|ms|beneficiary|payee)\b/g,'')
+    .trim();
+
+  // direct match on the last-4-digit account number
+  const digitM = clean.match(/\b(\d{4})\b/);
+  if(digitM){
+    const found = BENEFICIARIES.find(b => b.masked === digitM[1]);
+    if(found) return {status:'ok', beneficiary:found};
+  }
+  if(!clean) return {status:'not_found', query:raw};
+
+  // exact full-name match
+  const exact = BENEFICIARIES.filter(b => b.name.toLowerCase() === clean);
+  if(exact.length===1) return {status:'ok', beneficiary:exact[0]};
+
+  // substring match on the full name
+  const subMatches = BENEFICIARIES.filter(b => b.name.toLowerCase().includes(clean));
+  if(subMatches.length===1) return {status:'ok', beneficiary:subMatches[0]};
+
+  // first-name-only match — this is where ambiguity shows up
+  const first = clean.split(/\s+/)[0];
+  const matches = BENEFICIARIES.filter(b => firstNameOf(b.name) === first);
+  if(matches.length===0) return {status:'not_found', query:raw};
+  if(matches.length===1) return {status:'ok', beneficiary:matches[0]};
+  return {status:'ambiguous', query:raw, candidates:matches, guess:matches[0]};
+}
+
+function parseMessage(text){
+  let amount = null;
+  const amtM = text.match(/(?:₹|rs\.?|inr)\s?([\d,]+(?:\.\d+)?)/i) || text.match(/([\d,]+(?:\.\d+)?)/);
+  if(amtM) amount = parseFloat(amtM[1].replace(/,/g,''));
+
+  let toToken = null;
+  const toM = text.match(/\bto\s+(.+?)(?:[.?!]|$)/i);
+  if(toM) toToken = toM[1].trim();
+
+  const lower = text.toLowerCase();
+  let intent = 'unknown';
+  if(toToken && amount!=null) intent = 'transfer';
+  else if(/balance/.test(lower)) intent = 'balance';
+  else if(/\b(beneficiar|payee|list)\b/.test(lower)) intent = 'list';
+
+  let toParty = null;
+  if(intent==='transfer') toParty = resolveBeneficiary(toToken);
+
+  return {intent, amount, toToken, toParty};
+}
+
+function traceFor(parsed){
+  const lines = [];
+  lines.push('intent     = "' + parsed.intent + '"');
+  if(parsed.intent==='transfer'){
+    lines.push('amount     = ' + (parsed.amount==null ? 'null' : parsed.amount));
+    lines.push('to         = ' + partyTrace(parsed.toToken, parsed.toParty));
+    const amb = parsed.toParty && parsed.toParty.status==='ambiguous' ? 1 : 0;
+    const conf = amb ? 0.42 : 0.91;
+    lines.push('confidence = ' + conf.toFixed(2) + (amb ? '  (low — name matched more than one beneficiary)' : ''));
+  }
+  return lines.join('\n');
+}
+function partyTrace(token, party){
+  if(!party) return '(none)';
+  if(party.status==='ok') return '"' + token + '" -> ' + party.beneficiary.name + ' (••••' + party.beneficiary.masked + ')';
+  if(party.status==='ambiguous') return '"' + token + '" -> AMBIGUOUS, ' + party.candidates.length + ' matches — guessed ' + party.guess.name + ' (••••' + party.guess.masked + ')';
+  return '"' + token + '" -> no beneficiary matched';
+}
+
+function validateTransfer(state, amount){
+  if(!(amount>0)) return {ok:false, reason:'amount must be greater than ₹0'};
+  if(amount>MAX_SINGLE_TRANSFER) return {ok:false, reason:'amount ' + fmtINR(amount) + ' exceeds the single-transfer limit of ' + fmtINR(MAX_SINGLE_TRANSFER)};
+  if(state.myBalance < amount) return {ok:false, reason:'insufficient balance — your account has ' + fmtINR(state.myBalance) + ' available'};
+  const already = state.transactions.reduce((s,t)=>s+t.amount,0);
+  if(already + amount > DAILY_LIMIT) return {ok:false, reason:'this would exceed the ' + fmtINR(DAILY_LIMIT) + ' daily transfer limit (already sent ' + fmtINR(already) + ' today)'};
+  return {ok:true};
+}
+
+function executeTransfer(state, beneficiary, amount){
+  state.myBalance = round(state.myBalance - amount);
+  const tx = {
+    id: 'TXN' + String(state.transactions.length+1).padStart(4,'0'),
+    toName: beneficiary.name, toMasked: beneficiary.masked, amount, time: new Date(),
+    balanceAfter: state.myBalance, overdrawn: state.myBalance < 0
+  };
+  state.transactions.push(tx);
+  return tx;
+}
+
+const RAIL_DEFS = [
+  {id:'parse', label:'Parse request', sub:'The agent guesses the beneficiary & amount'},
+  {id:'validate', label:'Validate limit & balance', sub:'₹25,000/transfer · ₹1,00,000/day · funds on hand'},
+  {id:'identity', label:'Confirm identity', sub:'Check when a beneficiary name is shared'},
+  {id:'approval', label:'Human approval', sub:'Nothing moves without a sign-off'},
+  {id:'execute', label:'Execute transfer', sub:'Balance updated'}
+];
+
+function buildPanel(root, phaseKey){
+  const harness = phaseKey === 'p2';
+  root.innerHTML =
+    '<div class="phase-strip ' + (harness ? 'guard' : 'risk') + '">' +
+      '<span class="phase-pill">' + (harness ? 'Step 2 of 3 · Harness active' : 'Step 1 of 3 · No harness') + '</span>' +
+      '<p>' + (harness
+        ? 'Every transfer now passes validation against your balance and the ₹25,000 limit, an identity check when the beneficiary’s name is shared, and waits for your approval before it executes.'
+        : 'The moment the agent decides to call <code>transfer_money</code>, it runs. No balance check, no limit, no identity check, no approval.') +
+      '</p>' +
+      '<button type="button" class="reset-btn" data-action="reset">&#8635; Reset balance</button>' +
+      '<button type="button" class="continue-btn" data-action="continue" data-goto="' + (harness ? 'behind' : 'p2') + '">' +
+        (harness ? 'See what changed &rarr;' : 'Try it guarded next &rarr;') +
+      '</button>' +
+    '</div>' +
+    '<div class="workspace">' +
+      '<div class="card ledger">' +
+        '<h3>My account</h3>' +
+        '<div class="my-account">' +
+          '<div class="ma-name">' + esc(MY_ACCOUNT_SEED.name) + '</div>' +
+          '<div class="ma-type">' + esc(MY_ACCOUNT_SEED.type) + ' · •••• ' + MY_ACCOUNT_SEED.masked + '</div>' +
+          '<div class="ma-balance tabular"></div>' +
+        '</div>' +
+        '<h3 class="ledger-sub">Beneficiaries</h3>' +
+        '<div class="ledger-body"></div>' +
+      '</div>' +
+      '<div class="card chat">' +
+        '<h3>Chat with AI Bank Agent</h3>' +
+        '<div class="chat-scroll"></div>' +
+        '<div class="composer">' +
+          '<div class="chips"></div>' +
+          '<div class="input-row">' +
+            '<input type="text" placeholder="e.g. Transfer ₹500 to Priya Menon" aria-label="Message AI Bank Agent">' +
+            '<button type="button" class="send-btn">Send</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card rail"><h3>' + (harness ? 'Harness pipeline' : 'Execution pipeline') + '</h3><div class="rail-body"></div></div>' +
+      '<div class="card log"><h3>Transaction log</h3><div class="log-body"></div></div>' +
+    '</div>';
+
+  const maBalanceEl = root.querySelector('.ma-balance');
+  const benBody = root.querySelector('.ledger-body');
+  const chatScroll = root.querySelector('.chat-scroll');
+  const chipsEl = root.querySelector('.chips');
+  const input = root.querySelector('.input-row input');
+  const sendBtn = root.querySelector('.send-btn');
+  const railBody = root.querySelector('.rail-body');
+  const logBody = root.querySelector('.log-body');
+  const resetBtn = root.querySelector('[data-action="reset"]');
+  const continueBtn = root.querySelector('[data-action="continue"]');
+
+  let state;
+  let steps;
+
+  function freshState(){
+    return { myBalance: MY_ACCOUNT_SEED.balance, transactions: [], confirmedChoices: {}, pending: null };
+  }
+  function freshSteps(){
+    return RAIL_DEFS.map(d => ({...d, status: (!harness && (d.id==='validate'||d.id==='identity'||d.id==='approval')) ? 'skipped' : 'idle'}));
+  }
+
+  function renderMyAccount(flash){
+    maBalanceEl.textContent = fmtINR(state.myBalance);
+    maBalanceEl.classList.toggle('neg', state.myBalance<0);
+    if(flash){
+      maBalanceEl.classList.remove('flash-num');
+      void maBalanceEl.offsetWidth;
+      maBalanceEl.classList.add('flash-num');
+    }
+  }
+
+  function buildBeneficiaryRow(b, highlightMasked){
+    const row = document.createElement('div');
+    row.className = 'ben-row' + (highlightMasked.includes(b.masked) ? ' flash' : '');
+    row.innerHTML = '<span class="ben-name">' + esc(b.name) + '</span><span class="ben-masked">•••• ' + b.masked + '</span>';
+    return row;
+  }
+
+  function renderBeneficiaries(highlightMasked){
+    highlightMasked = highlightMasked || [];
+    benBody.innerHTML = '';
+    const featured = BENEFICIARIES.filter(b => FEATURED_BENEFICIARY_IDS.includes(b.id));
+    const rest = BENEFICIARIES.filter(b => !FEATURED_BENEFICIARY_IDS.includes(b.id));
+
+    featured.forEach(b => benBody.appendChild(buildBeneficiaryRow(b, highlightMasked)));
+
+    if(rest.length){
+      const det = document.createElement('details');
+      det.className = 'ledger-more';
+      const restTouched = rest.some(b => highlightMasked.includes(b.masked));
+      if(restTouched) det.open = true;
+      const sum = document.createElement('summary');
+      sum.textContent = 'Show ' + rest.length + ' more beneficiaries';
+      det.appendChild(sum);
+      rest.forEach(b => det.appendChild(buildBeneficiaryRow(b, highlightMasked)));
+      det.addEventListener('toggle', () => {
+        sum.textContent = det.open ? 'Hide other beneficiaries' : ('Show ' + rest.length + ' more beneficiaries');
+      });
+      benBody.appendChild(det);
+    }
+  }
+
+  function renderRail(){
+    railBody.innerHTML = '';
+    steps.forEach(s => {
+      const el = document.createElement('div');
+      el.className = 'rail-step';
+      el.dataset.status = s.status;
+      const icon = s.status==='pass' ? '&#10003;' : s.status==='fail' ? '&#10005;' : s.status==='pending' ? '&#8226;' : s.status==='skipped' ? '&#8212;' : s.status==='active' ? '&#8942;' : '';
+      el.innerHTML = '<span class="rail-dot">' + icon + '</span><span class="rail-txt"><b>' + s.label + '</b><span>' + (s.status==='skipped' ? 'not implemented in Phase 1' : s.sub) + '</span></span>';
+      railBody.appendChild(el);
+    });
+  }
+
+  function setStep(id, status){
+    const s = steps.find(x=>x.id===id);
+    if(s) s.status = status;
+    renderRail();
+  }
+
+  function renderLog(){
+    if(state.transactions.length===0){
+      logBody.innerHTML = '<div class="log-empty">No transfers yet. Try a quick prompt below.</div>';
+      return;
+    }
+    let rows = '';
+    [...state.transactions].reverse().forEach(tx => {
+      rows += '<tr><td>' + tx.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'}) + '</td>' +
+        '<td>' + tx.id + '</td>' +
+        '<td>' + esc(tx.toName) + ' ••••' + tx.toMasked + '</td>' +
+        '<td class="tabular">' + fmtINR(tx.amount) + '</td>' +
+        '<td>' + (tx.overdrawn ? '<span class="tag bad">overdrawn</span>' : '<span class="tag ok">settled</span>') + '</td></tr>';
+    });
+    logBody.innerHTML = '<table class="ledger-log"><thead><tr><th>Time</th><th>Tx</th><th>To</th><th>Amount</th><th>Result</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function addMsg(kind, html){
+    const div = document.createElement('div');
+    if(kind==='user' || kind==='model'){
+      div.className = 'msg ' + kind;
+      div.innerHTML = '<span class="who">' + (kind==='user' ? 'You' : 'Agent') + '</span><div class="bubble">' + html + '</div>';
+    } else {
+      div.className = 'sysline';
+      div.innerHTML = html;
+    }
+    chatScroll.appendChild(div);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+    return div;
+  }
+
+  function addModelWithNotes(text, notes, traceText){
+    const div = document.createElement('div');
+    div.className = 'msg model';
+    let inner = '<span class="who">Agent</span><div class="bubble">' + text + '</div>';
+    if(notes && notes.length){
+      inner += '<div class="notes">' + notes.map(n => '<span class="note-chip ' + n.kind + '">' + n.text + '</span>').join('') + '</div>';
+    }
+    if(traceText){
+      inner += '<details class="trace"><summary>view raw parse</summary><pre>' + esc(traceText) + '</pre></details>';
+    }
+    div.innerHTML = inner;
+    chatScroll.appendChild(div);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+  }
+
+  function typingThen(fn){
+    const div = document.createElement('div');
+    div.className = 'msg model';
+    div.innerHTML = '<span class="who">Agent</span><div class="bubble typing"><span></span><span></span><span></span></div>';
+    chatScroll.appendChild(div);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+    setTimeout(() => { div.remove(); fn(); }, 480 + Math.random()*260);
+  }
+
+  function handleInfoIntent(parsed){
+    if(parsed.intent==='balance'){
+      addModelWithNotes('Your ' + esc(MY_ACCOUNT_SEED.type) + ' ••••' + MY_ACCOUNT_SEED.masked + ' has ' + fmtINR(state.myBalance) + ' available.');
+      return;
+    }
+    if(parsed.intent==='list'){
+      const rows = BENEFICIARIES.map(b => b.name + ' (••••' + b.masked + ')').join(', ');
+      addModelWithNotes('Here are your saved beneficiaries: ' + rows + '.');
+    }
+  }
+
+  // ---------------- Phase 1 : no harness ----------------
+  function resolveGuess(party, notes){
+    if(!party || party.status==='not_found') return {error:'who you meant'};
+    if(party.status==='ambiguous'){
+      notes.push({kind:'risk', text:'picked ' + party.guess.name + ' — 1 of ' + party.candidates.length + ' "' + firstNameOf(party.query) + '" matches, never asked'});
+      return {beneficiary: party.guess};
+    }
+    return {beneficiary: party.beneficiary};
+  }
+
+  function runPhase1(parsed){
+    setStep('parse','active');
+    if(parsed.intent==='balance' || parsed.intent==='list'){
+      setStep('parse','pass'); setStep('execute','idle');
+      typingThen(() => handleInfoIntent(parsed));
+      return;
+    }
+    if(parsed.intent!=='transfer'){
+      setStep('parse','pass'); setStep('execute','idle');
+      typingThen(() => addModelWithNotes('I couldn’t quite tell what you want. Try something like “Transfer ₹500 to Priya Menon”.', null, null));
+      return;
+    }
+
+    const notes = [];
+    const trace = traceFor(parsed);
+    const res = resolveGuess(parsed.toParty, notes);
+
+    if(res.error){
+      setStep('parse','pass'); setStep('execute','fail');
+      typingThen(() => addModelWithNotes('I tried to send the money but couldn’t tell ' + res.error + '.', notes, trace));
+      return;
+    }
+    if(parsed.amount==null || !(parsed.amount>0)){
+      setStep('parse','pass'); setStep('execute','fail');
+      typingThen(() => addModelWithNotes('I couldn’t tell how much to send — can you give me an amount?', notes, trace));
+      return;
+    }
+
+    setStep('parse','pass');
+    setStep('execute','active');
+    typingThen(() => {
+      const willOverdraw = state.myBalance < parsed.amount;
+      if(willOverdraw) notes.push({kind:'risk', text:'no balance check — this overdraws your account'});
+      const tx = executeTransfer(state, res.beneficiary, parsed.amount);
+      setStep('execute','pass');
+      renderMyAccount(true);
+      renderBeneficiaries([res.beneficiary.masked]);
+      renderLog();
+      const msg = 'Done — sent ' + fmtINR(parsed.amount) + ' to ' + esc(res.beneficiary.name) + ' (••••' + res.beneficiary.masked + '). ' +
+        (tx.overdrawn ? 'Your balance is now ' + fmtINR(tx.balanceAfter) + '.' : 'All set.');
+      addModelWithNotes(msg, notes, trace);
+    });
+  }
+
+  // ---------------- Phase 2 : harness ----------------
+  function runPhase2(parsed){
+    if(state.pending){
+      typingThen(() => addModelWithNotes('There’s already a transfer waiting on your decision above — approve, deny, or confirm identity first.'));
+      return;
+    }
+    setStep('parse','active'); setStep('validate','idle'); setStep('identity','idle'); setStep('approval','idle'); setStep('execute','idle');
+
+    if(parsed.intent==='balance' || parsed.intent==='list'){
+      setStep('parse','pass');
+      typingThen(() => handleInfoIntent(parsed));
+      return;
+    }
+    if(parsed.intent!=='transfer'){
+      setStep('parse','pass');
+      typingThen(() => addModelWithNotes('I couldn’t quite tell what you want. Try something like “Transfer ₹500 to Priya Menon”.', null, null));
+      return;
+    }
+
+    const trace = traceFor(parsed);
+
+    if(parsed.toParty.status==='not_found'){
+      setStep('parse','pass'); setStep('validate','fail');
+      typingThen(() => addModelWithNotes('Blocked before it reached a human: I could not find that beneficiary.', [{kind:'guard', text:'harness rejected an unresolved beneficiary'}], trace));
+      return;
+    }
+    if(parsed.amount==null){
+      setStep('parse','pass'); setStep('validate','fail');
+      typingThen(() => addModelWithNotes('Blocked before it reached a human: no amount was given.', [{kind:'guard', text:'harness requires a concrete amount'}], trace));
+      return;
+    }
+
+    setStep('parse','pass');
+
+    state.pending = {
+      trace, amount: parsed.amount, toParty: parsed.toParty,
+      confirmedBeneficiary: parsed.toParty.status==='ok' ? parsed.toParty.beneficiary : null
+    };
+
+    setStep('validate','active');
+    typingThen(() => advancePending());
+  }
+
+  function advancePending(){
+    const p = state.pending;
+    if(!p) return;
+    const v = validateTransfer(state, p.amount);
+    if(!v.ok){
+      setStep('validate','fail');
+      state.pending = null;
+      addModelWithNotes('Blocked before it reached a human: ' + v.reason + '.', [{kind:'guard', text:'harness validation stopped this transfer'}], p.trace);
+      return;
+    }
+    setStep('validate','pass');
+
+    if(!p.confirmedBeneficiary && p.toParty.status==='ambiguous'){
+      const rememberedId = state.confirmedChoices[firstNameOf(p.toParty.query)];
+      if(rememberedId) p.confirmedBeneficiary = BENEFICIARIES.find(b => b.id===rememberedId) || null;
+    }
+
+    if(!p.confirmedBeneficiary){
+      setStep('identity','pending');
+      addIdentityCard(p.toParty);
+      return;
+    }
+    setStep('identity','pass');
+    showApprovalCard();
+  }
+
+  function addIdentityCard(party){
+    const div = document.createElement('div');
+    div.className = 'msg model';
+    let body = '<span class="who">Agent</span><div class="hitl-card pending"><h4>&#9888; Identity check needed</h4>';
+    body += '<p style="margin:0 0 4px;font-size:12px;">Matched <b>' + esc(party.query.trim()) + '</b> to <b>' + esc(party.guess.name) + '</b> (••••' + party.guess.masked + '), but ' + party.candidates.length + ' saved beneficiaries share that first name. Who did you mean?</p>';
+    body += '<div class="pick-list">';
+    party.candidates.forEach(c => {
+      body += '<button type="button" class="btn pick" data-benid="' + c.id + '">' + esc(c.name) + ' <span class="mono" style="color:var(--muted)">••••' + c.masked + '</span></button>';
+    });
+    body += '</div></div>';
+    div.innerHTML = body;
+    chatScroll.appendChild(div);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+
+    div.querySelectorAll('button.pick').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const b = BENEFICIARIES.find(x => x.id===btn.dataset.benid);
+        if(state.pending){
+          state.pending.confirmedBeneficiary = b;
+          state.confirmedChoices[firstNameOf(party.query)] = b.id;
+        }
+        div.querySelectorAll('.pick-list button').forEach(bb=>bb.disabled=true);
+        btn.style.borderColor = 'var(--guard)';
+        btn.style.background = 'var(--guard-soft)';
+        addMsg(null, 'confirmed: ' + esc(b.name) + ' (••••' + b.masked + ')');
+        setStep('identity','active');
+        typingThen(() => advancePending());
+      });
+    });
+  }
+
+  function showApprovalCard(){
+    const p = state.pending;
+    if(!p) return;
+    const b = p.confirmedBeneficiary;
+
+    setStep('approval','pending');
+
+    const div = document.createElement('div');
+    div.className = 'msg model';
+    div.innerHTML =
+      '<span class="who">Agent</span>' +
+      '<div class="hitl-card pending"><h4>&#128274; Waiting for your approval</h4>' +
+      '<div class="row"><span>From</span><span>' + esc(MY_ACCOUNT_SEED.name) + ' · •••• ' + MY_ACCOUNT_SEED.masked + '</span></div>' +
+      '<div class="row"><span>To</span><span>' + esc(b.name) + ' · •••• ' + b.masked + '</span></div>' +
+      '<div class="row"><span>Amount</span><span>' + fmtINR(p.amount) + '</span></div>' +
+      '<div class="row"><span>Balance after</span><span>' + fmtINR(state.myBalance - p.amount) + '</span></div>' +
+      '<div class="hitl-actions"><button type="button" class="btn approve">Approve transfer</button><button type="button" class="btn deny">Deny</button></div>' +
+      '</div>';
+    chatScroll.appendChild(div);
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+
+    div.querySelector('.approve').addEventListener('click', () => {
+      div.querySelectorAll('button').forEach(el=>el.disabled=true);
+      setStep('approval','pass');
+      setStep('execute','active');
+      typingThen(() => {
+        executeTransfer(state, b, p.amount);
+        setStep('execute','pass');
+        renderMyAccount(true);
+        renderBeneficiaries([b.masked]);
+        renderLog();
+        addModelWithNotes('Approved and sent — ' + fmtINR(p.amount) + ' to ' + esc(b.name) + '.', [{kind:'guard', text:'passed validation + identity check + human approval'}]);
+        state.pending = null;
+      });
+    });
+    div.querySelector('.deny').addEventListener('click', () => {
+      div.querySelectorAll('button').forEach(el=>el.disabled=true);
+      setStep('approval','fail');
+      addMsg(null, 'Transfer declined at the approval step — nothing moved.');
+      state.pending = null;
+    });
+  }
+
+  function submit(text){
+    text = text.trim();
+    if(!text) return;
+    addMsg('user', esc(text));
+    const parsed = parseMessage(text);
+    if(harness) runPhase2(parsed); else runPhase1(parsed);
+  }
+
+  sendBtn.addEventListener('click', () => { const v = input.value; input.value=''; submit(v); });
+  input.addEventListener('keydown', e => { if(e.key==='Enter'){ const v = input.value; input.value=''; submit(v); } });
+
+  const CHIPS = [
+    'Transfer ₹500 to Amit',
+    'Transfer ₹40,000 to Priya Menon',
+    'Transfer ₹20,000 to Amit Shah'
+  ];
+  chipsEl.innerHTML = CHIPS.map(c => '<button type="button" class="chip">' + esc(c) + '</button>').join('');
+  chipsEl.querySelectorAll('.chip').forEach((btn,i) => btn.addEventListener('click', () => submit(CHIPS[i])));
+
+  resetBtn.addEventListener('click', () => {
+    state = freshState();
+    steps = freshSteps();
+    renderMyAccount(false);
+    renderBeneficiaries();
+    renderRail();
+    renderLog();
+    chatScroll.innerHTML = '';
+    addMsg(null, 'Balance reset to ' + fmtINR(MY_ACCOUNT_SEED.balance) + '.');
+  });
+
+  continueBtn.addEventListener('click', () => {
+    const target = document.querySelector('.tab[data-phase="' + continueBtn.dataset.goto + '"]');
+    if(target) target.click();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  state = freshState();
+  steps = freshSteps();
+  renderMyAccount(false);
+  renderBeneficiaries();
+  renderRail();
+  renderLog();
+  addMsg(null, harness ? 'Harness armed: balance, limit and identity checks, plus approval, are all live.' : 'No harness attached — tool calls run immediately.');
+}
+
+const panels = {
+  p1: document.getElementById('panel-p1'),
+  p2: document.getElementById('panel-p2'),
+  behind: document.getElementById('panel-behind')
+};
+buildPanel(panels.p1, 'p1');
+buildPanel(panels.p2, 'p2');
+
+const tabs = document.querySelectorAll('.tab');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t===tab)));
+    Object.entries(panels).forEach(([key, el]) => { el.hidden = tab.dataset.phase !== key; });
+  });
+});
+
+// ---------------- Landing page ----------------
+const landingEl = document.getElementById('landing');
+const labAppEl = document.getElementById('labApp');
+document.getElementById('beginLab').addEventListener('click', () => {
+  landingEl.hidden = true;
+  labAppEl.hidden = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+document.getElementById('aboutLink').addEventListener('click', () => {
+  labAppEl.hidden = true;
+  landingEl.hidden = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ---------------- Behind the scenes: IDE file browser ----------------
+const FILES = {
+  prompt: {
+    path: 'shared / <b>prompt.py</b>',
+    caption: "Zero mentions of limits, identity, or approval — in either phase. This file didn't need to change.",
+    lines: [
+      {t:'"""Shared system instruction — identical in Phase 1 and Phase 2."""', c:'cm'},
+      {t:''},
+      {t:'SYSTEM_PROMPT = """You are a helpful banking assistant.'},
+      {t:''},
+      {t:'You can check the user\'s balance and send money to a'},
+      {t:'saved beneficiary using your tools.'},
+      {t:''},
+      {t:'Be concise and clear. Always use tools for account facts —'},
+      {t:'do not invent balances or beneficiary details.'},
+      {t:'"""'}
+    ]
+  },
+  tools: {
+    path: 'shared / <b>tools.py</b>',
+    caption: 'The same function object — imported and called exactly the same way by both phase1_bank_agent and phase2_bank_agent.',
+    lines: [
+      {t:'def transfer_money(to_account, amount):'},
+      {t:'    """Send money from the caller\'s own account to a beneficiary."""'},
+      {t:'    ...'},
+      {t:'    if amount <= 0:'},
+      {t:'        return {"status": "error", "error": "amount must be > 0"}'},
+      {t:'    if my_account["balance"] < amount:'},
+      {t:'        return {"status": "error", "error": "insufficient balance"}'},
+      {t:''},
+      {t:'    my_account["balance"] -= amount'},
+      {t:'    ...'},
+      {t:'    return {"status": "success", "transaction": tx}'}
+    ]
+  },
+  p1agent: {
+    path: 'phase1_bank_agent / <b>agent.py</b>',
+    caption: "That's the whole file. Whatever transfer_money the agent decides to call, runs — nothing sits in front of it.",
+    lines: [
+      {t:'from google.adk.agents import Agent'},
+      {t:'from shared.prompt import SYSTEM_PROMPT'},
+      {t:'from shared.tools import BANK_TOOLS'},
+      {t:''},
+      {t:'root_agent = Agent('},
+      {t:'    name="phase1_bank_agent",'},
+      {t:'    model="gemini-2.5-flash",'},
+      {t:'    instruction=SYSTEM_PROMPT,'},
+      {t:'    tools=BANK_TOOLS,'},
+      {t:')'}
+    ]
+  },
+  p2agent: {
+    path: 'phase2_bank_agent / <b>agent.py</b>',
+    caption: 'Compare the instruction= line to phase1_bank_agent/agent.py — same string. Only two additions: one config flag, one callback.',
+    lines: [
+      {t:'from google.adk.agents import Agent'},
+      {t:'from google.adk.tools.function_tool import FunctionTool'},
+      {t:'from shared.prompt import SYSTEM_PROMPT'},
+      {t:'from shared.tools import transfer_money'},
+      {t:'from .harness import before_tool_callback'},
+      {t:''},
+      {t:'transfer_with_confirmation = FunctionTool('},
+      {t:'    func=transfer_money,'},
+      {t:'    require_confirmation=True,   # waits for a human', c:'w'},
+      {t:')'},
+      {t:''},
+      {t:'root_agent = Agent('},
+      {t:'    name="phase2_bank_agent",'},
+      {t:'    instruction=SYSTEM_PROMPT,   # identical to Phase 1', c:'cm'},
+      {t:'    tools=[..., transfer_with_confirmation],'},
+      {t:'    before_tool_callback=before_tool_callback,  # harness hooks in here', c:'g'},
+      {t:')'}
+    ]
+  },
+  harness: {
+    path: 'phase2_bank_agent / <b>harness.py</b>',
+    caption: 'Two checks (teal) run automatically — this is the harness\'s own code. The amber note isn\'t a check at all — it\'s the harness handing off to a human, via the one flag set in agent.py.',
+    lines: [
+      {t:'# Runs before every tool call the agent makes.', c:'cm'},
+      {t:"# The model never sees this file and can't skip it.", c:'cm'},
+      {t:''},
+      {t:'RULES = {'},
+      {t:'    "max_single_transfer": 25000,'},
+      {t:'    "daily_limit": 100000,'},
+      {t:'}'},
+      {t:''},
+      {t:'def before_tool_callback(tool, args, session):'},
+      {t:'    if tool.name != "transfer_money":'},
+      {t:'        return None'},
+      {t:''},
+      {t:'    # check — do the numbers make sense?', c:'g'},
+      {t:'    if args["amount"] > RULES["max_single_transfer"]:', c:'g'},
+      {t:'        return blocked("over the limit")', c:'g'},
+      {t:'    if not enough_balance(args["amount"]):', c:'g'},
+      {t:'        return blocked("insufficient balance")', c:'g'},
+      {t:''},
+      {t:'    # check — is the beneficiary unambiguous?', c:'g'},
+      {t:'    if ambiguous(args["to_account"]) and not confirmed(session):', c:'g'},
+      {t:'        return blocked("confirm identity, then retry")', c:'g'},
+      {t:''},
+      {t:'    # checks passed — but the tool is wrapped with', c:'w'},
+      {t:'    # require_confirmation=True, so it still waits for', c:'w'},
+      {t:'    # a human to click Approve before anything executes.', c:'w'},
+      {t:'    return None'}
+    ]
+  }
+};
+
+const PY_KEYWORDS = ['def','return','if','not','and','or','in','is','None','True','False','elif','else','for','while','from','import','class'];
+const PY_KW_RE = new RegExp('\\b(' + PY_KEYWORDS.join('|') + ')\\b', 'g');
+
+function highlightSegment(seg){
+  seg = seg.replace(PY_KW_RE, '<span class="py-kw">$1</span>');
+  seg = seg.replace(/\b(\d+)\b/g, '<span class="py-num">$1</span>');
+  return seg;
+}
+
+function tokenizePy(escapedText){
+  let code = escapedText, comment = '';
+  const cIdx = code.indexOf('#');
+  if(cIdx !== -1){ comment = code.slice(cIdx); code = code.slice(0, cIdx); }
+
+  const strRe = /(&quot;.*?&quot;|&#39;.*?&#39;)/g;
+  let out = '', lastIndex = 0, m;
+  while((m = strRe.exec(code))){
+    out += highlightSegment(code.slice(lastIndex, m.index));
+    out += '<span class="py-str">' + m[0] + '</span>';
+    lastIndex = strRe.lastIndex;
+  }
+  out += highlightSegment(code.slice(lastIndex));
+  if(comment) out += '<span class="py-cm">' + comment + '</span>';
+  return out;
+}
+
+function renderFile(key){
+  const f = FILES[key];
+  if(!f) return;
+  document.getElementById('idePath').innerHTML = f.path;
+  document.getElementById('ideTabName').textContent = f.path.replace(/<\/?b>/g, '').split('/').pop().trim();
+  document.getElementById('ideStatusLines').textContent = f.lines.length + ' lines';
+  document.getElementById('ideCaption').textContent = f.caption;
+  const codeEl = document.getElementById('ideCode');
+  codeEl.innerHTML = f.lines.map(ln => {
+    const cls = ln.c ? ' ' + ln.c : '';
+    const lineCls = ln.c === 'g' ? ' hl-g' : ln.c === 'w' ? ' hl-w' : '';
+    let text;
+    if(!ln.t) text = '&nbsp;';
+    else if(ln.c) text = esc(ln.t);
+    else text = tokenizePy(esc(ln.t));
+    return '<div class="line' + lineCls + '"><span class="txt' + cls + '">' + text + '</span></div>';
+  }).join('');
+  document.querySelectorAll('#ideTree .tree-file').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.file === key);
+  });
+}
+document.querySelectorAll('#ideTree .tree-file').forEach(btn => {
+  btn.addEventListener('click', () => renderFile(btn.dataset.file));
+});
+renderFile('harness');
+
+// ---------------- Behind the scenes: step-through ----------------
+const stepEls = Array.from(document.querySelectorAll('#behindSteps .step'));
+const stepsDots = document.getElementById('stepsDots');
+const stepBackBtn = document.getElementById('stepBack');
+const stepNextBtn = document.getElementById('stepNext');
+const stepCountEl = document.getElementById('stepCount');
+const behindStepsEl = document.getElementById('behindSteps');
+let stepIdx = 0;
+
+stepEls.forEach((el, i) => {
+  const dot = document.createElement('button');
+  dot.type = 'button';
+  dot.setAttribute('aria-label', 'Go to step ' + (i + 1));
+  dot.addEventListener('click', () => goToStep(i));
+  stepsDots.appendChild(dot);
+});
+
+function goToStep(i){
+  stepIdx = Math.max(0, Math.min(stepEls.length - 1, i));
+  stepEls.forEach((el, idx) => { el.hidden = idx !== stepIdx; });
+  Array.from(stepsDots.children).forEach((d, idx) => d.classList.toggle('active', idx === stepIdx));
+  stepBackBtn.disabled = stepIdx === 0;
+  stepNextBtn.innerHTML = stepIdx === stepEls.length - 1 ? 'Restart &#8635;' : 'Next &rarr;';
+  stepCountEl.textContent = (stepIdx + 1) + ' / ' + stepEls.length;
+  behindStepsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+stepBackBtn.addEventListener('click', () => goToStep(stepIdx - 1));
+stepNextBtn.addEventListener('click', () => goToStep(stepIdx === stepEls.length - 1 ? 0 : stepIdx + 1));
+goToStep(0);
+
+const backToPhase1Btn = document.getElementById('backToPhase1');
+if(backToPhase1Btn){
+  backToPhase1Btn.addEventListener('click', () => {
+    const target = document.querySelector('.tab[data-phase="p1"]');
+    if(target) target.click();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+})();
+</script>
+</body>
+</html>
