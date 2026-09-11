@@ -210,7 +210,7 @@ export function AnalyticsDashboard() {
 
       {stats && stats.timeline.length > 0 && <div className="analytics-chart-card">
         <div className="analytics-chart-head">
-          <strong>Page views &amp; clicks over time</strong>
+          <strong>Unique visitors over time</strong>
           <span>{rangeFilter ? rangeLabel(rangeFilter) : 'Last 30 days'}</span>
         </div>
         <AnalyticsChart timeline={stats.timeline} />

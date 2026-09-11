@@ -26,14 +26,16 @@ function rangeCutoffIso(range: string | null): string | null {
 interface TimelineBucket {
   key: string;
   label: string;
-  pageviews: number;
-  clicks: number;
+  visitors: number;
 }
 
 // Buckets the chart into hours (24h range) or days (everything else, capped
 // at 30 buckets so "all time" still renders a readable trend rather than an
-// unbounded axis).
-function buildTimeline(sample: { event_type: string; created_at: string }[], range: string | null): TimelineBucket[] {
+// unbounded axis). Counts DISTINCT visitor IPs per bucket -- not raw event
+// counts -- and only over whatever the caller has already filtered the
+// sample down to (event type / route / IP / range), so the chart always
+// matches what the stat cards and table are currently showing.
+function buildTimeline(sample: { ip: string; created_at: string }[], range: string | null): TimelineBucket[] {
   const hourly = range === '24h';
   const bucketCount = range && range in RANGE_HOURS ? RANGE_HOURS[range] / (hourly ? 1 : 24) : 30;
   const now = new Date();
@@ -49,24 +51,31 @@ function buildTimeline(sample: { event_type: string; created_at: string }[], ran
       : date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
-  const buckets = new Map<string, TimelineBucket>();
+  const bucketOrder: string[] = [];
+  const bucketLabels = new Map<string, string>();
+  const bucketIps = new Map<string, Set<string>>();
   for (let i = bucketCount - 1; i >= 0; i -= 1) {
     const date = new Date(now);
     if (hourly) date.setHours(date.getHours() - i, 0, 0, 0);
     else date.setDate(date.getDate() - i);
     const key = bucketKey(date);
-    buckets.set(key, { key, label: bucketLabel(date), pageviews: 0, clicks: 0 });
+    bucketOrder.push(key);
+    bucketLabels.set(key, bucketLabel(date));
+    bucketIps.set(key, new Set());
   }
 
   for (const row of sample) {
     const key = bucketKey(new Date(row.created_at));
-    const bucket = buckets.get(key);
-    if (!bucket) continue; // outside the displayed window
-    if (row.event_type === 'click') bucket.clicks += 1;
-    else bucket.pageviews += 1;
+    const ips = bucketIps.get(key);
+    if (!ips) continue; // outside the displayed window
+    ips.add(row.ip);
   }
 
-  return [...buckets.values()];
+  return bucketOrder.map(key => ({
+    key,
+    label: bucketLabels.get(key) || key,
+    visitors: bucketIps.get(key)?.size || 0
+  }));
 }
 
 export async function GET(request: NextRequest) {

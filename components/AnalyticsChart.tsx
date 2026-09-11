@@ -5,30 +5,28 @@ import { useState } from 'react';
 export interface TimelineBucket {
   key: string;
   label: string;
-  pageviews: number;
-  clicks: number;
+  visitors: number;
 }
 
-const PAGEVIEW_COLOR = '#1d4ed8';
-const CLICK_COLOR = '#b45309';
+const VISITOR_COLOR = '#1d4ed8';
 
 const WIDTH = 900;
 const HEIGHT = 220;
 const PAD_LEFT = 34;
 const PAD_BOTTOM = 24;
 const PAD_TOP = 12;
-const GAP = 2; // surface gap between stacked segments
 
 export function AnalyticsChart({ timeline }: { timeline: TimelineBucket[] }) {
   const [hovered, setHovered] = useState<number | null>(null);
 
   if (!timeline.length) return null;
 
-  const max = Math.max(1, ...timeline.map(b => b.pageviews + b.clicks));
+  const max = Math.max(1, ...timeline.map(b => b.visitors));
   const plotWidth = WIDTH - PAD_LEFT;
   const plotHeight = HEIGHT - PAD_TOP - PAD_BOTTOM;
   const barSlot = plotWidth / timeline.length;
   const barWidth = Math.max(2, Math.min(28, barSlot * 0.6));
+  const baseline = HEIGHT - PAD_BOTTOM;
 
   // Show at most ~10 x-axis labels so they don't collide.
   const labelStride = Math.max(1, Math.ceil(timeline.length / 10));
@@ -46,11 +44,7 @@ export function AnalyticsChart({ timeline }: { timeline: TimelineBucket[] }) {
   const active = hovered !== null ? timeline[hovered] : null;
 
   return <div className="analytics-chart">
-    <div className="analytics-chart-legend">
-      <span><i style={{ background: PAGEVIEW_COLOR }} />Page views</span>
-      <span><i style={{ background: CLICK_COLOR }} />Clicks</span>
-    </div>
-    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label="Page views and clicks over time" className="analytics-chart-svg">
+    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} role="img" aria-label="Unique visitors over time" className="analytics-chart-svg">
       {gridLines.map(line => (
         <g key={line.fraction}>
           <line x1={PAD_LEFT} x2={WIDTH} y1={line.y} y2={line.y} className="analytics-chart-grid" />
@@ -60,16 +54,8 @@ export function AnalyticsChart({ timeline }: { timeline: TimelineBucket[] }) {
 
       {timeline.map((bucket, index) => {
         const x = PAD_LEFT + index * barSlot + (barSlot - barWidth) / 2;
-        const total = bucket.pageviews + bucket.clicks;
-        const baseline = HEIGHT - PAD_BOTTOM;
-
-        // Pageviews sit on the baseline; clicks stack above them with a 2px
-        // surface gap between the two segments.
-        const pageviewTop = yFor(bucket.pageviews);
-        const pageviewHeight = Math.max(0, baseline - pageviewTop);
-        const clickSegmentBottom = bucket.pageviews > 0 ? pageviewTop - GAP : baseline;
-        const clickTop = total > 0 ? yFor(total) : baseline;
-        const clickHeight = Math.max(0, clickSegmentBottom - clickTop);
+        const top = yFor(bucket.visitors);
+        const height = Math.max(0, baseline - top);
 
         return <g
           key={bucket.key}
@@ -79,25 +65,14 @@ export function AnalyticsChart({ timeline }: { timeline: TimelineBucket[] }) {
         >
           {/* Full-height invisible hit target, bigger than the visible bar */}
           <rect x={PAD_LEFT + index * barSlot} y={PAD_TOP} width={barSlot} height={plotHeight} fill="transparent" />
-          {bucket.pageviews > 0 && (
+          {bucket.visitors > 0 && (
             <rect
               x={x}
-              y={pageviewTop}
+              y={top}
               width={barWidth}
-              height={pageviewHeight}
+              height={height}
               rx={2}
-              fill={PAGEVIEW_COLOR}
-              opacity={hovered === null || hovered === index ? 1 : 0.35}
-            />
-          )}
-          {bucket.clicks > 0 && (
-            <rect
-              x={x}
-              y={clickTop}
-              width={barWidth}
-              height={clickHeight}
-              rx={2}
-              fill={CLICK_COLOR}
+              fill={VISITOR_COLOR}
               opacity={hovered === null || hovered === index ? 1 : 0.35}
             />
           )}
@@ -116,8 +91,7 @@ export function AnalyticsChart({ timeline }: { timeline: TimelineBucket[] }) {
     </svg>
     {active && <div className="analytics-chart-tooltip">
       <strong>{active.label}</strong>
-      <span><i style={{ background: PAGEVIEW_COLOR }} />Page views: {active.pageviews}</span>
-      <span><i style={{ background: CLICK_COLOR }} />Clicks: {active.clicks}</span>
+      <span><i style={{ background: VISITOR_COLOR }} />Visitors: {active.visitors}</span>
     </div>}
   </div>;
 }
