@@ -7863,12 +7863,28 @@ h2 {
   font-weight: 600;
 }
 
-.analytics-chart-bar-group {
-  cursor: pointer;
+.analytics-chart-hit {
+  cursor: crosshair;
 }
 
-.analytics-chart-bar-group rect[fill]:not([fill="transparent"]) {
-  transition: opacity .12s ease;
+.analytics-chart-area {
+  fill-opacity: .12;
+}
+
+.analytics-chart-line {
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.analytics-chart-crosshair {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.analytics-chart-dot {
+  stroke: white;
+  stroke-width: 2;
 }
 
 .analytics-chart-tooltip {
