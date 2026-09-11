@@ -23,6 +23,52 @@ function rangeCutoffIso(range: string | null): string | null {
   return new Date(Date.now() - ms).toISOString();
 }
 
+interface TimelineBucket {
+  key: string;
+  label: string;
+  pageviews: number;
+  clicks: number;
+}
+
+// Buckets the chart into hours (24h range) or days (everything else, capped
+// at 30 buckets so "all time" still renders a readable trend rather than an
+// unbounded axis).
+function buildTimeline(sample: { event_type: string; created_at: string }[], range: string | null): TimelineBucket[] {
+  const hourly = range === '24h';
+  const bucketCount = range && range in RANGE_HOURS ? RANGE_HOURS[range] / (hourly ? 1 : 24) : 30;
+  const now = new Date();
+
+  function bucketKey(date: Date): string {
+    if (hourly) return date.toISOString().slice(0, 13); // YYYY-MM-DDTHH
+    return date.toISOString().slice(0, 10); // YYYY-MM-DD
+  }
+
+  function bucketLabel(date: Date): string {
+    return hourly
+      ? date.toLocaleString(undefined, { hour: 'numeric' })
+      : date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  }
+
+  const buckets = new Map<string, TimelineBucket>();
+  for (let i = bucketCount - 1; i >= 0; i -= 1) {
+    const date = new Date(now);
+    if (hourly) date.setHours(date.getHours() - i, 0, 0, 0);
+    else date.setDate(date.getDate() - i);
+    const key = bucketKey(date);
+    buckets.set(key, { key, label: bucketLabel(date), pageviews: 0, clicks: 0 });
+  }
+
+  for (const row of sample) {
+    const key = bucketKey(new Date(row.created_at));
+    const bucket = buckets.get(key);
+    if (!bucket) continue; // outside the displayed window
+    if (row.event_type === 'click') bucket.clicks += 1;
+    else bucket.pageviews += 1;
+  }
+
+  return [...buckets.values()];
+}
+
 export async function GET(request: NextRequest) {
   if (!isAdminRequest(request)) return unauthorized();
 
@@ -57,11 +103,16 @@ export async function GET(request: NextRequest) {
 
   // Rough aggregate stats over the most recent slice of events -- good
   // enough for a dashboard without needing a SQL aggregation function.
+  // Same filters as the table above, so the stat cards and chart always
+  // reflect exactly what's currently filtered/visible.
   let statsQuery = supabase
     .from('analytics_events')
-    .select('ip, route, event_type')
+    .select('ip, route, event_type, created_at')
     .order('created_at', { ascending: false })
     .limit(STATS_SAMPLE);
+  if (eventType === 'pageview' || eventType === 'click') statsQuery = statsQuery.eq('event_type', eventType);
+  if (routeFilter) statsQuery = statsQuery.ilike('route', `%${routeFilter}%`);
+  if (ipFilter) statsQuery = statsQuery.eq('ip', ipFilter);
   if (cutoff) statsQuery = statsQuery.gte('created_at', cutoff);
 
   const { data: sample, error: sampleError } = await statsQuery;
@@ -93,7 +144,8 @@ export async function GET(request: NextRequest) {
       totalPageviews,
       totalClicks,
       topRoutes,
-      topIps
+      topIps,
+      timeline: buildTimeline(sample, range)
     };
   }
 

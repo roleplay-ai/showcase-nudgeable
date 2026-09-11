@@ -2,6 +2,7 @@
 
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import type { AnalyticsEvent } from '@/lib/analytics';
+import { AnalyticsChart, type TimelineBucket } from './AnalyticsChart';
 
 interface Stats {
   sampleSize: number;
@@ -10,6 +11,7 @@ interface Stats {
   totalClicks: number;
   topRoutes: { route: string; count: number }[];
   topIps: { ip: string; count: number }[];
+  timeline: TimelineBucket[];
 }
 
 interface Response {
@@ -19,6 +21,16 @@ interface Response {
   pageSize: number;
   stats: Stats | null;
   configured: boolean;
+}
+
+function rangeLabel(range: string) {
+  switch (range) {
+    case '24h': return 'Last 24 hours';
+    case '7d': return 'Last 7 days';
+    case '15d': return 'Last 15 days';
+    case '30d': return 'Last 30 days';
+    default: return '';
+  }
 }
 
 function formatTime(value: string) {
@@ -194,6 +206,14 @@ export function AnalyticsDashboard() {
           <span>Total events</span>
           <strong>{data?.total ?? 0}</strong>
         </div>
+      </div>}
+
+      {stats && stats.timeline.length > 0 && <div className="analytics-chart-card">
+        <div className="analytics-chart-head">
+          <strong>Page views &amp; clicks over time</strong>
+          <span>{rangeFilter ? rangeLabel(rangeFilter) : 'Last 30 days'}</span>
+        </div>
+        <AnalyticsChart timeline={stats.timeline} />
       </div>}
 
       {stats && <div className="analytics-top-lists">
