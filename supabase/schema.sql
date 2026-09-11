@@ -66,6 +66,34 @@ create policy "Public can view academy videos"
   for select
   using (bucket_id = 'academy-videos');
 
+-- Site analytics: every page view and click, with the visitor's IP address,
+-- captured server-side by app/api/analytics/track and shown to admins only
+-- at /analytics (see components/AnalyticsDashboard.tsx). No public policies
+-- are defined below on purpose -- this table is read and written only with
+-- the Supabase service-role key from server code, never from the browser.
+create table if not exists public.analytics_events (
+  id uuid primary key default gen_random_uuid(),
+  ip text not null default 'unknown',
+  event_type text not null default 'pageview',
+  route text not null default '/',
+  target text,
+  referrer text,
+  user_agent text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists analytics_events_created_at_idx
+  on public.analytics_events (created_at desc);
+create index if not exists analytics_events_route_idx
+  on public.analytics_events (route);
+create index if not exists analytics_events_ip_idx
+  on public.analytics_events (ip);
+
+alter table public.analytics_events enable row level security;
+-- Intentionally no select/insert policies: RLS on with zero policies means
+-- anon/authenticated clients are denied entirely, and only the service-role
+-- key (which bypasses RLS) used by the Next.js server can read or write.
+
 insert into public.blog_posts (
   id, slug, title, excerpt, content, cover_image, author, category, published, published_at, updated_at
 ) values (

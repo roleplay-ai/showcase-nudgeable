@@ -4,6 +4,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Analytics as GoogleAnalytics } from '@/components/Analytics';
 import { Analytics } from '@vercel/analytics/next';
+import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nudgeable.ai';
 
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <Footer />
       <GoogleAnalytics />
       <Analytics />
+      <AnalyticsTracker />
     </body>
   </html>;
 }

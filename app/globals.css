@@ -7766,6 +7766,161 @@ h2 {
   padding: 0;
 }
 
+.analytics-layout {
+  display: grid;
+  gap: 24px;
+}
+
+.analytics-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.analytics-stat-card {
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: white;
+  display: grid;
+  gap: 6px;
+}
+
+.analytics-stat-card span {
+  font-size: .78rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+.analytics-stat-card strong {
+  font-size: 1.8rem;
+}
+
+.analytics-top-lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.analytics-top-lists>div {
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: white;
+}
+
+.analytics-top-lists strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.analytics-top-lists ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.analytics-top-lists li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: .85rem;
+}
+
+.analytics-top-lists code {
+  overflow-wrap: anywhere;
+}
+
+.analytics-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 14px;
+}
+
+.analytics-filters label {
+  display: grid;
+  gap: 6px;
+}
+
+.analytics-filters span {
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.analytics-filters input,
+.analytics-filters select {
+  border: 1px solid var(--line);
+  background: #fcfaf9;
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.analytics-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: white;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+
+.analytics-table th,
+.analytics-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.analytics-table td:last-child {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.analytics-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.analytics-badge-pageview {
+  background: #e8f1ff;
+  color: #1d4ed8;
+}
+
+.analytics-badge-click {
+  background: #fef3e0;
+  color: #b45309;
+}
+
+.analytics-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .analytics-stats,
+  .analytics-top-lists {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1050px) {
 
   .blogs-hero-grid,
