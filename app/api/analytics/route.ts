@@ -9,6 +9,20 @@ export const dynamic = 'force-dynamic';
 const PAGE_SIZE = 50;
 const STATS_SAMPLE = 5000;
 
+// Supported time-range filters. 'all' means no lower bound on created_at.
+const RANGE_HOURS: Record<string, number> = {
+  '24h': 24,
+  '7d': 24 * 7,
+  '15d': 24 * 15,
+  '30d': 24 * 30
+};
+
+function rangeCutoffIso(range: string | null): string | null {
+  if (!range || !(range in RANGE_HOURS)) return null;
+  const ms = RANGE_HOURS[range] * 60 * 60 * 1000;
+  return new Date(Date.now() - ms).toISOString();
+}
+
 export async function GET(request: NextRequest) {
   if (!isAdminRequest(request)) return unauthorized();
 
@@ -21,6 +35,8 @@ export async function GET(request: NextRequest) {
   const eventType = searchParams.get('type');
   const routeFilter = searchParams.get('route');
   const ipFilter = searchParams.get('ip');
+  const range = searchParams.get('range');
+  const cutoff = rangeCutoffIso(range);
 
   const supabase = getSupabase();
 
@@ -32,6 +48,7 @@ export async function GET(request: NextRequest) {
   if (eventType === 'pageview' || eventType === 'click') query = query.eq('event_type', eventType);
   if (routeFilter) query = query.ilike('route', `%${routeFilter}%`);
   if (ipFilter) query = query.eq('ip', ipFilter);
+  if (cutoff) query = query.gte('created_at', cutoff);
 
   query = query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
 
@@ -40,11 +57,14 @@ export async function GET(request: NextRequest) {
 
   // Rough aggregate stats over the most recent slice of events -- good
   // enough for a dashboard without needing a SQL aggregation function.
-  const { data: sample, error: sampleError } = await supabase
+  let statsQuery = supabase
     .from('analytics_events')
     .select('ip, route, event_type')
     .order('created_at', { ascending: false })
     .limit(STATS_SAMPLE);
+  if (cutoff) statsQuery = statsQuery.gte('created_at', cutoff);
+
+  const { data: sample, error: sampleError } = await statsQuery;
 
   let stats = null;
   if (!sampleError && sample) {

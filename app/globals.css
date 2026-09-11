@@ -7836,6 +7836,29 @@ h2 {
   overflow-wrap: anywhere;
 }
 
+.analytics-range-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.analytics-range-tab {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: .8rem;
+  font-weight: 800;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.analytics-range-tab.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: white;
+}
+
 .analytics-filters {
   display: flex;
   flex-wrap: wrap;

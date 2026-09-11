@@ -47,6 +47,7 @@ export function AnalyticsDashboard() {
   const [typeFilter, setTypeFilter] = useState('');
   const [routeFilter, setRouteFilter] = useState('');
   const [ipFilter, setIpFilter] = useState('');
+  const [rangeFilter, setRangeFilter] = useState('');
 
   const load = useCallback(async (pageArg: number) => {
     setLoading(true);
@@ -56,6 +57,7 @@ export function AnalyticsDashboard() {
       if (typeFilter) params.set('type', typeFilter);
       if (routeFilter) params.set('route', routeFilter);
       if (ipFilter) params.set('ip', ipFilter);
+      if (rangeFilter) params.set('range', rangeFilter);
       const response = await fetch(`/api/analytics?${params.toString()}`, { cache: 'no-store' });
       if (response.status === 401) {
         setSignedIn(false);
@@ -78,7 +80,7 @@ export function AnalyticsDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [typeFilter, routeFilter, ipFilter]);
+  }, [typeFilter, routeFilter, ipFilter, rangeFilter]);
 
   useEffect(() => {
     let cancelled = false;
@@ -100,7 +102,7 @@ export function AnalyticsDashboard() {
     setPage(1);
     void load(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeFilter, routeFilter, ipFilter, signedIn]);
+  }, [typeFilter, routeFilter, ipFilter, rangeFilter, signedIn]);
 
   async function signIn(event: FormEvent) {
     event.preventDefault();
@@ -218,6 +220,25 @@ export function AnalyticsDashboard() {
         </div>
       </div>}
 
+      <div className="analytics-range-tabs">
+        {[
+          { value: '', label: 'All time' },
+          { value: '24h', label: '24 hours' },
+          { value: '7d', label: '7 days' },
+          { value: '15d', label: '15 days' },
+          { value: '30d', label: '30 days' }
+        ].map(option => (
+          <button
+            key={option.value || 'all'}
+            type="button"
+            className={`analytics-range-tab${rangeFilter === option.value ? ' is-active' : ''}`}
+            onClick={() => setRangeFilter(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+
       <div className="analytics-filters">
         <label>
           <span>Event type</span>
@@ -235,8 +256,8 @@ export function AnalyticsDashboard() {
           <span>IP address</span>
           <input value={ipFilter} onChange={event => setIpFilter(event.target.value)} placeholder="203.0.113.4" />
         </label>
-        {(typeFilter || routeFilter || ipFilter) && (
-          <button type="button" className="button button-text" onClick={() => { setTypeFilter(''); setRouteFilter(''); setIpFilter(''); }}>Clear filters</button>
+        {(typeFilter || routeFilter || ipFilter || rangeFilter) && (
+          <button type="button" className="button button-text" onClick={() => { setTypeFilter(''); setRouteFilter(''); setIpFilter(''); setRangeFilter(''); }}>Clear filters</button>
         )}
       </div>
 
