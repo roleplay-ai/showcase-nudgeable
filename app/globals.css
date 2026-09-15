@@ -7807,14 +7807,38 @@ h2 {
 
 .analytics-chart-head {
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 12px;
 }
 
 .analytics-chart-head span {
   font-size: .78rem;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.analytics-chart-head>div:first-child strong {
+  display: block;
+}
+
+.analytics-chart-total {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.analytics-chart-total strong {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.analytics-chart-total span {
+  font-size: .82rem;
   color: var(--muted);
   font-weight: 700;
 }
@@ -7861,6 +7885,17 @@ h2 {
   fill: var(--muted);
   font-size: 10px;
   font-weight: 600;
+}
+
+.analytics-chart-value-label {
+  fill: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: white;
+  stroke-width: 3px;
+  stroke-linejoin: round;
 }
 
 .analytics-chart-hit {
@@ -7951,6 +7986,10 @@ h2 {
   justify-content: space-between;
   gap: 12px;
   font-size: .85rem;
+}
+
+.analytics-top-lists li>span:first-child {
+  overflow-wrap: anywhere;
 }
 
 .analytics-top-lists code {

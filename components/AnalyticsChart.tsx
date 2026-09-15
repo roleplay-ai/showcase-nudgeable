@@ -15,7 +15,7 @@ const HEIGHT = 220;
 const PAD_LEFT = 34;
 const PAD_RIGHT = 8;
 const PAD_BOTTOM = 24;
-const PAD_TOP = 12;
+const PAD_TOP = 22;
 
 export function AnalyticsChart({ timeline }: { timeline: TimelineBucket[] }) {
   const [hovered, setHovered] = useState<number | null>(null);
@@ -70,6 +70,7 @@ export function AnalyticsChart({ timeline }: { timeline: TimelineBucket[] }) {
 
       {timeline.map((bucket, index) => {
         const x = xFor(index);
+        const showLabel = index % labelStride === 0 || index === timeline.length - 1;
         return <g
           key={bucket.key}
           onMouseEnter={() => setHovered(index)}
@@ -78,10 +79,18 @@ export function AnalyticsChart({ timeline }: { timeline: TimelineBucket[] }) {
         >
           {/* Full-height invisible hit target, wider than the line itself */}
           <rect x={x - slot / 2} y={PAD_TOP} width={slot || plotWidth} height={plotHeight} fill="transparent" />
-          {hovered === index && (
-            <circle cx={x} cy={points[index].y} r={4} fill={VISITOR_COLOR} className="analytics-chart-dot" />
+          <circle cx={x} cy={points[index].y} r={hovered === index ? 4 : 2.5} fill={VISITOR_COLOR} className="analytics-chart-dot" />
+          {bucket.visitors > 0 && (
+            <text
+              x={x}
+              y={points[index].y <= PAD_TOP + 10 ? points[index].y + 14 : points[index].y - 8}
+              textAnchor="middle"
+              className="analytics-chart-value-label"
+            >
+              {bucket.visitors}
+            </text>
           )}
-          {index % labelStride === 0 && (
+          {showLabel && (
             <text x={x} y={HEIGHT - PAD_BOTTOM + 16} textAnchor="middle" className="analytics-chart-axis-label">
               {bucket.label}
             </text>

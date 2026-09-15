@@ -41,12 +41,14 @@ function AnalyticsTrackerInner() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    if (pathname?.startsWith('/analytics')) return;
     const query = searchParams.toString();
     send('pageview', query ? `${pathname}?${query}` : pathname);
   }, [pathname, searchParams]);
 
   useEffect(() => {
     function onClick(event: MouseEvent) {
+      if (window.location.pathname.startsWith('/analytics')) return;
       const target = event.target as HTMLElement | null;
       const el = target?.closest('a, button, [role="button"]') as HTMLElement | null;
       if (!el) return;

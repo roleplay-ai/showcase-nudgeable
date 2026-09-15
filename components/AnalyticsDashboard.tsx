@@ -6,11 +6,10 @@ import { AnalyticsChart, type TimelineBucket } from './AnalyticsChart';
 
 interface Stats {
   sampleSize: number;
-  uniqueIps: number;
-  totalPageviews: number;
+  uniqueVisitors: number;
   totalClicks: number;
   topRoutes: { route: string; count: number }[];
-  topIps: { ip: string; count: number }[];
+  topClicks: { target: string; count: number }[];
   timeline: TimelineBucket[];
 }
 
@@ -46,6 +45,10 @@ function formatTime(value: string) {
   }
 }
 
+function formatRoute(route: string) {
+  return route === '/' ? 'Home page' : route;
+}
+
 export function AnalyticsDashboard() {
   const [ready, setReady] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
@@ -58,7 +61,6 @@ export function AnalyticsDashboard() {
   const [page, setPage] = useState(1);
   const [typeFilter, setTypeFilter] = useState('');
   const [routeFilter, setRouteFilter] = useState('');
-  const [ipFilter, setIpFilter] = useState('');
   const [rangeFilter, setRangeFilter] = useState('');
 
   const load = useCallback(async (pageArg: number) => {
@@ -68,7 +70,6 @@ export function AnalyticsDashboard() {
       const params = new URLSearchParams({ page: String(pageArg) });
       if (typeFilter) params.set('type', typeFilter);
       if (routeFilter) params.set('route', routeFilter);
-      if (ipFilter) params.set('ip', ipFilter);
       if (rangeFilter) params.set('range', rangeFilter);
       const response = await fetch(`/api/analytics?${params.toString()}`, { cache: 'no-store' });
       if (response.status === 401) {
@@ -92,7 +93,7 @@ export function AnalyticsDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [typeFilter, routeFilter, ipFilter, rangeFilter]);
+  }, [typeFilter, routeFilter, rangeFilter]);
 
   useEffect(() => {
     let cancelled = false;
@@ -114,7 +115,7 @@ export function AnalyticsDashboard() {
     setPage(1);
     void load(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeFilter, routeFilter, ipFilter, rangeFilter, signedIn]);
+  }, [typeFilter, routeFilter, rangeFilter, signedIn]);
 
   async function signIn(event: FormEvent) {
     event.preventDefault();
@@ -161,7 +162,7 @@ export function AnalyticsDashboard() {
     return <div className="blog-write-page"><div className="container blog-login-card">
       <span className="eyebrow">ADMIN</span>
       <h1>Site analytics.</h1>
-      <p>Sign in to see visitor IP addresses, pages viewed, and clicks.</p>
+      <p>Sign in to see how many visitors your pages get and where they click.</p>
       <form className="blog-login-form" onSubmit={signIn}>
         <label><span>Admin password</span><input type="password" value={password} onChange={event => setPassword(event.target.value)} autoComplete="current-password" required /></label>
         <button className="button button-primary" type="submit">Sign in</button>
@@ -191,51 +192,46 @@ export function AnalyticsDashboard() {
 
       {stats && <div className="analytics-stats">
         <div className="analytics-stat-card">
-          <span>Unique IP addresses</span>
-          <strong>{stats.uniqueIps}</strong>
-        </div>
-        <div className="analytics-stat-card">
-          <span>Page views</span>
-          <strong>{stats.totalPageviews}</strong>
+          <span>Visitors</span>
+          <strong>{stats.uniqueVisitors}</strong>
         </div>
         <div className="analytics-stat-card">
           <span>Clicks</span>
           <strong>{stats.totalClicks}</strong>
         </div>
-        <div className="analytics-stat-card">
-          <span>Total events</span>
-          <strong>{data?.total ?? 0}</strong>
-        </div>
       </div>}
 
       {stats && stats.timeline.length > 0 && <div className="analytics-chart-card">
         <div className="analytics-chart-head">
-          <strong>Unique visitors over time</strong>
-          <span>{rangeFilter ? rangeLabel(rangeFilter) : 'Last 30 days'}</span>
+          <div>
+            <strong>Unique visitors over time</strong>
+            <span>{rangeFilter ? rangeLabel(rangeFilter) : 'Last 30 days'}</span>
+          </div>
+          <div className="analytics-chart-total">
+            <strong>{stats.uniqueVisitors}</strong>
+            <span>visitors</span>
+          </div>
         </div>
         <AnalyticsChart timeline={stats.timeline} />
       </div>}
 
       {stats && <div className="analytics-top-lists">
         <div>
-          <strong>Top pages</strong>
+          <strong>Pages seen</strong>
           <ul>
             {stats.topRoutes.map(item => (
-              <li key={item.route}><code>{item.route}</code><span>{item.count}</span></li>
+              <li key={item.route}><code>{formatRoute(item.route)}</code><span>{item.count}</span></li>
             ))}
             {!stats.topRoutes.length && <li>No visits recorded yet.</li>}
           </ul>
         </div>
         <div>
-          <strong>Top IP addresses</strong>
+          <strong>Where they clicked</strong>
           <ul>
-            {stats.topIps.map(item => (
-              <li key={item.ip}>
-                <button type="button" className="button button-text" onClick={() => setIpFilter(item.ip)}>{item.ip}</button>
-                <span>{item.count}</span>
-              </li>
+            {stats.topClicks.map(item => (
+              <li key={item.target}><span>{item.target}</span><span>{item.count}</span></li>
             ))}
-            {!stats.topIps.length && <li>No visits recorded yet.</li>}
+            {!stats.topClicks.length && <li>No clicks recorded yet.</li>}
           </ul>
         </div>
       </div>}
@@ -272,12 +268,8 @@ export function AnalyticsDashboard() {
           <span>Route contains</span>
           <input value={routeFilter} onChange={event => setRouteFilter(event.target.value)} placeholder="/insights" />
         </label>
-        <label>
-          <span>IP address</span>
-          <input value={ipFilter} onChange={event => setIpFilter(event.target.value)} placeholder="203.0.113.4" />
-        </label>
-        {(typeFilter || routeFilter || ipFilter || rangeFilter) && (
-          <button type="button" className="button button-text" onClick={() => { setTypeFilter(''); setRouteFilter(''); setIpFilter(''); setRangeFilter(''); }}>Clear filters</button>
+        {(typeFilter || routeFilter || rangeFilter) && (
+          <button type="button" className="button button-text" onClick={() => { setTypeFilter(''); setRouteFilter(''); setRangeFilter(''); }}>Clear filters</button>
         )}
       </div>
 
@@ -286,24 +278,20 @@ export function AnalyticsDashboard() {
           <thead>
             <tr>
               <th>Time</th>
-              <th>IP address</th>
               <th>Event</th>
               <th>Route</th>
-              <th>Detail</th>
             </tr>
           </thead>
           <tbody>
             {(data?.events || []).map(event => (
               <tr key={event.id}>
                 <td>{formatTime(event.created_at)}</td>
-                <td><button type="button" className="button button-text" onClick={() => setIpFilter(event.ip)}>{event.ip}</button></td>
                 <td><span className={`analytics-badge analytics-badge-${event.event_type}`}>{event.event_type}</span></td>
-                <td><code>{event.route}</code></td>
-                <td>{event.target || '—'}</td>
+                <td><code>{formatRoute(event.route)}</code></td>
               </tr>
             ))}
             {!loading && data && !data.events.length && (
-              <tr><td colSpan={5}>No events match these filters yet.</td></tr>
+              <tr><td colSpan={3}>No events match these filters yet.</td></tr>
             )}
           </tbody>
         </table>

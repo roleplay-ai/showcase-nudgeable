@@ -89,7 +89,6 @@ export async function GET(request: NextRequest) {
   const page = Math.max(1, Number(searchParams.get('page')) || 1);
   const eventType = searchParams.get('type');
   const routeFilter = searchParams.get('route');
-  const ipFilter = searchParams.get('ip');
   const range = searchParams.get('range');
   const cutoff = rangeCutoffIso(range);
 
@@ -98,11 +97,12 @@ export async function GET(request: NextRequest) {
   let query = supabase
     .from('analytics_events')
     .select('*', { count: 'exact' })
+    .neq('ip', '::1')
+    .not('route', 'ilike', '/analytics%')
     .order('created_at', { ascending: false });
 
   if (eventType === 'pageview' || eventType === 'click') query = query.eq('event_type', eventType);
   if (routeFilter) query = query.ilike('route', `%${routeFilter}%`);
-  if (ipFilter) query = query.eq('ip', ipFilter);
   if (cutoff) query = query.gte('created_at', cutoff);
 
   query = query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
@@ -116,44 +116,48 @@ export async function GET(request: NextRequest) {
   // reflect exactly what's currently filtered/visible.
   let statsQuery = supabase
     .from('analytics_events')
-    .select('ip, route, event_type, created_at')
+    .select('ip, route, event_type, target, created_at')
+    .neq('ip', '::1')
+    .not('route', 'ilike', '/analytics%')
     .order('created_at', { ascending: false })
     .limit(STATS_SAMPLE);
   if (eventType === 'pageview' || eventType === 'click') statsQuery = statsQuery.eq('event_type', eventType);
   if (routeFilter) statsQuery = statsQuery.ilike('route', `%${routeFilter}%`);
-  if (ipFilter) statsQuery = statsQuery.eq('ip', ipFilter);
   if (cutoff) statsQuery = statsQuery.gte('created_at', cutoff);
 
   const { data: sample, error: sampleError } = await statsQuery;
 
   let stats = null;
   if (!sampleError && sample) {
+    // Unique visitor IPs are used only to count distinct visitors -- the
+    // addresses themselves are never surfaced in the response below.
     const uniqueIps = new Set(sample.map(row => row.ip)).size;
     const routeCounts = new Map<string, number>();
-    const ipCounts = new Map<string, number>();
-    let totalPageviews = 0;
+    const targetCounts = new Map<string, number>();
     let totalClicks = 0;
     for (const row of sample) {
-      routeCounts.set(row.route, (routeCounts.get(row.route) || 0) + 1);
-      ipCounts.set(row.ip, (ipCounts.get(row.ip) || 0) + 1);
-      if (row.event_type === 'click') totalClicks += 1;
-      else totalPageviews += 1;
+      if (row.event_type === 'click') {
+        totalClicks += 1;
+        const label = row.target || row.route;
+        targetCounts.set(label, (targetCounts.get(label) || 0) + 1);
+      } else {
+        routeCounts.set(row.route, (routeCounts.get(row.route) || 0) + 1);
+      }
     }
     const topRoutes = [...routeCounts.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([route, count]) => ({ route, count }));
-    const topIps = [...ipCounts.entries()]
+    const topClicks = [...targetCounts.entries()]
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
-      .map(([ip, count]) => ({ ip, count }));
+      .map(([target, count]) => ({ target, count }));
     stats = {
       sampleSize: sample.length,
-      uniqueIps,
-      totalPageviews,
+      uniqueVisitors: uniqueIps,
       totalClicks,
       topRoutes,
-      topIps,
+      topClicks,
       timeline: buildTimeline(sample, range)
     };
   }
