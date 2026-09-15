@@ -97,25 +97,19 @@ export function AcademyPromo({ featuredPost, otherPosts = [] }: AcademyPromoProp
     <section className="academy-promo aca2" id="academy">
       <div className="container">
 
-        <div className="aca2-head">
-          <div className="section-intro">
-            <span className="eyebrow">Nudgeable AI Academy</span>
-            <h2 className="aca2-claim">Continuous AI capability building, after the workshop.</h2>
-            <p className="aca2-sub">The Academy carries the same six learning tracks into day-to-day work, with practical guides that evolve as the tools change.</p>
+        <div className="aca2-compact">
+          <span className="eyebrow">Nudgeable AI Academy</span>
+          <div className="aca2-compact-top">
+            <div className="section-intro">
+              <h2 className="aca2-claim">AI capability that continues after the workshop.</h2>
+              <p className="aca2-sub">Practical guides and current AI updates help your team apply what they learned to everyday work.</p>
+            </div>
+            <a className="button button-primary button-compact" href="/ai-academy/index.html">Open the AI Academy <Icon name="arrow" size={17} /></a>
           </div>
-          <div className="aca2-live" aria-label="What the Academy provides">
-            <div className="aca2-live-row"><span className="aca2-live-dot" /><span>Practical guides, written and kept current</span></div>
-            <div className="aca2-live-row"><span className="aca2-live-dot" /><span>New guidance as AI tools change</span></div>
-            <div className="aca2-stamp"><span className="aca2-pulse" />Updated regularly</div>
-          </div>
-        </div>
-
-        <div className="aca2-link">
-          <h3>The workshop and the Academy are the same program.</h3>
           <div className="aca2-chain">
-            <div className="aca2-phase"><span className="aca2-when">On the day</span><h4>The workshop</h4><p>People practise on their own live tasks, in their own function, with help in the room.</p></div>
-            <div className="aca2-phase"><span className="aca2-when">Back at work</span><h4>We come back</h4><p>What changed in the tools, and the real problems your team hit trying to automate their work.</p></div>
-            <div className="aca2-phase"><span className="aca2-when">Any day after</span><h4>The Academy</h4><p>The same learning tracks remain available, with guidance kept current as the tools change.</p></div>
+            <div className="aca2-phase"><span className="aca2-when">In the workshop</span><h4>Practise on real tasks</h4></div>
+            <div className="aca2-phase"><span className="aca2-when">Back at work</span><h4>Apply with practical guides</h4></div>
+            <div className="aca2-phase"><span className="aca2-when">As AI changes</span><h4>Keep capability current</h4></div>
           </div>
         </div>
 

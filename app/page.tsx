@@ -102,7 +102,7 @@ export default async function Home() {
 
         <div className="hero-split" aria-label="Workshop photo alongside the Nudgeable AI Academy">
           <div className="hero-split-photo">
-            <Image src="/assets/hero-practice-lab.jpg" alt="Facilitator presenting AI tools alongside the Nudgeable AI Academy" width={1024} height={768} priority />
+            <Image src="/assets/hero-workshop.jpg" alt="Gaurav Patel facilitating a practical AI workshop" width={1303} height={1086} priority />
           </div>
           <div className="hero-split-card">
             <div className="hero-split-card-top">
