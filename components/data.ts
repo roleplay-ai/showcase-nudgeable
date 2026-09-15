@@ -125,7 +125,7 @@ export const testimonials: Testimonial[] = [
     avatarSrc: '/testimonials/garima-pant.png'
   },
   {
-    quote: 'The workshop simplified complex concepts and showcased practical tools that can power everyday work, from samples of prompt engineering to problem solving.',
+    quote: 'The workshop simplified complex concepts and showed practical tools that power everyday work, from prompt engineering through to problem solving.',
     name: 'Shraddha Mudaliar',
     role: 'L&D @ Myntra',
     avatarSrc: '/testimonials/shraddha-mudaliar.png'

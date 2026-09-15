@@ -96,7 +96,7 @@ export default async function Home() {
           <p>Hands-on workshops help employees use AI on real work. The Nudgeable AI Academy gives them practical workflows, clear explainers and weekly updates as the tools change.</p>
           <div className="button-row hero-actions">
             <a className="button button-primary button-compact" href="#training">Explore the Workshops <Icon name="arrow" size={17} /></a>
-            <a className="button button-secondary button-compact" href="/ai-academy/index.html">See the AI Academy <Icon name="arrow" size={17} /></a>
+            <a className="tlink" href="#method">How a Program Gets Built</a>
           </div>
         </div>
 
@@ -109,20 +109,20 @@ export default async function Home() {
               <span className="hero-split-card-label">Nudgeable AI Academy</span>
               <span className="hero-split-card-live"><i /> Kept current</span>
             </div>
-            <h2>Keep building AI capability after the workshop.</h2>
-            <p>Practical guidance your team can return to as their work&mdash;and the tools&mdash;change.</p>
-            <ul className="hero-split-card-list">
-              <li><span className="hero-split-card-icon"><Icon name="book" size={14} /></span>Practical workflows and guides</li>
-              <li><span className="hero-split-card-icon"><Icon name="spark" size={14} /></span>AI tool updates every week</li>
-              <li><span className="hero-split-card-icon"><Icon name="check" size={14} /></span>Guidance that stays current</li>
+            <h2>Keep building AI capability.</h2>
+            <p>Practical guides and AI updates your team can use after the workshop.</p>
+            <ul className="hero-split-card-benefits">
+              <li>Guides</li>
+              <li>Real workflows</li>
+              <li>Tool updates</li>
             </ul>
-            <a className="hero-split-card-link" href="/ai-academy/index.html">See how learning continues <Icon name="arrow" size={14} /></a>
+            <a className="hero-split-card-link" href="/ai-academy/index.html">Explore the Academy</a>
           </div>
         </div>
       </div>
     </section>
 
-    <div className="container"><LogoStrip /></div>
+    <div className="logo-strip-band"><div className="container"><LogoStrip /></div></div>
 
     <section id="training" className="training-proof-section">
       <div className="container">

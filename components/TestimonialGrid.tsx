@@ -4,7 +4,6 @@ import { testimonials } from './data';
 export function TestimonialGrid() {
   return <div className="testimonial-grid">
     {testimonials.map((item) => <article className="testimonial" key={item.name}>
-      <div className="quote-mark">“</div>
       <p>{item.quote}</p>
       <div className="person">
         <div className="person-avatar">
