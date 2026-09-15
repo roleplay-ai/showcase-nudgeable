@@ -13,6 +13,7 @@ const nav = [
 ];
 
 const ACADEMY_URL = '/ai-academy/index.html';
+const AI_FOR_WORK_URL = '/ai-for-work/index.html';
 
 export function Header() {
   const pathname = usePathname();
@@ -51,6 +52,7 @@ export function Header() {
         </button>
         <nav id="primary-navigation" className={open ? 'main-nav open' : 'main-nav'} aria-label="Primary navigation">
           <a href={ACADEMY_URL} className={pathname.startsWith('/ai-academy') ? 'active' : ''} onClick={closeMenus}>AI Academy</a>
+          <a href={AI_FOR_WORK_URL} className={pathname.startsWith('/ai-for-work') ? 'active' : ''} onClick={closeMenus}>AI for Work</a>
           {nav.map(item =>
             <Link key={item.href} href={item.href} aria-current={pathname === item.href ? 'page' : undefined} className={pathname === item.href ? 'active' : ''} onClick={closeMenus}>{item.label}</Link>
           )}
