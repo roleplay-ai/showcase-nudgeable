@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="/ai-for-work/what-is-a-coding-agent.html">
+<link rel="icon" href="/icon.png" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="description" content="Two assistants with almost the same name and almost nothing in common. Which one you open decides how good the answer is, and most people open the wrong one.">
+<meta property="og:site_name" content="Nudgeable">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:title" content="What Is a Coding Agent?">
+<meta property="og:description" content="Two assistants with almost the same name and almost nothing in common. Which one you open decides how good the answer is, and most people open the wrong one.">
+<meta property="og:url" content="/ai-for-work/what-is-a-coding-agent.html">
+<meta property="og:image" content="/assets/og-default.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nudgeable">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Is a Coding Agent?">
+<meta name="twitter:description" content="Two assistants with almost the same name and almost nothing in common. Which one you open decides how good the answer is, and most people open the wrong one.">
+<meta name="twitter:image" content="/assets/og-default.png">
+<meta name="theme-color" content="#FDF8EC">
+<title>What Is a Coding Agent?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+--ink:#16202B;--navy:#203141;--cream:#FDF8EC;--ice:#E2F4FD;--yellow:#FFD93D;--amber:#FFCE00;
+--blue:#2F7FE8;--bluepale:#E7F2FE;--orange:#F68A29;--green:#23CE68;--red:#ED4551;--muted:#5E6B78;
+--pop:5px 5px 0 var(--ink);--pop-sm:3px 3px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html{max-width:100%}
+body{max-width:100%;overflow-x:clip}
+.shell,.side,.main,section,.shell>*{min-width:0;max-width:100%}
+img,svg,video,iframe{max-width:100%;height:auto}
+p,li,h1,h2,h3,h4,.bub,.face,.pnlcap,.lead{overflow-wrap:anywhere}
+.code{overflow-wrap:anywhere;word-break:break-word}
+.tblwrap,.tabs,.ftab,.steps{max-width:100%}
+
+html{scroll-behavior:smooth}
+body{margin:0;-webkit-text-size-adjust:100%;overflow-x:hidden;background:var(--cream);color:var(--ink);
+font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.hl{text-decoration:none;font-weight:600;background:linear-gradient(transparent 58%,var(--yellow) 58%);
+padding:0 2px;border-bottom:2px solid var(--ink)}
+.hl:hover{background:var(--yellow)}
+.hl::after{content:" ↗";font-size:.8em;opacity:.6}
+
+:root{--top-offset:20px}
+.shell{display:grid;grid-template-columns:212px 1fr;gap:36px;max-width:1200px;margin:0 auto;padding:0 20px}
+.main{min-width:0;padding-top:6px}
+.side{position:sticky;top:var(--top-offset);align-self:start;padding:26px 0 20px}
+.sidehead{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.sidehead .mascot{width:38px;height:38px;flex:0 0 38px}
+.sidetitle{font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.6px;line-height:1.15}
+.steps{position:relative;display:flex;flex-direction:column;gap:2px}
+.steps::before{content:"";position:absolute;left:17px;top:16px;bottom:16px;width:3px;background:var(--ink);border-radius:2px}
+.steps .fill{position:absolute;left:17px;top:16px;width:3px;height:0;background:var(--blue);border-radius:2px;transition:height .18s ease}
+.steps a{position:relative;z-index:1;display:flex;align-items:center;gap:11px;text-decoration:none;
+padding:5px 8px 5px 0;font-size:13.5px;font-weight:700;color:var(--muted);border-radius:999px}
+.steps a i{font-style:normal;width:34px;height:34px;flex:0 0 34px;border:3px solid var(--ink);border-radius:999px;
+background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--ink);transition:.12s}
+.steps a:hover{color:var(--ink)}
+.steps a:hover i{background:var(--ice)}
+.steps a.act{color:var(--ink)}
+.steps a.act i{background:var(--yellow);box-shadow:var(--pop-sm)}
+.steps a.done i{background:var(--ink);color:var(--yellow)}
+
+.bar{background:var(--navy);border:3px solid var(--ink);border-radius:14px;padding:14px 22px;color:#fff;
+display:flex;align-items:center;gap:12px;box-shadow:var(--pop)}
+.bar h2{margin:0;font-size:25px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;line-height:1.15}
+.chev{color:var(--yellow);font-weight:900;font-size:22px;line-height:1}
+.num{background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+section{padding:40px 0;scroll-margin-top:24px}
+.lead{font-size:17px;max-width:700px;margin:20px 0 0;color:#34424F}
+
+.mascot{display:inline-block;vertical-align:middle}
+.mascot svg{width:100%;height:100%;display:block}
+.blinker{transform-box:fill-box;transform-origin:top;animation:blink 6s infinite}
+.blinker.b2{animation-delay:.08s}
+@keyframes blink{0%,95%{transform:scaleY(0)}97%,98.5%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.sparks{opacity:0}
+.mood-happy .sparks{opacity:1;animation:pop .4s ease}
+@keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
+
+.tip{margin-top:22px;background:#FFF7D1;border:3px solid var(--ink);border-radius:14px;padding:16px 20px;
+box-shadow:var(--pop);display:flex;gap:14px;align-items:flex-start}
+.tip .bulb{font-size:24px;line-height:1.2}
+.tip strong{display:block;font-weight:900;text-transform:uppercase;font-size:13px;letter-spacing:.8px;margin-bottom:4px}
+.tip p{margin:0;font-size:15px}
+.tip.warn{background:#FFE7E9}
+
+.hero{margin:26px 0 0;background:var(--navy);border:3px solid var(--ink);border-radius:16px;padding:38px 32px;color:#fff;box-shadow:var(--pop)}
+.hero .kick{display:inline-block;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+padding:3px 12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px}
+.hero h1{font-size:42px;font-weight:900;line-height:1.1;margin:16px 0 0;text-transform:uppercase}
+.herosub{margin:12px 0 0;font-size:19px;font-weight:700;color:#fff;min-height:29px}
+.hero h1 .type{color:var(--yellow)}
+.cursor{display:inline-block;width:4px;height:.85em;background:var(--yellow);vertical-align:-2px;animation:bl .8s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.herorow{display:flex;gap:20px;align-items:flex-start;margin-top:22px}
+.herorow .mascot{width:80px;height:80px;flex:0 0 80px}
+.hero p{color:#CBD8E4;font-size:17px;margin:0}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn{cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;padding:11px 26px;border-radius:999px;
+text-decoration:none;display:inline-block;border:3px solid var(--ink);box-shadow:var(--pop-sm);transition:.12s}
+.btn:active{transform:translate(3px,3px);box-shadow:none}
+.btn-y{background:var(--yellow);color:var(--ink)}
+.btn-w{background:#fff;color:var(--ink)}
+
+.pnl{border:3px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--pop);background:#fff;cursor:zoom-in;position:relative}
+.pnl img{display:block;width:100%}
+.pnlcap{font-size:15px;font-weight:600;margin-top:10px;color:#34424F}
+.pnlcap b{font-weight:900}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:24px}
+.pgrid.wide{grid-template-columns:1fr}
+.pstack{margin-top:24px;display:flex;flex-direction:column;gap:22px}
+
+.months{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.mbtn{border:3px solid var(--ink);background:#fff;font-family:inherit;font-weight:900;font-size:14px;
+padding:8px 20px;border-radius:999px;cursor:pointer;box-shadow:var(--pop-sm);transition:.12s}
+.mbtn:hover{background:var(--ice)}
+.mbtn.on{background:var(--yellow)}
+.mstage{margin-top:20px;display:grid;grid-template-columns:1fr;gap:20px;align-items:start}
+.mcost{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:var(--pop)}
+.mcost h4{margin:0;font-size:18px;font-weight:900}
+.mcost p{margin:8px 0 0;font-size:15px;color:#34424F}
+
+.km{margin-top:16px;border:3px solid var(--ink);border-radius:12px;background:#fff;overflow:hidden;box-shadow:var(--pop-sm)}
+.km>button{width:100%;text-align:left;background:var(--ice);border:none;border-bottom:3px solid var(--ink);
+font-family:inherit;font-size:14px;font-weight:800;padding:12px 16px;cursor:pointer;display:flex;
+justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+.km>button:hover{background:var(--yellow)}
+.km .pm{background:var(--ink);color:var(--yellow);width:24px;height:24px;border-radius:6px;
+display:flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 24px}
+.km .body{display:none;padding:16px 18px;font-size:15px}
+.km.on .body{display:block}
+.km.on .pm{background:var(--blue);color:#fff}
+.km .body p{margin:0 0 10px}.km .body p:last-child{margin:0}
+
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.cardx{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:18px;box-shadow:var(--pop);cursor:pointer;transition:.12s}
+.cardx:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.cardx .ic{width:44px;height:44px;border:3px solid var(--ink);border-radius:10px;display:flex;
+align-items:center;justify-content:center;font-size:21px;background:var(--yellow)}
+.cardx h3{margin:10px 0 0;font-size:18px;font-weight:900}
+.cardx p{margin:6px 0 0;font-size:15px;color:#34424F}
+.cardx .more{display:none;margin-top:12px;padding-top:12px;border-top:3px dashed var(--ink);font-size:14px}
+.cardx.on .more{display:block}
+.cardx .toggle{margin-top:12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--blue)}
+.pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border:2px solid var(--ink);
+border-radius:999px;margin:6px 6px 0 0;background:#fff}
+.p-y{background:var(--yellow)}.p-b{background:var(--bluepale)}.p-g{background:#D8F7E4}
+
+.folder{margin-top:24px;border:3px solid var(--ink);border-radius:16px;box-shadow:var(--pop);overflow:hidden;background:#fff}
+.ftab{background:var(--navy);display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.ftab::-webkit-scrollbar{display:none}
+.ftab button{flex:1;min-width:130px;background:transparent;border:none;border-right:3px solid var(--ink);
+color:#B9C6D3;font-family:inherit;font-weight:800;font-size:13.5px;padding:14px 10px;cursor:pointer;white-space:nowrap}
+.ftab button:last-child{border-right:none}
+.ftab button.on{background:var(--yellow);color:var(--ink)}
+.fbody{padding:22px}
+.fpane{display:none}.fpane.on{display:block}
+.fileline{display:flex;gap:12px;align-items:flex-start;padding:12px;border:3px solid var(--ink);
+border-radius:10px;margin-bottom:10px;background:var(--cream)}
+.fileline .fi{width:34px;height:34px;flex:0 0 34px;border:2px solid var(--ink);border-radius:7px;
+display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff}
+.fileline b{display:block;font-size:15px}
+.fileline span{font-size:14px;color:var(--muted)}
+.chatline{display:flex;gap:10px;align-items:center;padding:11px 14px;border:3px solid var(--ink);
+border-radius:10px;margin-bottom:9px;background:#fff;font-weight:600;font-size:15px}
+.chatline .dot{width:12px;height:12px;border-radius:999px;border:2px solid var(--ink);flex:0 0 12px}
+.nope{margin-top:16px;border:3px dashed var(--ink);border-radius:12px;padding:16px;background:#FFF0F1}
+.nope strong{display:block;font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.nope p{margin:0;font-size:15px}
+
+.flipwrap{perspective:1000px;height:262px;cursor:pointer}
+.flipin{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flipwrap.on .flipin{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:3px solid var(--ink);border-radius:14px;
+padding:18px;box-shadow:var(--pop);display:flex;flex-direction:column;justify-content:center}
+.face.front{background:#fff}
+.face.back{background:var(--ice);transform:rotateY(180deg)}
+.face .lab{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.face.front .lab{color:var(--red)}.face.back .lab{color:#0F8A45}
+.face p{margin:0;font-size:15.5px;font-weight:600}
+.face .flipnote{margin-top:auto;padding-top:10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+
+.sorter{margin-top:24px;background:var(--navy);border:3px solid var(--ink);border-radius:16px;padding:20px;color:#fff;text-align:center;box-shadow:var(--pop)}
+.sorter .mascot{width:52px;height:52px;margin:6px auto 0;display:block}
+.sorter .q{font-size:18px;font-weight:800;margin:10px auto 0;min-height:56px;max-width:620px;display:flex;align-items:center;justify-content:center}
+.sbtns{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.sbtn{font-family:inherit;font-size:14px;font-weight:900;padding:10px 26px;border-radius:999px;cursor:pointer;
+border:3px solid var(--ink);box-shadow:var(--pop-sm);background:var(--yellow);color:var(--ink);transition:.12s}
+.sbtn.alt{background:#fff}
+.sbtn:active{transform:translate(3px,3px);box-shadow:none}
+.sbtn:disabled{opacity:.4;cursor:default}
+.fb{margin:14px auto 0;font-size:14.5px;min-height:46px;color:#CBD8E4;max-width:640px}
+.fb b{color:var(--yellow)}.fb.ok b{color:#6BF0A0}
+.snext{background:transparent;border:3px solid #fff;color:#fff;font-family:inherit;font-weight:800;font-size:13px;
+padding:9px 24px;border-radius:999px;cursor:pointer;display:none;margin-top:4px}
+.snext.on{display:inline-block}
+.prog{font-size:11px;color:#8FA2B4;margin-top:12px;font-weight:800;letter-spacing:1px}
+
+.tblwrap{margin-top:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;border:3px solid var(--ink);border-radius:14px;box-shadow:var(--pop);background:#fff}
+table{border-collapse:collapse;width:100%;min-width:820px}
+th,td{text-align:left;padding:14px 16px;font-size:14.5px;border-bottom:3px solid var(--ink);vertical-align:top;overflow-wrap:break-word}
+th{background:var(--yellow);font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:900}
+td:nth-child(2){white-space:nowrap;font-weight:800}
+
+.lb{position:fixed;inset:0;background:rgba(22,32,43,.94);display:none;align-items:center;justify-content:center;z-index:200;padding:18px;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-height:92vh;max-width:100%;border:3px solid var(--yellow);border-radius:12px}
+.lb-x{position:absolute;top:16px;right:20px;color:#fff;font-size:34px;font-weight:300;line-height:1}
+
+footer{background:var(--navy);color:#9FB0C0;padding:30px 0;margin-top:34px;text-align:center;font-size:14px;border-top:3px solid var(--ink)}
+footer .fl{color:var(--yellow);font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+
+@media(max-width:980px){
+.shell{display:block;padding:0 16px}
+.side{position:static;padding:18px 0 4px}
+.sidehead{margin-bottom:12px}
+.steps{flex-direction:row;overflow-x:auto;gap:8px;scrollbar-width:none;padding:2px 2px 8px;
+-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.steps::-webkit-scrollbar{display:none}
+.steps::before,.steps .fill{display:none}
+.steps a{flex:0 0 auto;border:3px solid var(--ink);background:#fff;border-radius:999px;
+padding:6px 16px 6px 6px;box-shadow:var(--pop-sm);scroll-snap-align:start;min-height:44px}
+.steps a i{width:28px;height:28px;flex:0 0 28px;border-width:2px;font-size:12px}
+.steps a span{font-size:13px}
+.steps a.act{background:var(--yellow)}
+.steps a.done{background:var(--cream)}
+.g3{grid-template-columns:repeat(2,1fr)}
+.hero h1{font-size:34px}
+.herosub{font-size:17px}
+}
+
+@media(max-width:780px){
+.shell{padding:0 14px}
+.main{padding-top:0}
+.wrap{padding:0 14px}
+section{padding:30px 0}
+.hero{padding:24px 18px;margin-top:14px}
+.hero h1{font-size:26px}
+.hero p{font-size:16px}
+.herorow{gap:14px}
+.herorow .mascot{width:54px;height:54px;flex:0 0 54px}
+.cta{gap:10px}
+.btn{width:100%;text-align:center;padding:13px 20px}
+
+.bar{padding:12px 16px;gap:10px;border-radius:12px}
+.bar h2{font-size:17px;line-height:1.2}
+.num{width:30px;height:30px;flex:0 0 30px;font-size:14px}
+.chev{display:none}
+.lead{font-size:16px;margin-top:16px}
+
+.g2,.g3,.pgrid,.mstage{grid-template-columns:1fr;gap:18px}
+.pstack{gap:18px}
+.pnlcap{font-size:14.5px}
+
+.months{gap:8px}
+.mbtn{flex:1 1 calc(50% - 4px);padding:10px 8px;font-size:13px;min-height:44px}
+
+.cardx{padding:16px}
+.cardx h3{font-size:17px}
+.tip{padding:14px 16px;gap:10px}
+.tip p{font-size:14.5px}
+
+.ftab button{min-width:118px;font-size:12.5px;padding:13px 8px;min-height:46px}
+.fbody{padding:16px}
+.fileline{padding:10px;gap:10px}
+.fileline b{font-size:14.5px}
+.fileline span{font-size:13.5px}
+.chatline{font-size:14px;padding:10px 12px}
+
+.flipwrap{height:auto;perspective:none;cursor:pointer}
+.flipin{transform:none!important;transition:none}
+.face{position:static;backface-visibility:visible;transform:none!important;box-shadow:var(--pop)}
+.face.back{display:none;margin-top:-3px;border-top-left-radius:0;border-top-right-radius:0}
+.flipwrap.on .face.back{display:flex}
+.face p{font-size:15px}
+.face .flipnote{margin-top:10px}
+.flipwrap.on .face.front .flipnote{display:none}
+
+.sorter{padding:16px 14px}
+.sorter .q{font-size:16.5px;min-height:70px}
+.sbtn{flex:1 1 100%;padding:12px 20px;min-height:46px}
+.fb{font-size:14px}
+
+table{min-width:560px}
+th,td{padding:11px 12px;font-size:13.5px}
+
+.km>button{font-size:13.5px;padding:13px 14px;min-height:46px}
+.km .body{padding:14px 15px;font-size:14.5px}
+}
+
+@media(max-width:430px){
+.hero h1{font-size:23px}
+.herosub{font-size:15px}
+.hero .kick{font-size:11px}
+.bar h2{font-size:15.5px}
+.sidetitle{font-size:13px}
+.mbtn{font-size:12.5px}
+.sorter .q{font-size:15.5px}
+.face p{font-size:14.5px}
+.ftab button{min-width:104px;font-size:11.5px}
+}
+
+.backhome{display:inline-flex;align-items:center;gap:7px;margin:0 0 14px;padding:7px 16px 7px 13px;
+border:3px solid var(--ink);border-radius:999px;background:#fff;box-shadow:var(--pop-sm);
+font-size:13px;font-weight:800;text-decoration:none;color:var(--ink);transition:.12s;line-height:1.2}
+.backhome:hover{background:var(--yellow)}
+.backhome:active{transform:translate(3px,3px);box-shadow:none}
+.backhome b{font-weight:900}
+footer .fhome{display:inline-block;margin-top:16px;color:var(--yellow);font-weight:900;text-transform:uppercase;
+letter-spacing:1px;font-size:12px;text-decoration:none;border-bottom:2px solid var(--yellow);padding-bottom:2px}
+footer .fhome:hover{color:#fff;border-bottom-color:#fff}
+@media(max-width:780px){.backhome{min-height:44px;padding:9px 18px 9px 15px;font-size:13.5px}}
+
+/* ============ Back to Nudgeable homepage ============ */
+.back-home{
+  position:fixed;top:18px;right:22px;z-index:950;
+  display:inline-flex;align-items:center;gap:7px;
+  background:#fff;border:3px solid var(--ink);border-radius:999px;
+  padding:8px 16px;font-size:13px;font-weight:800;color:var(--ink);
+  text-decoration:none;box-shadow:var(--pop-sm);transition:.12s;
+}
+.back-home:hover{background:var(--yellow)}
+.back-home:active{transform:translate(2px,2px);box-shadow:none}
+@media (max-width:780px){.back-home{top:12px;right:12px;padding:7px 13px;font-size:12.5px}}
+</style>
+</head>
+<body>
+
+<a class="back-home" href="/">&larr; Back to Nudgeable</a>
+<div class="shell">
+
+<aside class="side">
+  <a class="backhome" href="index.html">&larr; <b>AI for Work</b></a>
+  <div class="sidehead"><span class="mascot" data-mood="neutral"></span><span class="sidetitle">Coding Agents</span></div>
+  <nav class="steps" id="steps"><span class="fill" id="railfill"></span>
+    <a href="#signal"><i>1</i><span>Same name, wrong job</span></a>
+    <a href="#code"><i>2</i><span>What it does</span></a>
+    <a href="#work"><i>3</i><span>The other one</span></a>
+    <a href="#both"><i>4</i><span>Both will try</span></a>
+    <a href="#mixup"><i>5</i><span>The mix-up</span></a>
+    <a href="#myths"><i>6</i><span>Common errors</span></a>
+    <a href="#choose"><i>7</i><span>Which one, for what</span></a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <span class="kick">A plain guide</span>
+  <h1>What is a<br><span style="color:var(--yellow)">coding agent?</span></h1>
+  <p class="herosub"><span class="type" id="type"></span><span class="cursor"></span></p>
+  <div class="herorow">
+    <span class="mascot" data-mood="neutral"></span>
+    <p>Two assistants with almost the same name and almost nothing in common. One works inside software projects, on code and tests and version history. The other works on the documents, spreadsheets and decks that fill an ordinary week. Both will attempt either job, and only one will do it well.</p>
+  </div>
+  <div class="cta">
+    <a class="btn btn-y" href="#code">Show me the difference</a>
+    <a class="btn btn-w" href="#choose">Which one for my job?</a>
+  </div>
+</header>
+
+<!-- 1 SIGNAL -->
+<section id="signal">
+  <div class="bar"><span class="num">1</span><h2>Same name, wrong job</h2><span class="chev">&lt;</span></div>
+  <p class="lead">A conversation that happens in every office within a week of someone discovering these. Tap through it.</p>
+
+  <div class="months" id="months">
+    <button class="mbtn on">The meeting</button><button class="mbtn">At his desk</button>
+    <button class="mbtn">The question</button><button class="mbtn">The answer</button>
+  </div>
+  <div class="mstage">
+    <figure class="pnl" id="mpnl"><img id="mimg" src="assets/images/what-is-a-coding-agent-01.jpg" alt="Comic panel"></figure>
+    <div class="mcost"><h4 id="mh">A colleague mentions it in passing</h4><p id="mp"></p></div>
+  </div>
+
+  <div class="km"><button>Know more: why the names are confusing on purpose <span class="pm">+</span></button>
+    <div class="body">
+      <p>Every major company now has two of these, and the naming does not help. The coding one and the work one usually share a brand, sit in the same account and are built on the same model underneath.</p>
+      <p>From the outside there is nothing to tell you they are for different jobs. So people meet whichever one a colleague mentioned first, form an impression of what AI at work means from that, and carry it into tasks it was never built for.</p>
+      <p>The good news is that once you can name the difference, it stops being confusing for good. That is the whole of this page and it takes about five minutes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 CODE -->
+<section id="code">
+  <div class="bar"><span class="num">2</span><h2>What a coding agent does</h2><span class="chev">&lt;</span></div>
+  <p class="lead">It works inside a software project: the actual code files, the tests that say whether something still works, and the record of every change anyone has made.</p>
+
+  <div style="margin-top:24px"><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-02.jpg" alt="Comic panel: it reads the code, finds the problem, fixes it, runs the tests"></figure>
+    <p class="pnlcap"><b>It reads before it changes anything.</b> Opens the project, works out how the pieces fit together, finds the part that is wrong, fixes it, then runs the tests to check it did not spoil something else.</p></div>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-03.jpg" alt="Comic panel: find out why customers cannot check out" loading="lazy"></figure>
+      <p class="pnlcap"><b>You describe the symptom, not the fix.</b> Find out why customers cannot check out. You do not need to know which file is at fault, which is the part that used to require an engineer.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-04.jpg" alt="Comic panel: found it, fixed it, all green" loading="lazy"></figure>
+      <p class="pnlcap"><b>An hour of work, done and checked.</b> The before and the after are both visible, so someone can look at exactly what changed and disagree with it if they want to.</p></div>
+  </div>
+
+  <div class="g2">
+    <div class="cardx"><div class="ic">📖</div><h3>It reads the whole project</h3>
+      <p>Not the one file you pasted in. The entire thing, including the parts you forgot existed.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">This is why it can answer "why is this happening" rather than only "fix this line". The fault is often nowhere near the symptom, and finding that link is most of what debugging actually is.
+        <div><span class="pill p-y">Whole codebase</span><span class="pill p-y">Traces the cause</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:var(--bluepale)">✏️</div><h3>It changes many files at once</h3>
+      <p>A real change is rarely one line in one place. It edits across the project and keeps the pieces consistent.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Ordinary chat gives you a snippet and leaves the joining up to you. This does the joining up, which is where most of the time went.
+        <div><span class="pill p-b">Multi file</span><span class="pill p-b">Keeps it consistent</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:#D8F7E4">✅</div><h3>It checks its own work</h3>
+      <p>It runs the tests, reads what failed, and has another go.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">This is the part that separates a coding agent from an AI that writes code. Suggesting a fix is easy. Finding out the fix was wrong and trying again is the work.
+        <div><span class="pill p-g">Runs the tests</span><span class="pill p-g">Tries again</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:#E7E0FF">🧾</div><h3>It leaves a record</h3>
+      <p>Every change is written down, described, and can be reversed.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Software teams already keep a full history of who changed what and why. A coding agent works inside that system rather than around it, so nothing it does is a mystery a week later.
+        <div><span class="pill">Reversible</span><span class="pill">Reviewable</span></div></div></div>
+  </div>
+
+  <div class="tip"><span class="bulb">💡</span><div>
+    <strong>Somebody still has to read it</strong>
+    <p>A coding agent produces code, and code has to be reviewed by a person who can read it. That is the dividing line, not how clever the tool is. If nobody on your side can check what came back, you have not removed the work. You have moved the risk somewhere you cannot see it.</p>
+  </div></div>
+</section>
+
+<!-- 3 WORK -->
+<section id="work">
+  <div class="bar"><span class="num">3</span><h2>What the other one does</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Same idea, pointed at the work that fills an ordinary week. No code, no project, no tests. Files, apps and a finished piece of work at the end.</p>
+
+  <div style="margin-top:24px"><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-05.jpg" alt="Comic panel: it goes wherever the task takes it" loading="lazy"></figure>
+    <p class="pnlcap"><b>It goes wherever the task goes.</b> Spreadsheet, slides, email, the browser. Not one program you open, but whichever ones the job happens to need.</p></div>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-06.jpg" alt="Comic panel: turn this into a one page summary" loading="lazy"></figure>
+      <p class="pnlcap"><b>One instruction covering several steps.</b> Read the numbers, write the summary, draft the email. You are not asked what to do next after each one.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-07.jpg" alt="Comic panel: summary done, email drafted" loading="lazy"></figure>
+      <p class="pnlcap"><b>The afternoon you would have spent on it.</b> That is the honest measure of what this saves, and it is why the two get confused in the first place: both sound like magic when described second hand.</p></div>
+  </div>
+
+  <div class="km"><button>Know more: how to tell which one you are looking at <span class="pm">+</span></button>
+    <div class="body">
+      <p><b>If it asks about a repository, a branch or a terminal, it is the coding one.</b> Those words only exist in software projects. Nothing in an ordinary week has a branch.</p>
+      <p><b>If it asks which folder to work in, it is the work one.</b> It thinks in files and folders because that is where the work is kept.</p>
+      <p>If you are still not sure, ask it directly. Both will tell you plainly what they are built for, which is what the character in these panels keeps doing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 BOTH -->
+<section id="both">
+  <div class="bar"><span class="num">4</span><h2>Both will try, either way</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Neither of them refuses. That is exactly why the mix-up survives so long.</p>
+
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-t="0">Asked the wrong one</button>
+    <button class="tab" data-t="1">Asked the right one</button>
+  </div>
+
+  <div class="pane on" data-p="0">
+    <div class="panehead"><h3>You still get an answer</h3><p>It will not stop you. It gives a version of yes, does a passable job, and you never find out what the other one would have produced.</p></div>
+    <div class="pgrid">
+      <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-08.jpg" alt="Comic panel: asking the coding agent for an email" loading="lazy"></figure>
+        <p class="pnlcap"><b>A thank you email from the coding one.</b> It can write it. It is not what it was built around, and you will get something serviceable rather than something good.</p></div>
+      <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-09.jpg" alt="Comic panel: asking the work agent to fix a bug" loading="lazy"></figure>
+        <p class="pnlcap"><b>A bug fix from the work one.</b> It can open the file and have a look. It cannot run the tests, so nothing tells anyone whether the fix actually worked.</p></div>
+    </div>
+    <div class="km"><button>Know more: why a polite yes is the expensive answer <span class="pm">+</span></button><div class="body">
+      <p>If either tool said "I cannot do that", you would go and find the right one and lose thirty seconds. Instead you get a reasonable attempt, accept it, and carry on.</p>
+      <p>Nothing feels wrong at any point. The output is fine. Fine is the problem, because you had no reason to look for better and no way to know it existed.</p>
+      <p>This is the one habit worth building: notice which kind of job you are about to hand over, before you type it into whatever is already open.</p>
+    </div></div>
+  </div>
+
+  <div class="pane" data-p="1">
+    <div class="panehead"><h3>The difference stops being subtle</h3><p>Give each the job it was built around and the gap is not a matter of taste. It is visible in the first reply.</p></div>
+    <div class="pgrid">
+      <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-10.jpg" alt="Comic panel: the coding agent given a bug report" loading="lazy"></figure>
+        <p class="pnlcap"><b>Give the coding one a bug report.</b> Steps to reproduce, what should happen, what actually happens, the error and a screenshot. It reads, finds, fixes and tells you the tests passed.</p></div>
+      <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-11.jpg" alt="Comic panel: the work agent given a research and build task" loading="lazy"></figure>
+        <p class="pnlcap"><b>Give the work one a week's task.</b> Research it, summarise it, organise it, build the thing. Several apps, one instruction, and nothing handed back to you halfway.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 MIXUP -->
+<section id="mixup">
+  <div class="bar"><span class="num">5</span><h2>The mix-up people actually make</h2><span class="chev">&lt;</span></div>
+  <p class="lead">It is almost never confusion about what they do. It is the pull of whichever tab is already open.</p>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-12.jpg" alt="Comic panel: asking the familiar tool anyway" loading="lazy"></figure>
+      <p class="pnlcap"><b>You ask the one you already have open.</b> It tells you plainly that you will get a better result one tab over. Most people carry on anyway, because switching feels like effort.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-13.jpg" alt="Comic panel: switching to the right tool" loading="lazy"></figure>
+      <p class="pnlcap"><b>Switching costs about four seconds.</b> That is the entire price of the better result, and it is almost always worth paying.</p></div>
+  </div>
+
+  <div style="margin-top:22px"><figure class="pnl"><img src="assets/images/what-is-a-coding-agent-14.jpg" alt="Comic panel: it goes both ways" loading="lazy"></figure>
+    <p class="pnlcap"><b>It goes both ways.</b> The work one can open a code file and read it to you. Fixing it properly is somebody else's job, and it will say so if you ask.</p></div>
+
+  <div class="tip warn"><span class="bulb">⚠️</span><div><strong>The habit is the real cost, not the mistake</strong>
+    <p>One wrong request costs you a slightly worse answer. Doing it for six months means your whole impression of what these tools can do came from using them for the wrong things. People decide AI is overrated on exactly this evidence.</p></div></div>
+</section>
+
+<!-- 6 MYTHS -->
+<section id="myths">
+  <div class="bar"><span class="num">6</span><h2>Three things people get wrong</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Tap a card to turn it over.</p>
+  <div class="g3">
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"They are the same product with two names, so it does not matter which I open."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>Same company and often the same model underneath, but built for different work and connected to different things. One reaches your code, tests and change history. The other reaches your files and the apps you work in.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"A coding agent means we no longer need someone who can read code."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>It writes far more code, far faster, and somebody still has to say whether it is right. Reviewing has become the bottleneck rather than typing. A team without that skill has not saved work, it has hidden the risk.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"The coding one is the serious one, so it must be better at everything."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>It is built around code, tests and version history, and it carries all of that into a job that has none. On a deck or a summary it is a careful tool being used for the wrong task. Serious is not the same as suitable.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 7 CHOOSE -->
+<section id="choose">
+  <div class="bar"><span class="num">7</span><h2>Which one, for what</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Real jobs, and where each one belongs. The test is simple: if the answer has to live inside software, it is the coding one.</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>The job</th><th>Hand it to</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Fix a bug a customer reported</td><td>Coding agent</td><td>It reads the project, traces the fault to its cause and runs the tests afterwards. All of that happens inside the code.</td></tr>
+      <tr><td>Turn a spreadsheet into a deck for Monday</td><td>Work agent</td><td>The job is files and formats. No code is involved anywhere in it.</td></tr>
+      <tr><td>Add a new feature to your product</td><td>Coding agent</td><td>Many files change together, and every change needs a record a person can review and undo.</td></tr>
+      <tr><td>Rename and tidy four hundred files in a folder</td><td>Work agent</td><td>No code, and the risk sits in the files, so keep the work where the files already are.</td></tr>
+      <tr><td>Write release notes from this month's changes</td><td>Either, depending</td><td>If it has to read the change history to know what happened, the coding one. If you already have the list, the work one.</td></tr>
+      <tr><td>Build a small tool for your team</td><td>Start with one, finish with the other</td><td>Prove the idea quickly with the work one. Anything people come to rely on gets rebuilt properly by the coding one.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="km"><button>Know more: the coding agents people name <span class="pm">+</span></button>
+    <div class="body">
+      <p>They differ mostly in where they run rather than in what they are for.</p>
+      <p><b>In your terminal or editor.</b> <a class="hl" href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">Claude Code</a> works from the command line, inside editors, in a desktop app and in a browser. Cursor is an editor with the agent built into it.</p>
+      <p><b>In the cloud, on its own.</b> OpenAI's Codex takes a task, works on a copy of the project somewhere else and hands back the finished change. You go and look when it is done.</p>
+      <p><b>Where the code is kept.</b> GitHub's Copilot agent picks up a written-up task and turns it into a proposed change for someone to review.</p>
+      <p>There are also open source ones you install yourself. For a non-technical reader the useful point is that all of them do the same category of job, and none of them is the one to open for your Monday deck. Correct as of September 2026.</p>
+    </div>
+  </div>
+
+  <div class="tip"><span class="bulb">💡</span><div><strong>The question worth asking first</strong>
+    <p>Before you type anything, ask where the answer has to end up. Inside a running piece of software, or inside a file somebody opens and reads. That one question sorts almost every task correctly, and it takes less time than the wrong answer costs.</p></div></div>
+</section>
+
+</main>
+</div>
+
+<footer><div class="wrap"><div class="fl">Nudgeable.ai</div><div>Same family. Different jobs. Four seconds to switch.</div><a class="fhome" href="index.html">&larr; All guides</a></div></footer>
+
+<div class="lb" id="lb"><span class="lb-x">&times;</span><img id="lbi" src="" alt=""></div>
+
+<script>
+/* ---------- mascot ---------- */
+var MOUTH={neutral:'M42 68 q8 7 16 0',happy:'M40 65 q10 13 20 0 q-10 5 -20 0',tired:'M43 69 h14',
+ sad:'M42 71 q8 -7 16 0',think:'M43 69 q6 4 12 -1'};
+function cloudSVG(mood){
+ var m=MOUTH[mood]||MOUTH.neutral, tired=(mood==='tired');
+ return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+ '<g fill="#2F7FE8" stroke="#2F7FE8" stroke-width="7"><circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/>'+
+ '<circle cx="74" cy="56" r="17"/><circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/></g>'+
+ '<g fill="#DCF2FD"><circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/><circle cx="74" cy="56" r="17"/>'+
+ '<circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/></g>'+
+ '<g class="sparks" fill="#FFD93D"><rect x="14" y="20" width="5" height="13" rx="2" transform="rotate(-25 16 26)"/>'+
+ '<rect x="82" y="20" width="5" height="13" rx="2" transform="rotate(25 84 26)"/>'+
+ '<rect x="48" y="6" width="5" height="12" rx="2"/></g>'+
+ '<line x1="44" y1="52" x2="56" y2="52" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="35" cy="52" r="11" fill="#fff" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="65" cy="52" r="11" fill="#fff" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="35" cy="52" r="4.5" fill="#16202B"/><circle cx="65" cy="52" r="4.5" fill="#16202B"/>'+
+ (tired
+   ? '<rect x="25" y="42" width="20" height="8" fill="#DCF2FD"/><rect x="55" y="42" width="20" height="8" fill="#DCF2FD"/>'
+   : '<rect class="blinker" x="25" y="41" width="20" height="12" fill="#DCF2FD"/>'+
+     '<rect class="blinker b2" x="55" y="41" width="20" height="12" fill="#DCF2FD"/>')+
+ '<path d="'+m+'" fill="none" stroke="#16202B" stroke-width="3.5" stroke-linecap="round"/></svg>';
+}
+function setMood(el,mood){el.className='mascot mood-'+mood;el.dataset.mood=mood;el.innerHTML=cloudSVG(mood);}
+document.querySelectorAll('.mascot').forEach(function(el){setMood(el,el.dataset.mood||'neutral')});
+
+/* ---------- typewriter ---------- */
+(function(){var w=["Same family. Different jobs.","One works on software. One works on your week.","Four seconds to switch. Worth it every time."],i=0,c=0,d=false,el=document.getElementById('type');
+function t(){var s=w[i];el.textContent=d?s.substring(0,c--):s.substring(0,c++);var ms=d?45:85;
+if(!d&&c===s.length+1){d=true;ms=1600}else if(d&&c<0){d=false;i=(i+1)%w.length;c=0;ms=300}setTimeout(t,ms)}t()})();
+
+/* ---------- scene stepper ---------- */
+var MON=[
+ {img:'assets/images/what-is-a-coding-agent-15.jpg',h:'A colleague mentions it in passing',
+  p:'It just found and fixed a bug in ten minutes. That sentence is how most people first hear the name, and it sets an expectation that is about to send them in the wrong direction.'},
+ {img:'assets/images/what-is-a-coding-agent-16.jpg',h:'So he asks it to tidy his slides',
+  p:'A perfectly reasonable request to something that just fixed a bug in ten minutes. The answer is a polite no. It could try, and it is not the one built for this.'},
+ {img:'assets/images/what-is-a-coding-agent-17.jpg',h:'Isn’t it all just one AI?',
+  p:'The confusion is fair. Same company, same model underneath, names that differ by one word. Nothing on the outside tells you they are built for different work.'},
+ {img:'assets/images/what-is-a-coding-agent-18.jpg',h:'Two jobs, one team',
+  p:'One is built for software and the terminal. The other for files and the apps you work in. Everything else on this page follows from knowing which is which.'}];
+var mb=document.querySelectorAll('#months .mbtn'),mimg=document.getElementById('mimg'),
+ mh=document.getElementById('mh'),mp=document.getElementById('mp');
+function showMonth(i){mb.forEach(function(b,j){b.classList.toggle('on',i===j)});
+ mimg.src=MON[i].img;mh.textContent=MON[i].h;mp.textContent=MON[i].p;}
+mb.forEach(function(b,i){b.addEventListener('click',function(){showMonth(i)})});
+showMonth(0);
+
+/* ---------- know more ---------- */
+document.querySelectorAll('.km').forEach(function(k){
+ k.querySelector('button').addEventListener('click',function(){
+  k.classList.toggle('on');k.querySelector('.pm').textContent=k.classList.contains('on')?'−':'+';})});
+
+/* ---------- cards ---------- */
+document.querySelectorAll('.cardx').forEach(function(c){
+ var m=c.querySelector('.more');if(!m)return;
+ c.addEventListener('click',function(e){if(e.target.tagName==='A')return;
+  c.classList.toggle('on');
+  c.querySelector('.toggle').textContent=c.classList.contains('on')?'Tap to close ↑':'Tap for detail ↓';})});
+
+/* ---------- tabs ---------- */
+var tabs=document.querySelectorAll('.tab'),panes=document.querySelectorAll('.pane');
+tabs.forEach(function(t){t.addEventListener('click',function(){
+ tabs.forEach(function(x){x.classList.remove('on')});panes.forEach(function(p){p.classList.remove('on')});
+ t.classList.add('on');document.querySelector('.pane[data-p="'+t.dataset.t+'"]').classList.add('on');})});
+
+/* ---------- myth flips ---------- */
+document.querySelectorAll('.flipwrap').forEach(function(f){f.addEventListener('click',function(){f.classList.toggle('on')})});
+
+/* ---------- lightbox ---------- */
+var lb=document.getElementById('lb'),lbi=document.getElementById('lbi');
+document.querySelectorAll('.pnl').forEach(function(c){c.addEventListener('click',function(){
+ lbi.src=c.querySelector('img').src;lb.classList.add('on');document.body.style.overflow='hidden';})});
+lb.addEventListener('click',function(){lb.classList.remove('on');document.body.style.overflow=''});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){lb.classList.remove('on');document.body.style.overflow=''}});
+
+/* ---------- left step rail ---------- */
+var secs=document.querySelectorAll('section[id]'),
+    links=document.querySelectorAll('.steps a'),
+    rail=document.getElementById('steps'),
+    fill=document.getElementById('railfill');
+function railUpdate(){
+  var y=window.scrollY+160,idx=-1;
+  secs.forEach(function(s,i){if(s.offsetTop<=y)idx=i});
+  links.forEach(function(a,i){a.classList.toggle('act',i===idx);a.classList.toggle('done',i<idx)});
+  if(idx<0){fill.style.height='0px';return;}
+  var r=rail.getBoundingClientRect(),t=links[idx].getBoundingClientRect();
+  fill.style.height=Math.max(0,(t.top-r.top)+17)+'px';
+}
+window.addEventListener('scroll',railUpdate,{passive:true});
+window.addEventListener('resize',railUpdate);
+railUpdate();
+</script>
+</body>
+</html>

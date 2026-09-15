@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="/ai-for-work/what-are-ai-projects.html">
+<link rel="icon" href="/icon.png" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="description" content="A folder that holds your files and your standing instructions, so every chat inside it already knows the background. Set it up once and work from it all year.">
+<meta property="og:site_name" content="Nudgeable">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:title" content="What Is an AI Project?">
+<meta property="og:description" content="A folder that holds your files and your standing instructions, so every chat inside it already knows the background. Set it up once and work from it all year.">
+<meta property="og:url" content="/ai-for-work/what-are-ai-projects.html">
+<meta property="og:image" content="/assets/og-default.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nudgeable">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Is an AI Project?">
+<meta name="twitter:description" content="A folder that holds your files and your standing instructions, so every chat inside it already knows the background. Set it up once and work from it all year.">
+<meta name="twitter:image" content="/assets/og-default.png">
+<meta name="theme-color" content="#FDF8EC">
+<title>What Is an AI Project?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+--ink:#16202B;--navy:#203141;--cream:#FDF8EC;--ice:#E2F4FD;--yellow:#FFD93D;--amber:#FFCE00;
+--blue:#2F7FE8;--bluepale:#E7F2FE;--orange:#F68A29;--green:#23CE68;--red:#ED4551;--muted:#5E6B78;
+--pop:5px 5px 0 var(--ink);--pop-sm:3px 3px 0 var(--ink);
+}
+*{box-sizing:border-box}
+/* ---- overflow guarantees ---- */
+html{max-width:100%}
+body{max-width:100%;overflow-x:clip}
+.shell,.side,.main,section,.shell>*{min-width:0;max-width:100%}
+img,svg,video,iframe{max-width:100%;height:auto}
+p,li,h1,h2,h3,h4,td,th,.bub,.face,.pnlcap,.lead{overflow-wrap:anywhere}
+.code{overflow-wrap:anywhere;word-break:break-word}
+.tblwrap,.tabs,.ftab,.steps{max-width:100%}
+
+html{scroll-behavior:smooth}
+body{margin:0;-webkit-text-size-adjust:100%;overflow-x:hidden;background:var(--cream);color:var(--ink);
+font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.hl{text-decoration:none;font-weight:600;background:linear-gradient(transparent 58%,var(--yellow) 58%);
+padding:0 2px;border-bottom:2px solid var(--ink)}
+.hl:hover{background:var(--yellow)}
+.hl::after{content:" ↗";font-size:.8em;opacity:.6}
+
+/* ---- layout shell with left step rail ---- */
+:root{--top-offset:20px}
+.shell{display:grid;grid-template-columns:212px 1fr;gap:36px;max-width:1200px;margin:0 auto;padding:0 20px}
+.main{min-width:0;padding-top:6px}
+.side{position:sticky;top:var(--top-offset);align-self:start;padding:26px 0 20px}
+.sidehead{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.sidehead .mascot{width:38px;height:38px;flex:0 0 38px}
+.sidetitle{font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.6px;line-height:1.15}
+.steps{position:relative;display:flex;flex-direction:column;gap:2px}
+.steps::before{content:"";position:absolute;left:17px;top:16px;bottom:16px;width:3px;background:var(--ink);border-radius:2px}
+.steps .fill{position:absolute;left:17px;top:16px;width:3px;height:0;background:var(--blue);border-radius:2px;transition:height .18s ease}
+.steps a{position:relative;z-index:1;display:flex;align-items:center;gap:11px;text-decoration:none;
+padding:5px 8px 5px 0;font-size:13.5px;font-weight:700;color:var(--muted);border-radius:999px}
+.steps a i{font-style:normal;width:34px;height:34px;flex:0 0 34px;border:3px solid var(--ink);border-radius:999px;
+background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--ink);transition:.12s}
+.steps a:hover{color:var(--ink)}
+.steps a:hover i{background:var(--ice)}
+.steps a.act{color:var(--ink)}
+.steps a.act i{background:var(--yellow);box-shadow:var(--pop-sm)}
+.steps a.done i{background:var(--ink);color:var(--yellow)}
+
+
+/* primitives */
+.bar{background:var(--navy);border:3px solid var(--ink);border-radius:14px;padding:14px 22px;color:#fff;
+display:flex;align-items:center;gap:12px;box-shadow:var(--pop)}
+.bar h2{margin:0;font-size:25px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;line-height:1.15}
+.chev{color:var(--yellow);font-weight:900;font-size:22px;line-height:1}
+.num{background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+.chip{display:inline-block;background:var(--yellow);border:3px solid var(--ink);border-radius:8px;
+padding:3px 12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;box-shadow:var(--pop-sm)}
+section{padding:40px 0;scroll-margin-top:24px}
+.lead{font-size:17px;max-width:700px;margin:20px 0 0;color:#34424F}
+
+.mascot{display:inline-block;vertical-align:middle}
+.mascot svg{width:100%;height:100%;display:block}
+.blinker{transform-box:fill-box;transform-origin:top;animation:blink 6s infinite}
+.blinker.b2{animation-delay:.08s}
+@keyframes blink{0%,95%{transform:scaleY(0)}97%,98.5%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.sparks{opacity:0}
+.mood-happy .sparks{opacity:1;animation:pop .4s ease}
+@keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
+
+/* speech bubbles */
+.bub{position:relative;border:3px solid var(--ink);border-radius:14px;padding:14px 18px;background:#fff;font-weight:600;font-size:15px}
+.bub.ai{background:var(--bluepale);border-color:var(--blue)}
+.bub::after{content:"";position:absolute;left:28px;bottom:-13px;width:0;height:0;
+border-left:12px solid transparent;border-right:12px solid transparent;border-top:13px solid var(--ink)}
+.bub.ai::after{border-top-color:var(--blue)}
+
+.tip{margin-top:22px;background:#FFF7D1;border:3px solid var(--ink);border-radius:14px;padding:16px 20px;
+box-shadow:var(--pop);display:flex;gap:14px;align-items:flex-start}
+.tip .bulb{font-size:24px;line-height:1.2}
+.tip strong{display:block;font-weight:900;text-transform:uppercase;font-size:13px;letter-spacing:.8px;margin-bottom:4px}
+.tip p{margin:0;font-size:15px}
+.tip.warn{background:#FFE7E9}
+
+/* hero */
+.hero{margin:26px 0 0;background:var(--navy);border:3px solid var(--ink);border-radius:16px;padding:38px 32px;color:#fff;box-shadow:var(--pop)}
+.hero .kick{display:inline-block;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+padding:3px 12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px}
+.hero h1{font-size:42px;font-weight:900;line-height:1.1;margin:16px 0 0;text-transform:uppercase}
+.herosub{margin:12px 0 0;font-size:19px;font-weight:700;color:#fff;min-height:29px}
+.hero h1 .type{color:var(--yellow)}
+.cursor{display:inline-block;width:4px;height:.85em;background:var(--yellow);vertical-align:-2px;animation:bl .8s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.herorow{display:flex;gap:20px;align-items:flex-start;margin-top:22px}
+.herorow .mascot{width:80px;height:80px;flex:0 0 80px}
+.hero p{color:#CBD8E4;font-size:17px;margin:0}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn{cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;padding:11px 26px;border-radius:999px;
+text-decoration:none;display:inline-block;border:3px solid var(--ink);box-shadow:var(--pop-sm);transition:.12s}
+.btn:active{transform:translate(3px,3px);box-shadow:none}
+.btn-y{background:var(--yellow);color:var(--ink)}
+.btn-w{background:#fff;color:var(--ink)}
+
+/* PANELS */
+.pnl{border:3px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--pop);background:#fff;cursor:zoom-in;position:relative}
+.pnl img{display:block;width:100%}
+.pnlcap{font-size:15px;font-weight:600;margin-top:10px;color:#34424F}
+.pnlcap b{font-weight:900}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:24px}
+.pgrid.wide{grid-template-columns:1fr}
+.pstack{margin-top:24px;display:flex;flex-direction:column;gap:22px}
+
+/* month stepper */
+.months{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.mbtn{border:3px solid var(--ink);background:#fff;font-family:inherit;font-weight:900;font-size:14px;
+padding:8px 20px;border-radius:999px;cursor:pointer;box-shadow:var(--pop-sm);transition:.12s}
+.mbtn:hover{background:var(--ice)}
+.mbtn.on{background:var(--yellow)}
+.mstage{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.mcost{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:var(--pop)}
+.mcost h4{margin:0;font-size:18px;font-weight:900}
+.mcost p{margin:8px 0 0;font-size:15px;color:#34424F}
+
+/* know more */
+.km{margin-top:16px;border:3px solid var(--ink);border-radius:12px;background:#fff;overflow:hidden;box-shadow:var(--pop-sm)}
+.km>button{width:100%;text-align:left;background:var(--ice);border:none;border-bottom:3px solid var(--ink);
+font-family:inherit;font-size:14px;font-weight:800;padding:12px 16px;cursor:pointer;display:flex;
+justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+.km>button:hover{background:var(--yellow)}
+.km .pm{background:var(--ink);color:var(--yellow);width:24px;height:24px;border-radius:6px;
+display:flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 24px}
+.km .body{display:none;padding:16px 18px;font-size:15px}
+.km.on .body{display:block}
+.km.on .pm{background:var(--blue);color:#fff}
+.km .body p{margin:0 0 10px}.km .body p:last-child{margin:0}
+
+/* cards */
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.cardx{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:18px;box-shadow:var(--pop);cursor:pointer;transition:.12s}
+.cardx:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.cardx .ic{width:44px;height:44px;border:3px solid var(--ink);border-radius:10px;display:flex;
+align-items:center;justify-content:center;font-size:21px;background:var(--yellow)}
+.cardx h3{margin:10px 0 0;font-size:18px;font-weight:900}
+.cardx p{margin:6px 0 0;font-size:15px;color:#34424F}
+.cardx .more{display:none;margin-top:12px;padding-top:12px;border-top:3px dashed var(--ink);font-size:14px}
+.cardx.on .more{display:block}
+.cardx .toggle{margin-top:12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--blue)}
+.pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border:2px solid var(--ink);
+border-radius:999px;margin:6px 6px 0 0;background:#fff}
+.p-y{background:var(--yellow)}.p-b{background:var(--bluepale)}.p-g{background:#D8F7E4}
+
+/* tabs */
+.tabs{display:flex;gap:10px;margin-top:24px;overflow-x:auto;scrollbar-width:none;padding:4px 4px 8px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:3px solid var(--ink);background:#fff;color:var(--ink);font-family:inherit;font-size:14px;font-weight:800;
+padding:9px 18px;border-radius:999px;cursor:pointer;white-space:nowrap;box-shadow:var(--pop-sm);transition:.12s}
+.tab:hover{background:var(--yellow)}
+.tab.on{background:var(--navy);color:#fff}
+.pane{display:none;animation:fade .25s ease}
+.pane.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.panehead{margin-top:20px;background:var(--ice);border:3px solid var(--ink);border-radius:14px;padding:18px 22px;box-shadow:var(--pop)}
+.panehead h3{margin:0;font-size:20px;font-weight:900;text-transform:uppercase}
+.panehead p{margin:6px 0 0;font-size:15px}
+
+/* WORKED EXAMPLE */
+.folder{margin-top:24px;border:3px solid var(--ink);border-radius:16px;box-shadow:var(--pop);overflow:hidden;background:#fff}
+.ftab{background:var(--navy);display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.ftab::-webkit-scrollbar{display:none}
+.ftab button{flex:1;min-width:130px;background:transparent;border:none;border-right:3px solid var(--ink);
+color:#B9C6D3;font-family:inherit;font-weight:800;font-size:13.5px;padding:14px 10px;cursor:pointer;white-space:nowrap}
+.ftab button:last-child{border-right:none}
+.ftab button.on{background:var(--yellow);color:var(--ink)}
+.fbody{padding:22px}
+.fpane{display:none}.fpane.on{display:block}
+.fileline{display:flex;gap:12px;align-items:flex-start;padding:12px;border:3px solid var(--ink);
+border-radius:10px;margin-bottom:10px;background:var(--cream)}
+.fileline .fi{width:34px;height:34px;flex:0 0 34px;border:2px solid var(--ink);border-radius:7px;
+display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff}
+.fileline b{display:block;font-size:15px}
+.fileline span{font-size:14px;color:var(--muted)}
+.code{background:var(--ink);color:#E8F1F8;border-radius:10px;padding:16px;font-size:13.5px;line-height:1.7;
+white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.chatline{display:flex;gap:10px;align-items:center;padding:11px 14px;border:3px solid var(--ink);
+border-radius:10px;margin-bottom:9px;background:#fff;font-weight:600;font-size:15px}
+.chatline .dot{width:12px;height:12px;border-radius:999px;border:2px solid var(--ink);flex:0 0 12px}
+.nope{margin-top:16px;border:3px dashed var(--ink);border-radius:12px;padding:16px;background:#FFF0F1}
+.nope strong{display:block;font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.nope p{margin:0;font-size:15px}
+
+/* myth flip */
+.flipwrap{perspective:1000px;height:215px;cursor:pointer}
+.flipin{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flipwrap.on .flipin{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:3px solid var(--ink);border-radius:14px;
+padding:18px;box-shadow:var(--pop);display:flex;flex-direction:column;justify-content:center}
+.face.front{background:#fff}
+.face.back{background:var(--ice);transform:rotateY(180deg)}
+.face .lab{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.face.front .lab{color:var(--red)}.face.back .lab{color:#0F8A45}
+.face p{margin:0;font-size:15.5px;font-weight:600}
+.face .flipnote{margin-top:auto;padding-top:10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+
+/* sorter */
+.sorter{margin-top:24px;background:var(--navy);border:3px solid var(--ink);border-radius:16px;padding:18px 20px;color:#fff;text-align:center;box-shadow:var(--pop)}
+.sorter .mascot{width:52px;height:52px;margin:6px auto 0;display:block}
+.sorter .q{font-size:18px;font-weight:800;margin:8px 0 0;min-height:44px;display:flex;align-items:center;justify-content:center}
+.sbtns{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.sbtn{font-family:inherit;font-size:14px;font-weight:900;padding:9px 26px;border-radius:999px;cursor:pointer;
+border:3px solid var(--ink);box-shadow:var(--pop-sm);background:var(--yellow);color:var(--ink);transition:.12s}
+.sbtn.alt{background:#fff}
+.sbtn:active{transform:translate(3px,3px);box-shadow:none}
+.sbtn:disabled{opacity:.4;cursor:default}
+.fb{margin-top:12px;font-size:14.5px;min-height:40px;color:#CBD8E4}
+.fb b{color:var(--yellow)}.fb.ok b{color:#6BF0A0}
+.snext{background:transparent;border:3px solid #fff;color:#fff;font-family:inherit;font-weight:800;font-size:13px;
+padding:8px 22px;border-radius:999px;cursor:pointer;display:none}
+.snext.on{display:inline-block}
+.prog{font-size:11px;color:#8FA2B4;margin-top:10px;font-weight:800;letter-spacing:1px}
+
+/* builder */
+.builder{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bcol{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:var(--pop)}
+.bcol h4{margin:0 0 8px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.opt{border:3px solid var(--ink);background:#fff;border-radius:999px;padding:6px 14px;font-family:inherit;
+font-size:13px;font-weight:700;cursor:pointer;transition:.12s}
+.opt:hover{background:var(--ice)}
+.opt.on{background:var(--yellow)}
+.copy{margin-top:12px;width:100%}
+.copy.done{background:var(--green);color:#fff}
+
+/* table */
+.tblwrap{margin-top:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;border:3px solid var(--ink);border-radius:14px;box-shadow:var(--pop);background:#fff}
+table{border-collapse:collapse;width:100%;min-width:700px}
+th,td{text-align:left;padding:14px 16px;font-size:14.5px;border-bottom:3px solid var(--ink);vertical-align:top}
+th{background:var(--yellow);font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:1px}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:900}
+
+/* faq */
+.faq{margin-top:24px;display:flex;flex-direction:column;gap:20px}
+.qrow{cursor:pointer;max-width:78%}
+.qrow .bub{box-shadow:var(--pop-sm)}
+.arow{margin-left:auto;max-width:82%;display:none;align-items:flex-start;gap:12px}
+.qrow.on + .arow{display:flex}
+.arow .mascot{width:52px;height:52px;flex:0 0 52px}
+.arow .bub{box-shadow:var(--pop-sm);font-weight:500}
+.arow .bub::after{left:auto;right:28px}
+.tapme{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-top:6px;display:block}
+
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(22,32,43,.94);display:none;align-items:center;justify-content:center;z-index:200;padding:18px;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-height:92vh;max-width:100%;border:3px solid var(--yellow);border-radius:12px}
+.lb-x{position:absolute;top:16px;right:20px;color:#fff;font-size:34px;font-weight:300;line-height:1}
+
+footer{background:var(--navy);color:#9FB0C0;padding:30px 0;margin-top:34px;text-align:center;font-size:14px;border-top:3px solid var(--ink)}
+footer .fl{color:var(--yellow);font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+
+/* ================= RESPONSIVE ================= */
+
+/* tablet: rail becomes a pill row */
+@media(max-width:980px){
+.shell{display:block;padding:0 16px}
+.side{position:static;padding:18px 0 4px}
+.sidehead{margin-bottom:12px}
+.steps{flex-direction:row;overflow-x:auto;gap:8px;scrollbar-width:none;padding:2px 2px 8px;
+-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.steps::-webkit-scrollbar{display:none}
+.steps::before,.steps .fill{display:none}
+.steps a{flex:0 0 auto;border:3px solid var(--ink);background:#fff;border-radius:999px;
+padding:6px 16px 6px 6px;box-shadow:var(--pop-sm);scroll-snap-align:start;min-height:44px}
+.steps a i{width:28px;height:28px;flex:0 0 28px;border-width:2px;font-size:12px}
+.steps a span{font-size:13px}
+.steps a.act{background:var(--yellow)}
+.steps a.done{background:var(--cream)}
+.g3{grid-template-columns:repeat(2,1fr)}
+.hero h1{font-size:34px}
+.herosub{font-size:17px}
+}
+
+/* phone */
+@media(max-width:780px){
+.shell{padding:0 14px}
+.main{padding-top:0}
+.wrap{padding:0 14px}
+section{padding:30px 0}
+.hero{padding:24px 18px;margin-top:14px}
+.hero h1{font-size:26px}
+.hero p{font-size:16px}
+.herorow{gap:14px}
+.herorow .mascot{width:54px;height:54px;flex:0 0 54px}
+.cta{gap:10px}
+.btn{width:100%;text-align:center;padding:13px 20px}
+
+.bar{padding:12px 16px;gap:10px;border-radius:12px}
+.bar h2{font-size:17px;line-height:1.2}
+.num{width:30px;height:30px;flex:0 0 30px;font-size:14px}
+.chev{display:none}
+.lead{font-size:16px;margin-top:16px}
+
+.g2,.g3,.builder,.pgrid,.mstage{grid-template-columns:1fr;gap:18px}
+.pstack{gap:18px}
+.pnlcap{font-size:14.5px}
+
+/* month stepper */
+.months{gap:8px}
+.mbtn{flex:1 1 calc(50% - 4px);padding:10px 8px;font-size:13px;min-height:44px}
+
+/* cards + tips */
+.cardx{padding:16px}
+.cardx h3{font-size:17px}
+.tip{padding:14px 16px;gap:10px}
+.tip p{font-size:14.5px}
+
+/* tabs */
+.tabs{gap:8px;padding:2px 2px 8px;-webkit-overflow-scrolling:touch}
+.tab{padding:10px 16px;min-height:44px;font-size:13.5px}
+.panehead{padding:15px 17px}
+.panehead h3{font-size:17px}
+
+/* folder */
+.ftab button{min-width:118px;font-size:12.5px;padding:13px 8px;min-height:46px}
+.fbody{padding:16px}
+.fileline{padding:10px;gap:10px}
+.fileline b{font-size:14.5px}
+.fileline span{font-size:13.5px}
+.code{font-size:12.5px;padding:14px;line-height:1.65;overflow-x:auto}
+.chatline{font-size:14px;padding:10px 12px}
+
+/* myths: no 3D flip on touch, expand instead */
+.flipwrap{height:auto;perspective:none;cursor:pointer}
+.flipin{transform:none!important;transition:none}
+.face{position:static;backface-visibility:visible;transform:none!important;box-shadow:var(--pop)}
+.face.back{display:none;margin-top:-3px;border-top-left-radius:0;border-top-right-radius:0}
+.flipwrap.on .face.back{display:flex}
+.face p{font-size:15px}
+.face .flipnote{margin-top:10px}
+.flipwrap.on .face.front .flipnote{display:none}
+
+/* quiz */
+.sorter{padding:16px 14px}
+.sorter .q{font-size:17px;min-height:52px}
+.sbtn{flex:1 1 100%;padding:12px 20px;min-height:46px}
+.fb{font-size:14px}
+
+/* builder */
+.bcol{padding:16px}
+.opt{padding:9px 14px;font-size:12.5px;min-height:40px}
+
+/* table */
+table{min-width:520px}
+th,td{padding:11px 12px;font-size:13.5px}
+
+/* know more */
+.km>button{font-size:13.5px;padding:13px 14px;min-height:46px}
+.km .body{padding:14px 15px;font-size:14.5px}
+}
+
+/* small phone */
+@media(max-width:430px){
+.hero h1{font-size:23px}
+.herosub{font-size:15px}
+.hero .kick{font-size:11px}
+.bar h2{font-size:15.5px}
+.sidetitle{font-size:13px}
+.mbtn{font-size:12.5px}
+.code{font-size:11.5px}
+.sorter .q{font-size:16px}
+.face p{font-size:14.5px}
+.ftab button{min-width:104px;font-size:11.5px}
+}
+
+.backhome{display:inline-flex;align-items:center;gap:7px;margin:0 0 14px;padding:7px 16px 7px 13px;
+border:3px solid var(--ink);border-radius:999px;background:#fff;box-shadow:var(--pop-sm);
+font-size:13px;font-weight:800;text-decoration:none;color:var(--ink);transition:.12s;line-height:1.2}
+.backhome:hover{background:var(--yellow)}
+.backhome:active{transform:translate(3px,3px);box-shadow:none}
+.backhome b{font-weight:900}
+footer .fhome{display:inline-block;margin-top:16px;color:var(--yellow);font-weight:900;text-transform:uppercase;
+letter-spacing:1px;font-size:12px;text-decoration:none;border-bottom:2px solid var(--yellow);padding-bottom:2px}
+footer .fhome:hover{color:#fff;border-bottom-color:#fff}
+@media(max-width:780px){.backhome{min-height:44px;padding:9px 18px 9px 15px;font-size:13.5px}}
+
+/* ============ Back to Nudgeable homepage ============ */
+.back-home{
+  position:fixed;top:18px;right:22px;z-index:950;
+  display:inline-flex;align-items:center;gap:7px;
+  background:#fff;border:3px solid var(--ink);border-radius:999px;
+  padding:8px 16px;font-size:13px;font-weight:800;color:var(--ink);
+  text-decoration:none;box-shadow:var(--pop-sm);transition:.12s;
+}
+.back-home:hover{background:var(--yellow)}
+.back-home:active{transform:translate(2px,2px);box-shadow:none}
+@media (max-width:780px){.back-home{top:12px;right:12px;padding:7px 13px;font-size:12.5px}}
+</style>
+</head>
+<body>
+
+
+
+<a class="back-home" href="/">&larr; Back to Nudgeable</a>
+<div class="shell">
+
+<aside class="side">
+  <a class="backhome" href="index.html">&larr; <b>AI for Work</b></a>
+  <div class="sidehead"><span class="mascot" data-mood="neutral"></span><span class="sidetitle">AI Projects</span></div>
+  <nav class="steps" id="steps"><span class="fill" id="railfill"></span>
+    <a href="#signal"><i>1</i><span>The problem</span></a>
+    <a href="#what"><i>2</i><span>What it is</span></a>
+    <a href="#inside"><i>3</i><span>What goes in</span></a>
+    <a href="#how"><i>4</i><span>How to run it</span></a>
+    <a href="#myths"><i>5</i><span>Common errors</span></a>
+    <a href="#vs"><i>6</i><span>Project or skill</span></a>
+    <a href="#builder"><i>7</i><span>Build yours</span></a>
+    <a href="#tools"><i>8</i><span>Each tool</span></a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <span class="kick">A plain guide</span>
+  <h1>What is an<br><span style="color:var(--yellow)">AI project?</span></h1>
+  <p class="herosub"><span class="type" id="type"></span><span class="cursor"></span></p>
+  <div class="herorow">
+    <span class="mascot" data-mood="neutral"></span>
+    <p>A project is a folder that holds your files and your standing instructions. Every chat you start inside that folder already knows the background, so you set it up once and work from it all year.</p>
+  </div>
+  <div class="cta">
+    <a class="btn btn-y" href="#what">Show me how it works</a>
+    <a class="btn btn-w" href="#builder">Build my instructions</a>
+  </div>
+</header>
+
+<!-- 1 SIGNAL -->
+<section id="signal">
+  <div class="bar"><span class="num">1</span><h2>You upload the same files every month</h2><span class="chev">&lt;</span></div>
+  <p class="lead">You repeat the same routine for four months. Tap each month to see what it costs you.</p>
+
+  <div class="months" id="months">
+    <button class="mbtn on">January</button><button class="mbtn">February</button>
+    <button class="mbtn">March</button><button class="mbtn">April</button>
+  </div>
+  <div class="mstage">
+    <figure class="pnl" id="mpnl"><img id="mimg" src="assets/images/what-are-ai-projects-01.jpg" alt="Comic panel"></figure>
+    <div class="mcost"><h4 id="mh">Month one feels fine</h4><p id="mp"></p></div>
+  </div>
+
+  <div class="km"><button>Know more: what re-uploading costs you <span class="pm">+</span></button>
+    <div class="body">
+      <p><b>Time.</b> You spend about two minutes finding and attaching files on every run. Across twelve months and a few people, that adds up to real hours.</p>
+      <p><b>Drift.</b> You never brief the AI the same way twice, so the quality of the output moves around from one month to the next.</p>
+      <p><b>Missed files.</b> When you forget a file, nothing warns you about it. The output simply becomes more generic.</p>
+      <p><b>No shared standard.</b> Your colleague briefs the AI in their own way, so the same tool produces two different voices.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 WHAT -->
+<section id="what">
+  <div class="bar"><span class="num">2</span><h2>So what is a project?</h2><span class="chev">&lt;</span></div>
+  <p class="lead">A folder that holds one continuing body of work. Load the files and write the standing instructions once. Every chat inside starts with all of it already in place.</p>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-02.jpg" alt="Comic panel: setting up the project" loading="lazy"></figure>
+      <p class="pnlcap"><b>You set it up once.</b> The files and the instructions go into the folder instead of into a chat.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-03.jpg" alt="Comic panel: the project already has the context" loading="lazy"></figure>
+      <p class="pnlcap"><b>After that you simply ask.</b> Every new chat in the folder already has the files and the instructions.</p></div>
+  </div>
+
+  <div class="tip"><span class="bulb">💡</span><div>
+    <strong>Add this one rule</strong>
+    <p>A project keeps answers inside the material you loaded. Tell it to say so when your files do not cover a question, instead of inventing an answer. This is the most useful line you can add to any project.</p>
+  </div></div>
+
+  <div class="km"><button>Know more: why projects exist <span class="pm">+</span></button>
+    <div class="body">
+      <p>Ordinary chat pulls from everything the model absorbed in training, plus the open web. Useful for general questions, risky for your own material, because you cannot tell where an answer came from.</p>
+      <p>Google's notebook tool made the opposite choice first. It answers only from your uploaded sources and the conversation itself, and it admits when a source does not hold the answer. Every other tool then built its own bounded folder.</p>
+      <p>Official pages: <a class="hl" href="https://support.claude.com/en/articles/9519177" target="_blank" rel="noopener">Claude Projects</a>, <a class="hl" href="https://help.openai.com/en/articles/10169521" target="_blank" rel="noopener">ChatGPT Projects</a>, <a class="hl" href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM</a>, <a class="hl" href="https://support.microsoft.com/en-us/microsoft-365-copilot/get-started-with-microsoft-365-copilot-notebooks" target="_blank" rel="noopener">Copilot Notebooks</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 INSIDE -->
+<section id="inside">
+  <div class="bar"><span class="num">3</span><h2>What goes inside one</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Four things. Tap any card for the detail and which tools support it.</p>
+  <div class="g2">
+    <div class="cardx"><div class="ic">📄</div><h3>Your documents</h3>
+      <p>A project can hold PDFs, notes, spreadsheets, decks and past drafts. Some tools also accept audio, video and web links.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Keep the folder small. Ten well chosen files work better than forty loose ones, because everything you load competes for the same reading space in every request.
+        <div><span class="pill p-y">Claude</span><span class="pill p-b">ChatGPT</span><span class="pill p-g">Gemini</span><span class="pill">Copilot</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:var(--bluepale)">📌</div><h3>Standing instructions</h3>
+      <p>These are the rules that apply to every chat in the folder. They cover audience, tone, format and the things the AI should never do.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">This is the most important text box in the product, because the AI reads it before every reply. You can build your own in section 7.
+        <div><span class="pill p-y">Claude</span><span class="pill p-b">ChatGPT</span><span class="pill p-g">Gemini</span><span class="pill">Copilot</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:#D8F7E4">💬</div><h3>Past chats</h3>
+      <p>Conversations you have inside the folder stay available as background for the next one.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">There is one catch on Claude. A past chat is not automatically shared across the whole project, so when a decision matters you should write it into the project knowledge rather than leave it inside an old thread.
+        <div><span class="pill p-y">Claude</span><span class="pill p-b">ChatGPT</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:#E7E0FF">📦</div><h3>Things it produces</h3>
+      <p>A project can produce drafts, documents, slides, tables, study guides and even audio and video walkthroughs of your own files.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Most people never touch this part. Google's notebook can turn a dense report into a two host audio discussion, a narrated video, a timeline or a quiz, built only from what you uploaded. It is useful for a team that will not read forty pages.
+        <div><span class="pill p-g">Gemini strongest</span><span class="pill p-y">Claude</span><span class="pill">Copilot</span></div></div></div>
+  </div>
+</section>
+
+<!-- 4 HABITS -->
+<section id="how">
+  <div class="bar"><span class="num">4</span><h2>How to run a project</h2><span class="chev">&lt;</span></div>
+  <p class="lead">These four rules keep a project useful instead of turning it into a folder you abandon in March.</p>
+
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-t="0">One chat per task</button>
+    <button class="tab" data-t="1">Use project memory</button>
+    <button class="tab" data-t="2">Know the limits</button>
+    <button class="tab" data-t="3">Set sharing rights</button>
+  </div>
+
+  <div class="pane on" data-p="0">
+    <div class="panehead"><h3>One chat per piece of work</h3><p>Do not pile every month into one endless thread. Start a fresh chat for each job. It still gets all the project files and instructions.</p></div>
+    <div class="pstack">
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-04.jpg" alt="Comic panel: the endless thread" loading="lazy"></figure>
+        <p class="pnlcap"><b>Do not do this.</b> You keep one chat running since January and add every new job to it.</p></div>
+      <div class="pgrid" style="margin-top:0">
+        <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-05.jpg" alt="Comic panel: new chat per article" loading="lazy"></figure>
+          <p class="pnlcap"><b>Do this instead.</b> You start a new chat for each article.</p></div>
+        <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-06.jpg" alt="Comic panel: new chat still has the files" loading="lazy"></figure>
+          <p class="pnlcap"><b>You lose nothing by doing it.</b> The new chat still has every project file and instruction.</p></div>
+      </div>
+    </div>
+    <div class="km"><button>Know more: why one long chat fails <span class="pm">+</span></button><div class="body">
+      <p>Every message in a thread is re-read on every new reply. A thread running since January carries eleven months of text before it even looks at today's question.</p>
+      <p>You pay for this twice. Replies get slower and vaguer, and old instructions from March start appearing in the December draft.</p>
+      <p>The fix costs you nothing. You start a new chat for each job and keep the same folder and the same context.</p>
+    </div></div>
+  </div>
+
+  <div class="pane" data-p="1">
+    <div class="panehead"><h3>The project can remember</h3><p>Corrections you give inside the folder can carry to the next chat in the same folder. They stay in that project and do not leak into your other work.</p></div>
+    <div class="pgrid">
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-07.jpg" alt="Comic panel: giving a correction" loading="lazy"></figure>
+        <p class="pnlcap"><b>This month.</b> You correct it once and tell it to put the cost line first.</p></div>
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-08.jpg" alt="Comic panel: it remembered" loading="lazy"></figure>
+        <p class="pnlcap"><b>Next month.</b> You do not repeat yourself, because the project remembered the correction.</p></div>
+    </div>
+    <div class="km"><button>Know more: how project memory works <span class="pm">+</span></button><div class="body">
+      <p>Claude gives every project its own memory space and its own summary, so a correction inside Client A never reaches Client B. That separation is the safety feature, not a side effect.</p>
+      <p>If you start a chat in the wrong project, move it out. On Claude that chat then shifts from the project's memory into your general memory instead.</p>
+      <p>It can be switched off in settings, and an admin can switch it off for a whole organisation. Check before you rely on it.</p>
+    </div></div>
+  </div>
+
+  <div class="pane" data-p="2">
+    <div class="panehead"><h3>Projects have three limits</h3><p>Know these three before you move your whole week into a project.</p></div>
+    <div class="pstack">
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-09.jpg" alt="Comic panel: the project boundary" loading="lazy"></figure>
+        <p class="pnlcap"><b>Instructions stop at the project.</b> A chat started outside the project has never seen your brand guide.</p></div>
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-10.jpg" alt="Comic panel: token use" loading="lazy"></figure>
+        <p class="pnlcap"><b>Files are read every time.</b> The instructions and the file content load into every request. A project saves your effort, but it does not save the AI's reading space.</p></div>
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-11.jpg" alt="Comic panel: file limits" loading="lazy"></figure>
+        <p class="pnlcap"><b>There is a file limit.</b> You can only load so much into one project. Link a supported cloud folder if your tool offers one.</p></div>
+    </div>
+  </div>
+
+  <div class="pane" data-p="3">
+    <div class="panehead"><h3>Check two things before you share</h3><p>Who can change the files, and who can see the chats. Both vary by tool and by admin settings.</p></div>
+    <div class="pstack">
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-12.jpg" alt="Comic panel: chat access or edit access" loading="lazy"></figure>
+        <p class="pnlcap"><b>Two access levels.</b> Chat access lets them use it. Edit access lets them change it.</p></div>
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-13.jpg" alt="Comic panel: do not give the edit button" loading="lazy"></figure>
+        <p class="pnlcap"><b>Give chat access by default.</b> Give edit rights only to people who maintain the project.</p></div>
+      <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-14.jpg" alt="Comic panel: can they see this chat" loading="lazy"></figure>
+        <p class="pnlcap"><b>Chat visibility is a separate setting.</b> A shared project does not always mean shared conversations.</p></div>
+    </div>
+    <div class="tip warn"><span class="bulb">⚠️</span><div><strong>Check this before you share</strong>
+      <p>In Google's notebooks, a shared folder still keeps each person's chat history private. You both see the same sources and outputs, not each other's questions.</p></div></div>
+    <div class="km"><button>Know more: sharing in each tool <span class="pm">+</span></button><div class="body">
+      <p><b>Google NotebookLM.</b> Add people by email as viewer or editor. Personal accounts support up to 50 people per notebook, plus a read only link for anyone.</p>
+      <p><b>ChatGPT.</b> Share inside your workspace by email or link, with control over who can add files and start chats.</p>
+      <p><b>Claude.</b> Sharing sits on Team and Enterprise plans, set by an admin, private or organisation-wide per project.</p>
+      <p><b>Copilot.</b> Share with a Microsoft 365 group, so access follows team membership as people join and leave.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 6 MYTHS -->
+<section id="myths">
+  <div class="bar"><span class="num">5</span><h2>Three things people get wrong</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Tap a card to turn it over.</p>
+  <div class="g3">
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"A project saves tokens, so replies get cheaper."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>The instructions and the file content are read on every request. A project saves your typing and your mistakes, but it does not save the AI's reading space.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"Once I set project instructions, the AI follows them everywhere."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>The instructions stop at the edge of the folder. A chat you start outside the project has never seen them, and this is the surprise people hit most often.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"Google's notebooks cannot really be shared with a team."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>Google's notebooks have one of the better sharing models, with viewer and editor roles, up to fifty people, and a read only link for anyone.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 7 VS -->
+<section id="vs">
+  <div class="bar"><span class="num">6</span><h2>Project or skill?</h2><span class="chev">&lt;</span></div>
+  <p class="lead">A project holds the context for continuing work. A skill holds a process you want to reuse. You use a skill inside a project.</p>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-15.jpg" alt="Comic panel: what goes in a project" loading="lazy"></figure>
+      <p class="pnlcap"><b>A project holds the context.</b> It carries the brand guide, the audience, the research, the related chats and the memory.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-are-ai-projects-16.jpg" alt="Comic panel: what goes in a skill" loading="lazy"></figure>
+      <p class="pnlcap"><b>A skill holds the process.</b> It carries the research steps, the structure, the writing method and the quality checks.</p></div>
+  </div>
+  <div style="margin-top:22px"><figure class="pnl"><img src="assets/images/what-are-ai-projects-17.jpg" alt="Comic panel: skill used inside project" loading="lazy"></figure>
+    <p class="pnlcap"><b>Use both together.</b> When you run your writing skill inside the project, you get the process and the background at the same time.</p></div>
+
+</section>
+
+<!-- 8 BUILDER -->
+<section id="builder">
+  <div class="bar"><span class="num">7</span><h2>Build your own instructions</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Tap the options that fit your work. Copy the result straight into the instructions box of your project.</p>
+
+  <div class="builder">
+    <div class="bcol">
+      <h4>Who is it for</h4>
+      <div class="opts" data-grp="aud" data-single="1">
+        <button class="opt on">HR leaders</button><button class="opt">Sales teams</button>
+        <button class="opt">Customers</button><button class="opt">Senior leadership</button></div>
+      <h4>Tone</h4>
+      <div class="opts" data-grp="tone" data-single="1">
+        <button class="opt on">Plain and direct</button><button class="opt">Warm and friendly</button><button class="opt">Formal</button></div>
+      <h4>Length</h4>
+      <div class="opts" data-grp="len" data-single="1">
+        <button class="opt">Short</button><button class="opt on">Medium</button><button class="opt">Detailed</button></div>
+      <h4>Rules to enforce</h4>
+      <div class="opts" data-grp="rules">
+        <button class="opt on">Say so when the files do not cover it</button>
+        <button class="opt on">Use only the project files</button>
+        <button class="opt">Follow the brand guide</button>
+        <button class="opt">No jargon</button>
+        <button class="opt">Indian English spellings</button>
+        <button class="opt">Always show the source file</button>
+        <button class="opt">Ask one question before guessing</button></div>
+    </div>
+    <div class="bcol">
+      <h4>Paste this into your project</h4>
+      <div class="code" id="out" style="min-height:220px"></div>
+      <button class="btn btn-y copy" id="copy">Copy instructions</button>
+    </div>
+  </div>
+</section>
+
+<!-- 9 TOOLS -->
+<section id="tools">
+  <div class="bar"><span class="num">8</span><h2>The same feature in each tool</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Every major tool has this feature under a different name. They are not identical. Each name links to the official page.</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Tool</th><th>Called</th><th>What stands out</th><th>Sharing</th></tr></thead>
+    <tbody>
+      <tr><td>Claude</td><td><a class="hl" href="https://support.claude.com/en/articles/9519177" target="_blank" rel="noopener">Projects</a></td><td>Very large reading space per chat, plus its own separate memory for each project.</td><td>Team and enterprise plans, set up by an admin.</td></tr>
+      <tr><td>ChatGPT</td><td><a class="hl" href="https://help.openai.com/en/articles/10169521" target="_blank" rel="noopener">Projects</a></td><td>Files, past chats and live sources such as a drive folder, all scoped to the folder.</td><td>Invite by email or link, with control over what each person can do.</td></tr>
+      <tr><td>Google Gemini</td><td><a class="hl" href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM</a></td><td>The original. Still the strongest at turning your files into audio, video, timelines and quizzes.</td><td>Viewer or editor by email, up to 50 people, plus a read only link.</td></tr>
+      <tr><td>Microsoft Copilot</td><td><a class="hl" href="https://support.microsoft.com/en-us/microsoft-365-copilot/get-started-with-microsoft-365-copilot-notebooks" target="_blank" rel="noopener">Notebooks</a></td><td>Pulls straight from Word, PowerPoint, Excel, Outlook and OneNote.</td><td>Share with a Microsoft 365 group, so access follows team membership.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tip"><span class="bulb">💡</span><div><strong>What is coming next</strong>
+    <p>These folders started as a safer way to ask questions about your own documents. They are turning into shared team spaces that also produce the report, the deck and the walkthrough. Permissions and shared memory are the parts still being worked out.</p></div></div>
+</section>
+
+</main>
+</div>
+
+<footer><div class="wrap"><div class="fl">Nudgeable.ai</div><div>Load the context once. Work from it all year.</div><a class="fhome" href="index.html">&larr; All guides</a></div></footer>
+
+<div class="lb" id="lb"><span class="lb-x">&times;</span><img id="lbi" src="" alt=""></div>
+
+<script>
+/* ---------- mascot ---------- */
+var MOUTH={neutral:'M42 68 q8 7 16 0',happy:'M40 65 q10 13 20 0 q-10 5 -20 0',tired:'M43 69 h14',
+ sad:'M42 71 q8 -7 16 0',think:'M43 69 q6 4 12 -1'};
+function cloudSVG(mood){
+ var m=MOUTH[mood]||MOUTH.neutral, tired=(mood==='tired');
+ return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+ '<g fill="#2F7FE8" stroke="#2F7FE8" stroke-width="7"><circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/>'+
+ '<circle cx="74" cy="56" r="17"/><circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/></g>'+
+ '<g fill="#DCF2FD"><circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/><circle cx="74" cy="56" r="17"/>'+
+ '<circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/></g>'+
+ '<g class="sparks" fill="#FFD93D"><rect x="14" y="20" width="5" height="13" rx="2" transform="rotate(-25 16 26)"/>'+
+ '<rect x="82" y="20" width="5" height="13" rx="2" transform="rotate(25 84 26)"/>'+
+ '<rect x="48" y="6" width="5" height="12" rx="2"/></g>'+
+ '<line x1="44" y1="52" x2="56" y2="52" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="35" cy="52" r="11" fill="#fff" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="65" cy="52" r="11" fill="#fff" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="35" cy="52" r="4.5" fill="#16202B"/><circle cx="65" cy="52" r="4.5" fill="#16202B"/>'+
+ (tired
+   ? '<rect x="25" y="42" width="20" height="8" fill="#DCF2FD"/><rect x="55" y="42" width="20" height="8" fill="#DCF2FD"/>'
+   : '<rect class="blinker" x="25" y="41" width="20" height="12" fill="#DCF2FD"/>'+
+     '<rect class="blinker b2" x="55" y="41" width="20" height="12" fill="#DCF2FD"/>')+
+ '<path d="'+m+'" fill="none" stroke="#16202B" stroke-width="3.5" stroke-linecap="round"/></svg>';
+}
+function setMood(el,mood){el.className='mascot mood-'+mood;el.dataset.mood=mood;el.innerHTML=cloudSVG(mood);}
+document.querySelectorAll('.mascot').forEach(function(el){setMood(el,el.dataset.mood||'neutral')});
+
+/* ---------- typewriter ---------- */
+(function(){var w=["It stops you uploading the same files every month.","It stops your briefing changing every time.","It keeps every chat working from the same material."],i=0,c=0,d=false,el=document.getElementById('type');
+function t(){var s=w[i];el.textContent=d?s.substring(0,c--):s.substring(0,c++);var ms=d?45:85;
+if(!d&&c===s.length+1){d=true;ms=1600}else if(d&&c<0){d=false;i=(i+1)%w.length;c=0;ms=300}setTimeout(t,ms)}t()})();
+
+
+/* ---------- month stepper ---------- */
+var MON=[
+ {img:'assets/images/what-are-ai-projects-18.jpg',h:'January: nothing feels wrong',p:'You upload three files, write a clear briefing and get a good article. Nothing feels wrong yet, which is why most people do not set up a project in the first month.'},
+ {img:'assets/images/what-are-ai-projects-19.jpg',h:'February: you start repeating yourself',p:'You drag in the same three files again and lose two minutes doing it. Your briefing is also slightly different from last month, and you do not notice.'},
+ {img:'assets/images/what-are-ai-projects-20.jpg',h:'March: the work becomes a ritual',p:'This is the third month with the same files and the same instructions. The work has turned into a ritual you resent, and the output is drifting away from what you want.'},
+ {img:'assets/images/what-are-ai-projects-21.jpg',h:'April: you leave out a file',p:'You leave out the brand guide and nothing warns you about it. The draft comes out generic, and you cannot work out why until you check the attachments.'}];
+var mb=document.querySelectorAll('#months .mbtn'),mimg=document.getElementById('mimg'),
+ mh=document.getElementById('mh'),mp=document.getElementById('mp');
+function showMonth(i){mb.forEach(function(b,j){b.classList.toggle('on',i===j)});
+ mimg.src=MON[i].img;mh.textContent=MON[i].h;mp.textContent=MON[i].p;}
+mb.forEach(function(b,i){b.addEventListener('click',function(){showMonth(i)})});
+showMonth(0);
+
+/* ---------- know more ---------- */
+document.querySelectorAll('.km').forEach(function(k){
+ k.querySelector('button').addEventListener('click',function(){
+  k.classList.toggle('on');k.querySelector('.pm').textContent=k.classList.contains('on')?'−':'+';})});
+
+/* ---------- cards ---------- */
+document.querySelectorAll('.cardx').forEach(function(c){
+ var m=c.querySelector('.more');if(!m)return;
+ c.addEventListener('click',function(e){if(e.target.tagName==='A')return;
+  c.classList.toggle('on');
+  c.querySelector('.toggle').textContent=c.classList.contains('on')?'Tap to close ↑':'Tap for detail ↓';})});
+
+/* ---------- tabs ---------- */
+var tabs=document.querySelectorAll('.tab'),panes=document.querySelectorAll('.pane');
+tabs.forEach(function(t){t.addEventListener('click',function(){
+ tabs.forEach(function(x){x.classList.remove('on')});panes.forEach(function(p){p.classList.remove('on')});
+ t.classList.add('on');document.querySelector('.pane[data-p="'+t.dataset.t+'"]').classList.add('on');})});
+
+/* ---------- myth flips ---------- */
+document.querySelectorAll('.flipwrap').forEach(function(f){f.addEventListener('click',function(){f.classList.toggle('on')})});
+
+
+/* ---------- builder ---------- */
+var sel={aud:'HR leaders',tone:'Plain and direct',len:'Medium',
+ rules:['Say so when the files do not cover it','Use only the project files']};
+document.querySelectorAll('.opts').forEach(function(g){
+ g.querySelectorAll('.opt').forEach(function(b){
+  b.addEventListener('click',function(){
+   if(g.dataset.single){g.querySelectorAll('.opt').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');sel[g.dataset.grp]=b.textContent;}
+   else{b.classList.toggle('on');sel.rules=Array.from(g.querySelectorAll('.opt.on')).map(function(x){return x.textContent});}
+   render();})})});
+var lenMap={'Short':'Keep every answer under 200 words.',
+ 'Medium':'Keep answers focused. Around 300 to 500 words unless I ask for more.',
+ 'Detailed':'Go deep. Cover the reasoning, not only the conclusion.'};
+var ruleMap={
+ 'Say so when the files do not cover it':'If the project files do not cover something, say so plainly. Never fill the gap with a guess.',
+ 'Use only the project files':'Answer from the project files and our conversation only. Do not pull in outside information unless I ask.',
+ 'Follow the brand guide':'Follow the brand guide in the project files for voice, wording and structure.',
+ 'No jargon':'Use simple everyday words. No jargon, no buzzwords.',
+ 'Indian English spellings':'Use Indian English spellings and examples.',
+ 'Always show the source file':'Name the source file you used for each key point.',
+ 'Ask one question before guessing':'If my request is unclear, ask me one question before you start.'};
+function render(){
+ var t='PURPOSE\nThis project is one continuing body of work. Use the files here as the background for every chat.\n\nAUDIENCE\nWrite for '+sel.aud.toLowerCase()+'.\n\nTONE AND LENGTH\n'+sel.tone+'. '+lenMap[sel.len]+'\n\nRULES\n';
+ if(!sel.rules.length)t+='- (pick at least one rule on the left)\n';
+ else sel.rules.forEach(function(r){t+='- '+ruleMap[r]+'\n'});
+ document.getElementById('out').textContent=t;}
+render();
+document.getElementById('copy').addEventListener('click',function(){var b=this;
+ navigator.clipboard.writeText(document.getElementById('out').textContent).then(function(){
+  b.textContent='Copied ✓';b.classList.add('done');
+  setTimeout(function(){b.textContent='Copy instructions';b.classList.remove('done')},1800);})});
+
+/* ---------- lightbox ---------- */
+var lb=document.getElementById('lb'),lbi=document.getElementById('lbi');
+document.querySelectorAll('.pnl').forEach(function(c){c.addEventListener('click',function(){
+ lbi.src=c.querySelector('img').src;lb.classList.add('on');document.body.style.overflow='hidden';})});
+lb.addEventListener('click',function(){lb.classList.remove('on');document.body.style.overflow=''});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){lb.classList.remove('on');document.body.style.overflow=''}});
+
+/* ---------- left step rail ---------- */
+var secs=document.querySelectorAll('section[id]'),
+    links=document.querySelectorAll('.steps a'),
+    rail=document.getElementById('steps'),
+    fill=document.getElementById('railfill');
+function railUpdate(){
+  var y=window.scrollY+160,idx=-1;
+  secs.forEach(function(s,i){if(s.offsetTop<=y)idx=i});
+  links.forEach(function(a,i){a.classList.toggle('act',i===idx);a.classList.toggle('done',i<idx)});
+  if(idx<0){fill.style.height='0px';return;}
+  var r=rail.getBoundingClientRect(),t=links[idx].getBoundingClientRect();
+  fill.style.height=Math.max(0,(t.top-r.top)+17)+'px';
+}
+window.addEventListener('scroll',railUpdate,{passive:true});
+window.addEventListener('resize',railUpdate);
+railUpdate();
+</script>
+</body>
+</html>

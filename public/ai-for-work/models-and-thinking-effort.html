@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="/ai-for-work/models-and-thinking-effort.html">
+<link rel="icon" href="/icon.png" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="description" content="Two dials, and most people only ever touch one. Which model sets how good an answer can be, and how long it reasons is a separate setting with its own cost.">
+<meta property="og:site_name" content="Nudgeable">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Models and Thinking Effort">
+<meta property="og:description" content="Two dials, and most people only ever touch one. Which model sets how good an answer can be, and how long it reasons is a separate setting with its own cost.">
+<meta property="og:url" content="/ai-for-work/models-and-thinking-effort.html">
+<meta property="og:image" content="/assets/og-default.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nudgeable">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Models and Thinking Effort">
+<meta name="twitter:description" content="Two dials, and most people only ever touch one. Which model sets how good an answer can be, and how long it reasons is a separate setting with its own cost.">
+<meta name="twitter:image" content="/assets/og-default.png">
+<meta name="theme-color" content="#FDF8EC">
+<title>Models and Thinking Effort</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+--ink:#16202B;--navy:#203141;--cream:#FDF8EC;--ice:#E2F4FD;--yellow:#FFD93D;--amber:#FFCE00;
+--blue:#2F7FE8;--bluepale:#E7F2FE;--orange:#F68A29;--green:#23CE68;--red:#ED4551;--muted:#5E6B78;
+--pop:5px 5px 0 var(--ink);--pop-sm:3px 3px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html{max-width:100%}
+body{max-width:100%;overflow-x:clip}
+.shell,.side,.main,section,.shell>*{min-width:0;max-width:100%}
+img,svg,video,iframe{max-width:100%;height:auto}
+p,li,h1,h2,h3,h4,.bub,.face,.pnlcap,.lead{overflow-wrap:anywhere}
+.code{overflow-wrap:anywhere;word-break:break-word}
+.tblwrap,.tabs,.ftab,.steps{max-width:100%}
+
+html{scroll-behavior:smooth}
+body{margin:0;-webkit-text-size-adjust:100%;overflow-x:hidden;background:var(--cream);color:var(--ink);
+font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.hl{text-decoration:none;font-weight:600;background:linear-gradient(transparent 58%,var(--yellow) 58%);
+padding:0 2px;border-bottom:2px solid var(--ink)}
+.hl:hover{background:var(--yellow)}
+.hl::after{content:" ↗";font-size:.8em;opacity:.6}
+
+:root{--top-offset:20px}
+.shell{display:grid;grid-template-columns:212px 1fr;gap:36px;max-width:1200px;margin:0 auto;padding:0 20px}
+.main{min-width:0;padding-top:6px}
+.side{position:sticky;top:var(--top-offset);align-self:start;padding:26px 0 20px}
+.sidehead{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.sidehead .mascot{width:38px;height:38px;flex:0 0 38px}
+.sidetitle{font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.6px;line-height:1.15}
+.steps{position:relative;display:flex;flex-direction:column;gap:2px}
+.steps::before{content:"";position:absolute;left:17px;top:16px;bottom:16px;width:3px;background:var(--ink);border-radius:2px}
+.steps .fill{position:absolute;left:17px;top:16px;width:3px;height:0;background:var(--blue);border-radius:2px;transition:height .18s ease}
+.steps a{position:relative;z-index:1;display:flex;align-items:center;gap:11px;text-decoration:none;
+padding:5px 8px 5px 0;font-size:13.5px;font-weight:700;color:var(--muted);border-radius:999px}
+.steps a i{font-style:normal;width:34px;height:34px;flex:0 0 34px;border:3px solid var(--ink);border-radius:999px;
+background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--ink);transition:.12s}
+.steps a:hover{color:var(--ink)}
+.steps a:hover i{background:var(--ice)}
+.steps a.act{color:var(--ink)}
+.steps a.act i{background:var(--yellow);box-shadow:var(--pop-sm)}
+.steps a.done i{background:var(--ink);color:var(--yellow)}
+
+.bar{background:var(--navy);border:3px solid var(--ink);border-radius:14px;padding:14px 22px;color:#fff;
+display:flex;align-items:center;gap:12px;box-shadow:var(--pop)}
+.bar h2{margin:0;font-size:25px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;line-height:1.15}
+.chev{color:var(--yellow);font-weight:900;font-size:22px;line-height:1}
+.num{background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+section{padding:40px 0;scroll-margin-top:24px}
+.lead{font-size:17px;max-width:700px;margin:20px 0 0;color:#34424F}
+
+.mascot{display:inline-block;vertical-align:middle}
+.mascot svg{width:100%;height:100%;display:block}
+.blinker{transform-box:fill-box;transform-origin:top;animation:blink 6s infinite}
+.blinker.b2{animation-delay:.08s}
+@keyframes blink{0%,95%{transform:scaleY(0)}97%,98.5%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.sparks{opacity:0}
+.mood-happy .sparks{opacity:1;animation:pop .4s ease}
+@keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
+
+.tip{margin-top:22px;background:#FFF7D1;border:3px solid var(--ink);border-radius:14px;padding:16px 20px;
+box-shadow:var(--pop);display:flex;gap:14px;align-items:flex-start}
+.tip .bulb{font-size:24px;line-height:1.2}
+.tip strong{display:block;font-weight:900;text-transform:uppercase;font-size:13px;letter-spacing:.8px;margin-bottom:4px}
+.tip p{margin:0;font-size:15px}
+.tip.warn{background:#FFE7E9}
+
+.hero{margin:26px 0 0;background:var(--navy);border:3px solid var(--ink);border-radius:16px;padding:38px 32px;color:#fff;box-shadow:var(--pop)}
+.hero .kick{display:inline-block;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+padding:3px 12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px}
+.hero h1{font-size:42px;font-weight:900;line-height:1.1;margin:16px 0 0;text-transform:uppercase}
+.herosub{margin:12px 0 0;font-size:19px;font-weight:700;color:#fff;min-height:29px}
+.hero h1 .type{color:var(--yellow)}
+.cursor{display:inline-block;width:4px;height:.85em;background:var(--yellow);vertical-align:-2px;animation:bl .8s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.herorow{display:flex;gap:20px;align-items:flex-start;margin-top:22px}
+.herorow .mascot{width:80px;height:80px;flex:0 0 80px}
+.hero p{color:#CBD8E4;font-size:17px;margin:0}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn{cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;padding:11px 26px;border-radius:999px;
+text-decoration:none;display:inline-block;border:3px solid var(--ink);box-shadow:var(--pop-sm);transition:.12s}
+.btn:active{transform:translate(3px,3px);box-shadow:none}
+.btn-y{background:var(--yellow);color:var(--ink)}
+.btn-w{background:#fff;color:var(--ink)}
+
+.pnl{border:3px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--pop);background:#fff;cursor:zoom-in;position:relative}
+.pnl img{display:block;width:100%}
+.pnlcap{font-size:15px;font-weight:600;margin-top:10px;color:#34424F}
+.pnlcap b{font-weight:900}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:24px}
+.pgrid.wide{grid-template-columns:1fr}
+.pstack{margin-top:24px;display:flex;flex-direction:column;gap:22px}
+
+.months{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.mbtn{border:3px solid var(--ink);background:#fff;font-family:inherit;font-weight:900;font-size:14px;
+padding:8px 20px;border-radius:999px;cursor:pointer;box-shadow:var(--pop-sm);transition:.12s}
+.mbtn:hover{background:var(--ice)}
+.mbtn.on{background:var(--yellow)}
+.mstage{margin-top:20px;display:grid;grid-template-columns:1fr;gap:20px;align-items:start}
+.mcost{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:var(--pop)}
+.mcost h4{margin:0;font-size:18px;font-weight:900}
+.mcost p{margin:8px 0 0;font-size:15px;color:#34424F}
+.dials{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+.dial{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;border:3px solid var(--ink);
+border-radius:8px;padding:4px 11px;background:#fff}
+.d-lo{background:#D8F7E4}.d-hi{background:#FFD7DA}.d-mid{background:var(--bluepale)}
+
+.km{margin-top:16px;border:3px solid var(--ink);border-radius:12px;background:#fff;overflow:hidden;box-shadow:var(--pop-sm)}
+.km>button{width:100%;text-align:left;background:var(--ice);border:none;border-bottom:3px solid var(--ink);
+font-family:inherit;font-size:14px;font-weight:800;padding:12px 16px;cursor:pointer;display:flex;
+justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+.km>button:hover{background:var(--yellow)}
+.km .pm{background:var(--ink);color:var(--yellow);width:24px;height:24px;border-radius:6px;
+display:flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 24px}
+.km .body{display:none;padding:16px 18px;font-size:15px}
+.km.on .body{display:block}
+.km.on .pm{background:var(--blue);color:#fff}
+.km .body p{margin:0 0 10px}.km .body p:last-child{margin:0}
+
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.cardx{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:18px;box-shadow:var(--pop);cursor:pointer;transition:.12s}
+.cardx:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.cardx .ic{width:44px;height:44px;border:3px solid var(--ink);border-radius:10px;display:flex;
+align-items:center;justify-content:center;font-size:21px;background:var(--yellow)}
+.cardx h3{margin:10px 0 0;font-size:18px;font-weight:900}
+.cardx p{margin:6px 0 0;font-size:15px;color:#34424F}
+.cardx .more{display:none;margin-top:12px;padding-top:12px;border-top:3px dashed var(--ink);font-size:14px}
+.cardx.on .more{display:block}
+.cardx .toggle{margin-top:12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--blue)}
+.pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border:2px solid var(--ink);
+border-radius:999px;margin:6px 6px 0 0;background:#fff}
+.p-y{background:var(--yellow)}.p-b{background:var(--bluepale)}.p-g{background:#D8F7E4}
+
+.tabs{display:flex;gap:10px;margin-top:24px;overflow-x:auto;scrollbar-width:none;padding:4px 4px 8px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:3px solid var(--ink);background:#fff;color:var(--ink);font-family:inherit;font-size:14px;font-weight:800;
+padding:9px 18px;border-radius:999px;cursor:pointer;white-space:nowrap;box-shadow:var(--pop-sm);transition:.12s}
+.tab:hover{background:var(--yellow)}
+.tab.on{background:var(--navy);color:#fff}
+.pane{display:none;animation:fade .25s ease}
+.pane.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.panehead{margin-top:20px;background:var(--ice);border:3px solid var(--ink);border-radius:14px;padding:18px 22px;box-shadow:var(--pop)}
+.panehead h3{margin:0;font-size:20px;font-weight:900;text-transform:uppercase}
+.panehead p{margin:6px 0 0;font-size:15px}
+
+.flipwrap{perspective:1000px;height:250px;cursor:pointer}
+.flipin{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flipwrap.on .flipin{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:3px solid var(--ink);border-radius:14px;
+padding:18px;box-shadow:var(--pop);display:flex;flex-direction:column;justify-content:center}
+.face.front{background:#fff}
+.face.back{background:var(--ice);transform:rotateY(180deg)}
+.face .lab{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.face.front .lab{color:var(--red)}.face.back .lab{color:#0F8A45}
+.face p{margin:0;font-size:15.5px;font-weight:600}
+.face .flipnote{margin-top:auto;padding-top:10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+
+.builder{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bcol{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:var(--pop)}
+.bcol h4{margin:0 0 8px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.opt{border:3px solid var(--ink);background:#fff;border-radius:999px;padding:6px 14px;font-family:inherit;
+font-size:13px;font-weight:700;cursor:pointer;transition:.12s;text-align:left}
+.opt:hover{background:var(--ice)}
+.opt.on{background:var(--yellow)}
+
+.rescard{border:3px solid var(--ink);border-radius:12px;background:var(--navy);color:#fff;padding:18px;margin-top:4px}
+.resrow{display:flex;gap:12px;flex-wrap:wrap}
+.resbox{flex:1 1 140px;border:3px solid var(--ink);border-radius:10px;background:#fff;color:var(--ink);padding:12px 14px}
+.resbox span{display:block;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.resbox b{display:block;font-size:19px;font-weight:900;line-height:1.2;margin-top:3px}
+.reswhy{margin:16px 0 0;font-size:15px;color:#DCE7F1}
+.resnext{margin-top:14px;padding-top:14px;border-top:3px dashed #4A5F73;font-size:14.5px;color:#DCE7F1}
+.resnext strong{display:block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--yellow);margin-bottom:5px}
+
+.tblwrap{margin-top:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;border:3px solid var(--ink);border-radius:14px;box-shadow:var(--pop);background:#fff}
+table{border-collapse:collapse;width:100%;min-width:820px}
+th,td{text-align:left;padding:14px 16px;font-size:14.5px;border-bottom:3px solid var(--ink);vertical-align:top;overflow-wrap:break-word}
+th{background:var(--yellow);font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:900;white-space:nowrap}
+
+.lb{position:fixed;inset:0;background:rgba(22,32,43,.94);display:none;align-items:center;justify-content:center;z-index:200;padding:18px;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-height:92vh;max-width:100%;border:3px solid var(--yellow);border-radius:12px}
+.lb-x{position:absolute;top:16px;right:20px;color:#fff;font-size:34px;font-weight:300;line-height:1}
+
+footer{background:var(--navy);color:#9FB0C0;padding:30px 0;margin-top:34px;text-align:center;font-size:14px;border-top:3px solid var(--ink)}
+footer .fl{color:var(--yellow);font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+
+@media(max-width:980px){
+.shell{display:block;padding:0 16px}
+.side{position:static;padding:18px 0 4px}
+.sidehead{margin-bottom:12px}
+.steps{flex-direction:row;overflow-x:auto;gap:8px;scrollbar-width:none;padding:2px 2px 8px;
+-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.steps::-webkit-scrollbar{display:none}
+.steps::before,.steps .fill{display:none}
+.steps a{flex:0 0 auto;border:3px solid var(--ink);background:#fff;border-radius:999px;
+padding:6px 16px 6px 6px;box-shadow:var(--pop-sm);scroll-snap-align:start;min-height:44px}
+.steps a i{width:28px;height:28px;flex:0 0 28px;border-width:2px;font-size:12px}
+.steps a span{font-size:13px}
+.steps a.act{background:var(--yellow)}
+.steps a.done{background:var(--cream)}
+.g3{grid-template-columns:repeat(2,1fr)}
+.hero h1{font-size:34px}
+.herosub{font-size:17px}
+}
+
+@media(max-width:780px){
+.shell{padding:0 14px}
+.main{padding-top:0}
+.wrap{padding:0 14px}
+section{padding:30px 0}
+.hero{padding:24px 18px;margin-top:14px}
+.hero h1{font-size:26px}
+.hero p{font-size:16px}
+.herorow{gap:14px}
+.herorow .mascot{width:54px;height:54px;flex:0 0 54px}
+.cta{gap:10px}
+.btn{width:100%;text-align:center;padding:13px 20px}
+
+.bar{padding:12px 16px;gap:10px;border-radius:12px}
+.bar h2{font-size:17px;line-height:1.2}
+.num{width:30px;height:30px;flex:0 0 30px;font-size:14px}
+.chev{display:none}
+.lead{font-size:16px;margin-top:16px}
+
+.g2,.g3,.builder,.pgrid,.mstage{grid-template-columns:1fr;gap:18px}
+.pstack{gap:18px}
+.pnlcap{font-size:14.5px}
+
+.months{gap:8px}
+.mbtn{flex:1 1 100%;padding:10px 12px;font-size:13px;min-height:44px}
+
+.cardx{padding:16px}
+.cardx h3{font-size:17px}
+.tip{padding:14px 16px;gap:10px}
+.tip p{font-size:14.5px}
+
+.tabs{gap:8px;padding:2px 2px 8px;-webkit-overflow-scrolling:touch}
+.tab{padding:10px 16px;min-height:44px;font-size:13.5px}
+.panehead{padding:15px 17px}
+.panehead h3{font-size:17px}
+
+.flipwrap{height:auto;perspective:none;cursor:pointer}
+.flipin{transform:none!important;transition:none}
+.face{position:static;backface-visibility:visible;transform:none!important;box-shadow:var(--pop)}
+.face.back{display:none;margin-top:-3px;border-top-left-radius:0;border-top-right-radius:0}
+.flipwrap.on .face.back{display:flex}
+.face p{font-size:15px}
+.face .flipnote{margin-top:10px}
+.flipwrap.on .face.front .flipnote{display:none}
+
+.bcol{padding:16px}
+.opt{padding:9px 14px;font-size:12.5px;min-height:40px}
+.resbox b{font-size:17px}
+
+table{min-width:560px}
+th,td{padding:11px 12px;font-size:13.5px}
+
+.km>button{font-size:13.5px;padding:13px 14px;min-height:46px}
+.km .body{padding:14px 15px;font-size:14.5px}
+}
+
+@media(max-width:430px){
+.hero h1{font-size:23px}
+.herosub{font-size:15px}
+.hero .kick{font-size:11px}
+.bar h2{font-size:15.5px}
+.sidetitle{font-size:13px}
+.mbtn{font-size:12.5px}
+.face p{font-size:14.5px}
+}
+
+.backhome{display:inline-flex;align-items:center;gap:7px;margin:0 0 14px;padding:7px 16px 7px 13px;
+border:3px solid var(--ink);border-radius:999px;background:#fff;box-shadow:var(--pop-sm);
+font-size:13px;font-weight:800;text-decoration:none;color:var(--ink);transition:.12s;line-height:1.2}
+.backhome:hover{background:var(--yellow)}
+.backhome:active{transform:translate(3px,3px);box-shadow:none}
+.backhome b{font-weight:900}
+footer .fhome{display:inline-block;margin-top:16px;color:var(--yellow);font-weight:900;text-transform:uppercase;
+letter-spacing:1px;font-size:12px;text-decoration:none;border-bottom:2px solid var(--yellow);padding-bottom:2px}
+footer .fhome:hover{color:#fff;border-bottom-color:#fff}
+@media(max-width:780px){.backhome{min-height:44px;padding:9px 18px 9px 15px;font-size:13.5px}}
+
+/* ============ Back to Nudgeable homepage ============ */
+.back-home{
+  position:fixed;top:18px;right:22px;z-index:950;
+  display:inline-flex;align-items:center;gap:7px;
+  background:#fff;border:3px solid var(--ink);border-radius:999px;
+  padding:8px 16px;font-size:13px;font-weight:800;color:var(--ink);
+  text-decoration:none;box-shadow:var(--pop-sm);transition:.12s;
+}
+.back-home:hover{background:var(--yellow)}
+.back-home:active{transform:translate(2px,2px);box-shadow:none}
+@media (max-width:780px){.back-home{top:12px;right:12px;padding:7px 13px;font-size:12.5px}}
+</style>
+</head>
+<body>
+
+<a class="back-home" href="/">&larr; Back to Nudgeable</a>
+<div class="shell">
+
+<aside class="side">
+  <a class="backhome" href="index.html">&larr; <b>AI for Work</b></a>
+  <div class="sidehead"><span class="mascot" data-mood="neutral"></span><span class="sidetitle">Models &amp; Effort</span></div>
+  <nav class="steps" id="steps"><span class="fill" id="railfill"></span>
+    <a href="#signal"><i>1</i><span>The problem</span></a>
+    <a href="#thinking"><i>2</i><span>What thinking is</span></a>
+    <a href="#dials"><i>3</i><span>Two dials</span></a>
+    <a href="#ceiling"><i>4</i><span>Which dial is stuck</span></a>
+    <a href="#move"><i>5</i><span>The three moves</span></a>
+    <a href="#myths"><i>6</i><span>Common errors</span></a>
+    <a href="#picker"><i>7</i><span>Pick your setting</span></a>
+    <a href="#tools"><i>8</i><span>Each tool</span></a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <span class="kick">A plain guide</span>
+  <h1>Models and<br><span style="color:var(--yellow)">thinking effort</span></h1>
+  <p class="herosub"><span class="type" id="type"></span><span class="cursor"></span></p>
+  <div class="herorow">
+    <span class="mascot" data-mood="neutral"></span>
+    <p>Every AI tool now gives you two controls. One sets how capable the answer can be. The other sets how long the AI reasons before it replies. Knowing which one to move, and in which order, is the whole skill.</p>
+  </div>
+  <div class="cta">
+    <a class="btn btn-y" href="#dials">Show me the two dials</a>
+    <a class="btn btn-w" href="#picker">Pick my setting</a>
+  </div>
+</header>
+
+<!-- 1 SIGNAL -->
+<section id="signal">
+  <div class="bar"><span class="num">1</span><h2>You use one setting for everything</h2><span class="chev">&lt;</span></div>
+  <p class="lead">The same setting can be exactly right on one job and pure waste on the next. Tap each job to see what it cost.</p>
+
+  <div class="months" id="months">
+    <button class="mbtn on">Copy three numbers</button>
+    <button class="mbtn">The same job, on maximum</button>
+    <button class="mbtn">Choose a supplier</button>
+  </div>
+  <div class="mstage">
+    <figure class="pnl" id="mpnl"><img id="mimg" src="assets/images/models-and-thinking-effort-01.jpg" alt="Comic panel"></figure>
+    <div class="mcost"><h4 id="mh">A quick job on the low setting</h4><p id="mp"></p><div class="dials" id="mdial"></div></div>
+  </div>
+
+  <div class="km"><button>Know more: what the extra reasoning actually costs <span class="pm">+</span></button>
+    <div class="body">
+      <p><b>Time.</b> A long reasoning pass can add seconds or minutes before a single word appears. On a job you were going to check in ten seconds, that is the whole saving gone.</p>
+      <p><b>Money.</b> You pay by the amount of text going in and coming out, and the reasoning counts as text coming out even when you never see it. Higher effort means more of it.</p>
+      <p><b>Your limits.</b> On a paid plan the reasoning eats into the same allowance as everything else. People who leave the setting on maximum tend to run out of usage by the afternoon.</p>
+      <p><b>No gain at all on some jobs.</b> When the answer is already sitting in the document, there is nothing for the extra reasoning to work on. You pay for it and get the same words back.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 THINKING -->
+<section id="thinking">
+  <div class="bar"><span class="num">2</span><h2>What thinking actually means</h2><span class="chev">&lt;</span></div>
+  <p class="lead">A thinking model does some working out before it starts writing the reply. You usually do not see that part, but it is real work and you pay for it in time and in cost.</p>
+
+  <div class="pstack">
+    <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-02.jpg" alt="Comic panel: the AI compares trade-offs before answering"></figure>
+      <p class="pnlcap"><b>It works through the question first.</b> Given a supplier decision, it lines up the trade-offs before it writes anything you can read.</p></div>
+    <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-03.jpg" alt="Comic panel: the working out behind the answer" loading="lazy"></figure>
+      <p class="pnlcap"><b>The working out is the product.</b> Cost, quality, delays and risk get weighed one against the other. That comparison is what the extra time actually buys you.</p></div>
+  </div>
+
+  <div class="tip"><span class="bulb">💡</span><div>
+    <strong>It is not a care setting</strong>
+    <p>Higher effort does not make the AI more careful with your instructions, more honest, or less likely to invent something. It makes it reason for longer before it answers. If the output keeps ignoring a rule you gave it, fix the brief rather than the dial.</p>
+  </div></div>
+
+  <div class="km"><button>Know more: where the thinking goes, and who pays for it <span class="pm">+</span></button>
+    <div class="body">
+      <p>Most tools hide the working out, or show you a short summary of it. A few let you read the whole thing. Either way it is produced, and it counts.</p>
+      <p>AI pricing is measured in tokens, which is simply the tool's way of counting chunks of text going in and coming out. A word is roughly one token. The reasoning is counted as text coming out, so a long think on a short question can cost more than the answer itself.</p>
+      <p>This is the part people find unfair the first time. You are charged for words you never asked for and never read. It is also exactly why the setting matters.</p>
+      <p>Official pages: <a class="hl" href="https://platform.claude.com/docs/en/build-with-claude/effort" target="_blank" rel="noopener">Claude effort</a>, <a class="hl" href="https://developers.openai.com/api/docs/guides/reasoning" target="_blank" rel="noopener">OpenAI reasoning effort</a>, <a class="hl" href="https://ai.google.dev/gemini-api/docs/thinking" target="_blank" rel="noopener">Gemini thinking level</a>, <a class="hl" href="https://support.microsoft.com/en-us/microsoft-copilot/conversation-modes-in-microsoft-copilot" target="_blank" rel="noopener">Copilot modes</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 DIALS -->
+<section id="dials">
+  <div class="bar"><span class="num">3</span><h2>Two dials, not one</h2><span class="chev">&lt;</span></div>
+  <p class="lead">The model you choose sets how good the answer can possibly be. The effort you choose sets how much reasoning that model does on the way there. They are separate controls and they fail in different ways.</p>
+
+  <div class="pstack">
+    <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-04.jpg" alt="Comic panel: the model dial and the effort dial" loading="lazy"></figure>
+      <p class="pnlcap"><b>Two separate controls.</b> The model picker sets the ceiling. The effort setting decides how long it reasons underneath that ceiling.</p></div>
+    <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-05.jpg" alt="Comic panel: both dials turned up on a simple job" loading="lazy"></figure>
+      <p class="pnlcap"><b>Both turned up on a job that needed neither.</b> Putting six names in alphabetical order does not improve with a bigger model or a longer think. It only gets slower and dearer.</p></div>
+  </div>
+
+  <p class="lead" style="margin-top:28px">Four things change the quality of an answer. Only two of them are dials. Tap any card for the detail.</p>
+  <div class="g2">
+    <div class="cardx"><div class="ic">🧠</div><h3>The model</h3>
+      <p>Sets the ceiling. Every model has a limit on how hard a problem it can handle, and no setting inside that model moves the limit.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Tools usually offer three rough levels: a fast one built for volume and speed, a standard one for daily work, and a flagship one for the genuinely hard cases. Moving up a level raises the price of every word, both what you send and what comes back, for as long as you leave it there.
+        <div><span class="pill p-g">Fast</span><span class="pill p-b">Standard</span><span class="pill p-y">Flagship</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:var(--bluepale)">⏱️</div><h3>The effort</h3>
+      <p>Sets how long the chosen model reasons before it replies. This is the dial to try first.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">It is quick to change, easy to reverse, and it costs you time rather than a higher price on every word. Every tool calls it something different. Section 8 has the list of names.
+        <div><span class="pill p-g">Low</span><span class="pill p-b">Medium</span><span class="pill p-y">High</span><span class="pill">Maximum</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:#D8F7E4">✍️</div><h3>Your brief</h3>
+      <p>Not a dial at all, and the most common real reason an answer disappoints.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">If the output keeps missing a rule, using the wrong format or answering a slightly different question, no setting will fix that. Say what a good answer looks like, and say what it should do when it is unsure. That change costs nothing.
+        <div><span class="pill">Free to fix</span><span class="pill">Try this first</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:#E7E0FF">📎</div><h3>What you gave it</h3>
+      <p>The material sitting in front of it when it answers.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">An AI reasoning very hard over the wrong document still arrives at the wrong answer, and it will sound just as confident about it. Check that the right file is attached before you reach for any setting.
+        <div><span class="pill">Free to fix</span><span class="pill">Check before you spend</span></div></div></div>
+  </div>
+</section>
+
+<!-- 4 CEILING -->
+<section id="ceiling">
+  <div class="bar"><span class="num">4</span><h2>Which dial is actually stuck</h2><span class="chev">&lt;</span></div>
+  <p class="lead">A disappointing answer has two very different causes, and they need opposite fixes. Tap through both.</p>
+
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-t="0">Effort has a ceiling</button>
+    <button class="tab" data-t="1">Stronger can mean less effort</button>
+  </div>
+
+  <div class="pane on" data-p="0">
+    <div class="panehead"><h3>More reasoning cannot make a model smarter</h3><p>If the model cannot handle the problem, a longer think gives you a longer answer that is wrong in exactly the same way.</p></div>
+    <div class="pstack">
+      <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-06.jpg" alt="Comic panel: high effort, weak answer" loading="lazy"></figure>
+        <p class="pnlcap"><b>The dial moved and the quality did not.</b> High effort on a fast model. You did everything the setting allows and the answer is still thin.</p></div>
+      <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-07.jpg" alt="Comic panel: the capability ceiling" loading="lazy"></figure>
+        <p class="pnlcap"><b>There is a limit you cannot see.</b> It will reason for as long as you let it, but only up to what that model is capable of understanding.</p></div>
+      <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-08.jpg" alt="Comic panel: a longer weak answer" loading="lazy"></figure>
+        <p class="pnlcap"><b>You get a longer weak answer, not a better one.</b> More carefully prepared, still short of what the job needed.</p></div>
+    </div>
+    <div class="km"><button>Know more: how to tell which dial is stuck <span class="pm">+</span></button><div class="body">
+      <p><b>It is the effort</b> when the answer is thin, stops too early, skips an obvious trade-off, or gives you the conclusion without the reasoning. It understood the problem and did not work at it. Raise the effort.</p>
+      <p><b>It is the model</b> when the answer is complete, confident and simply wrong about how the problem works. It misread what the question was really asking. More time will not help, because it will spend that time going further in the wrong direction. Move up a level.</p>
+      <p>When you cannot tell, raise the effort first. It takes one click and tells you the answer either way.</p>
+    </div></div>
+  </div>
+
+  <div class="pane" data-p="1">
+    <div class="panehead"><h3>A better model often needs less reasoning</h3><p>The stronger model starts from better instincts, so it reaches the same quality bar without the long warm up. This is the part that surprises people about the cost.</p></div>
+    <div class="pgrid">
+      <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-09.jpg" alt="Comic panel: more reasoning, weaker result" loading="lazy"></figure>
+        <p class="pnlcap"><b>More reasoning, weaker result.</b> The fast model thought for longer and still missed the main risk.</p></div>
+      <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-10.jpg" alt="Comic panel: less reasoning, stronger result" loading="lazy"></figure>
+        <p class="pnlcap"><b>Less reasoning, stronger result.</b> The flagship model found the same risk on the low setting, because it did not need the warm up.</p></div>
+    </div>
+    <div style="margin-top:22px"><figure class="pnl"><img src="assets/images/models-and-thinking-effort-11.jpg" alt="Comic panel: a stronger model can reach the bar with less effort" loading="lazy"></figure></div>
+    <div class="km"><button>Know more: why the cheap model is not always cheaper <span class="pm">+</span></button><div class="body">
+      <p>Your bill is the price per word multiplied by how many words get produced. A stronger model charges more per word. A weaker model on maximum produces far more words, because all that reasoning counts.</p>
+      <p>So a flagship model answering cleanly on the low setting can come out cheaper than a fast model grinding away on maximum, and it gives you the better answer as well.</p>
+      <p>The only way to know for your own work is to run the same real job on both settings once and compare what you were charged. It takes ten minutes and most people are surprised.</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 5 THE THREE MOVES -->
+<section id="move">
+  <div class="bar"><span class="num">5</span><h2>The three moves, in order</h2><span class="chev">&lt;</span></div>
+  <p class="lead">When an answer is not good enough there is an order to this. Start at the bottom and stop as soon as it works.</p>
+
+  <div class="pstack">
+    <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-12.jpg" alt="Comic panel: start low on a bounded task" loading="lazy"></figure>
+      <p class="pnlcap"><b>1. Start low on anything bounded.</b> Formatting a table has one right answer. The standard model on low effort is the correct setting here, not a compromise you are settling for.</p></div>
+    <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-13.jpg" alt="Comic panel: raise the effort, keep the model" loading="lazy"></figure>
+      <p class="pnlcap"><b>2. If it missed the trade-offs, raise the effort.</b> Keep the same model. This is the cheap move and it fixes most disappointing answers on its own.</p></div>
+    <div><figure class="pnl"><img src="assets/images/models-and-thinking-effort-14.jpg" alt="Comic panel: only then move up a model" loading="lazy"></figure>
+      <p class="pnlcap"><b>3. Only then move up a model.</b> If it is still short at high effort, you have hit the ceiling. And starting everything on maximum is how you end up paying premium prices for sorting a list.</p></div>
+  </div>
+
+  <div class="tip"><span class="bulb">💡</span><div><strong>The order is the whole point</strong>
+    <p>Raise the effort first, change the model second. Effort is one click and you can put it back. A model change raises the price of every word, going in and coming out, for as long as you leave it there.</p></div></div>
+</section>
+
+<!-- 6 MYTHS -->
+<section id="myths">
+  <div class="bar"><span class="num">6</span><h2>Three things people get wrong</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Tap a card to turn it over.</p>
+  <div class="g3">
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"Maximum settings give the best answer, so I may as well leave it there."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>On a job with one right answer, maximum gives you that same answer more slowly and at a higher price. On a job with real trade-offs it earns its keep. The setting is only as good as its match to the task.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"High effort makes the AI more accurate and less likely to make things up."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>Effort buys reasoning time, not honesty. An AI reasoning hard from the wrong document still hands you a confident wrong answer. Check the material and the brief before you touch a dial.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"A bigger model always costs more than a smaller one."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>Your bill follows how much gets produced as well as the price per word. A strong model answering cleanly on low effort can cost less than a weak one reasoning at maximum, and it gives you the better answer too.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 7 PICKER -->
+<section id="picker">
+  <div class="bar"><span class="num">7</span><h2>Pick your setting</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Answer three questions about one real job you have in front of you. You get a starting setting and the next move if it is not good enough.</p>
+
+  <div class="builder">
+    <div class="bcol">
+      <h4>What kind of job is it</h4>
+      <div class="opts" data-grp="task" data-single="1">
+        <button class="opt on">Look something up or copy it across</button>
+        <button class="opt">Write or rewrite something</button>
+        <button class="opt">Compare options and recommend one</button>
+        <button class="opt">A long job with many steps</button></div>
+      <h4>Who sees it if it is wrong</h4>
+      <div class="opts" data-grp="risk" data-single="1">
+        <button class="opt on">Only me, and I will spot it at once</button>
+        <button class="opt">A colleague reviews it before it goes out</button>
+        <button class="opt">A client, a board or the whole company</button></div>
+      <h4>How well do you know the answer already</h4>
+      <div class="opts" data-grp="doubt" data-single="1">
+        <button class="opt on">I know exactly what good looks like</button>
+        <button class="opt">I have a rough idea</button>
+        <button class="opt">I do not know what the answer should be</button></div>
+      <p style="font-size:14px;color:var(--muted);margin:4px 0 0">This is a starting point, not a rule. Run the same job at two settings once and let the result decide.</p>
+    </div>
+    <div class="bcol">
+      <h4>Start here</h4>
+      <div class="rescard">
+        <div class="resrow">
+          <div class="resbox"><span>Model</span><b id="rmodel">Fast</b></div>
+          <div class="resbox"><span>Effort</span><b id="reffort">Low</b></div>
+        </div>
+        <p class="reswhy" id="rwhy"></p>
+        <div class="resnext"><strong>If it is not good enough</strong><span id="rnext"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 TOOLS -->
+<section id="tools">
+  <div class="bar"><span class="num">8</span><h2>What it is called in each tool</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Every major tool has the same pair of controls under different names. Each name links to the official page.</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Tool</th><th>Choosing the model</th><th>The effort control</th><th>Levels</th></tr></thead>
+    <tbody>
+      <tr><td>Claude</td><td>A fast tier, a standard tier and a flagship tier, picked from a menu.</td><td><a class="hl" href="https://platform.claude.com/docs/en/build-with-claude/effort" target="_blank" rel="noopener">Effort</a>, sitting on top of extended thinking</td><td>Low, medium, high, extra high and max. High is the usual starting point on the newer models.</td></tr>
+      <tr><td>ChatGPT</td><td>A model menu, plus instant, thinking and pro ways of answering.</td><td><a class="hl" href="https://developers.openai.com/api/docs/guides/reasoning" target="_blank" rel="noopener">Reasoning effort</a></td><td>Seven steps from none up to max, with medium as the common default.</td></tr>
+      <tr><td>Google Gemini</td><td>Flash for speed and volume, Pro for the harder work.</td><td><a class="hl" href="https://ai.google.dev/gemini-api/docs/thinking" target="_blank" rel="noopener">Thinking level</a></td><td>Low, medium and high. Low for looking things up, high for maths, coding and multi step planning.</td></tr>
+      <tr><td>Microsoft Copilot</td><td>Usually set by your organisation rather than by you.</td><td><a class="hl" href="https://support.microsoft.com/en-us/microsoft-copilot/conversation-modes-in-microsoft-copilot" target="_blank" rel="noopener">Think Deeper</a>, one of several modes</td><td>A mode you switch on rather than a dial. Quick response is the everyday one.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tip"><span class="bulb">💡</span><div><strong>Names change, the idea does not</strong>
+    <p>Version numbers and level names move every few months, and the table above is correct as of September 2026. The structure has not moved at all: one control for how capable the answer can be, one for how long it reasons. Learn the pair and you can read any tool's settings screen in a minute.</p></div></div>
+</section>
+
+</main>
+</div>
+
+<footer><div class="wrap"><div class="fl">Nudgeable.ai</div><div>Match the model to the task. Match the effort to the doubt.</div><a class="fhome" href="index.html">&larr; All guides</a></div></footer>
+
+<div class="lb" id="lb"><span class="lb-x">&times;</span><img id="lbi" src="" alt=""></div>
+
+<script>
+/* ---------- mascot ---------- */
+var MOUTH={neutral:'M42 68 q8 7 16 0',happy:'M40 65 q10 13 20 0 q-10 5 -20 0',tired:'M43 69 h14',
+ sad:'M42 71 q8 -7 16 0',think:'M43 69 q6 4 12 -1'};
+function brainSVG(mood){
+ var m=MOUTH[mood]||MOUTH.neutral, tired=(mood==='tired');
+ var lobes='<circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/>'+
+  '<circle cx="74" cy="56" r="17"/><circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/>';
+ return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+ '<g fill="#2C6FCB" stroke="#2C6FCB" stroke-width="7">'+lobes+'</g>'+
+ '<g fill="#6BADF5">'+lobes+'</g>'+
+ '<g fill="none" stroke="#2C6FCB" stroke-width="3" stroke-linecap="round">'+
+ '<path d="M50 16 v12"/><path d="M31 26 q7 6 14 0"/><path d="M55 26 q7 6 14 0"/>'+
+ '<path d="M17 50 q7 5 0 11"/><path d="M83 50 q-7 5 0 11"/></g>'+
+ '<g class="sparks" fill="#FFD93D"><rect x="12" y="18" width="5" height="13" rx="2" transform="rotate(-25 14 24)"/>'+
+ '<rect x="84" y="18" width="5" height="13" rx="2" transform="rotate(25 86 24)"/>'+
+ '<rect x="48" y="2" width="5" height="11" rx="2"/></g>'+
+ '<circle cx="35" cy="52" r="11" fill="#fff" stroke="#16202B" stroke-width="3.5"/>'+
+ '<circle cx="65" cy="52" r="11" fill="#fff" stroke="#16202B" stroke-width="3.5"/>'+
+ '<circle cx="35" cy="52" r="4.5" fill="#16202B"/><circle cx="65" cy="52" r="4.5" fill="#16202B"/>'+
+ (tired
+   ? '<rect x="25" y="42" width="20" height="8" fill="#6BADF5"/><rect x="55" y="42" width="20" height="8" fill="#6BADF5"/>'
+   : '<rect class="blinker" x="25" y="41" width="20" height="12" fill="#6BADF5"/>'+
+     '<rect class="blinker b2" x="55" y="41" width="20" height="12" fill="#6BADF5"/>')+
+ '<path d="'+m+'" fill="none" stroke="#16202B" stroke-width="3.5" stroke-linecap="round"/></svg>';
+}
+function setMood(el,mood){el.className='mascot mood-'+mood;el.dataset.mood=mood;el.innerHTML=brainSVG(mood);}
+document.querySelectorAll('.mascot').forEach(function(el){setMood(el,el.dataset.mood||'neutral')});
+
+/* ---------- typewriter ---------- */
+(function(){var w=["Two dials, and most people only ever touch one.","Maximum on everything is not the safe choice.","Match the model to the task, the effort to the doubt."],i=0,c=0,d=false,el=document.getElementById('type');
+function t(){var s=w[i];el.textContent=d?s.substring(0,c--):s.substring(0,c++);var ms=d?45:85;
+if(!d&&c===s.length+1){d=true;ms=1600}else if(d&&c<0){d=false;i=(i+1)%w.length;c=0;ms=300}setTimeout(t,ms)}t()})();
+
+/* ---------- job stepper ---------- */
+var MON=[
+ {img:'assets/images/models-and-thinking-effort-15.jpg',h:'A quick job on the low setting',
+  p:'Pull the invoice number, the date and the total out of a document. There is one right answer and nothing to weigh up. A fast model on low effort has it in a second, and you can check it in two.',
+  d:['Fast model|d-lo','Low effort|d-lo','Right setting|d-lo']},
+ {img:'assets/images/models-and-thinking-effort-16.jpg',h:'The same quick job on maximum',
+  p:'Same document, same three numbers, same answer. The only difference is that it took longer and cost more. Extra reasoning has nothing to reason about when the answer is already sitting in front of it.',
+  d:['Fast model|d-lo','High effort|d-hi','Paid for nothing|d-hi']},
+ {img:'assets/images/models-and-thinking-effort-17.jpg',h:'A job that actually needs the thinking',
+  p:'Now choose between three suppliers on cost, quality, delays and risk. There is no single right answer here, only trade-offs to weigh. This is where the extra reasoning changes the result rather than only the bill.',
+  d:['Fast model|d-lo','High effort|d-hi','Worth it|d-lo']}];
+var mb=document.querySelectorAll('#months .mbtn'),mimg=document.getElementById('mimg'),
+ mh=document.getElementById('mh'),mp=document.getElementById('mp'),md=document.getElementById('mdial');
+function showMonth(i){mb.forEach(function(b,j){b.classList.toggle('on',i===j)});
+ mimg.src=MON[i].img;mh.textContent=MON[i].h;mp.textContent=MON[i].p;
+ md.innerHTML=MON[i].d.map(function(x){var q=x.split('|');return '<span class="dial '+q[1]+'">'+q[0]+'</span>'}).join('');}
+mb.forEach(function(b,i){b.addEventListener('click',function(){showMonth(i)})});
+showMonth(0);
+
+/* ---------- know more ---------- */
+document.querySelectorAll('.km').forEach(function(k){
+ k.querySelector('button').addEventListener('click',function(){
+  k.classList.toggle('on');k.querySelector('.pm').textContent=k.classList.contains('on')?'−':'+';})});
+
+/* ---------- cards ---------- */
+document.querySelectorAll('.cardx').forEach(function(c){
+ var m=c.querySelector('.more');if(!m)return;
+ c.addEventListener('click',function(e){if(e.target.tagName==='A')return;
+  c.classList.toggle('on');
+  c.querySelector('.toggle').textContent=c.classList.contains('on')?'Tap to close ↑':'Tap for detail ↓';})});
+
+/* ---------- tabs ---------- */
+var tabs=document.querySelectorAll('.tab'),panes=document.querySelectorAll('.pane');
+tabs.forEach(function(t){t.addEventListener('click',function(){
+ tabs.forEach(function(x){x.classList.remove('on')});panes.forEach(function(p){p.classList.remove('on')});
+ t.classList.add('on');document.querySelector('.pane[data-p="'+t.dataset.t+'"]').classList.add('on');})});
+
+/* ---------- myth flips ---------- */
+document.querySelectorAll('.flipwrap').forEach(function(f){f.addEventListener('click',function(){f.classList.toggle('on')})});
+
+/* ---------- picker ---------- */
+var TASK={'Look something up or copy it across':0,'Write or rewrite something':1,
+ 'Compare options and recommend one':2,'A long job with many steps':3};
+var RISK={'Only me, and I will spot it at once':0,'A colleague reviews it before it goes out':1,
+ 'A client, a board or the whole company':2};
+var DOUBT={'I know exactly what good looks like':0,'I have a rough idea':1,
+ 'I do not know what the answer should be':2};
+var psel={task:'Look something up or copy it across',risk:'Only me, and I will spot it at once',
+ doubt:'I know exactly what good looks like'};
+
+document.querySelectorAll('#picker .opts').forEach(function(g){
+ g.querySelectorAll('.opt').forEach(function(b){
+  b.addEventListener('click',function(){
+   g.querySelectorAll('.opt').forEach(function(x){x.classList.remove('on')});
+   b.classList.add('on');psel[g.dataset.grp]=b.textContent.trim();decide();})})});
+
+function decide(){
+ var s=TASK[psel.task]+RISK[psel.risk]+DOUBT[psel.doubt];
+ var model,effort,why;
+ if(s<=1){model='Fast';effort='Low';
+  why='A bounded job with a clear right answer, and you will spot a mistake the moment you look. The cheapest setting is the correct one here, not a compromise.';}
+ else if(s<=3){model='Standard';effort='Low';
+  why='Ordinary work with a shape you already recognise. The standard model handles this without any extra reasoning, so there is nothing to gain by turning anything up.';}
+ else if(s===4){model='Standard';effort='Medium';
+  why='There is some judgement in this one. Keep the model where it is and give it a little more room to reason before it answers.';}
+ else if(s<=5){model='Standard';effort='High';
+  why='Real trade-offs, and a reader who will notice if one gets missed. Raise the effort first, because it is the cheaper dial and it fixes most of these.';}
+ else{model='Flagship';effort='High';
+  why='High stakes and an answer you cannot fully check yourself. This is the case where the stronger model earns what it costs, rather than the case where it looks impressive.';}
+ var next;
+ if(model!=='Flagship'){
+  next='Raise the effort one step before you change anything else. If the answer is still thin at high effort, you have hit the ceiling of this model. Move up a level then, and only then.';
+ } else {
+  next='If it is still wrong at this setting, the dial is not the problem. Go back to the brief and the files: say what a good answer looks like, and make sure the right material is attached.';
+ }
+ document.getElementById('rmodel').textContent=model+' model';
+ document.getElementById('reffort').textContent=effort+' effort';
+ document.getElementById('rwhy').textContent=why;
+ document.getElementById('rnext').textContent=next;
+}
+decide();
+
+/* ---------- lightbox ---------- */
+var lb=document.getElementById('lb'),lbi=document.getElementById('lbi');
+document.querySelectorAll('.pnl').forEach(function(c){c.addEventListener('click',function(){
+ lbi.src=c.querySelector('img').src;lb.classList.add('on');document.body.style.overflow='hidden';})});
+lb.addEventListener('click',function(){lb.classList.remove('on');document.body.style.overflow=''});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){lb.classList.remove('on');document.body.style.overflow=''}});
+
+/* ---------- left step rail ---------- */
+var secs=document.querySelectorAll('section[id]'),
+    links=document.querySelectorAll('.steps a'),
+    rail=document.getElementById('steps'),
+    fill=document.getElementById('railfill');
+function railUpdate(){
+  var y=window.scrollY+160,idx=-1;
+  secs.forEach(function(s,i){if(s.offsetTop<=y)idx=i});
+  links.forEach(function(a,i){a.classList.toggle('act',i===idx);a.classList.toggle('done',i<idx)});
+  if(idx<0){fill.style.height='0px';return;}
+  var r=rail.getBoundingClientRect(),t=links[idx].getBoundingClientRect();
+  fill.style.height=Math.max(0,(t.top-r.top)+17)+'px';
+}
+window.addEventListener('scroll',railUpdate,{passive:true});
+window.addEventListener('resize',railUpdate);
+railUpdate();
+</script>
+</body>
+</html>

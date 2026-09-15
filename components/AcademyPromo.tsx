@@ -1,124 +1,186 @@
-import type { CSSProperties } from 'react';
 import { Icon } from '@/components/Icon';
+import { formatBlogDate, type BlogPost } from '@/lib/blogs';
 
-export function AcademyPromo() {
+type Guide = { title: string; href: string };
+type Track = {
+  n: string;
+  color: 'yellow' | 'blue' | 'green' | 'orange' | 'purple' | 'red';
+  icon: 'spark' | 'calendar' | 'chart' | 'workflow' | 'people' | 'shield';
+  title: string;
+  topics: string[];
+  guides: Guide[];
+  seeAll: string;
+  note?: string;
+};
+
+const tracks: Track[] = [
+  {
+    n: 'Track 01', color: 'yellow', icon: 'spark', title: 'How GenAI Works',
+    topics: ['Models, tokens and context', 'Memory across conversations', 'Why answers vary between attempts'],
+    guides: [
+      { title: 'AI breaks text into smaller pieces before it processes it', href: '/ai-academy/foundations/ai-foundations-tokens.html' },
+      { title: 'The context window is what the model can use for the current turn', href: '/ai-academy/foundations/ai-foundations-context-window.html' },
+      { title: 'Memory is how an AI product carries information into future chats', href: '/ai-academy/foundations/ai-foundations-ai-memory.html' },
+      { title: 'GenAI vs other AI: generation, prediction and rules', href: '/ai-academy/foundations/ai-foundations-genai-vs-other-ai.html' }
+    ],
+    seeAll: '/ai-academy/foundations/index.html'
+  },
+  {
+    n: 'Track 02', color: 'blue', icon: 'calendar', title: 'AI for Everyday Work',
+    topics: ['Asking well and checking the answer', 'Research, writing and meetings', 'All ChatGPT features for work'],
+    guides: [
+      { title: 'Give the model context before you ask', href: '/ai-academy/tips/give-context-before-you-ask.html' },
+      { title: 'Say it before you type it', href: '/ai-academy/tips/say-it-before-you-type.html' },
+      { title: "Your instructions and your content aren't the same thing", href: '/ai-academy/tips/separate-instructions-from-content.html' },
+      { title: 'Work: all ChatGPT features in one place', href: '/ai-academy/chatgpt/work.html' }
+    ],
+    seeAll: '/ai-academy/tips/index.html'
+  },
+  {
+    n: 'Track 03', color: 'green', icon: 'chart', title: 'Data, Dashboards and Design',
+    topics: ['Reading a spreadsheet with AI', 'Charts from a raw file', 'Turning a report into slides'],
+    guides: [
+      { title: 'Analyse large data with Shortcut AI', href: '/ai-academy/tools/index.html#c-data-and-presentations' },
+      { title: 'Build flowcharts with Napkin AI', href: '/ai-academy/tools/index.html#c-data-and-presentations' },
+      { title: 'Build presentations with Gamma AI', href: '/ai-academy/tools/index.html#c-data-and-presentations' },
+      { title: 'A table is easier to check than a paragraph', href: '/ai-academy/tips/table-easier-than-paragraph.html' }
+    ],
+    seeAll: '/ai-academy/tools/index.html#c-data-and-presentations'
+  },
+  {
+    n: 'Track 04', color: 'orange', icon: 'workflow', title: 'Workflow Automation',
+    topics: ['Connectors and plugins', 'Automating a weekly report', 'Where automation goes wrong'],
+    guides: [
+      { title: 'Build automations with Zapier', href: '/ai-academy/tools/index.html#c-agents-and-automation' },
+      { title: 'Build a text based agent with Chatbase', href: '/ai-academy/tools/index.html#c-agents-and-automation' },
+      { title: 'Build a website with Lovable', href: '/ai-academy/tools/index.html#c-agents-and-automation' },
+      { title: 'Run open source models on your laptop with LM Studio', href: '/ai-academy/tools/index.html#c-agents-and-automation' }
+    ],
+    seeAll: '/ai-academy/tools/index.html#c-agents-and-automation'
+  },
+  {
+    n: 'Track 05', color: 'purple', icon: 'people', title: 'Building AI Agents',
+    topics: ['What an agent can run on its own', 'Tool calling, explained plainly', 'Try the interactive agent lab'],
+    guides: [
+      { title: 'An agent works toward a goal instead of waiting for every next prompt', href: '/ai-academy/foundations/ai-foundations-ai-agents.html' },
+      { title: 'Tool calling lets AI get information or take action outside the chat', href: '/ai-academy/foundations/ai-foundations-tool-calling.html' },
+      { title: 'Anatomy of an AI Agent System (interactive)', href: '/ai-academy/foundations/anatomy-of-ai-agent.html' },
+      { title: 'Build a voice agent with Vapi', href: '/ai-academy/tools/index.html#c-agents-and-automation' }
+    ],
+    seeAll: '/ai-academy/foundations/index.html'
+  },
+  {
+    n: 'Track 06', color: 'red', icon: 'shield', title: 'Governance and Data Security',
+    topics: ['What company information can go where', 'Copyright and ownership', 'Human review that catches things'],
+    guides: [
+      { title: 'Check whether your data is training the next model', href: '/ai-academy/tips/check-data-training-settings.html' }
+    ],
+    seeAll: '/ai-academy/index.html',
+    note: 'More governance guides are on the way.'
+  }
+];
+
+const assistants = [
+  { name: 'ChatGPT', logo: '/ai-academy/assets/logos/chatgpt.png', tagline: 'Work · Projects · Skills · Codex', href: '/ai-academy/chatgpt/index.html' },
+  { name: 'Claude', logo: '/ai-academy/assets/logos/claude.png', tagline: 'Cowork · Artifacts · Skills · Projects', href: '/ai-academy/claude/index.html' },
+  { name: 'Gemini', logo: '/ai-academy/assets/logos/gemini.svg', tagline: 'Spark · Gems · Notebook', href: '/ai-academy/gemini/index.html' },
+  { name: 'Microsoft Copilot', logo: '/ai-academy/assets/logos/copilot.png', tagline: 'Cowork · Work IQ · Notebooks', href: '/ai-academy/copilot/index.html' }
+];
+
+type AcademyPromoProps = {
+  featuredPost?: BlogPost;
+  otherPosts?: BlogPost[];
+};
+
+export function AcademyPromo({ featuredPost, otherPosts = [] }: AcademyPromoProps) {
   return (
-    <section className="academy-promo">
+    <section className="academy-promo aca2" id="academy">
       <div className="container">
 
-        <section className="academy-lead">
-          <div className="academy-lead-copy">
-            <div className="eyebrow light">Practical AI for Work</div>
-            <h2>Nudgeable AI Academy</h2>
-            <p>Every assistant explained feature by feature, in plain language, with the ideas underneath that make all of them easier to use.</p>
-            <div className="academy-lead-actions">
-              <a className="button button-primary button-compact" href="/ai-academy/index.html">Access AI Academy <Icon name="arrow" size={17} /></a>
+        <div className="aca2-compact">
+          <span className="eyebrow">Nudgeable AI Academy</span>
+          <div className="aca2-compact-top">
+            <div className="section-intro">
+              <h2 className="aca2-claim">AI capability that continues after the workshop.</h2>
+              <p className="aca2-sub">Practical guides and current AI updates help your team apply what they learned to everyday work.</p>
+            </div>
+            <a className="button button-primary button-compact" href="/ai-academy/index.html">Open the AI Academy <Icon name="arrow" size={17} /></a>
+          </div>
+          <div className="aca2-chain">
+            <div className="aca2-phase"><span className="aca2-when">In the workshop</span><h4>Practise on real tasks</h4></div>
+            <div className="aca2-phase"><span className="aca2-when">Back at work</span><h4>Apply with practical guides</h4></div>
+            <div className="aca2-phase"><span className="aca2-when">As AI changes</span><h4>Keep capability current</h4></div>
+          </div>
+        </div>
+
+        <div className="aca2-label"><span>The same six tracks, carried on</span><span className="aca2-label-hint">Open a track to see the guides inside</span></div>
+        <div className="aca2-cards">
+          {tracks.map((track) => (
+            <details className="aca2-card" data-color={track.color} key={track.n}>
+              <summary>
+                <div className="aca2-card-top">
+                  <span className="aca2-ico"><Icon name={track.icon} size={19} /></span>
+                  <span className="aca2-badge">Guides</span>
+                </div>
+                <span className="aca2-track-no">{track.n}</span>
+                <h3>{track.title}</h3>
+                <ul className="aca2-topics">
+                  {track.topics.map((topic) => <li key={topic}>{topic}</li>)}
+                </ul>
+                <span className="aca2-toggle">
+                  <Icon name="chevron" size={14} />
+                  <span className="off">Show guide list</span>
+                  <span className="on">Hide guides</span>
+                </span>
+              </summary>
+              <ul className="aca2-guides">
+                {track.guides.map((guide) => (
+                  <li key={guide.title}><a href={guide.href}>{guide.title}</a></li>
+                ))}
+              </ul>
+              {track.note && <p className="aca2-note-inline">{track.note}</p>}
+              <a className="aca2-all" href={track.seeAll}>See all guides &rarr;</a>
+            </details>
+          ))}
+        </div>
+
+        {featuredPost && (
+          <div className="aca2-feature">
+            <div className="aca2-fbar"><div className="aca2-fbar-l"><span className="aca2-star">&#9733;</span><b>Featured from the blog</b></div><span className="aca2-fbar-r">Practical guidance from Insights</span></div>
+            <div className="aca2-fgrid">
+              <div className="aca2-read">
+                <div className="aca2-read-track">{featuredPost.category}</div>
+                <h3>{featuredPost.title}</h3>
+                <p>{featuredPost.excerpt}</p>
+                <div className="aca2-read-meta">{featuredPost.author} &middot; {formatBlogDate(featuredPost.publishedAt)}</div>
+                <a className="tlink-academy" href={`/insights/blogs/${featuredPost.slug}`}>Read the full article <Icon name="arrow" size={14} /></a>
+              </div>
+              {otherPosts.length > 0 && (
+                <div className="aca2-also">
+                  <div className="aca2-also-h">More from the blog</div>
+                  <ul className="aca2-also-l">
+                    {otherPosts.map((post) => (
+                      <li key={post.slug}><a href={`/insights/blogs/${post.slug}`}>{post.title}<small>{post.category}</small></a></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
-          <div className="academy-categories" aria-label="Content inside the AI Academy">
-            <a className="academy-category" href="/ai-academy/tools/index.html"><span className="academy-category-icon" style={{ '--category-color': '#ffce00' } as CSSProperties}>↗</span><strong>AI Workflows</strong></a>
-            <a className="academy-category" href="/ai-academy/news/index.html"><span className="academy-category-icon" style={{ '--category-color': '#23ce68' } as CSSProperties}>●</span><strong>AI News</strong></a>
-            <a className="academy-category" href="/ai-academy/tips/index.html"><span className="academy-category-icon" style={{ '--category-color': '#f68a29' } as CSSProperties}>✓</span><strong>Best Practices</strong></a>
-            <a className="academy-category" href="/ai-academy/index.html"><span className="academy-category-icon" style={{ '--category-color': '#3696fc' } as CSSProperties}>▤</span><strong>Enterprise AI Guides</strong></a>
-            <a className="academy-category" href="/ai-academy/foundations/index.html"><span className="academy-category-icon" style={{ '--category-color': '#b7a4ff' } as CSSProperties}>◎</span><strong>AI Foundations</strong></a>
-            <a className="academy-category" href="/ai-academy/tools/index.html"><span className="academy-category-icon" style={{ '--category-color': '#ed4551' } as CSSProperties}>✦</span><strong>Tool Walkthroughs</strong></a>
-          </div>
-        </section>
+        )}
 
-        <div className="academy-subhead"><h3>Explore your AI assistant</h3><span>Compact guides covering the features people use inside the four major workplace assistants.</span></div>
-        <div className="assistant-grid" id="academy-assistants">
-          <a className="assistant-card chatgpt" href="/ai-academy/chatgpt/index.html">
-            <div className="assistant-top"><span className="assistant-logo"><img src="/ai-academy/assets/logos/chatgpt.png" alt="ChatGPT logo" /></span><span className="assistant-arrow"><Icon name="arrow" size={14} /></span></div>
-            <h3>ChatGPT</h3>
-            <p>Work · Projects · Skills · Codex</p>
-            <b>View guide</b>
-          </a>
-          <a className="assistant-card claude" href="/ai-academy/claude/index.html">
-            <div className="assistant-top"><span className="assistant-logo"><img src="/ai-academy/assets/logos/claude.png" alt="Claude logo" /></span><span className="assistant-arrow"><Icon name="arrow" size={14} /></span></div>
-            <h3>Claude</h3>
-            <p>Cowork · Artifacts · Skills · Projects</p>
-            <b>View guide</b>
-          </a>
-          <a className="assistant-card gemini" href="/ai-academy/gemini/index.html">
-            <div className="assistant-top"><span className="assistant-logo"><img src="/ai-academy/assets/logos/gemini.svg" alt="Gemini logo" /></span><span className="assistant-arrow"><Icon name="arrow" size={14} /></span></div>
-            <h3>Gemini</h3>
-            <p>Spark · Gems · Notebook</p>
-            <b>View guide</b>
-          </a>
-          <a className="assistant-card copilot" href="/ai-academy/copilot/index.html">
-            <div className="assistant-top"><span className="assistant-logo"><img src="/ai-academy/assets/logos/copilot.png" alt="Microsoft Copilot logo" /></span><span className="assistant-arrow"><Icon name="arrow" size={14} /></span></div>
-            <h3>Microsoft Copilot</h3>
-            <p>Cowork · Work IQ · Notebooks</p>
-            <b>View guide</b>
-          </a>
+        <div className="aca2-strip">
+          {assistants.map((tool) => (
+            <a className="aca2-tool" href={tool.href} key={tool.name}>
+              <img src={tool.logo} alt={tool.name} />
+              <span><b>{tool.name}</b><span>{tool.tagline}</span></span>
+            </a>
+          ))}
         </div>
 
-        <div className="academy-subhead"><h3>Learn and keep up</h3><span>Foundational knowledge, practical habits and a clear view of what changed this week.</span></div>
-        <div className="learn-grid">
-          <a className="learn-card foundation" href="/ai-academy/foundations/index.html">
-            <div className="learn-card-top">
-              <span className="icon-box">
-                <svg className="learn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z" /><path d="M8 4v16M11 8h5M11 12h5" /></svg>
-              </span>
-              <span className="learn-badge">Start here</span>
-            </div>
-            <h3>AI Foundations</h3>
-            <p>Understand models, tokens, context, hallucinations, memory, tools and agents.</p>
-            <b>Start learning <Icon name="arrow" size={14} /></b>
-          </a>
-          <a className="learn-card practice" href="/ai-academy/tips/index.html">
-            <div className="learn-card-top">
-              <span className="icon-box">
-                <svg className="learn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h11M8 12h11M8 19h11" /><path d="m3 5 1 1 2-2M3 12l1 1 2-2M3 19l1 1 2-2" /></svg>
-              </span>
-              <span className="learn-badge">Practise</span>
-            </div>
-            <h3>AI Best Practices</h3>
-            <p>Give AI better context, improve weak output and check important work.</p>
-            <b>Read the notes <Icon name="arrow" size={14} /></b>
-          </a>
-          <a className="learn-card news" href="/ai-academy/news/index.html">
-            <div className="learn-card-top">
-              <span className="icon-box">
-                <svg className="learn-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4M17 3v4M3 10h18M7 14h4M7 17h8" /></svg>
-              </span>
-              <span className="learn-badge">Every week</span>
-            </div>
-            <h3>What&rsquo;s New in AI</h3>
-            <p>Follow important changes across major AI assistants, explained every week.</p>
-            <b>See the updates <Icon name="arrow" size={14} /></b>
-          </a>
-        </div>
+        <div className="aca2-foot">
+          <a className="button button-primary button-compact" href="/ai-academy/index.html">Open the AI Academy <Icon name="arrow" size={17} /></a>
 
-        <div className="academy-row-head">
-          <h3>Beyond the assistants</h3>
-          <a className="academy-see-all" href="/ai-academy/tools/index.html">See all tools &rarr;</a>
-        </div>
-        <a className="academy-tools-strip" href="/ai-academy/tools/index.html">
-          <span className="academy-tools-icons">
-            <img src="/ai-academy/assets/logos/tools/lovable.png" alt="Lovable" />
-            <img src="/ai-academy/assets/logos/tools/gamma.png" alt="Gamma AI" />
-            <img src="/ai-academy/assets/logos/tools/napkin.png" alt="Napkin AI" />
-            <img src="/ai-academy/assets/logos/tools/heygen.png" alt="HeyGen" />
-            <img src="/ai-academy/assets/logos/tools/kling.png" alt="Kling" />
-            <img src="/ai-academy/assets/logos/tools/elevenlabs.png" alt="ElevenLabs" />
-            <img src="/ai-academy/assets/logos/tools/lmstudio.png" alt="LM Studio" />
-            <img src="/ai-academy/assets/logos/tools/shortcut.png" alt="Shortcut AI" />
-            <span className="more">+7</span>
-          </span>
-          <span className="academy-tools-go"><span className="academy-nud-btn violet">Watch the walkthroughs &rarr;</span></span>
-        </a>
-
-        <div className="academy-subhead"><h3>Try it yourself</h3><span>Two interactive labs that show how much work people can now hand over or build with AI.</span></div>
-        <div className="feature-grid">
-          <a className="feature-card agent" href="/ai-academy/foundations/anatomy-of-ai-agent.html">
-            <div><span className="tag">Interactive explainer</span><h3>How AI Agents Work</h3><p>See how instructions, models, context, tools, memory, feedback, evaluation and the agent harness work together.</p></div>
-            <span className="feature-link">Explore the agent <Icon name="arrow" size={14} /></span>
-          </a>
-          <a className="feature-card vibe" href="/ai-academy/foundations/vibe-coding-simulation.html">
-            <div><span className="tag">Build with AI</span><h3>Vibe Coding</h3><p>Learn how to create working websites and apps by describing, testing and improving what you want.</p></div>
-            <span className="feature-link">See how it works <Icon name="arrow" size={14} /></span>
-          </a>
         </div>
 
       </div>

@@ -11,8 +11,8 @@ import { SessionPhotoRow } from '@/components/SessionPhotoRow';
 import { TestimonialGrid } from '@/components/TestimonialGrid';
 import { YouTubeGrid } from '@/components/YouTubeGrid';
 import { LabWorkflowCards } from '@/components/LabWorkflowCards';
-import { WorkflowVideoGrid } from '@/components/WorkflowVideoGrid';
 import { aiTools, featuredAiTools } from '@/components/data';
+import { listPublishedPosts } from '@/lib/blogs';
 
 const PRACTICE_LAB_DEMO_URL = process.env.NEXT_PUBLIC_PRACTICE_LAB_DEMO_URL || 'https://youtu.be/OJADHikd8BM?si=koQJaqmdxLmjXFnO';
 const AI_COACH_DEMO_URL = process.env.NEXT_PUBLIC_AI_COACH_DEMO_URL || 'https://youtu.be/mBlYRcCmp_s?si=XiovLO33ovNB0Upz';
@@ -81,7 +81,11 @@ const servicesStructuredData = {
   ]
 };
 
-export default function Home() {
+export default async function Home() {
+  const publishedPosts = await listPublishedPosts();
+  const featuredPost = publishedPosts.find(post => post.featured) || publishedPosts[0];
+  const otherPosts = publishedPosts.filter(post => post.slug !== featuredPost?.slug).slice(0, 3);
+
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesStructuredData) }} />
     <section className="home-hero home-hero-new">
@@ -92,45 +96,101 @@ export default function Home() {
           <p>Hands-on workshops help employees use AI on real work. The Nudgeable AI Academy gives them practical workflows, clear explainers and weekly updates as the tools change.</p>
           <div className="button-row hero-actions">
             <a className="button button-primary button-compact" href="#training">Explore the Workshops <Icon name="arrow" size={17} /></a>
-            <a className="button button-secondary button-compact" href="/ai-academy/index.html">See the AI Academy <Icon name="arrow" size={17} /></a>
+            <a className="tlink" href="#method">How a Program Gets Built</a>
           </div>
         </div>
 
-        <div className="home-hero-product-image hero-visual" aria-label="AI Practice Lab preview">
-          <Image src="/assets/hero-practice-lab.jpg" alt="Facilitator presenting AI tools alongside the Nudgeable AI Academy" width={1024} height={768} priority />
-          <a className="hero-note-card" href="/ai-academy/index.html">
-            <div><strong>Workshop + Nudgeable AI Academy</strong><br /><span>Hands-on learning supported by workflows, guides and weekly updates.</span></div>
-            <strong>Explore <Icon name="arrow" size={15} /></strong>
-          </a>
+        <div className="hero-split" aria-label="Workshop photo alongside the Nudgeable AI Academy">
+          <div className="hero-split-photo">
+            <Image src="/assets/hero-workshop.jpg" alt="Gaurav Patel facilitating a practical AI workshop" width={1303} height={1086} priority />
+          </div>
+          <div className="hero-split-card">
+            <div className="hero-split-card-top">
+              <span className="hero-split-card-label">Nudgeable AI Academy</span>
+              <span className="hero-split-card-live"><i /> Kept current</span>
+            </div>
+            <h2>Keep building AI capability.</h2>
+            <p>Practical guides and AI updates your team can use after the workshop.</p>
+            <ul className="hero-split-card-benefits">
+              <li>Guides</li>
+              <li>Real workflows</li>
+              <li>Tool updates</li>
+            </ul>
+            <a className="hero-split-card-link" href="/ai-academy/index.html">Explore the Academy</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <div className="container"><LogoStrip /></div>
+    <div className="logo-strip-band"><div className="container"><LogoStrip /></div></div>
 
     <section id="training" className="training-proof-section">
       <div className="container">
         <div className="section-intro">
           <span className="eyebrow">CORPORATE AI WORKSHOPS</span>
           <h2>Hands-on AI training built around real work.</h2>
-          <p>Employees practise with realistic activities from their own functions. The agenda is customized around their roles, available AI tools and business priorities.</p>
+          <p>Six tracks. A program usually draws on three or four of them, chosen after we see how the team works.</p>
         </div>
 
         <div className="card-grid topic-grid">
-          <div className="info-card"><div className="icon-box"><Icon name="spark" size={22} /></div><h3>How GenAI Works</h3><p>Models, context, hallucinations, research modes and why the quality of AI output changes.</p></div>
-          <div className="info-card"><div className="icon-box"><Icon name="calendar" size={22} /></div><h3>AI for Everyday Work</h3><p>Research, writing, meetings, presentations and workflows connected to participants&rsquo; roles.</p></div>
-          <div className="info-card"><div className="icon-box"><Icon name="chart" size={22} /></div><h3>Data, Dashboards and Design</h3><p>Analyse files, identify insights, create charts and turn findings into clear visual outputs.</p></div>
-          <div className="info-card"><div className="icon-box"><Icon name="workflow" size={22} /></div><h3>Workflow Automation</h3><p>Connect steps, tools and information to reduce repetitive work and manual handovers.</p></div>
-          <div className="info-card"><div className="icon-box"><Icon name="people" size={22} /></div><h3>Building AI Agents</h3><p>Understand agent systems and build practical agents using no-code or coding tools.</p></div>
-          <div className="info-card"><div className="icon-box"><Icon name="shield" size={22} /></div><h3>Governance and Data Security</h3><p>Protect company information, verify output and manage permissions, copyright and human review.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="spark" size={22} /></div><span className="info-card-track">Track 01</span><h3>How GenAI Works</h3><p>Models, context, hallucinations, research modes and why the quality of AI output changes.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="calendar" size={22} /></div><span className="info-card-track">Track 02</span><h3>AI for Everyday Work</h3><p>Research, writing, meetings, presentations and workflows connected to participants&rsquo; roles.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="chart" size={22} /></div><span className="info-card-track">Track 03</span><h3>Data, Dashboards and Design</h3><p>Analyse files, identify insights, create charts and turn findings into clear visual outputs.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="workflow" size={22} /></div><span className="info-card-track">Track 04</span><h3>Workflow Automation</h3><p>Connect steps, tools and information to reduce repetitive work and manual handovers.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="people" size={22} /></div><span className="info-card-track">Track 05</span><h3>Building AI Agents</h3><p>Understand agent systems and build practical agents using no-code or coding tools.</p></div>
+          <div className="info-card"><div className="icon-box"><Icon name="shield" size={22} /></div><span className="info-card-track">Track 06</span><h3>Governance and Data Security</h3><p>Protect company information, verify output and manage permissions, copyright and human review.</p></div>
         </div>
 
         <div className="format-bar">
           <div><strong>Designed around your team</strong><p>Half-day Masterclass &middot; One-day Workshop &middot; Multi-session Program &middot; Leadership Session</p></div>
           <a className="button button-primary button-compact" href="#contact">Discuss a Program <Icon name="arrow" size={17} /></a>
         </div>
+      </div>
+    </section>
 
-        <h3 className="proof-title">Built across functions, levels and industries.</h3>
+    <section id="method" className="method-section">
+      <div className="container">
+        <div className="section-intro">
+          <span className="eyebrow">HOW A PROGRAM GETS BUILT</span>
+          <h2>Every team ends up somewhere different.<br />The way we get there is the same.</h2>
+          <p>Nothing here is a fixed curriculum. This is the sequence we run with every client, from a 40-person function to a leadership group of eight.</p>
+        </div>
+        <div className="method-steps">
+          <div className="method-step">
+            <span className="method-step-n">STEP 01</span>
+            <span className="method-step-e" aria-hidden="true">🔍</span>
+            <h3>We look at your work</h3>
+            <p>We meet your team lead and a few people who do the job. We check how much AI they already use, what you expect AI to change, and which chatbots and tools you are licensed for.</p>
+          </div>
+          <div className="method-step">
+            <span className="method-step-n">STEP 02</span>
+            <span className="method-step-e" aria-hidden="true">🛠️</span>
+            <h3>Your people learn by doing</h3>
+            <p>The workshop runs on your live tasks, not on sample data. Everyone practises in the room, with help when something does not behave.</p>
+          </div>
+          <div className="method-step">
+            <span className="method-step-n">STEP 03</span>
+            <span className="method-step-e" aria-hidden="true">🔄</span>
+            <h3>We come back every month</h3>
+            <p>AI changes every month, so we do too. We share what is new and fix the real problems your team hit when they tried to automate their own work.</p>
+          </div>
+          <div className="method-step">
+            <span className="method-step-n">STEP 04</span>
+            <span className="method-step-e" aria-hidden="true">📚</span>
+            <h3>AI Academy keeps it going</h3>
+            <p>Everyone keeps access after the program ends. The guides stay current as the tools change, so learning does not stop at the workshop.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section className="proof-section">
+      <div className="container">
+
+        <div className="section-intro">
+          <span className="eyebrow">TRACK RECORD</span>
+          <h2 className="proof-title">Built across functions, levels and industries.</h2>
+        </div>
         <div className="proof-band">
           <div className="proof-item"><AnimatedStat value={45} suffix="+" /><b>Corporate cohorts</b><span>Customized AI programs</span></div>
           <div className="proof-item"><AnimatedStat value={2500} suffix="+" /><b>Professionals trained</b><span>From employees to senior leaders</span></div>
@@ -141,33 +201,6 @@ export default function Home() {
         <SessionPhotoRow />
       </div>
     </section>
-    <AcademyPromo />
-
-
-
-    <section className="shorts-section">
-      <div className="container">
-        <div className="shorts-heading-row">
-          <div className="section-intro">
-            <span className="eyebrow">WATCH</span>
-            <h2>Short videos on AI changes that affect work.</h2>
-            <p>New videos are added every week, focused on what changes for employees and organizations.</p>
-          </div>
-          <div className="button-row"><ButtonLink href="/insights#shorts" variant="secondary">See all videos</ButtonLink><a className="button button-dark button-compact" href="https://www.youtube.com/playlist?list=PLX2kcOVk5064" target="_blank" rel="noopener noreferrer">Subscribe on YouTube <Icon name="arrow" size={17} /></a></div>
-        </div>
-        <YouTubeGrid limit={4} />
-      </div>
-    </section>
-
-    <section className="workflow-video-section">
-      <div className="container">
-        <div className="workflow-video-header"><div><span className="eyebrow">WORKFLOW EXPLAINERS</span><h2>See how the work gets done.</h2></div><a href="/insights#workflows">Explore more workflows <Icon name="arrow" size={15} /></a></div>
-        <WorkflowVideoGrid limit={3} />
-      </div>
-    </section>
-
-
-
     <section className="testimonial-section">
       <div className="container">
         <div className="section-intro"><span className="eyebrow">CLIENT FEEDBACK</span><h2>What clients say about the experience.</h2></div>
@@ -189,6 +222,22 @@ export default function Home() {
         </div>
       </div>
     </section>
+
+    <section className="shorts-section">
+      <div className="container">
+        <div className="shorts-heading-row">
+          <div className="section-intro">
+            <span className="eyebrow">WATCH</span>
+            <h2>Short videos on AI changes that affect work.</h2>
+            <p>New videos are added every week, focused on what changes for employees and organizations.</p>
+          </div>
+          <div className="button-row"><ButtonLink href="/insights#shorts" variant="secondary">See all videos</ButtonLink><a className="button button-dark button-compact" href="https://www.youtube.com/playlist?list=PLX2kcOVk5064" target="_blank" rel="noopener noreferrer">Subscribe on YouTube <Icon name="arrow" size={17} /></a></div>
+        </div>
+        <YouTubeGrid limit={4} />
+      </div>
+    </section>
+
+    <AcademyPromo featuredPost={featuredPost} otherPosts={otherPosts} />
 
     <section id="contact" className="contact-home-section">
       <div className="container contact-home-grid">

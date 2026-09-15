@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="/ai-for-work/index.html">
+<link rel="icon" href="/icon.png" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="description" content="Plain guides to the ideas behind AI at work, written for people who use these tools rather than build them. No jargon, no assumptions.">
+<meta property="og:site_name" content="Nudgeable">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI for Work">
+<meta property="og:description" content="Plain guides to the ideas behind AI at work, written for people who use these tools rather than build them. No jargon, no assumptions.">
+<meta property="og:url" content="/ai-for-work/index.html">
+<meta property="og:image" content="/assets/og-default.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nudgeable">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI for Work">
+<meta name="twitter:description" content="Plain guides to the ideas behind AI at work, written for people who use these tools rather than build them. No jargon, no assumptions.">
+<meta name="twitter:image" content="/assets/og-default.png">
+<meta name="theme-color" content="#FDF8EC">
+<title>AI for Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+--ink:#16202B;--navy:#203141;--cream:#FDF8EC;--ice:#E2F4FD;--yellow:#FFD93D;
+--blue:#2F7FE8;--bluepale:#E7F2FE;--orange:#F68A29;--green:#23CE68;--red:#ED4551;--muted:#5E6B78;
+--pop:5px 5px 0 var(--ink);--pop-sm:3px 3px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html{max-width:100%;scroll-behavior:smooth}
+body{max-width:100%;overflow-x:clip;margin:0;-webkit-text-size-adjust:100%;background:var(--cream);color:var(--ink);
+font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;display:block}
+p,li,h1,h2,h3,h4{overflow-wrap:anywhere}
+a{color:inherit}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+.mascot{display:inline-block;vertical-align:middle}
+.mascot svg{width:100%;height:100%;display:block}
+.blinker{transform-box:fill-box;transform-origin:top;animation:blink 6s infinite}
+.blinker.b2{animation-delay:.08s}
+@keyframes blink{0%,95%{transform:scaleY(0)}97%,98.5%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.sparks{opacity:0}
+
+/* hero */
+.hero{margin:26px 0 0;background:var(--navy);border:3px solid var(--ink);border-radius:16px;padding:40px 34px;color:#fff;box-shadow:var(--pop)}
+.hero .kick{display:inline-block;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+padding:3px 12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px}
+.hero h1{font-size:50px;font-weight:900;line-height:1.05;margin:16px 0 0;text-transform:uppercase}
+.hero h1 span{color:var(--yellow)}
+.herosub{margin:12px 0 0;font-size:19px;font-weight:700;color:#fff;min-height:29px}
+.cursor{display:inline-block;width:4px;height:.85em;background:var(--yellow);vertical-align:-2px;animation:bl .8s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.herorow{display:flex;gap:20px;align-items:flex-start;margin-top:24px}
+.herorow .mascot{width:84px;height:84px;flex:0 0 84px}
+.hero p{color:#CBD8E4;font-size:17px;margin:0;max-width:720px}
+
+/* section bar */
+.bar{margin-top:44px;background:var(--navy);border:3px solid var(--ink);border-radius:14px;padding:13px 22px;color:#fff;
+display:flex;align-items:center;gap:12px;box-shadow:var(--pop)}
+.bar h2{margin:0;font-size:22px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;line-height:1.15}
+.bar .count{margin-left:auto;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:999px;
+padding:2px 13px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.blurb{font-size:16px;max-width:720px;margin:18px 0 0;color:#34424F}
+
+/* card grid */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:26px}
+.grid.four{grid-template-columns:repeat(4,1fr);gap:20px}
+.grid.four .cbody{padding:16px 17px 18px}
+.grid.four .cbody h3{font-size:17.5px}
+.grid.four .cbody p{font-size:14.5px}
+.card{display:flex;flex-direction:column;background:#fff;border:3px solid var(--ink);border-radius:16px;
+overflow:hidden;box-shadow:var(--pop);text-decoration:none;color:inherit;transition:.12s}
+a.card:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--ink)}
+a.card:active{transform:translate(2px,2px);box-shadow:var(--pop-sm)}
+.thumb{position:relative;border-bottom:3px solid var(--ink);background:var(--ice);aspect-ratio:8/5;overflow:hidden}
+.thumb img,.thumb svg{width:100%;height:100%;object-fit:cover;display:block}
+.tag{position:absolute;top:10px;left:10px;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);
+border-radius:999px;padding:2px 11px;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:1px}
+.tag.soon{background:#fff;color:var(--muted)}
+.cbody{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.cbody h3{margin:0;font-size:19px;font-weight:900;line-height:1.2}
+.cbody p{margin:9px 0 0;font-size:15px;color:#34424F}
+.go{margin-top:auto;padding-top:14px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.9px;color:var(--blue)}
+.go.muted{color:var(--muted)}
+.card.soon{opacity:.96;cursor:default}
+.card.soon .thumb{background:#F3EFE3}
+
+footer{background:var(--navy);color:#9FB0C0;padding:32px 0;margin-top:52px;text-align:center;font-size:14px;border-top:3px solid var(--ink)}
+footer .fl{color:var(--yellow);font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+
+@media(max-width:980px){
+.grid,.grid.four{grid-template-columns:repeat(2,1fr);gap:20px}
+.hero h1{font-size:38px}
+}
+@media(max-width:700px){
+.wrap{padding:0 16px}
+.grid,.grid.four{grid-template-columns:1fr;gap:18px}
+.hero{padding:26px 20px;margin-top:16px}
+.hero h1{font-size:30px}
+.herosub{font-size:16px}
+.hero p{font-size:16px}
+.herorow{gap:14px}
+.herorow .mascot{width:56px;height:56px;flex:0 0 56px}
+.bar{margin-top:34px;padding:12px 16px;border-radius:12px}
+.bar h2{font-size:17px}
+.bar .count{font-size:10.5px;padding:2px 10px}
+.blurb{font-size:15.5px}
+.cbody{padding:16px 17px 18px}
+.cbody h3{font-size:17.5px}
+}
+@media(max-width:430px){
+.hero h1{font-size:26px}
+.hero .kick{font-size:11px}
+}
+
+/* ============ Back to Nudgeable homepage ============ */
+.back-home{
+  position:fixed;top:18px;right:22px;z-index:950;
+  display:inline-flex;align-items:center;gap:7px;
+  background:#fff;border:3px solid var(--ink);border-radius:999px;
+  padding:8px 16px;font-size:13px;font-weight:800;color:var(--ink);
+  text-decoration:none;box-shadow:var(--pop-sm);transition:.12s;
+}
+.back-home:hover{background:var(--yellow)}
+.back-home:active{transform:translate(2px,2px);box-shadow:none}
+@media (max-width:780px){.back-home{top:12px;right:12px;padding:7px 13px;font-size:12.5px}}
+</style>
+</head>
+<body>
+
+<a class="back-home" href="/">&larr; Back to Nudgeable</a>
+<div class="wrap">
+
+<header class="hero">
+  <span class="kick">Nudgeable.ai guides</span>
+  <h1>AI for <span>Work</span></h1>
+  <p class="herosub"><span class="type" id="type"></span><span class="cursor"></span></p>
+  <div class="herorow">
+    <span class="mascot" data-mood="neutral"></span>
+    <p>Plain guides to the ideas behind AI at work, written for people who use these tools rather than build them. No jargon, no hype, and no assumption that you already know what any of it means. Each one takes about ten minutes.</p>
+  </div>
+</header>
+
+<div class="bar"><h2>The guides</h2><span class="count">6 ready</span></div>
+<p class="blurb">Start anywhere. Each guide stands on its own, and the first four are the ones most people need before anything else makes sense.</p>
+
+<div class="grid">
+
+  <a class="card" href="what-are-ai-projects.html">
+    <div class="thumb"><span class="tag">Guide</span><img src="assets/images/index-01.jpg" alt="Comic panel from the projects guide"></div>
+    <div class="cbody">
+      <h3>What is an AI project?</h3>
+      <p>A folder that holds your files and your standing instructions, so every chat inside it already knows the background. Set it up once and work from it all year.</p>
+      <span class="go">Read the guide →</span>
+    </div>
+  </a>
+
+  <a class="card" href="what-are-ai-skills.html">
+    <div class="thumb"><span class="tag">Guide</span><img src="assets/images/index-02.jpg" alt="Comic panel from the skills guide" loading="lazy"></div>
+    <div class="cbody">
+      <h3>What is an AI skill?</h3>
+      <p>A small folder holding the method for one job, along with the examples and templates it needs. Write it once, then call it by name instead of retyping the brief.</p>
+      <span class="go">Read the guide →</span>
+    </div>
+  </a>
+
+  <a class="card" href="what-is-a-work-agent.html">
+    <div class="thumb"><span class="tag">Guide</span><img src="assets/images/index-03.jpg" alt="Comic panel from the work agent guide" loading="lazy"></div>
+    <div class="cbody">
+      <h3>What is a work agent?</h3>
+      <p>It takes the whole task rather than one question. Point it at a folder, describe the outcome, and come back to finished work instead of managing every step.</p>
+      <span class="go">Read the guide →</span>
+    </div>
+  </a>
+
+  <a class="card" href="what-is-a-coding-agent.html">
+    <div class="thumb"><span class="tag">Guide</span><img src="assets/images/index-04.jpg" alt="Comic panel from the coding agent guide" loading="lazy"></div>
+    <div class="cbody">
+      <h3>What is a coding agent?</h3>
+      <p>Two assistants with almost the same name and almost nothing in common. Which one you open decides how good the answer is, and most people open the wrong one.</p>
+      <span class="go">Read the guide →</span>
+    </div>
+  </a>
+
+  <a class="card" href="models-and-thinking-effort.html">
+    <div class="thumb"><span class="tag">Guide</span><img src="assets/images/index-05.jpg" alt="Comic panel from the models and effort guide" loading="lazy"></div>
+    <div class="cbody">
+      <h3>Models and thinking effort</h3>
+      <p>Two dials, and most people only ever touch one. Which model sets how good an answer can be, and how long it reasons is a separate setting with its own cost.</p>
+      <span class="go">Read the guide →</span>
+    </div>
+  </a>
+
+  <a class="card" href="what-is-vibe-coding.html">
+    <div class="thumb"><span class="tag">Guide</span><img src="assets/images/index-06.jpg" alt="Comic panel from the vibe coding guide" loading="lazy"></div>
+    <div class="cbody">
+      <h3>What is vibe coding?</h3>
+      <p>You describe a tool in plain English and the AI builds it. Excellent for proving an idea in ten minutes, and worth knowing exactly where it stops.</p>
+      <span class="go">Read the guide →</span>
+    </div>
+  </a>
+
+</div>
+
+<div class="bar"><h2>In the works</h2><span class="count">4 coming</span></div>
+<p class="blurb">The next set moves from understanding the tools to running them across an organisation.</p>
+
+<div class="grid four">
+
+  <div class="card soon">
+    <div class="thumb"><span class="tag soon">Coming soon</span><svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="640" height="400" fill="#E7F2FE"/><rect x="40" y="336" width="560" height="9" rx="4" fill="#16202B"/><rect x="52" y="240" width="126" height="96" rx="12" fill="#FFD93D" stroke="#16202B" stroke-width="8"/><rect x="192" y="168" width="126" height="168" rx="12" fill="#4A90E8" stroke="#16202B" stroke-width="8"/><rect x="332" y="96" width="126" height="240" rx="12" fill="#23CE68" stroke="#16202B" stroke-width="8"/><rect x="472" y="36" width="126" height="300" rx="12" fill="#DCF2FD" stroke="#16202B" stroke-width="8"/><rect x="496" y="88" width="26" height="34" rx="5" fill="#fff" stroke="#16202B" stroke-width="5"/><rect x="536" y="88" width="26" height="34" rx="5" fill="#fff" stroke="#16202B" stroke-width="5"/><rect x="496" y="142" width="26" height="34" rx="5" fill="#fff" stroke="#16202B" stroke-width="5"/><rect x="536" y="142" width="26" height="34" rx="5" fill="#fff" stroke="#16202B" stroke-width="5"/><rect x="496" y="196" width="26" height="34" rx="5" fill="#fff" stroke="#16202B" stroke-width="5"/><rect x="536" y="196" width="26" height="34" rx="5" fill="#fff" stroke="#16202B" stroke-width="5"/><rect x="496" y="250" width="26" height="34" rx="5" fill="#fff" stroke="#16202B" stroke-width="5"/><rect x="536" y="250" width="26" height="34" rx="5" fill="#fff" stroke="#16202B" stroke-width="5"/><path d="M178 250 q28 -34 56 0" fill="none" stroke="#16202B" stroke-width="8" stroke-linecap="round"/><path d="M318 178 q28 -34 56 0" fill="none" stroke="#16202B" stroke-width="8" stroke-linecap="round"/><path d="M458 108 q28 -34 56 0" fill="none" stroke="#16202B" stroke-width="8" stroke-linecap="round"/><g fill="#F68A29"><rect x="110" y="150" width="13" height="38" rx="6" transform="rotate(-20 116 169)"/><rect x="168" y="176" width="13" height="30" rx="6" transform="rotate(18 174 191)"/></g></svg></div>
+    <div class="cbody">
+      <h3>Build an AI native company</h3>
+      <p>What actually changes when AI stops being a tool people try and becomes how the work is done. Processes, decision rights, hiring and the habits that have to go first.</p>
+      <span class="go muted">Coming soon</span>
+    </div>
+  </div>
+
+  <div class="card soon">
+    <div class="thumb"><span class="tag soon">Coming soon</span><svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="640" height="400" fill="#FDF3DC"/><rect x="60" y="330" width="520" height="8" rx="4" fill="#16202B"/><rect x="80" y="300" width="95" height="30" fill="#FFD93D" stroke="#16202B" stroke-width="7"/><rect x="175" y="248" width="95" height="82" fill="#FFD93D" stroke="#16202B" stroke-width="7"/><rect x="270" y="196" width="95" height="134" fill="#FFD93D" stroke="#16202B" stroke-width="7"/><rect x="365" y="144" width="95" height="186" fill="#FFD93D" stroke="#16202B" stroke-width="7"/><rect x="460" y="92" width="95" height="238" fill="#FFD93D" stroke="#16202B" stroke-width="7"/><rect x="520" y="60" width="8" height="90" rx="4" fill="#16202B"/><path d="M528 66 l72 22 -72 22 z" fill="#ED4551" stroke="#16202B" stroke-width="7" stroke-linejoin="round"/><path d="M100 300 L195 248 L290 196 L385 144 L480 92" fill="none" stroke="#16202B" stroke-width="7" stroke-linecap="round" stroke-dasharray="4 26"/><circle cx="195" cy="248" r="14" fill="#fff" stroke="#16202B" stroke-width="7"/><circle cx="290" cy="196" r="14" fill="#fff" stroke="#16202B" stroke-width="7"/><circle cx="385" cy="144" r="14" fill="#fff" stroke="#16202B" stroke-width="7"/><circle cx="480" cy="92" r="14" fill="#fff" stroke="#16202B" stroke-width="7"/></svg></div>
+    <div class="cbody">
+      <h3>Keep pace with AI development</h3>
+      <p>How to stay current without reading everything. What genuinely matters, what is noise, and a routine that takes twenty minutes a week rather than your evenings.</p>
+      <span class="go muted">Coming soon</span>
+    </div>
+  </div>
+
+  <div class="card soon">
+    <div class="thumb"><span class="tag soon">Coming soon</span><svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="640" height="400" fill="#E4F7EA"/><rect x="60" y="330" width="520" height="8" rx="4" fill="#16202B"/><rect x="80" y="240" width="86" height="90" rx="10" fill="#DCF2FD" stroke="#16202B" stroke-width="7"/><circle cx="123" cy="198" r="26" fill="#fff" stroke="#16202B" stroke-width="7"/><circle cx="114" cy="194" r="5" fill="#16202B"/><circle cx="132" cy="194" r="5" fill="#16202B"/><rect x="220" y="180" width="86" height="150" rx="10" fill="#FFD93D" stroke="#16202B" stroke-width="7"/><circle cx="263" cy="138" r="26" fill="#fff" stroke="#16202B" stroke-width="7"/><circle cx="254" cy="134" r="5" fill="#16202B"/><circle cx="272" cy="134" r="5" fill="#16202B"/><rect x="360" y="115" width="86" height="215" rx="10" fill="#4A90E8" stroke="#16202B" stroke-width="7"/><circle cx="403" cy="73" r="26" fill="#fff" stroke="#16202B" stroke-width="7"/><circle cx="394" cy="69" r="5" fill="#16202B"/><circle cx="412" cy="69" r="5" fill="#16202B"/><rect x="500" y="210" width="86" height="120" rx="10" fill="#23CE68" stroke="#16202B" stroke-width="7"/><circle cx="543" cy="168" r="26" fill="#fff" stroke="#16202B" stroke-width="7"/><circle cx="534" cy="164" r="5" fill="#16202B"/><circle cx="552" cy="164" r="5" fill="#16202B"/><rect x="52" y="300" width="26" height="7" rx="3" fill="#16202B"/><rect x="52" y="230" width="26" height="7" rx="3" fill="#16202B"/><rect x="52" y="160" width="26" height="7" rx="3" fill="#16202B"/><rect x="52" y="90" width="26" height="7" rx="3" fill="#16202B"/></svg></div>
+    <div class="cbody">
+      <h3>Measure AI skills in your people</h3>
+      <p>Counting who attended a session tells you nothing. What a real capability level looks like, how to assess it honestly, and what to do with the answer.</p>
+      <span class="go muted">Coming soon</span>
+    </div>
+  </div>
+
+  <div class="card soon">
+    <div class="thumb"><span class="tag soon">Coming soon</span><svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="640" height="400" fill="#FFF1E0"/><rect x="40" y="344" width="560" height="9" rx="4" fill="#16202B"/><ellipse cx="150" cy="308" rx="92" ry="31" fill="#FFD93D" stroke="#16202B" stroke-width="8"/><ellipse cx="150" cy="254" rx="92" ry="31" fill="#FFD93D" stroke="#16202B" stroke-width="8"/><ellipse cx="150" cy="200" rx="92" ry="31" fill="#FFD93D" stroke="#16202B" stroke-width="8"/><ellipse cx="150" cy="146" rx="92" ry="31" fill="#FFD93D" stroke="#16202B" stroke-width="8"/><path d="M266 176 L378 176" fill="none" stroke="#16202B" stroke-width="10" stroke-linecap="round"/><path d="M358 154 l28 22 -28 22" fill="none" stroke="#16202B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><rect x="406" y="216" width="50" height="92" rx="9" fill="#DCF2FD" stroke="#16202B" stroke-width="8"/><rect x="470" y="150" width="50" height="158" rx="9" fill="#4A90E8" stroke="#16202B" stroke-width="8"/><rect x="534" y="82" width="50" height="226" rx="9" fill="#23CE68" stroke="#16202B" stroke-width="8"/><path d="M418 200 L482 140 L552 72" fill="none" stroke="#ED4551" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M518 66 l38 0 0 38" fill="none" stroke="#ED4551" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="cbody">
+      <h3>Measure return on AI investment</h3>
+      <p>Hours saved is the number everyone reports and the one nobody believes. What is worth measuring instead, and how to show it to a finance team without inventing anything.</p>
+      <span class="go muted">Coming soon</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer><div class="wrap"><div class="fl">Nudgeable.ai</div><div>Plain guides to AI at work. More on the way.</div></div></footer>
+
+<script>
+var MOUTH={neutral:'M42 68 q8 7 16 0',happy:'M40 65 q10 13 20 0 q-10 5 -20 0'};
+function cloudSVG(mood){
+ var m=MOUTH[mood]||MOUTH.neutral;
+ return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+ '<g fill="#2F7FE8" stroke="#2F7FE8" stroke-width="7"><circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/>'+
+ '<circle cx="74" cy="56" r="17"/><circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/></g>'+
+ '<g fill="#DCF2FD"><circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/><circle cx="74" cy="56" r="17"/>'+
+ '<circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/></g>'+
+ '<line x1="44" y1="52" x2="56" y2="52" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="35" cy="52" r="11" fill="#fff" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="65" cy="52" r="11" fill="#fff" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="35" cy="52" r="4.5" fill="#16202B"/><circle cx="65" cy="52" r="4.5" fill="#16202B"/>'+
+ '<rect class="blinker" x="25" y="41" width="20" height="12" fill="#DCF2FD"/>'+
+ '<rect class="blinker b2" x="55" y="41" width="20" height="12" fill="#DCF2FD"/>'+
+ '<path d="'+m+'" fill="none" stroke="#16202B" stroke-width="3.5" stroke-linecap="round"/></svg>';
+}
+document.querySelectorAll('.mascot').forEach(function(el){el.innerHTML=cloudSVG(el.dataset.mood||'neutral')});
+
+(function(){var w=["Plain guides. No jargon. Ten minutes each.","Start with projects. Then skills.","Written for people who use AI, not build it."],i=0,c=0,d=false,el=document.getElementById('type');
+function t(){var s=w[i];el.textContent=d?s.substring(0,c--):s.substring(0,c++);var ms=d?45:85;
+if(!d&&c===s.length+1){d=true;ms=1700}else if(d&&c<0){d=false;i=(i+1)%w.length;c=0;ms=300}setTimeout(t,ms)}t()})();
+</script>
+</body>
+</html>

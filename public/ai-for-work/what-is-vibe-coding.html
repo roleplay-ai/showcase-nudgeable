@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="/ai-for-work/what-is-vibe-coding.html">
+<link rel="icon" href="/icon.png" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="description" content="You describe a tool in plain English and the AI builds it. Excellent for proving an idea in ten minutes, and worth knowing exactly where it stops.">
+<meta property="og:site_name" content="Nudgeable">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:title" content="What Is Vibe Coding?">
+<meta property="og:description" content="You describe a tool in plain English and the AI builds it. Excellent for proving an idea in ten minutes, and worth knowing exactly where it stops.">
+<meta property="og:url" content="/ai-for-work/what-is-vibe-coding.html">
+<meta property="og:image" content="/assets/og-default.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nudgeable">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Is Vibe Coding?">
+<meta name="twitter:description" content="You describe a tool in plain English and the AI builds it. Excellent for proving an idea in ten minutes, and worth knowing exactly where it stops.">
+<meta name="twitter:image" content="/assets/og-default.png">
+<meta name="theme-color" content="#FDF8EC">
+<title>What Is Vibe Coding?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+--ink:#16202B;--navy:#203141;--cream:#FDF8EC;--ice:#E2F4FD;--yellow:#FFD93D;--amber:#FFCE00;
+--blue:#2F7FE8;--bluepale:#E7F2FE;--orange:#F68A29;--green:#23CE68;--red:#ED4551;--muted:#5E6B78;
+--pop:5px 5px 0 var(--ink);--pop-sm:3px 3px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html{max-width:100%}
+body{max-width:100%;overflow-x:clip}
+.shell,.side,.main,section,.shell>*{min-width:0;max-width:100%}
+img,svg,video,iframe{max-width:100%;height:auto}
+p,li,h1,h2,h3,h4,.bub,.face,.pnlcap,.lead{overflow-wrap:anywhere}
+.code{overflow-wrap:anywhere;word-break:break-word}
+.tblwrap,.tabs,.ftab,.steps{max-width:100%}
+
+html{scroll-behavior:smooth}
+body{margin:0;-webkit-text-size-adjust:100%;overflow-x:hidden;background:var(--cream);color:var(--ink);
+font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.hl{text-decoration:none;font-weight:600;background:linear-gradient(transparent 58%,var(--yellow) 58%);
+padding:0 2px;border-bottom:2px solid var(--ink)}
+.hl:hover{background:var(--yellow)}
+.hl::after{content:" ↗";font-size:.8em;opacity:.6}
+
+:root{--top-offset:20px}
+.shell{display:grid;grid-template-columns:212px 1fr;gap:36px;max-width:1200px;margin:0 auto;padding:0 20px}
+.main{min-width:0;padding-top:6px}
+.side{position:sticky;top:var(--top-offset);align-self:start;padding:26px 0 20px}
+.sidehead{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.sidehead .mascot{width:38px;height:38px;flex:0 0 38px}
+.sidetitle{font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.6px;line-height:1.15}
+.steps{position:relative;display:flex;flex-direction:column;gap:2px}
+.steps::before{content:"";position:absolute;left:17px;top:16px;bottom:16px;width:3px;background:var(--ink);border-radius:2px}
+.steps .fill{position:absolute;left:17px;top:16px;width:3px;height:0;background:var(--blue);border-radius:2px;transition:height .18s ease}
+.steps a{position:relative;z-index:1;display:flex;align-items:center;gap:11px;text-decoration:none;
+padding:5px 8px 5px 0;font-size:13.5px;font-weight:700;color:var(--muted);border-radius:999px}
+.steps a i{font-style:normal;width:34px;height:34px;flex:0 0 34px;border:3px solid var(--ink);border-radius:999px;
+background:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:var(--ink);transition:.12s}
+.steps a:hover{color:var(--ink)}
+.steps a:hover i{background:var(--ice)}
+.steps a.act{color:var(--ink)}
+.steps a.act i{background:var(--yellow);box-shadow:var(--pop-sm)}
+.steps a.done i{background:var(--ink);color:var(--yellow)}
+
+.bar{background:var(--navy);border:3px solid var(--ink);border-radius:14px;padding:14px 22px;color:#fff;
+display:flex;align-items:center;gap:12px;box-shadow:var(--pop)}
+.bar h2{margin:0;font-size:25px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;line-height:1.15}
+.chev{color:var(--yellow);font-weight:900;font-size:22px;line-height:1}
+.num{background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+section{padding:40px 0;scroll-margin-top:24px}
+.lead{font-size:17px;max-width:700px;margin:20px 0 0;color:#34424F}
+
+.mascot{display:inline-block;vertical-align:middle}
+.mascot svg{width:100%;height:100%;display:block}
+.blinker{transform-box:fill-box;transform-origin:top;animation:blink 6s infinite}
+.blinker.b2{animation-delay:.08s}
+@keyframes blink{0%,95%{transform:scaleY(0)}97%,98.5%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.sparks{opacity:0}
+.mood-happy .sparks{opacity:1;animation:pop .4s ease}
+@keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
+
+.tip{margin-top:22px;background:#FFF7D1;border:3px solid var(--ink);border-radius:14px;padding:16px 20px;
+box-shadow:var(--pop);display:flex;gap:14px;align-items:flex-start}
+.tip .bulb{font-size:24px;line-height:1.2}
+.tip strong{display:block;font-weight:900;text-transform:uppercase;font-size:13px;letter-spacing:.8px;margin-bottom:4px}
+.tip p{margin:0;font-size:15px}
+.tip.warn{background:#FFE7E9}
+
+.hero{margin:26px 0 0;background:var(--navy);border:3px solid var(--ink);border-radius:16px;padding:38px 32px;color:#fff;box-shadow:var(--pop)}
+.hero .kick{display:inline-block;background:var(--yellow);color:var(--ink);border:3px solid var(--ink);border-radius:8px;
+padding:3px 12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px}
+.hero h1{font-size:42px;font-weight:900;line-height:1.1;margin:16px 0 0;text-transform:uppercase}
+.herosub{margin:12px 0 0;font-size:19px;font-weight:700;color:#fff;min-height:29px}
+.hero h1 .type{color:var(--yellow)}
+.cursor{display:inline-block;width:4px;height:.85em;background:var(--yellow);vertical-align:-2px;animation:bl .8s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.herorow{display:flex;gap:20px;align-items:flex-start;margin-top:22px}
+.herorow .mascot{width:80px;height:80px;flex:0 0 80px}
+.hero p{color:#CBD8E4;font-size:17px;margin:0}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn{cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;padding:11px 26px;border-radius:999px;
+text-decoration:none;display:inline-block;border:3px solid var(--ink);box-shadow:var(--pop-sm);transition:.12s}
+.btn:active{transform:translate(3px,3px);box-shadow:none}
+.btn-y{background:var(--yellow);color:var(--ink)}
+.btn-w{background:#fff;color:var(--ink)}
+
+.pnl{border:3px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--pop);background:#fff;cursor:zoom-in;position:relative}
+.pnl img{display:block;width:100%}
+.pnlcap{font-size:15px;font-weight:600;margin-top:10px;color:#34424F}
+.pnlcap b{font-weight:900}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:24px}
+.pgrid.wide{grid-template-columns:1fr}
+.pstack{margin-top:24px;display:flex;flex-direction:column;gap:22px}
+
+.months{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.mbtn{border:3px solid var(--ink);background:#fff;font-family:inherit;font-weight:900;font-size:14px;
+padding:8px 20px;border-radius:999px;cursor:pointer;box-shadow:var(--pop-sm);transition:.12s}
+.mbtn:hover{background:var(--ice)}
+.mbtn.on{background:var(--yellow)}
+.mstage{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.mcost{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:20px;box-shadow:var(--pop)}
+.mcost h4{margin:0;font-size:18px;font-weight:900}
+.mcost p{margin:8px 0 0;font-size:15px;color:#34424F}
+
+.km{margin-top:16px;border:3px solid var(--ink);border-radius:12px;background:#fff;overflow:hidden;box-shadow:var(--pop-sm)}
+.km>button{width:100%;text-align:left;background:var(--ice);border:none;border-bottom:3px solid var(--ink);
+font-family:inherit;font-size:14px;font-weight:800;padding:12px 16px;cursor:pointer;display:flex;
+justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+.km>button:hover{background:var(--yellow)}
+.km .pm{background:var(--ink);color:var(--yellow);width:24px;height:24px;border-radius:6px;
+display:flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 24px}
+.km .body{display:none;padding:16px 18px;font-size:15px}
+.km.on .body{display:block}
+.km.on .pm{background:var(--blue);color:#fff}
+.km .body p{margin:0 0 10px}.km .body p:last-child{margin:0}
+
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.cardx{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:18px;box-shadow:var(--pop);cursor:pointer;transition:.12s}
+.cardx:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.cardx .ic{width:44px;height:44px;border:3px solid var(--ink);border-radius:10px;display:flex;
+align-items:center;justify-content:center;font-size:21px;background:var(--yellow)}
+.cardx h3{margin:10px 0 0;font-size:18px;font-weight:900}
+.cardx p{margin:6px 0 0;font-size:15px;color:#34424F}
+.cardx .more{display:none;margin-top:12px;padding-top:12px;border-top:3px dashed var(--ink);font-size:14px}
+.cardx.on .more{display:block}
+.cardx .toggle{margin-top:12px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--blue)}
+.pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border:2px solid var(--ink);
+border-radius:999px;margin:6px 6px 0 0;background:#fff}
+.p-y{background:var(--yellow)}.p-b{background:var(--bluepale)}.p-g{background:#D8F7E4}
+
+.folder{margin-top:24px;border:3px solid var(--ink);border-radius:16px;box-shadow:var(--pop);overflow:hidden;background:#fff}
+.ftab{background:var(--navy);display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.ftab::-webkit-scrollbar{display:none}
+.ftab button{flex:1;min-width:130px;background:transparent;border:none;border-right:3px solid var(--ink);
+color:#B9C6D3;font-family:inherit;font-weight:800;font-size:13.5px;padding:14px 10px;cursor:pointer;white-space:nowrap}
+.ftab button:last-child{border-right:none}
+.ftab button.on{background:var(--yellow);color:var(--ink)}
+.fbody{padding:22px}
+.fpane{display:none}.fpane.on{display:block}
+.fileline{display:flex;gap:12px;align-items:flex-start;padding:12px;border:3px solid var(--ink);
+border-radius:10px;margin-bottom:10px;background:var(--cream)}
+.fileline .fi{width:34px;height:34px;flex:0 0 34px;border:2px solid var(--ink);border-radius:7px;
+display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff}
+.fileline b{display:block;font-size:15px}
+.fileline span{font-size:14px;color:var(--muted)}
+.chatline{display:flex;gap:10px;align-items:center;padding:11px 14px;border:3px solid var(--ink);
+border-radius:10px;margin-bottom:9px;background:#fff;font-weight:600;font-size:15px}
+.chatline .dot{width:12px;height:12px;border-radius:999px;border:2px solid var(--ink);flex:0 0 12px}
+.nope{margin-top:16px;border:3px dashed var(--ink);border-radius:12px;padding:16px;background:#FFF0F1}
+.nope strong{display:block;font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.nope p{margin:0;font-size:15px}
+
+.flipwrap{perspective:1000px;height:262px;cursor:pointer}
+.flipin{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flipwrap.on .flipin{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:3px solid var(--ink);border-radius:14px;
+padding:18px;box-shadow:var(--pop);display:flex;flex-direction:column;justify-content:center}
+.face.front{background:#fff}
+.face.back{background:var(--ice);transform:rotateY(180deg)}
+.face .lab{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.face.front .lab{color:var(--red)}.face.back .lab{color:#0F8A45}
+.face p{margin:0;font-size:15.5px;font-weight:600}
+.face .flipnote{margin-top:auto;padding-top:10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+
+.sorter{margin-top:24px;background:var(--navy);border:3px solid var(--ink);border-radius:16px;padding:20px;color:#fff;text-align:center;box-shadow:var(--pop)}
+.sorter .mascot{width:52px;height:52px;margin:6px auto 0;display:block}
+.sorter .q{font-size:18px;font-weight:800;margin:10px auto 0;min-height:56px;max-width:620px;display:flex;align-items:center;justify-content:center}
+.sbtns{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.sbtn{font-family:inherit;font-size:14px;font-weight:900;padding:10px 26px;border-radius:999px;cursor:pointer;
+border:3px solid var(--ink);box-shadow:var(--pop-sm);background:var(--yellow);color:var(--ink);transition:.12s}
+.sbtn.alt{background:#fff}
+.sbtn:active{transform:translate(3px,3px);box-shadow:none}
+.sbtn:disabled{opacity:.4;cursor:default}
+.fb{margin:14px auto 0;font-size:14.5px;min-height:46px;color:#CBD8E4;max-width:640px}
+.fb b{color:var(--yellow)}.fb.ok b{color:#6BF0A0}
+.snext{background:transparent;border:3px solid #fff;color:#fff;font-family:inherit;font-weight:800;font-size:13px;
+padding:9px 24px;border-radius:999px;cursor:pointer;display:none;margin-top:4px}
+.snext.on{display:inline-block}
+.prog{font-size:11px;color:#8FA2B4;margin-top:12px;font-weight:800;letter-spacing:1px}
+
+.tblwrap{margin-top:24px;overflow-x:auto;-webkit-overflow-scrolling:touch;border:3px solid var(--ink);border-radius:14px;box-shadow:var(--pop);background:#fff}
+table{border-collapse:collapse;width:100%;min-width:820px}
+th,td{text-align:left;padding:14px 16px;font-size:14.5px;border-bottom:3px solid var(--ink);vertical-align:top;overflow-wrap:break-word}
+th{background:var(--yellow);font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:900;white-space:nowrap}
+td:nth-child(2){white-space:nowrap}
+
+.lb{position:fixed;inset:0;background:rgba(22,32,43,.94);display:none;align-items:center;justify-content:center;z-index:200;padding:18px;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-height:92vh;max-width:100%;border:3px solid var(--yellow);border-radius:12px}
+.lb-x{position:absolute;top:16px;right:20px;color:#fff;font-size:34px;font-weight:300;line-height:1}
+
+footer{background:var(--navy);color:#9FB0C0;padding:30px 0;margin-top:34px;text-align:center;font-size:14px;border-top:3px solid var(--ink)}
+footer .fl{color:var(--yellow);font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+
+@media(max-width:980px){
+.shell{display:block;padding:0 16px}
+.side{position:static;padding:18px 0 4px}
+.sidehead{margin-bottom:12px}
+.steps{flex-direction:row;overflow-x:auto;gap:8px;scrollbar-width:none;padding:2px 2px 8px;
+-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.steps::-webkit-scrollbar{display:none}
+.steps::before,.steps .fill{display:none}
+.steps a{flex:0 0 auto;border:3px solid var(--ink);background:#fff;border-radius:999px;
+padding:6px 16px 6px 6px;box-shadow:var(--pop-sm);scroll-snap-align:start;min-height:44px}
+.steps a i{width:28px;height:28px;flex:0 0 28px;border-width:2px;font-size:12px}
+.steps a span{font-size:13px}
+.steps a.act{background:var(--yellow)}
+.steps a.done{background:var(--cream)}
+.g3{grid-template-columns:repeat(2,1fr)}
+.hero h1{font-size:34px}
+.herosub{font-size:17px}
+}
+
+@media(max-width:780px){
+.shell{padding:0 14px}
+.main{padding-top:0}
+.wrap{padding:0 14px}
+section{padding:30px 0}
+.hero{padding:24px 18px;margin-top:14px}
+.hero h1{font-size:26px}
+.hero p{font-size:16px}
+.herorow{gap:14px}
+.herorow .mascot{width:54px;height:54px;flex:0 0 54px}
+.cta{gap:10px}
+.btn{width:100%;text-align:center;padding:13px 20px}
+
+.bar{padding:12px 16px;gap:10px;border-radius:12px}
+.bar h2{font-size:17px;line-height:1.2}
+.num{width:30px;height:30px;flex:0 0 30px;font-size:14px}
+.chev{display:none}
+.lead{font-size:16px;margin-top:16px}
+
+.g2,.g3,.pgrid,.mstage{grid-template-columns:1fr;gap:18px}
+.pstack{gap:18px}
+.pnlcap{font-size:14.5px}
+
+.months{gap:8px}
+.mbtn{flex:1 1 calc(50% - 4px);padding:10px 8px;font-size:13px;min-height:44px}
+
+.cardx{padding:16px}
+.cardx h3{font-size:17px}
+.tip{padding:14px 16px;gap:10px}
+.tip p{font-size:14.5px}
+
+.ftab button{min-width:118px;font-size:12.5px;padding:13px 8px;min-height:46px}
+.fbody{padding:16px}
+.fileline{padding:10px;gap:10px}
+.fileline b{font-size:14.5px}
+.fileline span{font-size:13.5px}
+.chatline{font-size:14px;padding:10px 12px}
+
+.flipwrap{height:auto;perspective:none;cursor:pointer}
+.flipin{transform:none!important;transition:none}
+.face{position:static;backface-visibility:visible;transform:none!important;box-shadow:var(--pop)}
+.face.back{display:none;margin-top:-3px;border-top-left-radius:0;border-top-right-radius:0}
+.flipwrap.on .face.back{display:flex}
+.face p{font-size:15px}
+.face .flipnote{margin-top:10px}
+.flipwrap.on .face.front .flipnote{display:none}
+
+.sorter{padding:16px 14px}
+.sorter .q{font-size:16.5px;min-height:70px}
+.sbtn{flex:1 1 100%;padding:12px 20px;min-height:46px}
+.fb{font-size:14px}
+
+table{min-width:560px}
+th,td{padding:11px 12px;font-size:13.5px}
+
+.km>button{font-size:13.5px;padding:13px 14px;min-height:46px}
+.km .body{padding:14px 15px;font-size:14.5px}
+}
+
+@media(max-width:430px){
+.hero h1{font-size:23px}
+.herosub{font-size:15px}
+.hero .kick{font-size:11px}
+.bar h2{font-size:15.5px}
+.sidetitle{font-size:13px}
+.mbtn{font-size:12.5px}
+.sorter .q{font-size:15.5px}
+.face p{font-size:14.5px}
+.ftab button{min-width:104px;font-size:11.5px}
+}
+
+.backhome{display:inline-flex;align-items:center;gap:7px;margin:0 0 14px;padding:7px 16px 7px 13px;
+border:3px solid var(--ink);border-radius:999px;background:#fff;box-shadow:var(--pop-sm);
+font-size:13px;font-weight:800;text-decoration:none;color:var(--ink);transition:.12s;line-height:1.2}
+.backhome:hover{background:var(--yellow)}
+.backhome:active{transform:translate(3px,3px);box-shadow:none}
+.backhome b{font-weight:900}
+footer .fhome{display:inline-block;margin-top:16px;color:var(--yellow);font-weight:900;text-transform:uppercase;
+letter-spacing:1px;font-size:12px;text-decoration:none;border-bottom:2px solid var(--yellow);padding-bottom:2px}
+footer .fhome:hover{color:#fff;border-bottom-color:#fff}
+@media(max-width:780px){.backhome{min-height:44px;padding:9px 18px 9px 15px;font-size:13.5px}}
+
+/* ============ Back to Nudgeable homepage ============ */
+.back-home{
+  position:fixed;top:18px;right:22px;z-index:950;
+  display:inline-flex;align-items:center;gap:7px;
+  background:#fff;border:3px solid var(--ink);border-radius:999px;
+  padding:8px 16px;font-size:13px;font-weight:800;color:var(--ink);
+  text-decoration:none;box-shadow:var(--pop-sm);transition:.12s;
+}
+.back-home:hover{background:var(--yellow)}
+.back-home:active{transform:translate(2px,2px);box-shadow:none}
+@media (max-width:780px){.back-home{top:12px;right:12px;padding:7px 13px;font-size:12.5px}}
+</style>
+</head>
+<body>
+
+<a class="back-home" href="/">&larr; Back to Nudgeable</a>
+<div class="shell">
+
+<aside class="side">
+  <a class="backhome" href="index.html">&larr; <b>AI for Work</b></a>
+  <div class="sidehead"><span class="mascot" data-mood="neutral"></span><span class="sidetitle">Vibe Coding</span></div>
+  <nav class="steps" id="steps"><span class="fill" id="railfill"></span>
+    <a href="#what"><i>1</i><span>What it is</span></a>
+    <a href="#where"><i>2</i><span>Where the button is</span></a>
+    <a href="#when"><i>3</i><span>When it is worth it</span></a>
+    <a href="#limits"><i>4</i><span>Where it stops</span></a>
+    <a href="#vs"><i>5</i><span>Or a coding agent</span></a>
+    <a href="#myths"><i>6</i><span>Common errors</span></a>
+    <a href="#sorter"><i>7</i><span>Sort your job</span></a>
+    <a href="#tools"><i>8</i><span>Each tool</span></a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <span class="kick">A plain guide</span>
+  <h1>What is<br><span style="color:var(--yellow)">vibe coding?</span></h1>
+  <p class="herosub"><span class="type" id="type"></span><span class="cursor"></span></p>
+  <div class="herorow">
+    <span class="mascot" data-mood="neutral"></span>
+    <p>You describe what you want in plain English and the AI writes the code and hands you something that runs. No files, no setup, no developer. It is the fastest way to turn an idea into a thing people can click, and worth understanding before you rely on one.</p>
+  </div>
+  <div class="cta">
+    <a class="btn btn-y" href="#what">Show me how it works</a>
+    <a class="btn btn-w" href="#sorter">Is my job a vibe coding job?</a>
+  </div>
+</header>
+
+<!-- 1 WHAT -->
+<section id="what">
+  <div class="bar"><span class="num">1</span><h2>You describe it, the AI builds it</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Four steps, and the fourth one is the one that matters. Tap through them.</p>
+
+  <div class="months" id="months">
+    <button class="mbtn on">You ask</button><button class="mbtn">It builds</button>
+    <button class="mbtn">You feel clever</button><button class="mbtn">The correction</button>
+  </div>
+  <div class="mstage">
+    <figure class="pnl" id="mpnl"><img id="mimg" src="assets/images/what-is-vibe-coding-01.jpg" alt="Comic panel"></figure>
+    <div class="mcost"><h4 id="mh">You ask in plain English</h4><p id="mp"></p></div>
+  </div>
+
+  <div class="km"><button>Know more: where the phrase came from <span class="pm">+</span></button>
+    <div class="body">
+      <p>Andrej Karpathy, one of the founders of OpenAI, coined it in a post in February 2025. He described giving in to the vibes and forgetting that the code even exists, which was meant playfully and about his own weekend projects.</p>
+      <p>Collins Dictionary made it word of the year for 2025, which is roughly when the phrase stopped being a joke among engineers and started appearing in company plans.</p>
+      <p>Karpathy has since moved to calling the serious version agentic engineering, to keep it separate from the casual meaning. That split is the whole subject of this page.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 WHERE -->
+<section id="where">
+  <div class="bar"><span class="num">2</span><h2>Where is the vibe coding button?</h2><span class="chev">&lt;</span></div>
+  <p class="lead">There isn't one. It is a way of using the chat you already have, and every tool has given it a different product name.</p>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-02.jpg" alt="Comic panel: looking for the button" loading="lazy"></figure>
+      <p class="pnlcap"><b>Everyone looks for the button first.</b> A new way of working usually arrives as a new menu item, so people go hunting for one.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-03.jpg" alt="Comic panel: there isn't one" loading="lazy"></figure>
+      <p class="pnlcap"><b>It is not a feature, it is a way of asking.</b> You ask for a thing you can use rather than an answer you can read, and the tool opens its building mode on its own.</p></div>
+  </div>
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-04.jpg" alt="Comic panel: same idea, different product names" loading="lazy"></figure>
+      <p class="pnlcap"><b>Same idea, three product names.</b> The same request produces a working tool in each of the big three, under a name each company chose for itself.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-05.jpg" alt="Comic panel: the idea is the same" loading="lazy"></figure>
+      <p class="pnlcap"><b>Learn it once and it travels.</b> Nothing about the skill changes when you move tools. Only the name on the panel changes.</p></div>
+  </div>
+
+  <div class="tip"><span class="bulb">💡</span><div>
+    <strong>You are already in the right place</strong>
+    <p>If you can chat with the AI, you can do this today. Ask for a working tool rather than an explanation. "Build me a tracker for this" rather than "how would I build a tracker for this" is the whole difference.</p>
+  </div></div>
+</section>
+
+<!-- 3 WHEN -->
+<section id="when">
+  <div class="bar"><span class="num">3</span><h2>When it is worth doing</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Four situations where this beats every other option you have, including waiting for someone else to build it.</p>
+
+  <div style="margin-top:24px"><figure class="pnl"><img src="assets/images/what-is-vibe-coding-06.jpg" alt="Comic panel: when should I use this" loading="lazy"></figure>
+    <p class="pnlcap"><b>The honest answer is narrow.</b> It is excellent for a small set of jobs and a poor choice outside them, and the whole skill is knowing which is which.</p></div>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-07.jpg" alt="Comic panel: test an idea fast" loading="lazy"></figure>
+      <p class="pnlcap"><b>Test an idea before you commit to it.</b> You find out in ten minutes whether the thing you imagined is actually useful, which normally takes a month and a budget.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-08.jpg" alt="Comic panel: a small tool for your team" loading="lazy"></figure>
+      <p class="pnlcap"><b>Build a small tool for your own team.</b> A tracker, a checklist, a calculator. Small enough that if it is wrong, you will know and nobody outside the room is affected.</p></div>
+  </div>
+
+  <div style="margin-top:22px"><figure class="pnl"><img src="assets/images/what-is-vibe-coding-09.jpg" alt="Comic panel: a demo people can click" loading="lazy"></figure>
+    <p class="pnlcap"><b>Show an idea instead of describing it.</b> This is the most undervalued use. People argue with a slide about a dashboard and agree instantly once they can click one.</p></div>
+
+  <div class="g2">
+    <div class="cardx"><div class="ic">🧪</div><h3>Testing an idea</h3>
+      <p>You are not sure the idea is any good. Build it badly, look at it, and decide.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">The value here is the decision, not the thing you built. Expect to throw it away, and it becomes the cheapest research you will ever run.
+        <div><span class="pill p-g">Throw it away</span><span class="pill">Ten minutes</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:var(--bluepale)">🛠️</div><h3>A small tool for one team</h3>
+      <p>Something the people sitting near you will use, on information that is not sensitive.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Keep it to one team and keep the information ordinary. The moment it holds anything about customers, salaries or health, it stops being a small tool and becomes a responsibility.
+        <div><span class="pill p-b">One team</span><span class="pill">No personal details</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:#D8F7E4">📺</div><h3>A demo for a meeting</h3>
+      <p>Something people can click for two minutes so the conversation stops being abstract.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Say out loud that it is a mock, every single time. A good looking demo is very easily mistaken for a finished product, and the person who mistakes it is usually the one approving the budget.
+        <div><span class="pill p-g">Say it is a mock</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:#E7E0FF">🧮</div><h3>A one-off calculation</h3>
+      <p>A working out you need once, on numbers you already have in front of you.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Check the answer by hand on one row before you trust the other four hundred. This takes a minute and catches the mistakes that matter.
+        <div><span class="pill">Check one row by hand</span></div></div></div>
+  </div>
+</section>
+
+<!-- 4 LIMITS -->
+<section id="limits">
+  <div class="bar"><span class="num">4</span><h2>Where it stops</h2><span class="chev">&lt;</span></div>
+  <p class="lead">The front of a vibe coded app is genuinely good, which is the problem. The part you cannot see is where it runs out.</p>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-10.jpg" alt="Comic panel: this looks production ready" loading="lazy"></figure>
+      <p class="pnlcap"><b>It does look finished.</b> Real layout, real buttons, sensible headings. Nothing about the screen tells you what is behind it.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-11.jpg" alt="Comic panel: from the front, yes" loading="lazy"></figure>
+      <p class="pnlcap"><b>From the front, yes.</b> That is a careful answer and it is worth hearing properly.</p></div>
+  </div>
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-12.jpg" alt="Comic panel: what is missing behind the screen" loading="lazy"></figure>
+      <p class="pnlcap"><b>The numbers are usually invented.</b> Sample figures typed in to make the screen look right, no real source behind them, and nothing stopping a stranger opening it.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-13.jpg" alt="Comic panel: real data and permissions are harder" loading="lazy"></figure>
+      <p class="pnlcap"><b>Everything that makes it real is the hard part.</b> Real information, logins, who is allowed to see what, and holding up when thirty people use it at once.</p></div>
+  </div>
+
+  <div class="tip warn"><span class="bulb">⚠️</span><div><strong>This goes wrong in public, regularly</strong>
+    <p>Researchers found roughly five thousand vibe coded apps left open by their privacy settings, and around four in ten had almost no login protection at all. Hospital schedules, sales records and internal presentations were sitting at addresses anyone could open. Nobody involved meant to publish any of it.</p></div></div>
+
+  <div class="folder">
+    <div class="ftab">
+      <button class="on" data-f="0">What is usually missing</button>
+      <button data-f="1">Check before you share it</button>
+      <button data-f="2">Stop and get help</button>
+    </div>
+    <div class="fbody">
+      <div class="fpane on" data-fp="0">
+        <div class="fileline"><span class="fi" style="background:var(--red)">🔢</span><div><b>Real information</b><span>The numbers on screen are usually typed in to make it look right. Nothing is connected to the place your real figures are kept.</span></div></div>
+        <div class="fileline"><span class="fi" style="background:var(--red)">🔑</span><div><b>A real login</b><span>Often there is none, or it accepts any email address with no password. Anyone with the address can open it.</span></div></div>
+        <div class="fileline"><span class="fi" style="background:var(--orange)">👥</span><div><b>Who may see what</b><span>A finished tool knows that a manager sees more than a trainee. A vibe coded one usually shows everything to everyone.</span></div></div>
+        <div class="fileline"><span class="fi" style="background:var(--orange)">💾</span><div><b>Anything saved properly</b><span>Close the tab and what people typed may be gone. There is rarely a backup and almost never a way to undo a mistake.</span></div></div>
+        <div class="fileline"><span class="fi" style="background:var(--muted)">📈</span><div><b>Holding up under load</b><span>Fine for one person clicking around. Thirty people on a Monday morning is a different question entirely.</span></div></div>
+      </div>
+      <div class="fpane" data-fp="1">
+        <div class="chatline"><span class="dot" style="background:var(--green)"></span>Open the link in a private browser window. If it lets you straight in, so will everyone else</div>
+        <div class="chatline"><span class="dot" style="background:var(--green)"></span>Ask who else has this address, and whether search engines can find it</div>
+        <div class="chatline"><span class="dot" style="background:var(--green)"></span>Check every number against its real source before anyone makes a decision on it</div>
+        <div class="chatline"><span class="dot" style="background:var(--green)"></span>Take out anything about a named person, a customer, a salary or a price you would not email outside</div>
+        <div class="chatline"><span class="dot" style="background:var(--green)"></span>Say in writing that it is a prototype, so nobody treats it as the official version</div>
+      </div>
+      <div class="fpane" data-fp="2">
+        <p style="margin:0 0 12px;font-size:15px">Some jobs are not a matter of being careful. Hand these to a developer from the start.</p>
+        <div class="chatline"><span class="dot" style="background:var(--red)"></span>It takes payments, or holds card or bank details</div>
+        <div class="chatline"><span class="dot" style="background:var(--red)"></span>It holds anything about customers, staff, salaries or health</div>
+        <div class="chatline"><span class="dot" style="background:var(--red)"></span>It writes to a real system, where a wrong entry cannot be undone</div>
+        <div class="chatline"><span class="dot" style="background:var(--red)"></span>People outside your company will use it</div>
+        <div class="chatline"><span class="dot" style="background:var(--red)"></span>Someone would be in trouble if it stopped working for a day</div>
+        <div class="nope"><strong>The useful way to think about it</strong>
+          <p>Vibe coding is excellent at proving an idea and poor at carrying a responsibility. Use it to win the argument, then have the real thing built. That is a success, not a failure.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 VS -->
+<section id="vs">
+  <div class="bar"><span class="num">5</span><h2>Vibe coding or a coding agent</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Same AI underneath, two completely different jobs. This is the comparison people get wrong most often.</p>
+
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-14.jpg" alt="Comic panel: is this the same as a coding agent" loading="lazy"></figure>
+      <p class="pnlcap"><b>They sound like the same thing.</b> Both are an AI writing code because you asked it to, so the question is fair.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-15.jpg" alt="Comic panel: vibe coding builds inside the chat" loading="lazy"></figure>
+      <p class="pnlcap"><b>Vibe coding builds inside the chat.</b> There are no files to open and nothing to set up. You get a working thing and you never see the code.</p></div>
+  </div>
+  <div class="pgrid">
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-16.jpg" alt="Comic panel: coding agents work on real code" loading="lazy"></figure>
+      <p class="pnlcap"><b>A coding agent works on a real project.</b> Actual files, tests that pass or fail, a record of every change and a way to undo one.</p></div>
+    <div><figure class="pnl"><img src="assets/images/what-is-vibe-coding-17.jpg" alt="Comic panel: building with vibes or with engineering" loading="lazy"></figure>
+      <p class="pnlcap"><b>One shows the idea, the other ships it.</b> They are not competing. Most good work starts as the first and ends as the second.</p></div>
+  </div>
+
+  <div class="g2">
+    <div class="cardx"><div class="ic">💬</div><h3>Vibe coding</h3>
+      <p>Minutes. Inside the chat. No files, no code to read, no way to undo.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Best when the question is "is this idea any good". You are buying a decision, not a product. If you are checking the code, you have left vibe coding and are doing something else.
+        <div><span class="pill p-y">Prototypes</span><span class="pill p-y">Demos</span><span class="pill p-y">Small team tools</span></div></div></div>
+
+    <div class="cardx"><div class="ic" style="background:var(--bluepale)">⌨️</div><h3>A coding agent</h3>
+      <p>Hours or days. Inside a real project, with tests, a history of changes and a developer reviewing it.</p>
+      <div class="toggle">Tap for detail ↓</div>
+      <div class="more">Best when the answer has to keep working next month. It needs someone who can read what it produced, which is the real dividing line between the two.
+        <div><span class="pill p-b">Real products</span><span class="pill p-b">Live systems</span><span class="pill p-b">Needs a developer</span></div></div></div>
+  </div>
+</section>
+
+<!-- 6 MYTHS -->
+<section id="myths">
+  <div class="bar"><span class="num">6</span><h2>Three things people get wrong</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Tap a card to turn it over.</p>
+  <div class="g3">
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"If it runs, it works."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>The screen running proves the screen runs. It says nothing about whether the numbers are real, who can open it, what happens when two people use it at once, or whether anything gets saved.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"This means we do not need developers any more."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>It removes the developer from the first draft, not from the finished product. Most vibe coded things that matter get rebuilt properly, and arriving at that point with a working prototype is a much better start than arriving with a slide.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+    <div class="flipwrap"><div class="flipin">
+      <div class="face front"><span class="lab">Myth</span><p>"It is the same as using a coding agent."</p><span class="flipnote">Tap to flip</span></div>
+      <div class="face back"><span class="lab">Actually</span><p>Vibe coding builds in the chat with no files and no way to undo. A coding agent works inside a real project with tests and a full history. One is for showing an idea, the other is for shipping it.</p><span class="flipnote">Tap to flip back</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 7 SORTER -->
+<section id="sorter">
+  <div class="bar"><span class="num">7</span><h2>Is this a vibe coding job?</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Six real requests. Decide whether you would build it yourself in a chat, or hand it to a developer.</p>
+
+  <div class="sorter">
+    <span class="mascot" data-mood="think"></span>
+    <p class="q" id="sq"></p>
+    <div class="sbtns">
+      <button class="sbtn" id="sy">Vibe code it</button>
+      <button class="sbtn alt" id="sn">Needs a developer</button>
+    </div>
+    <p class="fb" id="sfb"></p>
+    <button class="snext" id="snext">Next →</button>
+    <p class="prog" id="sprog"></p>
+  </div>
+</section>
+
+<!-- 8 TOOLS -->
+<section id="tools">
+  <div class="bar"><span class="num">8</span><h2>The same idea in each tool</h2><span class="chev">&lt;</span></div>
+  <p class="lead">Four names for one way of working. Each name links to the official page.</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Tool</th><th>Called</th><th>What it makes</th><th>Worth knowing</th></tr></thead>
+    <tbody>
+      <tr><td>Claude</td><td><a class="hl" href="https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" target="_blank" rel="noopener">Artifacts</a></td><td>A working page or small app that appears beside the conversation, with a link you can share.</td><td>Opens on its own as soon as you ask for something to use rather than something to read.</td></tr>
+      <tr><td>ChatGPT</td><td><a class="hl" href="https://help.openai.com/en/articles/9930697" target="_blank" rel="noopener">Sites and Canvas</a></td><td>Sites builds and hosts a usable tool at a shareable address. Canvas is the side by side editor for documents and code.</td><td>Sites arrived on paid plans during 2026 and was not on the free tier when this page was written.</td></tr>
+      <tr><td>Google Gemini</td><td><a class="hl" href="https://support.google.com/gemini/answer/16047321" target="_blank" rel="noopener">Canvas</a></td><td>A page you and Gemini edit side by side, covering documents, code and small working apps.</td><td>Started as a writing and editing space and grew into building. Handy if your files already sit in Google.</td></tr>
+      <tr><td>Microsoft Copilot</td><td><a class="hl" href="https://support.microsoft.com/en-us/topic/get-started-with-microsoft-365-copilot-pages-f0078631-bc66-4383-a48b-6f4c92cfb9a0" target="_blank" rel="noopener">Pages</a>, with Power Apps behind it</td><td>A shared page your team works on together, with proper app building handled by a separate Microsoft tool.</td><td>Strongest when the tool has to sit on your organisation's own Microsoft information. Usually set up by your admin.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tip"><span class="bulb">💡</span><div><strong>Names move, the idea does not</strong>
+    <p>These names and plan details change every few months, and the table is correct as of September 2026. What has not moved is the skill itself: describe the thing you want to use, look at what comes back, say what is wrong, repeat. That works in all four and will work in whatever replaces them.</p></div></div>
+</section>
+
+</main>
+</div>
+
+<footer><div class="wrap"><div class="fl">Nudgeable.ai</div><div>Use it to win the argument. Then have the real thing built.</div><a class="fhome" href="index.html">&larr; All guides</a></div></footer>
+
+<div class="lb" id="lb"><span class="lb-x">&times;</span><img id="lbi" src="" alt=""></div>
+
+<script>
+/* ---------- mascot ---------- */
+var MOUTH={neutral:'M42 68 q8 7 16 0',happy:'M40 65 q10 13 20 0 q-10 5 -20 0',tired:'M43 69 h14',
+ sad:'M42 71 q8 -7 16 0',think:'M43 69 q6 4 12 -1'};
+function cloudSVG(mood){
+ var m=MOUTH[mood]||MOUTH.neutral, tired=(mood==='tired');
+ return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+ '<g fill="#2F7FE8" stroke="#2F7FE8" stroke-width="7"><circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/>'+
+ '<circle cx="74" cy="56" r="17"/><circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/></g>'+
+ '<g fill="#DCF2FD"><circle cx="50" cy="52" r="25"/><circle cx="26" cy="56" r="17"/><circle cx="74" cy="56" r="17"/>'+
+ '<circle cx="36" cy="33" r="18"/><circle cx="64" cy="34" r="16"/></g>'+
+ '<g class="sparks" fill="#FFD93D"><rect x="14" y="20" width="5" height="13" rx="2" transform="rotate(-25 16 26)"/>'+
+ '<rect x="82" y="20" width="5" height="13" rx="2" transform="rotate(25 84 26)"/>'+
+ '<rect x="48" y="6" width="5" height="12" rx="2"/></g>'+
+ '<line x1="44" y1="52" x2="56" y2="52" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="35" cy="52" r="11" fill="#fff" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="65" cy="52" r="11" fill="#fff" stroke="#F68A29" stroke-width="4"/>'+
+ '<circle cx="35" cy="52" r="4.5" fill="#16202B"/><circle cx="65" cy="52" r="4.5" fill="#16202B"/>'+
+ (tired
+   ? '<rect x="25" y="42" width="20" height="8" fill="#DCF2FD"/><rect x="55" y="42" width="20" height="8" fill="#DCF2FD"/>'
+   : '<rect class="blinker" x="25" y="41" width="20" height="12" fill="#DCF2FD"/>'+
+     '<rect class="blinker b2" x="55" y="41" width="20" height="12" fill="#DCF2FD"/>')+
+ '<path d="'+m+'" fill="none" stroke="#16202B" stroke-width="3.5" stroke-linecap="round"/></svg>';
+}
+function setMood(el,mood){el.className='mascot mood-'+mood;el.dataset.mood=mood;el.innerHTML=cloudSVG(mood);}
+document.querySelectorAll('.mascot').forEach(function(el){setMood(el,el.dataset.mood||'neutral')});
+
+/* ---------- typewriter ---------- */
+(function(){var w=["You describe it. The chatbot builds it.","It is a way of asking, not a button.","Great for a demo. Not a finished product."],i=0,c=0,d=false,el=document.getElementById('type');
+function t(){var s=w[i];el.textContent=d?s.substring(0,c--):s.substring(0,c++);var ms=d?45:85;
+if(!d&&c===s.length+1){d=true;ms=1600}else if(d&&c<0){d=false;i=(i+1)%w.length;c=0;ms=300}setTimeout(t,ms)}t()})();
+
+/* ---------- step stepper ---------- */
+var MON=[
+ {img:'assets/images/what-is-vibe-coding-18.jpg',h:'You ask in plain English',
+  p:'Build me a dashboard for training participation and follow-up. No file names, no setup, no technical words. You describe the thing you want to look at, the way you would describe it to a colleague.'},
+ {img:'assets/images/what-is-vibe-coding-19.jpg',h:'You get a working thing',
+  p:'Numbers, a chart, a breakdown of who has finished and who has not. It runs, you can click it, and it took under a minute. This is the part that makes people sit up in a meeting.'},
+ {img:'assets/images/what-is-vibe-coding-20.jpg',h:'It feels like you can code now',
+  p:'Almost everyone has this moment, and it is worth enjoying. It is also worth stopping to understand what actually happened, because the next section depends on it.'},
+ {img:'assets/images/what-is-vibe-coding-21.jpg',h:'You wrote English, it wrote the code',
+  p:'That distinction matters more than it sounds. You did the describing and the judging, which is real work. You did not do the engineering, and you cannot check the engineering either. Everything on this page follows from that.'}];
+var mb=document.querySelectorAll('#months .mbtn'),mimg=document.getElementById('mimg'),
+ mh=document.getElementById('mh'),mp=document.getElementById('mp');
+function showMonth(i){mb.forEach(function(b,j){b.classList.toggle('on',i===j)});
+ mimg.src=MON[i].img;mh.textContent=MON[i].h;mp.textContent=MON[i].p;}
+mb.forEach(function(b,i){b.addEventListener('click',function(){showMonth(i)})});
+showMonth(0);
+
+/* ---------- know more ---------- */
+document.querySelectorAll('.km').forEach(function(k){
+ k.querySelector('button').addEventListener('click',function(){
+  k.classList.toggle('on');k.querySelector('.pm').textContent=k.classList.contains('on')?'−':'+';})});
+
+/* ---------- cards ---------- */
+document.querySelectorAll('.cardx').forEach(function(c){
+ var m=c.querySelector('.more');if(!m)return;
+ c.addEventListener('click',function(e){if(e.target.tagName==='A')return;
+  c.classList.toggle('on');
+  c.querySelector('.toggle').textContent=c.classList.contains('on')?'Tap to close ↑':'Tap for detail ↓';})});
+
+/* ---------- folder tabs ---------- */
+var ftabs=document.querySelectorAll('.ftab button'),fpanes=document.querySelectorAll('.fpane');
+ftabs.forEach(function(t){t.addEventListener('click',function(){
+ ftabs.forEach(function(x){x.classList.remove('on')});fpanes.forEach(function(p){p.classList.remove('on')});
+ t.classList.add('on');document.querySelector('.fpane[data-fp="'+t.dataset.f+'"]').classList.add('on');})});
+
+/* ---------- myth flips ---------- */
+document.querySelectorAll('.flipwrap').forEach(function(f){f.addEventListener('click',function(){f.classList.toggle('on')})});
+
+/* ---------- sorter ---------- */
+var QS=[
+ {q:'A dashboard so your team can see who has finished this quarter’s training, built from a spreadsheet you paste in.',
+  a:true,
+  y:'Right. One team, ordinary information, and you will know within a minute whether it is actually useful to anyone.',
+  n:'This one is fine to build yourself. It is one team, the information is ordinary, and a mistake costs you nothing but a rebuild.'},
+ {q:'A page on your company website where customers type in their card details to pay you.',
+  a:false,
+  y:'Not this one. Anything taking payments or card details needs a proper security review. This is exactly where vibe coded apps have failed in public.',
+  n:'Right. Payments and card details are never a prototype. That needs a developer and a real security review, every time.'},
+ {q:'A clickable mock of a new app screen, to show in Monday’s meeting instead of a slide.',
+  a:true,
+  y:'Right. This is the best use there is. People argue with a slide describing a screen and agree in seconds once they can click one.',
+  n:'You can safely do this one yourself. Say clearly that it is a mock, and it is the cheapest way to make an idea real in a meeting.'},
+ {q:'A tool that reads your customer records and updates them when someone changes an address.',
+  a:false,
+  y:'Not this one. The moment it writes to real records, a mistake is permanent and there is usually no way to undo it.',
+  n:'Right. Reading is one thing, writing to a real system is another. That needs a developer and a way to reverse a bad change.'},
+ {q:'A calculator your sales team uses to work out a price, using rates you type in yourself.',
+  a:true,
+  y:'Right, as long as the rates are not confidential and somebody checks the maths on one real deal before anyone trusts it.',
+  n:'This one is fine. It is a tool, not a system. Check the working on one real deal by hand and you have covered the risk.'},
+ {q:'An internal tracker you want thirty people across three offices logging into every day.',
+  a:false,
+  y:'Not this one. Once it needs real logins, permissions and daily uptime, you have crossed the line. Prove the idea with a prototype, then have it built.',
+  n:'Right. Thirty daily users across three offices means real logins, permissions and someone to call when it stops working.'}
+];
+var si=0, score=0, answered=false;
+var sq=document.getElementById('sq'),sy=document.getElementById('sy'),sn=document.getElementById('sn'),
+ sfb=document.getElementById('sfb'),snext=document.getElementById('snext'),sprog=document.getElementById('sprog'),
+ smasc=document.querySelector('.sorter .mascot');
+function showQ(){
+ answered=false;
+ sq.textContent=QS[si].q; sfb.textContent=''; sfb.className='fb';
+ sy.disabled=false; sn.disabled=false; snext.classList.remove('on');
+ sprog.textContent='QUESTION '+(si+1)+' OF '+QS.length+'   ·   SCORE '+score;
+ setMood(smasc,'think');
+}
+function answer(said){
+ if(answered)return; answered=true;
+ var item=QS[si], right=(said===item.a);
+ if(right)score++;
+ sfb.innerHTML='<b>'+(right?'Correct.':'Not quite.')+'</b> '+(said?item.y:item.n);
+ sfb.className='fb'+(right?' ok':'');
+ setMood(smasc,right?'happy':'sad');
+ sy.disabled=true; sn.disabled=true;
+ sprog.textContent='QUESTION '+(si+1)+' OF '+QS.length+'   ·   SCORE '+score;
+ if(si<QS.length-1){snext.classList.add('on');}
+ else{
+  snext.textContent='Start again';snext.classList.add('on');
+  var msg = score===QS.length ? 'All six. You already know where the line is.'
+    : score>=4 ? 'Solid. The ones people miss are the two that write to real systems.'
+    : 'Worth a second run. The pattern is simple: real information, real logins or real consequences means a developer.';
+  sfb.innerHTML+='<br><br><b>'+score+' out of '+QS.length+'.</b> '+msg;
+ }
+}
+sy.addEventListener('click',function(){answer(true)});
+sn.addEventListener('click',function(){answer(false)});
+snext.addEventListener('click',function(){
+ if(si<QS.length-1){si++;}
+ else{si=0;score=0;snext.textContent='Next →';}
+ showQ();});
+showQ();
+
+/* ---------- lightbox ---------- */
+var lb=document.getElementById('lb'),lbi=document.getElementById('lbi');
+document.querySelectorAll('.pnl').forEach(function(c){c.addEventListener('click',function(){
+ lbi.src=c.querySelector('img').src;lb.classList.add('on');document.body.style.overflow='hidden';})});
+lb.addEventListener('click',function(){lb.classList.remove('on');document.body.style.overflow=''});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){lb.classList.remove('on');document.body.style.overflow=''}});
+
+/* ---------- left step rail ---------- */
+var secs=document.querySelectorAll('section[id]'),
+    links=document.querySelectorAll('.steps a'),
+    rail=document.getElementById('steps'),
+    fill=document.getElementById('railfill');
+function railUpdate(){
+  var y=window.scrollY+160,idx=-1;
+  secs.forEach(function(s,i){if(s.offsetTop<=y)idx=i});
+  links.forEach(function(a,i){a.classList.toggle('act',i===idx);a.classList.toggle('done',i<idx)});
+  if(idx<0){fill.style.height='0px';return;}
+  var r=rail.getBoundingClientRect(),t=links[idx].getBoundingClientRect();
+  fill.style.height=Math.max(0,(t.top-r.top)+17)+'px';
+}
+window.addEventListener('scroll',railUpdate,{passive:true});
+window.addEventListener('resize',railUpdate);
+railUpdate();
+</script>
+</body>
+</html>
