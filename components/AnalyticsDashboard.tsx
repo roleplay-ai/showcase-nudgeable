@@ -280,6 +280,7 @@ export function AnalyticsDashboard() {
               <th>Time</th>
               <th>Event</th>
               <th>Route</th>
+              <th>IP address</th>
             </tr>
           </thead>
           <tbody>
@@ -288,10 +289,11 @@ export function AnalyticsDashboard() {
                 <td>{formatTime(event.created_at)}</td>
                 <td><span className={`analytics-badge analytics-badge-${event.event_type}`}>{event.event_type}</span></td>
                 <td><code>{formatRoute(event.route)}</code></td>
+                <td>{event.ip}</td>
               </tr>
             ))}
             {!loading && data && !data.events.length && (
-              <tr><td colSpan={3}>No events match these filters yet.</td></tr>
+              <tr><td colSpan={4}>No events match these filters yet.</td></tr>
             )}
           </tbody>
         </table>
