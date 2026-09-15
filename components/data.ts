@@ -25,15 +25,16 @@ export const clientLogos: ClientLogo[] = [
 export type SessionPhoto = {
   alt: string;
   src: string;
+  caption: string;
 };
 
 export const sessionPhotos: SessionPhoto[] = [
-  { alt: 'AI training session for fashion ecommerce teams', src: '/sessions/fashion-ecommerce.png' },
-  { alt: 'AI training session for HR teams', src: '/sessions/hr-team.png' },
-  { alt: 'AI training session for finance teams', src: '/sessions/finance-team.png' },
-  { alt: 'AI training session for manufacturing teams', src: '/sessions/manufacturing-team.png' },
-  { alt: 'AI training session for senior leadership', src: '/sessions/senior-leadership.png' },
-  { alt: 'AI training session for customer experience teams', src: '/sessions/customer-experience.png' }
+  { alt: 'AI training session for fashion ecommerce teams', src: '/sessions/fashion-ecommerce.png', caption: 'For fashion ecommerce' },
+  { alt: 'AI training session for HR teams', src: '/sessions/hr-team.png', caption: 'For an HR team' },
+  { alt: 'AI training session for finance teams', src: '/sessions/finance-team.png', caption: 'For a finance team' },
+  { alt: 'AI training session for manufacturing teams', src: '/sessions/manufacturing-team.png', caption: 'For a manufacturing team' },
+  { alt: 'AI training session for senior leadership', src: '/sessions/senior-leadership.png', caption: 'For senior leadership' },
+  { alt: 'AI training session for customer experience teams', src: '/sessions/customer-experience.png', caption: 'For customer experience' }
 ];
 
 export type AiTool = {
