@@ -1,13 +1,15 @@
+'use client';
+
+import { useState } from 'react';
 import { Icon } from '@/components/Icon';
 import { formatBlogDate, type BlogPost } from '@/lib/blogs';
 
-type Guide = { title: string; href: string };
+type Guide = { title: string; href?: string };
 type Track = {
   n: string;
   color: 'yellow' | 'blue' | 'green' | 'orange' | 'purple' | 'red';
   icon: 'spark' | 'calendar' | 'chart' | 'workflow' | 'people' | 'shield';
   title: string;
-  topics: string[];
   guides: Guide[];
   seeAll: string;
   note?: string;
@@ -16,67 +18,70 @@ type Track = {
 const tracks: Track[] = [
   {
     n: 'Track 01', color: 'yellow', icon: 'spark', title: 'How GenAI Works',
-    topics: ['Models, tokens and context', 'Memory across conversations', 'Why answers vary between attempts'],
     guides: [
-      { title: 'AI breaks text into smaller pieces before it processes it', href: '/ai-academy/foundations/ai-foundations-tokens.html' },
-      { title: 'The context window is what the model can use for the current turn', href: '/ai-academy/foundations/ai-foundations-context-window.html' },
-      { title: 'Memory is how an AI product carries information into future chats', href: '/ai-academy/foundations/ai-foundations-ai-memory.html' },
-      { title: 'GenAI vs other AI: generation, prediction and rules', href: '/ai-academy/foundations/ai-foundations-genai-vs-other-ai.html' }
+      { title: 'How Generative AI Differs From Other AI', href: '/ai-academy/foundations/ai-foundations-genai-vs-other-ai.html' },
+      { title: 'What Are Tokens and Why Do They Matter?', href: '/ai-academy/foundations/ai-foundations-tokens.html' },
+      { title: 'What Is an AI Context Window?', href: '/ai-academy/foundations/ai-foundations-context-window.html' },
+      { title: 'How AI Memory Works Across Conversations', href: '/ai-academy/foundations/ai-foundations-ai-memory.html' },
+      { title: "AI Models vs Thinking Effort: What's the Difference?", href: '/ai-for-work/models-and-thinking-effort.html' },
+      { title: 'When Should You Use a Smaller AI Model?', href: '/insights/blogs/when-should-you-use-a-lower-end-ai-model' },
+      { title: 'Why the Same AI Model Can Suddenly Cost More', href: '/insights/blogs/claude-s-price-didn-t-change-but-your-api-bill-might' },
+      { title: 'How AI Companies Make Money', href: '/ai-academy/foundations/ai-foundations-ai-economics.html' }
     ],
     seeAll: '/ai-academy/foundations/index.html'
   },
   {
     n: 'Track 02', color: 'blue', icon: 'calendar', title: 'AI for Everyday Work',
-    topics: ['Asking well and checking the answer', 'Research, writing and meetings', 'All ChatGPT features for work'],
     guides: [
-      { title: 'Give the model context before you ask', href: '/ai-academy/tips/give-context-before-you-ask.html' },
-      { title: 'Say it before you type it', href: '/ai-academy/tips/say-it-before-you-type.html' },
-      { title: "Your instructions and your content aren't the same thing", href: '/ai-academy/tips/separate-instructions-from-content.html' },
-      { title: 'Work: all ChatGPT features in one place', href: '/ai-academy/chatgpt/work.html' }
+      { title: 'Browser, Desktop or Phone: Where Should You Use AI?', href: '/insights/blogs/where-should-you-run-claude-or-chatgpt-browser-desktop-app-or-phone' },
+      { title: 'Chat vs Work: Which One Should You Use?', href: '/insights/blogs/when-should-you-use-chat-or-work' },
+      { title: 'How AI Projects Keep Your Work and Context Together', href: '/ai-for-work/what-are-ai-projects.html' },
+      { title: 'How AI Skills Save Reusable Ways of Working', href: '/ai-for-work/what-are-ai-skills.html' },
+      { title: 'Which Work Should You Delegate to AI?' },
+      { title: 'How to Keep Up With AI Without Following Everything' }
     ],
-    seeAll: '/ai-academy/tips/index.html'
+    seeAll: '/ai-for-work/index.html'
   },
   {
     n: 'Track 03', color: 'green', icon: 'chart', title: 'Data, Dashboards and Design',
-    topics: ['Reading a spreadsheet with AI', 'Charts from a raw file', 'Turning a report into slides'],
     guides: [
-      { title: 'Analyse large data with Shortcut AI', href: '/ai-academy/tools/index.html#c-data-and-presentations' },
-      { title: 'Build flowcharts with Napkin AI', href: '/ai-academy/tools/index.html#c-data-and-presentations' },
-      { title: 'Build presentations with Gamma AI', href: '/ai-academy/tools/index.html#c-data-and-presentations' },
-      { title: 'A table is easier to check than a paragraph', href: '/ai-academy/tips/table-easier-than-paragraph.html' }
+      { title: 'Why AI Dashboards Are Harder to Share Than They Look', href: "/insights/blogs/you-built-a-dashboard-from-excel-with-ai-why-can-t-your-manager-use-it" },
+      { title: 'What AI Can and Cannot Build Without Coding Knowledge', href: "/insights/blogs/why-you-can-t-build-a-proper-app-using-only-an-ai-chatbot-yet" },
+      { title: 'How AI Generates Images and Video', href: '/ai-academy/foundations/ai-foundations-image-video.html' },
+      { title: 'What Is Vibe Coding and Where Does It Work Well?', href: '/ai-for-work/what-is-vibe-coding.html' },
+      { title: 'How Vibe Coding Builds Software From Plain English', href: '/ai-academy/foundations/ai-foundations-vibe-coding.html' }
     ],
-    seeAll: '/ai-academy/tools/index.html#c-data-and-presentations'
+    seeAll: '/ai-academy/index.html'
   },
   {
     n: 'Track 04', color: 'orange', icon: 'workflow', title: 'Workflow Automation',
-    topics: ['Connectors and plugins', 'Automating a weekly report', 'Where automation goes wrong'],
     guides: [
-      { title: 'Build automations with Zapier', href: '/ai-academy/tools/index.html#c-agents-and-automation' },
-      { title: 'Build a text based agent with Chatbase', href: '/ai-academy/tools/index.html#c-agents-and-automation' },
-      { title: 'Build a website with Lovable', href: '/ai-academy/tools/index.html#c-agents-and-automation' },
-      { title: 'Run open source models on your laptop with LM Studio', href: '/ai-academy/tools/index.html#c-agents-and-automation' }
+      { title: 'How AI Connects to Your Apps', href: '/insights/blogs/apis-mcps-connectors-and-plugins-explained' },
+      { title: 'What Is an API?', href: '/ai-academy/foundations/ai-foundations-api.html' },
+      { title: 'How AI Uses External Tools', href: '/ai-academy/foundations/ai-foundations-tool-calling.html' },
+      { title: 'What Companies Actually Build When They Create an AI Chatbot', href: '/insights/blogs/did-your-company-really-build-its-own-ai-chatbot-usually-one-of-four-things-happ' }
     ],
-    seeAll: '/ai-academy/tools/index.html#c-agents-and-automation'
+    seeAll: '/ai-academy/index.html'
   },
   {
     n: 'Track 05', color: 'purple', icon: 'people', title: 'Building AI Agents',
-    topics: ['What an agent can run on its own', 'Tool calling, explained plainly', 'Try the interactive agent lab'],
     guides: [
-      { title: 'An agent works toward a goal instead of waiting for every next prompt', href: '/ai-academy/foundations/ai-foundations-ai-agents.html' },
-      { title: 'Tool calling lets AI get information or take action outside the chat', href: '/ai-academy/foundations/ai-foundations-tool-calling.html' },
-      { title: 'Anatomy of an AI Agent System (interactive)', href: '/ai-academy/foundations/anatomy-of-ai-agent.html' },
-      { title: 'Build a voice agent with Vapi', href: '/ai-academy/tools/index.html#c-agents-and-automation' }
+      { title: 'What Is an AI Agent and How Does It Work?', href: '/ai-academy/foundations/ai-foundations-ai-agents.html' },
+      { title: 'What Is a Work Agent?', href: '/ai-for-work/what-is-a-work-agent.html' },
+      { title: 'What Is a Coding Agent?', href: '/ai-for-work/what-is-a-coding-agent.html' },
+      { title: 'How Agents Use Prompts, Context, Loops and Harnesses', href: '/insights/blogs/prompt-context-loop-and-harness-engineering-explained' }
     ],
     seeAll: '/ai-academy/foundations/index.html'
   },
   {
     n: 'Track 06', color: 'red', icon: 'shield', title: 'Governance and Data Security',
-    topics: ['What company information can go where', 'Copyright and ownership', 'Human review that catches things'],
     guides: [
-      { title: 'Check whether your data is training the next model', href: '/ai-academy/tips/check-data-training-settings.html' }
+      { title: 'How Should We Think About Long-Term AI Risk?', href: '/insights/blogs/will-ai-kill-all-of-us-three-questions-no-one-can-answer-yet' },
+      { title: 'What Changes When a Company Becomes AI-Native?', href: '/insights/blogs/what-makes-a-company-ai-native' },
+      { title: 'How Should Companies Measure Employee AI Capability?' },
+      { title: 'How Should Companies Measure Return on AI Investment?' }
     ],
-    seeAll: '/ai-academy/index.html',
-    note: 'More governance guides are on the way.'
+    seeAll: '/ai-academy/index.html'
   }
 ];
 
@@ -86,6 +91,46 @@ const assistants = [
   { name: 'Gemini', logo: '/ai-academy/assets/logos/gemini.svg', tagline: 'Spark · Gems · Notebook', href: '/ai-academy/gemini/index.html' },
   { name: 'Microsoft Copilot', logo: '/ai-academy/assets/logos/copilot.png', tagline: 'Cowork · Work IQ · Notebooks', href: '/ai-academy/copilot/index.html' }
 ];
+
+function TrackCard({ track }: { track: Track }) {
+  const [open, setOpen] = useState(false);
+  const topics = track.guides.filter((guide) => guide.href).slice(0, 3);
+  const topicTitles = new Set(topics.map((topic) => topic.title));
+  const remaining = track.guides.filter((guide) => !topicTitles.has(guide.title));
+  const visible = open ? track.guides : topics;
+
+  return (
+    <div className="aca2-card" data-color={track.color}>
+      <div className="aca2-card-head">
+        <div className="aca2-card-top">
+          <span className="aca2-ico"><Icon name={track.icon} size={19} /></span>
+          <span className="aca2-badge">Guides</span>
+        </div>
+        <span className="aca2-track-no">{track.n}</span>
+        <h3>{track.title}</h3>
+      </div>
+      <ul className="aca2-guides">
+        {visible.map((guide) => (
+          <li key={guide.title} className={guide.href ? undefined : 'soon'}>
+            {guide.href ? (
+              <a href={guide.href}>{guide.title}</a>
+            ) : (
+              <span>{guide.title}<em>Coming soon</em></span>
+            )}
+          </li>
+        ))}
+      </ul>
+      {remaining.length > 0 && (
+        <button type="button" className={`aca2-toggle${open ? ' open' : ''}`} onClick={() => setOpen((value) => !value)}>
+          <Icon name="chevron" size={14} />
+          <span>{open ? 'Hide full list' : 'Show full list'}</span>
+        </button>
+      )}
+      {track.note && <p className="aca2-note-inline">{track.note}</p>}
+      <a className="aca2-all" href={track.seeAll}>See all guides &rarr;</a>
+    </div>
+  );
+}
 
 type AcademyPromoProps = {
   featuredPost?: BlogPost;
@@ -115,33 +160,7 @@ export function AcademyPromo({ featuredPost, otherPosts = [] }: AcademyPromoProp
 
         <div className="aca2-label"><span>The same six tracks, carried on</span><span className="aca2-label-hint">Open a track to see the guides inside</span></div>
         <div className="aca2-cards">
-          {tracks.map((track) => (
-            <details className="aca2-card" data-color={track.color} key={track.n}>
-              <summary>
-                <div className="aca2-card-top">
-                  <span className="aca2-ico"><Icon name={track.icon} size={19} /></span>
-                  <span className="aca2-badge">Guides</span>
-                </div>
-                <span className="aca2-track-no">{track.n}</span>
-                <h3>{track.title}</h3>
-                <ul className="aca2-topics">
-                  {track.topics.map((topic) => <li key={topic}>{topic}</li>)}
-                </ul>
-                <span className="aca2-toggle">
-                  <Icon name="chevron" size={14} />
-                  <span className="off">Show guide list</span>
-                  <span className="on">Hide guides</span>
-                </span>
-              </summary>
-              <ul className="aca2-guides">
-                {track.guides.map((guide) => (
-                  <li key={guide.title}><a href={guide.href}>{guide.title}</a></li>
-                ))}
-              </ul>
-              {track.note && <p className="aca2-note-inline">{track.note}</p>}
-              <a className="aca2-all" href={track.seeAll}>See all guides &rarr;</a>
-            </details>
-          ))}
+          {tracks.map((track) => <TrackCard track={track} key={track.n} />)}
         </div>
 
         {featuredPost && (
