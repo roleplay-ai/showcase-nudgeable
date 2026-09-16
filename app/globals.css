@@ -8713,12 +8713,15 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .aca2-card {
   --tc: var(--ink);
   --tb: var(--paper);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background: #fff;
   border: 1px solid var(--line);
   border-top: 4px solid var(--tc);
@@ -8734,21 +8737,14 @@ h2 {
 .aca2-card[data-color="purple"] { --tc: #5e51a0; --tb: #e9e6f5; }
 .aca2-card[data-color="red"] { --tc: #a8454f; --tb: #f8e2e5; }
 
-.aca2-card:hover,
-.aca2-card[open] {
+.aca2-card:hover {
   box-shadow: 0 16px 32px -24px rgba(22, 18, 15, .5);
 }
 
-.aca2-card > summary {
-  list-style: none;
-  cursor: pointer;
+.aca2-card-head {
   display: flex;
   flex-direction: column;
   gap: 11px;
-}
-
-.aca2-card > summary::-webkit-details-marker {
-  display: none;
 }
 
 .aca2-card-top {
@@ -8807,43 +8803,27 @@ h2 {
   margin: 0;
 }
 
-.aca2-topics {
+.aca2-guides {
   list-style: none;
-  margin: 0;
+  margin: 14px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.aca2-topics li {
-  font-size: .87rem;
-  color: var(--muted);
-  line-height: 1.4;
-  padding-left: 14px;
-  position: relative;
-}
-
-.aca2-topics li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: .6em;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--tc);
-  opacity: .55;
 }
 
 .aca2-toggle {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin: 4px 0 0;
+  background: none;
+  border: none;
+  padding: 6px 0 0;
+  font: inherit;
   font-weight: 700;
   font-size: .82rem;
   color: var(--tc);
-  padding-top: 2px;
+  cursor: pointer;
 }
 
 .aca2-toggle svg {
@@ -8851,42 +8831,30 @@ h2 {
   flex: none;
 }
 
-.aca2-card[open] .aca2-toggle svg {
+.aca2-toggle.open svg {
   transform: rotate(180deg);
 }
 
-.aca2-toggle .on {
-  display: none;
-}
-
-.aca2-card[open] .aca2-toggle .off {
-  display: none;
-}
-
-.aca2-card[open] .aca2-toggle .on {
-  display: inline;
-}
-
-.aca2-guides {
-  list-style: none;
-  margin: 14px 0 0;
-  padding: 14px 0 0;
-  border-top: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-}
-
 .aca2-guides li {
-  border-bottom: 1px solid #f2eadb;
+  position: relative;
+  padding-left: 14px;
 }
 
-.aca2-guides li:last-child {
-  border-bottom: 0;
+.aca2-guides li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.05em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--tc);
+  opacity: .55;
 }
 
 .aca2-guides a {
   display: block;
-  padding: 9px 0;
+  padding: 7px 0;
   text-decoration: none;
   color: inherit;
   font-size: .87rem;
@@ -8897,6 +8865,28 @@ h2 {
   color: var(--tc);
 }
 
+.aca2-guides li.soon span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: .87rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.aca2-guides li.soon em {
+  flex: none;
+  font-style: normal;
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+  opacity: .75;
+}
+
 .aca2-note-inline {
   margin: 10px 0 0;
   font-size: .8rem;
@@ -8905,11 +8895,13 @@ h2 {
 }
 
 .aca2-all {
-  display: inline-block;
-  margin-top: 12px;
+  display: block;
+  margin-top: auto;
+  padding-top: 12px;
   font-weight: 700;
   font-size: .82rem;
   color: var(--tc);
+  text-align: right;
 }
 
 .aca2-all:hover {
