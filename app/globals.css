@@ -8713,12 +8713,15 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .aca2-card {
   --tc: var(--ink);
   --tb: var(--paper);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background: #fff;
   border: 1px solid var(--line);
   border-top: 4px solid var(--tc);
@@ -8893,7 +8896,8 @@ h2 {
 
 .aca2-all {
   display: block;
-  margin-top: 12px;
+  margin-top: auto;
+  padding-top: 12px;
   font-weight: 700;
   font-size: .82rem;
   color: var(--tc);
